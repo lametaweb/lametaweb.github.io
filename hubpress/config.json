@@ -1,10 +1,1 @@
-{
-  "meta": {
-    "username": "lametaweb",
-    "repositoryName": "lametaweb.github.io",
-    "branch": "master"
-  },
-  "theme": {
-    "name": "Casper"
-  }
-}
+{"meta":{"username":"lametaweb","repositoryName":"lametaweb.github.io","branch":"master"},"site":{"cover":"20150331_120921.jpg","url":"https://lametaweb.github.io"},"socialnetwork":{},"theme":{"name":"Casper","url":"//lametaweb.github.io/themes/Casper"}}
