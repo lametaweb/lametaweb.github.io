@@ -1,0 +1,7 @@
+= Empezando por el principio. Nuestro banco de trabajo. (1/2)
+La metaweb
+:hp-tags: JDK, Maven, Java Workbench
+:published_at: 2015-04-15
+
+Bienvenido. Esta es la primera entrada de un nuevo blog de desarrollo Java EE. El planteamiento es poner en marcha lugar donde experimentar y debatir sobre las últimas tecnologías y herramientas dentro del ecosistema del desarrollo web basado en Java EE. La idea central en todo momento será desmitificar cualquier aspecto del desarrollo Java EE usando para ello los ejemplos adecuados.
+
