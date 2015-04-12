@@ -5,3 +5,6 @@ La metaweb
 
 Bienvenido. Esta es la primera entrada de un nuevo blog de desarrollo Java EE. El planteamiento es poner en marcha lugar donde experimentar y debatir sobre las últimas tecnologías y herramientas dentro del ecosistema del desarrollo web basado en Java EE. La idea central en todo momento será desmitificar cualquier aspecto del desarrollo Java EE usando para ello los ejemplos adecuados.
 
+Pienso que los que estamos empezando ahora en el aprendizaje del desarrollo web tenemos mucha suerte. Si volvemos la vista sólo diez años atrás el escenario era bien distinto. Ahora disponemos de los estándares y herramientas necesarios para permitir que toda nuestra energía y tiempo se empleen casi por completo en tareas productivas. Java EE ha tomado una buena velocidad de crucero y promete grandes cosas a medio y largo plazo.
+
+Brevemente cual es el panorama, estamos 
