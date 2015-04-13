@@ -15,4 +15,11 @@ Para arrancar con el blog, en estos primeros posts vamos, en primer lugar, a def
 
 Bueno manos a la obra. Empecemos con el entorno de trabajo. Como IDE usaremos Eclipse, por supuesto con Maven. Como servidor JBoss y como base de datos en principio algo ligerito, Java DB también conocido como Derby, lo que nos evitará instalar una base de datos al principio.
 
+NOTE: En el blog se utiliza una máquina con el sistema operativo Windows 8.1 para la realización de las tareas. La manera de hacer las cosas en otros sistemas operativos como OSX o Linux puede diferir, en estos casos una simple búsqueda en Google nos dará la respuesta.
+
+
+
+
+
+
 
