@@ -52,3 +52,5 @@ Aceptamos la licencia para que se habiliten los links de bajada y si queremos ba
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig003.png[]
 
+TIP: Siempre que podáis instalad tanto el sistema operativo (excepto el teclado para no perder la eñe, acentos, etc) como vuestras herrmientas en el idioma Inglés ya que así, cuando queramos consultar en Google un mensaje dado por la aplicación, o resolver alguna duda sobre la misma, obtendremos mucha más información que si el mensaje lo obtuvieramos en castellano.
+
