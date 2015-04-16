@@ -38,3 +38,17 @@ En la siguiente figura podemos ver un ejemplo de una máquina en la que existen 
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png[]
 
+Para instalar la última versión de JDK nos vamos a la dirección:
+
+http://www.oracle.com/technetwork/es/java/javase/downloads/index.html
+
+y pulsamos el botón con la leyenda Java.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig002.png[]
+
+WARNING: El botón que aparece a la derecha del indicado, con la leyenda NetBeans baja también la última versión del JDK pero además se trae NetBeans. NetBeans es un IDE, una alternativa a Eclipse. Nosotros usaremos Eclipse de modo que no optamos por esta opción. Si más adelante queremos instalar Netbeans podemos hacerlo desde la URL proporcionada por Oracle. Netbeans ofrece un entorno de desarrollo con muchas ayudas y está soportado por Oracle que además mantiene otro IDE, JDeveloper, también con muchas y potentes ayudas al desarrollador. Sin embargo pienso que lo mejor al principio es trabajar con Eclipse y a continuación explorar los demás.
+
+Aceptamos la licencia para que se habiliten los links de bajada y si queremos bajar los ejemplos de java hacemos lo mismo más abajo donde aparecen el paquete con las demos.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig003.png[]
+
