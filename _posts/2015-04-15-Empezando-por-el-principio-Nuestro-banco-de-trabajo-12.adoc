@@ -13,9 +13,23 @@ Un panorama muy prometedor al que además hay que sumar por un lado la velocidad
 
 Para arrancar con el blog, en estos primeros posts vamos, en primer lugar, a definir e instalar en nuestra máquina un entorno de trabajo adecuado, lo más parecido posible a lo que nos podamos encontrar hoy en una empresa. Y a continuación montaremos una mini aplicación con capa de presentación, negocio y datos. Lo vamos a hacer partiendo de cero y sin ningún tipo de asistente, de modo que consigamos desmitificar la creación de una aplicación Java EE por capas y ganar así la confianza necesaria para seguir, en sucesivos posts, experimentando con el amplio abanico de tecnologías y herramientas disponibles.
 
-NOTE: En el blog se utiliza una máquina con el sistema operativo Windows 8.1 para la realización de las tareas. La manera de hacer las cosas en otros sistemas operativos como OSX o Linux puede diferir, en estos casos una simple búsqueda en Google nos dará la respuesta.
+NOTE: En el blog se utiliza una máquina con el sistema operativo Windows 8.1 para la realización de las tareas. La manera de hacer las cosas en otros sistemas operativos como OSX o Linux puede diferir, en estos casos una simple búsqueda en Google nos mostrará la manera de proceder.
 
 == Instalación de Java: EL JDK
 
 Bueno manos a la obra. Empecemos con el entorno de trabajo. Como IDE elegimos el más habitual, Eclipse, por supuesto con Maven como gestor del ciclo de desarrollo. Como servidor JBoss y como base de datos de momento algo ligerito, Java DB, también conocido como Derby, que nos evitará instalar una base de datos en esta primera versión de la aplicación.
 
+Lo primero será instalar el kit de desarrollo Java (JDK) en nuestro ordenador, que consiste resumidamente por un lado en la máquina virtual, que ejecutará nuestras aplicaciones, y por otro el compilador que convierte nuestro código fuente en bytecode ejecutable en esa maquina virtual.
+
+WARNING: Hay que saber que existen dos JDK. El de SE (Standard Edition) que es el que nos interesa, y el de EE (Enterprise Edition) que no nos interesa de momento ya que nos instala el servidor de referencia Glassfish, junto con ejemplos.
+
+Lo primero que hacemos por precaución es comprobar si tenemos ya instalado un JDK antiguo ejecutando lo siguiente desde una ventana de comandos:
+
+[source,java]
+----
+forfiles /P c:\ /S /M javac.exe /C "cmd /c echo @path" 2>null
+----
+
+Obtendremos una línea por cada carpeta en la que exista un compilador de java. En principio tendriamos que obtener una sola línea similar a "c:\...\Java\jdk1.8.0_31\bin\javac.exe" o ninguna. Si tenemos más de una línea puede ser debido a que existen aplicaciones que instalaron su propio JDK. No debemos tocar estos JDK. Sin embargo lo ideal es tener un único JDK de usuario instalado. No existe un método en Windows para la actualización automática del JDK así que lo prudente es instalar el nuevo JDK, si no tenemos ya instalado la última versión, en un directorio aparte y desinstalar a través de "Panel de Control > Programas y características" el o los JDKs que tuvieramos instalados anteriormente sólo cuando estemos seguros de que no afectará a terceras aplicaciones. En los sistemas operativos Linux y OS X sí existen procedimientos de actualización automáticos, consultar en Internet para obtener más información.
+
+En la siguiente figura podemos ver un sistema en el que existen tres JDKs y un JRE instalados. Repito que lo ideal es dejar un único JDK, desintalando el resto.
