@@ -36,3 +36,5 @@ NOTE: En los sistemas operativos Linux y OS X sí existen procedimientos de actu
 
 En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desintalando el resto, siempre que no hubieran sido instalados por aplicaciones de terceros.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png[]
+
