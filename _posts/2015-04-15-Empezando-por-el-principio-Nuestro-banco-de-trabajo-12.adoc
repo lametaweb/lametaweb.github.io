@@ -107,3 +107,14 @@ Completamos la instalación añadiendo tres variables de sistema y editando la v
 |`%M2%;%JAVA_HOME%\bin;...`
 |===
 
+En este punto tenemos ya instalados Maven y el JDK, necesario para la correcta ejecución del primero. Abramos una ventana de comando (botón de Inicio y escribir `cmd` en la caja de búsqueda) para comprobar que Maven se instaló correctamente. Verifico primero que las variables de sistema se han creado bien con el comando `SET`:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig001.png[]
+
+Y para verificar que la instalación es correcta escribimos `mvn -version`. Si obtenemos una salida por pantalla similar a la que se muestra es que todo ha ido bien.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig006.png[]
+
+Vamos ahora a llamar a Maven siguiendo el ejercicio de cinco minutos propuesto en su página oficial en la dirección http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html. Es importante emplear un poco de nuestro tiempo en entender los conceptos básicos de esta herramienta. De verdad, os alegraréis, pues si bien al principio Maven puede parecer algo confuso, tras una lectura de los recursos que os voy a comentar y practicar minimamente nos daremos cuenta de que es una herramienta pensada para facilitarnos las cosas.
+
+Una vez en la dirección anterior nos vamos directamente al tercer apartado: Creating a Project. Lo que vamos a hacer es crear usando sólo Maven un proyecto Hola mundo! a partir de una plantilla de proyecto. Se trata de una característica adicional que aun no he comentado, Maven es capaz de generar un proyecto que sirva como punto de partida de nuestra aplicación a partir de un molde o plantilla, que Maven denomina arquetipo. Hay muchos arquetipos, muchos han sido creados por la gente de Maven, otros por otras empresas, y nosotros mismo podemos crear un arquetipo, de hecho las empresas crean arquetipos para disponer de puntos de partida de sus proyectos. Los arquetipos están en los repositorios, que son almaceneces gestionados por Maven, donde existen elementos de otra naturaleza con librerías, nuestros proyectos, etc. A todos estos elementos Maven los denomina artefactos. Bien, como indica en ejercicio de cinco minutos abrimos una ventana de comandos, creamos un directorio, por ejemplo c:\prueba-maven, y nos situamos dentro del mismo. A continuación escribimos:
