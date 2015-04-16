@@ -62,16 +62,16 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Para terminar con la instalación del JDK añadimos la variable de sistema `JAVA_HOME` con el valor de la ruta donde hemos instalado el JDK y a la variable `PATH` le añadimos al principio el literal `%JAVA_HOME%\bin;`. Por ejemplo:
 
-[cols="2*", options="header"]
+[cols="1a,3a", options="header"]
 |===
 |Nombre
 |Valor
 
-|JAVA_HOME
-|C:\Program Files\Java\jdk1.8.0_40
+|`JAVA_HOME`
+|`C:\Program Files\Java\jdk1.8.0_40`
 
-|PATH
-|%JAVA_HOME%\bin;...
+|`PATH`
+|`%JAVA_HOME%\bin;...`
 |===
 
 TIP: Para ir a una carpeta en la consola de comandos puedo usar el carácter comodín asterisco `\*` y así ahorrarme pulsaciones y tiempo. Por ejemplo, si quiero ir a la carpeta `esta-carpeta-001`, escribo `cd est*`, y si existiera otra carpeta con el nombre `estados` entonces tendría que escribir `cd esta-*`. Del mismo modo puedo escribir sólo las terminaciones de las carpetas, por ejemplo con `cd *001` también entraríamos en `esta-carpeta-001`.
@@ -85,4 +85,25 @@ En Maven tenemos que diferenciar varias cosas:
 * El plugin de Maven para Eclipse, que me permite usar Maven desde Eclipse, que será en general lo que hagamos en el día a día.
 
 En la próxima entrada del Blog volveremos sobre Maven, ya desde Eclipse, y empezaremos a practicar con él. Ahora toca instalarlo. Decir primero que realmente no es necesario instalar Maven para el desarrollo desde Eclipse ya que éste ya lo que trae de serie (Embedded Maven) sin embargo si lo instalamos aparte (Local Maven) podremos usarlo fuera del IDE cuando lo necesitemos. Además la versión de Maven empotrada en Eclipse puede no ser la última y puede ser que necesitemos trabajar con una versión más reciente. Para ello tendremos que cambiar la configuración en Eclipse para que apunte al Maven local.
+
+Si ya teníamos una instalación de Maven no hay problema, podemos instalarlo en otra carpeta. Aunque como en el caso del JDK es mejor siempre tener una única instalación salvo que necesitemos más de una versión porque estemos trabajando con un proyecto antiguo por ejemplo. En este caso para desinstalar sólo tendremos que borrar la carpeta de instalación y editar varias variables de sistema. Vamos entonces a la URL http://maven.apache.org/download.cgi y nos bajamos el archivo Maven 3.3.1 (Binary tar.gz) si usamos Linux o el Maven 3.3.1 (Binary zip) si usamos Windows (la versión puede diferir). Ok, descomprimimos el zip en una carpeta, por ejemplo en la ruta `C:\Program Files\Apache Software Foundation\`.
+
+TIP: Para descomprimir puedes usar la aplicación gratuita 7zip en el enlace http://www.7-zip.org. Y para linux tenemos http://peazip.sourceforge.net/peazip-linux.html.
+
+Completamos la instalación añadiendo tres variables de sistema y editando la variable `PATH` para poder llamar a Maven desde cualquier carpeta de proyecto:
+
+[cols="1a,3a", options="header"]
+|===
+|Nombre
+|Valor
+
+|`M2_HOME`
+|`C:\Program Files\Apache Software Foundation\apache-maven-3.3.1`
+
+|`M2`
+|`%M2_HOME%\bin`
+
+|`PATH`
+|`%M2%;%JAVA_HOME%\bin;...`
+|===
 
