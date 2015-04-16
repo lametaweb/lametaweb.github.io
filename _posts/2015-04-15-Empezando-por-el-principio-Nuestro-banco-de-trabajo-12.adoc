@@ -60,3 +60,19 @@ Lo que acabamos de instalar es, por un lado el JDK, necesario para desarrollar a
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig005.png[]
 
+Para terminar con la instalación del JDK añadimos la variable de sistema `JAVA_HOME` con el valor de la ruta donde hemos instalado el JDK y a la variable `PATH` le añadimos al principio el literal `%JAVA_HOME%\bin;`. Por ejemplo:
+
+[cols="2*", options="header"]
+|===
+|Nombre
+|Valor
+
+|JAVA_HOME
+|C:\Program Files\Java\jdk1.8.0_40
+
+|PATH
+|%JAVA_HOME%\bin;...
+|===
+
+TIP: Para ir a una carpeta en la consola de comandos puedo usar el carácter comodín asterisco `\*` y así ahorrarme pulsaciones y tiempo. Por ejemplo, si quiero ir a la carpeta `esta-carpeta-001`, escribo `cd est*`, y si existiera otra carpeta con el nombre `estados` entonces tendría que escribir `cd esta-*`. Del mismo modo puedo escribir sólo las terminaciones de las carpetas, por ejemplo con `cd *001` también entraríamos en `esta-carpeta-001`.
+
