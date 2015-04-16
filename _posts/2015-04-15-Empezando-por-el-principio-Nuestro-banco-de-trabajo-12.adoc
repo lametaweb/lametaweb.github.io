@@ -25,12 +25,12 @@ WARNING: Hay que saber que existen dos JDK. El de SE (Standard Edition) que es e
 
 Lo primero que hacemos por precaución es comprobar si tenemos ya instalado un JDK antiguo ejecutando lo siguiente desde una ventana de comandos:
 
-[source,java]
+[source,dos]
 ----
 forfiles /P c:\ /S /M javac.exe /C "cmd /c echo @path" 2>null
 ----
 
-Obtenemos una línea por cada carpeta en la que exista un compilador de java. En principio tendriamos que obtener una sola línea similar a "c:\...\Java\jdk1.8.0_31\bin\javac.exe" o bien ninguna. Si tenemos más de una línea puede ser debido a que existan aplicaciones que instalaron su propio JDK. No debemos tocar esos JDK. Lo ideal es tener un único JDK de usuario instalado. En Windows no existe una actualización automática del JDK así que lo prudente es instalar nosotros mismos el nuevo JDK, si es que no tenemos ya instalado la última versión, desinstalando previamente a través de "Panel de Control > Programas y características" el o los JDKs antiguos (como ya se ha comentado sólo cuando estemos seguros de que no afectará a terceras aplicaciones, en general cuando se encuentran en la carpeta de la aplicación que los instaló). 
+Obtenemos una línea por cada carpeta en la que exista un compilador de java. En principio tendriamos que obtener una sola línea similar a `c:\...\Java\jdk1.8.0_31\bin\javac.exe` o bien ninguna. Si tenemos más de una línea puede ser debido a que existan aplicaciones que instalaron su propio JDK. No debemos tocar esos JDK. Lo ideal es tener un único JDK de usuario instalado. En Windows no existe una actualización automática del JDK así que lo prudente es instalar nosotros mismos el nuevo JDK, si es que no tenemos ya instalado la última versión, desinstalando previamente a través de `Panel de Control > Programas y características` el o los JDKs antiguos (como ya se ha comentado sólo cuando estemos seguros de que no afectará a terceras aplicaciones, en general cuando se encuentran en la carpeta de la aplicación que los instaló). 
 
 NOTE: En los sistemas operativos Linux y OS X sí existen procedimientos de actualización automáticos, consultar en Internet para obtener más información.
 
@@ -53,4 +53,10 @@ Aceptamos la licencia para que se habiliten los links de bajada y si queremos ba
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig003.png[]
 
 TIP: Siempre que podáis instalad tanto el sistema operativo (excepto el teclado para no perder la eñe, acentos, etc) como vuestras herrmientas en el idioma Inglés ya que así, cuando queramos consultar en Google un mensaje dado por la aplicación, o resolver alguna duda sobre la misma, obtendremos mucha más información que si el mensaje lo obtuvieramos en castellano.
+
+Para instalar nuestro JDK hacemos doble click sobre el ejecutable descargado. En la pantalla inicial del wizard pulsamos `Next`, en la siguiente pantalla aceptamos los valores por defecto. La instalación del JDK comienza. A continuación aparece una ventana y se nos pregunta de nuevo por otra carpeta de instalación, se trata de la instalación del JRE público. Aceptamos el valor por defecto. Finalmente pulsamos `Close`.
+
+Lo que acabamos de instalar es, por un lado el JDK, necesario para desarrollar aplicaciones en Java, que además contiene un JRE privado, necesario para ejecutar Java y que será utilizado por nuestro IDE Eclipse; y por otro lado un JRE público que es que usarán las distintas aplicaciones de nuestro ordenador cuando necesiten ejecutar una aplicación Java, por ejemplo nuestro navegador de Internet preferido. Si entramos en "Panel de Control > Programas y características" podremos ver cómo aparecen tanto el JRE público como el JDK.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig005.png[]
 
