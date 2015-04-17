@@ -119,6 +119,19 @@ Vamos ahora a llamar a Maven siguiendo el ejercicio de cinco minutos propuesto e
 
 Una vez en la dirección anterior nos vamos directamente al tercer apartado `Creating a Project`. Lo que vamos a hacer es crear un proyecto `Hola mundo!` sin escribir ni una sola línea de código. Es otra de las capacidades de Maven, nos permite, a partir de los llamados arquetipos, comenzar un nuevo proyecto a partir de una plantilla. Hay muchos arquetipos, muchos han sido creados por la gente de Maven, otros por otras empresas, y nosotros podemos también crear uno, de hecho las empresas crean arquetipos para disponer de puntos de partida para los nuevos proyectos. Los arquetipos están en los repositorios, que son almaceneces gestionados por Maven, donde también existen elementos de otra naturaleza como librerías, nuestros propios wars, etc. A todos estos elementos Maven los denomina artefactos. Bien, vamos con el ejercicio, abrimos una ventana de comandos, creamos un directorio, por ejemplo `c:\prueba-maven`, y nos situamos dentro de él. A continuación escribimos lo siguiente:
 
-`mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`
+[small]#`mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`#
+
+Si es la primera vez que ejecutamos Maven en nuestro ordenador el comando puede tardar un rato en finalizar, es debido a que Maven necesita bajar desde un repositorio remoto los elementos necesarios para aplicar el ciclo de vida al proyecto. Analicemos rápidamente el comando:
+
+`mvn`: Es el comando que invoca a Maven, que será análogo al que Eclipse invoque por defecto cuando estemos desarrollando un proyecto desde el IDE. Eclipse por defecto usa el Maven embebido que viene con el plugin M2Eclipse.
+
+`archetype:generate`: Es la parte del comando que indica lo que queremos que haga Maven. En este caso le estamos diciendo que ejecute el goal `generate` del plugin `archetype`. Los plugins son las unidades que continen los goals, que representan lo que podemos pedir a Maven que haga por nosotros, en este caso generar un proyecto a partir de un arquetipo.
+
+
+NOTE: Maven puede ejecutar además de un goal, como en el caso del ejemplo, una phase y todas las fases anteriores. El ciclo de vida estándar de Maven se compone de varias fases ordenadas, cada fase tiene asociada la ejecución de varios goals de varios plugins. Existen valores por defecto pero todo es configurable como iremos viendo. El formato del comando sería diferente, sin el carácter `:`, por ejemplo `mvn package`. No es necesario entender todo esto ahora. Al final del Post se dan links a recursos en la página oficial de Maven donde estos conceptos son claramente explicados. Tenemos que sacar un rato y leerlos para aprovechar de forma óptima los contenidos de los Posts futuros.
+
+* `-DgroupId=com.mycompany.app -DartifactId=my-app`: El resto del comando son parámetros que pasamos al goal. Los dos primeros parámetros son parte de las coordenadas del proyecto que vamos a crear. Todo proyecto Maven, tiene unas coordenadas, que lo identifican de forma unívoca y lo sitúan dentro de nuestro repositorio local como un artefacto. Estas coordenadas son: Id de grupo, Id de artefacto y versión. En este caso como estamos creando el proyecto la versión es de forma implícita la 1.0. Añadir que estos valores son utilizados por Maven para, en el caso del Id de grupo, establecer la estructura de paquetes de las clases Java del proyecto y en el caso del Id de artefacto para estabecer el nombre del artefacto.
+
+* `-DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`: El último parámetro simplemente hace que el comando se ejecute sin nuestra intervención. El primer parámetro es el más interesante ya que hace referencia al arquetipo o plantilla que queremos usar para generar nuestro nuevo proyecto. Recordemos que un arquetipo es un artefacto más y que todos los artefactos están en un repositorio.
 
 
