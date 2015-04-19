@@ -22,4 +22,15 @@ Bajo la carpeta `TALLER` creamos las siguientes:
 
 El fichero comprimido es simplemente una forma rápida de hacer una copia de seguridad del workspace.
 
+Para instalar Eclipse, os aconsejo de nuevo que lo hagáis en Inglés, vamos a la página https://www.eclipse.org/downloads/ y elegimos la instalación para desarrolladores de Java EE.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig010.png[]
+
+Bajamos el fichero `.zip`, lo copiamos en la carpeta `c:\TALLER\IDE\` y seleccionamos Extraer aquí, no hay programa de instalación. Entramos en la carpeta de Eclipse y doble click en `eclipse.exe`. Seleccionamos la carpeta `c:\TALLER\workspace\` como espacio de trabajo. El IDE se carga y cerramos la pantalla inicial de bienvenida pulsando en el icono en la esquina arriba a la derecha.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig015.png[]
+
+NOTE: No marquéis el check `Use this as the default and do not ask again` para así cambiar el workspace si queréis en un futuro. Si lo marcáis podéis volver a ver la pantalla de selección de la carpeta del workspace configurándolo en `Window > Preferences > General > Startup and Shutdown > Workspaces`.
+
+Ahora el servidor. Entramos en la página principal del servidor de Red Hat http://www.redhat.com/en/technologies/jboss-middleware/application-platform
 
