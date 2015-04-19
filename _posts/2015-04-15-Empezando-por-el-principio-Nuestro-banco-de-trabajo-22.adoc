@@ -11,3 +11,15 @@ En mi experiencia Netbeans es un buen entorno, con muchas ayudas, y maduro en su
 
 Ok, antes de nada vamos a crear una sencilla estructura de carpetas donde ir guardardo el trabajo, y donde instalar el software. Por ejemplo la siguiente:
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig009.png[]
+
+Bajo la carpeta `TALLER` creamos las siguientes:
+
+* `BD`: Para las bases de datos que vayamos instalando: MySQL, Derby, etc.
+* `IDE`: Para la instalación del IDE Eclipse. Instalad otros si queréis echarles un vistazo.
+* `Servidor`: Aquí irá nuestro JBoss EAP edición Comunity. Aunque si en el futuro vemos algo particular de Java EE 7 instalaremos WildFly o GlassFish. 
+* `Workspace`: Para guardar los proyectos desarrollados en Eclipse.
+
+El fichero comprimido es simplemente una forma rápida de hacer una copia de seguridad del workspace.
+
+
