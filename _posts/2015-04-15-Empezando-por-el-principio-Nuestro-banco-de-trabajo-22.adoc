@@ -1,0 +1,6 @@
+= Empezando por el principio. Nuestro banco de trabajo. (2/2)
+La metaweb
+:hp-tags: Eclipse, JBoss, JBoss Tools
+:published_at: 2015-04-15
+
+En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. 
