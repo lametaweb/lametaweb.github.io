@@ -1,6 +1,6 @@
 = Empezando por el principio. Nuestro banco de trabajo. (1/2)
 La metaweb
-:hp-tags: JDK, Maven, Java Workbench
+:hp-tags: JDK, Java, Maven, Java Workbench
 :published_at: 2015-04-15
 
 Bienvenido. Esta es la primera entrada de un nuevo blog de desarrollo Java EE. El planteamiento es poner en marcha lugar donde experimentar y debatir sobre las últimas tecnologías y herramientas dentro del ecosistema del desarrollo web basado en Java EE. La idea central en todo momento será desmitificar cualquier aspecto del desarrollo Java EE usando para ello los ejemplos adecuados.
@@ -138,11 +138,25 @@ NOTE: Existen dos tipos de repositorio: Local y remoto. El local está en nuestr
 
 Ejecutamos el comando y vemos qué ocurre. Se ha creado una carpeta con el nombre de nuestro nuevo proyecto, que contiene una estructura de carpetas según el estándar de Maven,  la clase Java que genera la salida `Hello world!` y el fichero de proyecto de Maven `pom.xml`. Si lo abrimos con un editor de texto podremos ver que contiene las coordenadas del artefacto, el tipo de empaquetado, referencias a información adicional sobre el proyecto, y una sección para definir de qué artefactos depende. Tenemos un proyecto completo con la simple ejecución de un comando, no está mal. Es cierto que se trata de un proyecto sencillo pero sin mucho esfuerzo podremos montar un arquetipo tan complejo como queramos, que luego usaremos como punto de partida para otro proyecto.
 
-Ya tenemos nuestro proyecto, ahora toca generar una aplicación a partir de éste.
+Ya tenemos nuestro proyecto, ahora toca generar la aplicación. Ejecutamos el comando `mvn install`, desde la carpeta del proyecto (donde está nuestro `pom.xml`) y como sabemos se ejecutarán entonces las fases install del ciclo de vida de construcción por defecto y todas las anteriores, lo que se traduce en la ejecución de una serie de goals de distintos plugins, que dan como resultado la distribución de nuestra aplicación en la carpeta `target\` y la copia de la misma en nuestro repositorio local, en la ruta `C:\Users\Usuario\.m2\repository\com\mycompany\app\my-app\1.0-SNAPSHOT`.
 
-Primero ejecutamos el comando `mvn install`, desde la carpeta del proyecto (donde está el `pom.xml`). Como ya sabemos con este comando ejecutamos la fase install del ciclo de vida estándar de construcción y todas las anteriores, lo que se traduce en la ejecución de una serie de goals de plugins, que llevan a cabo la construcción y distribución en nuestro repositorio local del artefacto ejecutable en forma de fichero `.jar`, que podemos localizar a través del explorador de Windows en la carpeta `.m2/` dentro de nuestra carpeta de usuario, en una estructura de carpetas que dependerá de las coordenadas que elegimos anteriormente para el proyecto.
+Y el último paso, ejecutar la aplicación para comprobar que nuestro primer proyecto Maven se ha generado como es debido. Nos vamos a la carpeta `target\` y en la ventana de comandos escribimos el comando `java -cp my-app-1.0-SNAPSHOT.jar com.mycompany.app.App` para que la máquina virtual de nuestro JDK ejecute la aplicación Java. El resultado es el esperado Hola Mundo!
 
-El fichero `.jar` es el ejecutable de nuestro proyecto y además de en el repositorio local también se crea en la carpeta target dentro
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig008.png[]
 
+Maven es una herramienta potente y con muchas posibilidades. Para sacar provecho de ella es importante tener claros los conceptos básicos y por suerte tenemos la información en la página web oficial. Merece la pena echar un rato de lectura porque Maven está en la gran mayoría de proyectos con los que nos vamos a encontrar en la vida real. Para tener una idea y conocer dónde buscar cuando lo necesitemos será suficiente con leer el minitutorial en la dirección 
 
+http://maven.apache.org/guides/getting-started/index.html
 
+y dentro de éste mirar estos enlaces:
+
+. Configuración de Maven. Ficheros de configuración, perfiles, repositorio propio: http://maven.apache.org/guides/mini/guide-configuring-maven.html
+. Arquetipos: http://maven.apache.org/guides/introduction/introduction-to-archetypes.html
+. Fichero POM. Super POM, POM minimo, herencia, agregación y variables: http://maven.apache.org/guides/introduction/introduction-to-the-pom.html
+. Estructura de directorios de proyecto: http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html
+. Introducción al concepto de repositorio:  http://maven.apache.org/guides/introduction/introduction-to-repositories.html
+. Nociones sobre el ciclo de vida de construcción de un proyecto Maven. Añadir a una phase un goal y configurarlo: http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+
+El mayor valor de Maven es haber sabido reunir una serie de estándares de gestión del desarrollo de un proyecto, desde las pruebas unitarias hasta el despliegue en producción pasando por los tests de integración. Y esto, unido a que se trata de una herramienta de código abierto y extensible hace que haya sustitido a Ant+Ivy y que conviva con un único compitidor, más joven, Gradle. Gradle es una opción muy válida en proyectos nuevos y ofrece un muy buen compromiso entre flexibilidad y simplicidad al sustituir el XML por el lenguaje Groovy.
+
+Y hasta aquí la primera entrada del Blog! En la siguiente terminaremos de montar y configurar nuestro banco de trabajo Java EE y lo dejaremos listo para empezar a recorrer las distintas tecnologías de la Web.
