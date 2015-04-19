@@ -3,4 +3,9 @@ La metaweb
 :hp-tags: Eclipse, JBoss, JBoss Tools
 :published_at: 2015-04-15
 
-En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. 
+En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no es algo costoso, ni en tiempo de aprendizaje ni en tiempo de adaptación del proyecto si los gestionamos bajo Maven o Gradle.
+
+Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando la complejidad de las tecnologías empleadas tras el código fuente generado para resolver las tareas de los documentos de diseño del proyecto. Un ejemplo lo tenemos cuando creamos un web service, aquí el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API e implementar cada operación.
+
+En mi experiencia Netbeans es un buen entorno, con muchas ayudas, y maduro en su versión en su versión 8, además tiene detrás a una gran comunidad y a Oracle. Como dato en contra, durante el desarrollo de un proyecto mediano, en la versión 8.0, de cuando en cuando se quedaba "pensando" unos segundos. Por otro lado tenemos a JDeveloper, que es el IDE oficial de Oracle, muy potente y una opción recomendable para nuevos proyectos de gran tamaño, y si desarrollamos contra Oracle. Si nuestro servidor es JBoss o el nuevo WildFly podemos optar la solución adoptada aquí, Eclipse + JBoss Tools, o directamente por JBoss Developer Studio. La ventaja de optar por Eclipse es que podemos personalizar nuestro entorno instalando los plugins que elijamos. Para proyectos Spring está Eclipse STS que ofrece potentes wizards. En definitiva tenemos múltiples opciones y la decisión muchas veces dependerá de las tecnologías que elijamos o nos imponga el tipo de proyecto o el propio cliente.
+
