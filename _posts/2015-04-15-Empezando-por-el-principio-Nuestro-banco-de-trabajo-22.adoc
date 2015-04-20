@@ -67,4 +67,5 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Comprobemos que la instalación del servidor es correcta desplegando el célebre Hello World!, que ahora tomaremos no del repositorio Maven como en la entrada anterior sino directamente de los ejemplos recién instalados. Este ejemplo sencillo usa las tecnologías CDI y Servlets. Abrimos una consola de comandos, vamos a la carpeta \bin\ dentro de la carpeta del servidor y lo iniciamos escribiendo "standalone.bat". Dejamos esta ventana de comandos abierta, podemos minimizarla.
 
+NOTE: Si no se instalaron los ejemplos lo tomamos del repo desde Maven con el arquetipo: maven-archetype-site-simple
 
