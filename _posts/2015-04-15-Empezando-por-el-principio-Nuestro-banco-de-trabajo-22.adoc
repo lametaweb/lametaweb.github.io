@@ -44,6 +44,27 @@ Elegimos nuestro sistema operativo y pulsamos sobre el enlace del installer. Si 
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig025.png[]
 
+Después de introducir una serie de datos básicos aceptamos los términos del  Programa de Desarrollador de Jboss. Esperamos a que la bajada del fichero acabe. Copiamos el fichero en la carpeta `C:\TALLER\Servidor\` y lo arrancamos escribiendo el comando `java -jar jboss-eap-6.3.0-installer.jar`.
 
+Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca del Firewall de Windows elegid la opción `Permitir`. A la hora de elegir la carpeta de instalación seleccionad como antes, `C:\TALLER\Servidor\`. Escribimos luego un nombre de usuario y una contraseña. Estas credenciales son las del usuario administrador del servidor, que lo gestionará a través del navegador usando la Consola de Administración. Apuntad en un sitio seguro estos datos para no olvidarlos. En la instalación de este servidor se eligieron las credenciales:
+
+[cols="1h,2", width="40"]
+|===
+|user
+|admin
+
+|password
+|abcd-1234
+|===
+user: admin
+password: abcd-1234
+
+Es interesante instalar también los ejemplos que trae el servidor. Son varios proyectos Maven que muestran ejemplos sencillos sobre el uso de las diferentes tecnologías Java EE incidiendo en las gestionadas desde Red Hat: JPA (Hibernate), CDI (Weld), EJB, JSF, etc. Si abrimos el `pom.xml` de alguno de estos proyectos veremos como se definen de las dependencias en proyectos que se despliegan en el servidor JBoss.
+
+El wizard continúa por una serie de pantallas donde dejamos las opciones por defecto, la instalación finaliza a los pocos segundos. Y ya tenemos instalado un flamante servidor Java EE 6 en local. Podemos finalmente guardar y echar un vistazo al script de instalación.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig030.png[]
+
+Comprobemos que la instalación del servidor es correcta desplegando el célebre Hello World!, que ahora tomaremos no del repositorio Maven como en la entrada anterior sino directamente de los ejemplos recién instalados. Este ejemplo sencillo usa las tecnologías CDI y Servlets. Abrimos una consola de comandos, vamos a la carpeta \bin\ dentro de la carpeta del servidor y lo iniciamos escribiendo "standalone.bat". Dejamos esta ventana de comandos abierta, podemos minimizarla.
 
 
