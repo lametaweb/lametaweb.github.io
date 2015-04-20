@@ -32,5 +32,18 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 NOTE: No marquéis el check `Use this as the default and do not ask again` para así cambiar el workspace si queréis en un futuro. Si lo marcáis podéis volver a ver la pantalla de selección de la carpeta del workspace configurándolo en `Window > Preferences > General > Startup and Shutdown > Workspaces`.
 
-Ahora el servidor. Entramos en la página principal del servidor de Red Hat http://www.redhat.com/en/technologies/jboss-middleware/application-platform
+Ahora le toca al servidor. Nuestro entorno de trabajo necesita un servidor completo para depurar el código que estemos desarrollando. Navegamos a la página oficial del servidor JBoss en  http://www.redhat.com/en/technologies/jboss-middleware/application-platform y pulsamos el botón `TRY IT NOW` dentro de la pestaña `TRY`, seleccionada por defecto.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig020.png[]
+
+Esto nos lleva a la página del servidor JBoss para desarrolladores.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig022.png[]
+
+Elegimos nuestro sistema operativo y pulsamos sobre el enlace del installer. Si no estamos ya logados saltaremos a la página de introducción de usuario y contrseña. Procedemos a la creación de una cuenta pulsando el enlace `Create Account`.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig025.png[]
+
+
+
 
