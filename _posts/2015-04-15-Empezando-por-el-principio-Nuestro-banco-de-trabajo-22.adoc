@@ -65,7 +65,7 @@ El wizard continúa por una serie de pantallas donde dejamos las opciones por de
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig030.png[]
 
-Comprobemos que la instalación del servidor es correcta desplegando el célebre Hello World!, que ahora tomaremos no del repositorio Maven como en la entrada anterior sino directamente de los ejemplos recién instalados. Este ejemplo sencillo usa las tecnologías CDI y Servlets. Abrimos una consola de comandos, vamos a la carpeta \bin\ dentro de la carpeta del servidor y lo iniciamos escribiendo "standalone.bat". Dejamos esta ventana de comandos abierta, podemos minimizarla.
+Comprobaremos que la instalación es correcta desplegando la aplicación web Hello World! localizada en los ejemplos recién instalados. Para arrancar el servidor abrimos una consola de comandos, vamos a la carpeta `bin\` dentro de la carpeta del servidor y lo iniciamos escribiendo `standalone.bat`. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejectuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.
 
-NOTE: Si no se instalaron los ejemplos lo tomamos del repo desde Maven con el arquetipo: maven-archetype-site-simple
+NOTE: Si no has instalado los ejemplos del servidor puedes bajar la aplicación desde Maven a partir del arquetipo `maven-archetype-site-simple` de forma análoga a como vimos en el Post anterior.
 
