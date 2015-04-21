@@ -1,4 +1,4 @@
-= Empezando por el principio. Nuestro banco de trabajo. (2/2)
+= Montar un entorno de trabajo adecuado (2/2).
 La metaweb
 :hp-tags: Eclipse, JBoss, JBoss Tools
 :published_at: 2015-04-15
