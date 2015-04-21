@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Empezando por el principio. Nuestro banco de trabajo. (2/2)</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//www.lametaweb.com/themes/Casper/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/Casper/assets/css/screen.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html" />
+    
+    <meta property="og:site_name" content="La metaweb" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Empezando por el principio. Nuestro banco de trabajo. (2/2)" />
+    <meta property="og:description" content="En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no..." />
+    <meta property="og:url" content="http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html" />
+    <meta property="article:published_time" content="2015-04-14T22:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-04-21T15:43:48.574Z" />
+    <meta property="article:tag" content="Eclipse" />
+    <meta property="article:tag" content="JBoss" />
+    <meta property="article:tag" content="JBoss Tools" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Empezando por el principio. Nuestro banco de trabajo. (2/2)" />
+    <meta name="twitter:description" content="En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no..." />
+    <meta name="twitter:url" content="http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "La metaweb",
+    "author": {
+        "@type": "Person",
+        "name": "La metaweb",
+        "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": ""
+    },
+    "headline": "Empezando por el principio. Nuestro banco de trabajo. (2/2)",
+    "url": "http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html",
+    "datePublished": "2015-04-14T22:00:00.000Z",
+    "dateModified": "2015-04-21T15:43:48.574Z",
+    "keywords": "Eclipse,  JBoss,  JBoss Tools",
+    "description": "En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="La metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-Eclipse tag-JBoss tag-JBoss-Tools">
+
+    
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        <a class="back-button icon-arrow-left" href="http://www.lametaweb.com">Home</a>
+        <!-- <a class="subscribe-button icon-feed" href="http://www.lametaweb.com/rss/">Subscribe</a> -->
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post tag-Eclipse tag-JBoss tag-JBoss-Tools">
+
+        <header class="post-header">
+            <h1 class="post-title">Empezando por el principio. Nuestro banco de trabajo. (2/2)</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-04-15">15 April 2015</time>  on <a href="http://www.lametaweb.com/tag/Eclipse">Eclipse</a>, <a href="http://www.lametaweb.com/tag/JBoss"> JBoss</a>, <a href="http://www.lametaweb.com/tag/JBoss-Tools"> JBoss Tools</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div class="paragraph">
+<p>En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no es algo costoso, ni en tiempo de aprendizaje ni en tiempo de adaptación del proyecto si los gestionamos bajo Maven o Gradle.</p>
+</div>
+<div class="paragraph">
+<p>Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando la complejidad de las tecnologías empleadas tras el código fuente generado para resolver las tareas de los documentos de diseño del proyecto. Un ejemplo lo tenemos cuando creamos un web service, aquí el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API e implementar cada operación.</p>
+</div>
+<div class="paragraph">
+<p>En mi experiencia Netbeans es un buen entorno, con muchas ayudas, y maduro en su versión en su versión 8, además tiene detrás a una gran comunidad y a Oracle. Como dato en contra, durante el desarrollo de un proyecto mediano, en la versión 8.0, de cuando en cuando se quedaba "pensando" unos segundos. Por otro lado tenemos a JDeveloper, que es el IDE oficial de Oracle, muy potente y una opción recomendable para nuevos proyectos de gran tamaño, y si desarrollamos contra Oracle, y/o el servidor Weblogic. Para proyectos Spring está Eclipse STS que ofrece potentes wizards. Si nuestro servidor es JBoss o el nuevo WildFly podemos optar la solución adoptada aquí, Eclipse + JBoss Tools, o directamente por JBoss Developer Studio. La ventaja de optar por Eclipse es que podemos personalizar nuestro entorno instalando los plugins que elijamos. En definitiva tenemos múltiples opciones y la decisión muchas veces dependerá de las tecnologías que elijamos o nos imponga el tipo de proyecto o el propio cliente.</p>
+</div>
+<div class="paragraph">
+<p>Ok, antes de nada vamos a crear una sencilla estructura de carpetas donde ir guardardo el trabajo, y donde instalar el software. Por ejemplo la siguiente:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig009.png" alt="prac001 fig009.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Bajo la carpeta <code>TALLER</code> creamos las siguientes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>BD</code>: Para las bases de datos que vayamos instalando: MySQL, Derby, etc.</p>
+</li>
+<li>
+<p><code>IDE</code>: Para la instalación del IDE Eclipse. Instalad otros si queréis echarles un vistazo.</p>
+</li>
+<li>
+<p><code>Servidor</code>: Aquí irá nuestro JBoss EAP edición Comunity. Aunque si en el futuro vemos algo particular de Java EE 7 instalaremos WildFly o GlassFish.</p>
+</li>
+<li>
+<p><code>Workspace</code>: Para guardar los proyectos desarrollados en Eclipse.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El fichero comprimido es simplemente una forma rápida de hacer una copia de seguridad del workspace.</p>
+</div>
+<div class="paragraph">
+<p>Para instalar Eclipse, os aconsejo de nuevo que lo hagáis en Inglés, vamos a la página <a href="https://www.eclipse.org/downloads/" class="bare">https://www.eclipse.org/downloads/</a> y elegimos la instalación para desarrolladores de Java EE.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig010.png" alt="prac001 fig010.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Bajamos el fichero <code>.zip</code>, lo copiamos en la carpeta <code>c:\TALLER\IDE\</code> y seleccionamos Extraer aquí, no hay programa de instalación. Entramos en la carpeta de Eclipse y doble click en <code>eclipse.exe</code>. Seleccionamos la carpeta <code>c:\TALLER\workspace\</code> como espacio de trabajo. El IDE se carga y cerramos la pantalla inicial de bienvenida pulsando en el icono en la esquina arriba a la derecha.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig015.png" alt="prac001 fig015.png">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+No marquéis el check <code>Use this as the default and do not ask again</code> para así cambiar el workspace si queréis en un futuro. Si lo marcáis podéis volver a ver la pantalla de selección de la carpeta del workspace configurándolo en <code>Window &gt; Preferences &gt; General &gt; Startup and Shutdown &gt; Workspaces</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ahora le toca al servidor. Nuestro entorno de trabajo necesita un servidor completo para depurar el código que estemos desarrollando. Navegamos a la página oficial del servidor JBoss en  <a href="http://www.redhat.com/en/technologies/jboss-middleware/application-platform" class="bare">http://www.redhat.com/en/technologies/jboss-middleware/application-platform</a> y pulsamos el botón <code>TRY IT NOW</code> dentro de la pestaña <code>TRY</code>, seleccionada por defecto.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig020.png" alt="prac001 fig020.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Esto nos lleva a la página del servidor JBoss para desarrolladores.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig022.png" alt="prac001 fig022.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Elegimos nuestro sistema operativo y pulsamos sobre el enlace del installer. Si no estamos ya logados saltaremos a la página de introducción de usuario y contrseña. Procedemos a la creación de una cuenta pulsando el enlace <code>Create Account</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig025.png" alt="prac001 fig025.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Después de introducir una serie de datos básicos aceptamos los términos del  Programa de Desarrollador de Jboss. Esperamos a que la bajada del fichero acabe. Copiamos el fichero en la carpeta <code>C:\TALLER\Servidor\</code> y lo arrancamos escribiendo el comando <code>java -jar jboss-eap-6.3.0-installer.jar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca del Firewall de Windows elegid la opción <code>Permitir</code>. A la hora de elegir la carpeta de instalación seleccionad como antes, <code>C:\TALLER\Servidor\</code>. Escribimos luego un nombre de usuario y una contraseña. Estas credenciales son las del usuario administrador del servidor, que lo gestionará a través del navegador usando la Consola de Administración. Apuntad en un sitio seguro estos datos para no olvidarlos. En la instalación de este servidor se eligieron las credenciales:</p>
+</div>
+<table class="tableblock frame-all grid-all" style="width: 40%;">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 66%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">user</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">admin</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">password</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">abcd-1234</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>user: admin
+password: abcd-1234</p>
+</div>
+<div class="paragraph">
+<p>Es interesante instalar también los ejemplos que trae el servidor. Son varios proyectos Maven que muestran ejemplos sencillos sobre el uso de las diferentes tecnologías Java EE incidiendo en las gestionadas desde Red Hat: JPA (Hibernate), CDI (Weld), EJB, JSF, etc. Si abrimos el <code>pom.xml</code> de alguno de estos proyectos veremos como se definen de las dependencias en proyectos que se despliegan en el servidor JBoss.</p>
+</div>
+<div class="paragraph">
+<p>El wizard continúa por una serie de pantallas donde dejamos las opciones por defecto, la instalación finaliza a los pocos segundos. Y ya tenemos instalado un flamante servidor Java EE 6 en local. Podemos finalmente guardar y echar un vistazo al script de instalación.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig030.png" alt="prac001 fig030.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Comprobaremos que la instalación es correcta desplegando la aplicación web <em>Hello World!</em> localizada en los ejemplos recién instalados. Para arrancar manualmente el servidor abrimos una consola de comandos, vamos a la carpeta <code>bin\</code> dentro de la carpeta del servidor y lo iniciamos escribiendo <code>standalone.bat</code>. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejectuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Si antes no instalaste los ejemplos del servidor puedes bajarlos ahora en el enlace <a href="https://github.com/jboss-developer/jboss-eap-quickstarts/archive/6.3.0.GA.zip">jboss-eap-quickstarts-6.3.0.GA.zip</a>. Otra alternativa es obtener la aplicación desde Maven a partir del arquetipo <code>maven-archetype-site-simple</code>. Puedes consultar el Post anterior para recordar cómo lo hicimos.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig035.png" alt="prac001 fig035.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Ahora abrimos otra consola de comandos y situamos en la carpeta del proyecto web helloworld <code>C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-quickstarts-6.3.0.GA\helloworld\</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig040.png" alt="prac001 fig040.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Dentro de la carpeta del proyecto Maven escribimos el comando <code>mvn clean install jboss-as:deploy</code>. Se inicia la bajada de los artefactos de dependencias y plugins necesarios y finalmente el comando se ejecuta. Con una sola línea de comando hemos llevado a cabo todo el ciclo de construcción del proyecto incluyendo el despliegue de la aplicación en nuestro recién instalado servidor. Aún con un proyecto tan simple podemos apreciar aquí la potencia de Maven. Sí observamos el comando vemos que hemos ejecutado dos phases y un goal. La primera fase, <code>clean</code>, elimina cualquier fichero creado en un ciclo de construcción anterior, la segunda ejecuta todas las fases de ciclo por defecto, incluida la fase <code>install</code>, que crea una versión snapshot en nuestro repositorio local. Finalmente el goal <code>deploy</code> del plugin de Red Hat <code>jboss-as</code> toma el artefacto instalable de la carpeta <code>target\</code> dentro de la carpeta del proyecto y lo despliega en el servidor.</p>
+</div>
+<div class="paragraph">
+<p>Abrimos un navegador y vamos a la dirección <code><a href="http://localhost:8080/jboss-helloworld" class="bare">http://localhost:8080/jboss-helloworld</a></code> y si todo ha ido bien veremos el conocido mensaje <code>Hello World!</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig050.png" alt="prac001 fig050.png">
+</div>
+</div>
+<div class="paragraph">
+<p>¿Y para desinstalar la aplicación? Otra única linea de comando: <code>mvn jboss-as:undeploy</code>. Refrescamos la ventana del navegador para ver el error 404 de recurso no disponible.</p>
+</div>
+<div class="paragraph">
+<p>El plugin <code>jboss-as</code> es capaz de gestionar desde Maven cualquier operación contra el servidor JBoss. Para usarlo sobre un proyecto como acabamos de hacer sólo es necesario declararlo en la sección <code>&lt;build&gt;</code> del fichero <code>pom.xml</code>. Otra alternativa es incluir el goal de despliegue en la phase final del ciclo por defecto, la fase install, en el fichero pom.xml, y ejecutar entonces el comando mvn clean install, que ahora sólo hace referencia a las dos fases. En el fichero pom.xml tendríamos que tener lo siguiente:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;project&gt;
+    ...
+    &lt;build&gt;
+        ...
+        &lt;plugins&gt;
+            ...
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.jboss.as.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;jboss-as-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;7.7.Final&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;phase&gt;install&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;deploy&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+            ...
+        &lt;/plugins&gt;
+        ...
+    &lt;/build&gt;
+...
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Paramos ahora el servidor de manera manual. Como ha sido iniciado desde una consola de comandos lo que hacemos es cerrarla. Nos vamos a la consola y pulsamos Ctrl + C. Respondemos S si nos pregunta si queremos finalizar el archivo por lotes (el bat) y escribimos exit para que la ventana se cierre.</p>
+</div>
+<div class="paragraph">
+<p>Hagamos ahora lo mismo desde Eclipse. Abrimos Eclipse y aceptamos la carpeta para el espacio de trabajo. No marques el check en esta ventana porque no es infrecuente cambiar la localización del workspace.</p>
+</div>
+<div class="paragraph">
+<p>Lo primero que hacemos es asegurarnos de que el JRE que Java va a usar es el contenido en el JDK que ya instalamos y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK como cualquier herrmienta de desarrollo de este tipo y no le basta con un JRE o máquina virtual de Java. Me voy a Windows &gt; Preferences &gt; Java &gt; Installed JREs y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.</p>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="" style="background-image: url(https://avatars.githubusercontent.com/u/11819148?v=3)"><span class="hidden">La metaweb's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="">La metaweb</a></h4>
+
+                    <p>Read <a href="">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Empezando%20por%20el%20principio.%20Nuestro%20banco%20de%20trabajo.%20(2%2F2)&amp;url=http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+    </article>
+
+</main>
+
+
+
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="http://www.lametaweb.com">La metaweb</a> &copy; 2015</section>
+        <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+    </footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <script type="text/javascript" src="//www.lametaweb.com/themes/Casper/assets/js/jquery.fitvids.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//www.lametaweb.com/themes/Casper/assets/js/index.js?v=1.0.0"></script>
+
+</body>
+</html>
