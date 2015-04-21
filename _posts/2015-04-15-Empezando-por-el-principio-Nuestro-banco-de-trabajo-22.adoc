@@ -65,7 +65,15 @@ El wizard continúa por una serie de pantallas donde dejamos las opciones por de
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig030.png[]
 
-Comprobaremos que la instalación es correcta desplegando la aplicación web Hello World! localizada en los ejemplos recién instalados. Para arrancar el servidor abrimos una consola de comandos, vamos a la carpeta `bin\` dentro de la carpeta del servidor y lo iniciamos escribiendo `standalone.bat`. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejectuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.
+Comprobaremos que la instalación es correcta desplegando la aplicación web _Hello World!_ localizada en los ejemplos recién instalados. Para arrancar manualmente el servidor abrimos una consola de comandos, vamos a la carpeta `bin\` dentro de la carpeta del servidor y lo iniciamos escribiendo `standalone.bat`. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejectuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.
 
-NOTE: Si no has instalado los ejemplos del servidor puedes bajar la aplicación desde Maven a partir del arquetipo `maven-archetype-site-simple` de forma análoga a como vimos en el Post anterior.
+NOTE: Si antes no instalaste los ejemplos del servidor puedes bajarlos ahora en el enlace https://github.com/jboss-developer/jboss-eap-quickstarts/archive/6.3.0.GA.zip[jboss-eap-quickstarts-6.3.0.GA.zip]. Otra alternativa es obtener la aplicación desde Maven a partir del arquetipo `maven-archetype-site-simple`. Puedes consultar el Post anterior para recordar cómo lo hicimos.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig035.png[]
+
+Ahora abrimos otra consola de comandos y situamos en la carpeta del proyecto web helloworld `C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-quickstarts-6.3.0.GA\helloworld\`.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig040.png[]
+
+Dentro de la carpeta del proyecto Maven escribimos el comando `mvn clean install jboss-as:deploy`. Se inicia la bajada de los artefactos de dependencias y plugins necesarios y finalmente el comando se ejecuta. Con una sola línea de comando hemos llevado a cabo todo el ciclo de construcción del proyecto incluyendo el despliegue de la aplicación en nuestro recién instalado servidor. Aún con un proyecto tan simple podemos apreciar aquí la potencia de Maven. Sí observamos el comando vemos que hemos ejecutado dos phases y un goal. La primera fase, `clean`, elimina cualquier fichero creado en un ciclo de construcción anterior, la segunda ejecuta todas las fases de ciclo por defecto, incluida la fase `install`, que crea una versión snapshot en nuestro repositorio local. Finalmente el goal `deploy` del plugin de Red Hat `jboss-as` toma el artefacto instalable de la carpeta `target\` dentro de la carpeta del proyecto y lo despliega en el servidor.
 
