@@ -112,9 +112,24 @@ El plugin `jboss-as` es capaz de gestionar desde Maven cualquier operación cont
 </project>
 ----
 
-Paramos ahora el servidor de manera manual. Como ha sido iniciado desde una consola de comandos lo que hacemos es cerrarla. Nos vamos a la consola y pulsamos Ctrl + C. Respondemos S si nos pregunta si queremos finalizar el archivo por lotes (el bat) y escribimos exit para que la ventana se cierre.
+Paremos el servidor. Como fue arrancado desde una consola de comandos lo paramos cerrándola. Nos vamos a la ventana de la consola y pulsamos `Ctrl + C`. Escribimos `S` si nos pregunta si queremos finalizar el archivo por lotes y escribimos `exit` para cerrar la ventana.
 
-Hagamos ahora lo mismo desde Eclipse. Abrimos Eclipse y aceptamos la carpeta para el espacio de trabajo. No marques el check en esta ventana porque no es infrecuente cambiar la localización del workspace.
+Vamos ahora a reemplazar la ventana de comando por nuestro IDE para cargar el proyecto y probarlo. Abrimos Eclipse. Una vez dentro del IDE lo primero que hacemos es asegurarnos de que el JRE que se usará sea el contenido en el JDK instalado y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK, como cualquier herrmienta de desarrollo de este tipo, y no le basta sólo con un JRE. Me voy a `Windows > Preferences > Java > Installed JREs` y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.
 
-Lo primero que hacemos es asegurarnos de que el JRE que Java va a usar es el contenido en el JDK que ya instalamos y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK como cualquier herrmienta de desarrollo de este tipo y no le basta con un JRE o máquina virtual de Java. Me voy a Windows > Preferences > Java > Installed JREs y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig051.png[]
+
+NOTE: Si vamos a experimentar con los ejemplos del servidor en Eclipse es aconsejable comprimir antes la carpeta raiz que los contiene y tener así una copia de seguridad que nos permita recuperar el contenido de los ficheros originales cuando lo necesitemos.
+
+El siguiente paso es importar el proyecto a Eclipse. Me voy a `File > Import > Maven > Existing Maven Projects`. Click en `Next` y luego en `Browse...` localizamos la carpeta del proyecto en `C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-quickstarts-6.3.0.GA\helloworld\`.En el recuadro `Projects` se seleccionará automáticamente el fichero POM del proyecto. Pulsamos en `Finish` y se nos pregunta si deseamos que nos muestre el cheatsheet que es el conjunto de notas del proyecto, si contestamos afirmativamente luego podemos cerrarlas.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig052.png[]
+
+Arrancamos de nuevo el servidor de forma manual desde la ventana de comandos como hicimos antes. Para desplegar el ejemplo importado en el servidor pulsamos botón derecho sobre el proyecto y `Run As… > Run Configurations > Maven Build`, y creamos una nueva configuración de arranque rellenando el campo `Goals` con `clean install jboss-as:deploy`. Pulsamos el botón `Apply` y a continuación el botón `Run` para que Maven realice el ciclo. En la ventana _Consola_ de Eclipse se puede observar la salida de texto del plugin de Maven durante la ejecución del ciclo de construcción. 
+
+Como antes para comprobar que la aplicación ha sido desplegada de nuevo vamos al navegador y escribimos la URL `http://localhost:8080/jboss-helloworld`.
+
+Observemos como se muestra nuestro proyecto dentro de Eclipse. En la perspectiva inicial por defecto mostrada vemos la estructura del proyecto en un recuadro a la izquierda de la pantalla. Aquí podemos usar tres views de Eclipse diferentes: Package Explorer, Project Explorer y Navigator. Esta última nos presenta la estructura de directorios del proyecto sin más aderezos y en ocasiones es más limpia y clara. En las otras dos Eclipse aporta información adicional en forma de iconos y carpetas extra.
+
+Vayamos a la view Package Explorer o a la Proyect Explorer, si no está abierta lo hacemos en `Window > Show Wiew > Other...`, probablemente observaremos que sobre el icono del proyecto hay un icono de Warning. Vayamos a la pestaña `Problems` en la parte inferior de la pantalla para ver a que se debe esto.
+
 
