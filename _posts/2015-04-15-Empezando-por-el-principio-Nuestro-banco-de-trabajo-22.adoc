@@ -56,8 +56,6 @@ Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca
 |password
 |abcd-1234
 |===
-user: admin
-password: abcd-1234
 
 Es interesante instalar también los ejemplos que trae el servidor. Son varios proyectos Maven que muestran ejemplos sencillos sobre el uso de las diferentes tecnologías Java EE incidiendo en las gestionadas desde Red Hat: JPA (Hibernate), CDI (Weld), EJB, JSF, etc. Si abrimos el `pom.xml` de alguno de estos proyectos veremos como se definen de las dependencias en proyectos que se despliegan en el servidor JBoss.
 
@@ -114,6 +112,21 @@ El plugin `jboss-as` es capaz de gestionar desde Maven cualquier operación cont
 </project>
 ----
 
+[source,java]
+----
+public class B {
+  ...
+}
+
+public class A {
+  private B b;
+  
+  public void setB(B b) {
+    this.b = b;
+  }
+  ...
+}
+----
 
 Paramos ahora el servidor de manera manual. Como ha sido iniciado desde una consola de comandos lo que hacemos es cerrarla. Nos vamos a la consola y pulsamos Ctrl + C. Respondemos S si nos pregunta si queremos finalizar el archivo por lotes (el bat) y escribimos exit para que la ventana se cierre.
 
