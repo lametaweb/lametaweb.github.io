@@ -23,7 +23,7 @@
     <meta property="og:description" content="En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html" />
     <meta property="article:published_time" content="2015-04-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-04-21T15:55:54.097Z" />
+    <meta property="article:modified_time" content="2015-04-21T19:33:49.965Z" />
     <meta property="article:tag" content="Eclipse" />
     <meta property="article:tag" content="JBoss" />
     <meta property="article:tag" content="JBoss Tools" />
@@ -48,7 +48,7 @@
     "headline": "Empezando por el principio. Nuestro banco de trabajo. (2/2)",
     "url": "http://www.lametaweb.com/2015/04/15/Empezando-por-el-principio-Nuestro-banco-de-trabajo-22.html",
     "datePublished": "2015-04-14T22:00:00.000Z",
-    "dateModified": "2015-04-21T15:55:54.097Z",
+    "dateModified": "2015-04-21T19:33:49.965Z",
     "keywords": "Eclipse,  JBoss,  JBoss Tools",
     "description": "En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no..."
 }
@@ -281,13 +281,47 @@ Si antes no instalaste los ejemplos del servidor puedes bajarlos ahora en el enl
 </div>
 </div>
 <div class="paragraph">
-<p>Paramos ahora el servidor de manera manual. Como ha sido iniciado desde una consola de comandos lo que hacemos es cerrarla. Nos vamos a la consola y pulsamos Ctrl + C. Respondemos S si nos pregunta si queremos finalizar el archivo por lotes (el bat) y escribimos exit para que la ventana se cierre.</p>
+<p>Paremos el servidor. Como fue arrancado desde una consola de comandos lo paramos cerrándola. Nos vamos a la ventana de la consola y pulsamos <code>Ctrl + C</code>. Escribimos <code>S</code> si nos pregunta si queremos finalizar el archivo por lotes y escribimos <code>exit</code> para cerrar la ventana.</p>
 </div>
 <div class="paragraph">
-<p>Hagamos ahora lo mismo desde Eclipse. Abrimos Eclipse y aceptamos la carpeta para el espacio de trabajo. No marques el check en esta ventana porque no es infrecuente cambiar la localización del workspace.</p>
+<p>Vamos ahora a reemplazar la ventana de comando por nuestro IDE para cargar el proyecto y probarlo. Abrimos Eclipse. Una vez dentro del IDE lo primero que hacemos es asegurarnos de que el JRE que se usará sea el contenido en el JDK instalado y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK, como cualquier herrmienta de desarrollo de este tipo, y no le basta sólo con un JRE. Me voy a <code>Windows &gt; Preferences &gt; Java &gt; Installed JREs</code> y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig051.png" alt="prac001 fig051.png">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Si vamos a experimentar con los ejemplos del servidor en Eclipse es aconsejable comprimir antes la carpeta raiz que los contiene y tener así una copia de seguridad que nos permita recuperar el contenido de los ficheros originales cuando lo necesitemos.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Lo primero que hacemos es asegurarnos de que el JRE que Java va a usar es el contenido en el JDK que ya instalamos y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK como cualquier herrmienta de desarrollo de este tipo y no le basta con un JRE o máquina virtual de Java. Me voy a Windows &gt; Preferences &gt; Java &gt; Installed JREs y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.</p>
+<p>El siguiente paso es importar el proyecto a Eclipse. Me voy a <code>File &gt; Import &gt; Maven &gt; Existing Maven Projects</code>. Click en <code>Next</code> y luego en <code>Browse&#8230;&#8203;</code> localizamos la carpeta del proyecto en <code>C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-quickstarts-6.3.0.GA\helloworld\</code>.En el recuadro <code>Projects</code> se seleccionará automáticamente el fichero POM del proyecto. Pulsamos en <code>Finish</code> y se nos pregunta si deseamos que nos muestre el cheatsheet que es el conjunto de notas del proyecto, si contestamos afirmativamente luego podemos cerrarlas.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig052.png" alt="prac001 fig052.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Arrancamos de nuevo el servidor de forma manual desde la ventana de comandos como hicimos antes. Para desplegar el ejemplo importado en el servidor pulsamos botón derecho sobre el proyecto y <code>Run As… &gt; Run Configurations &gt; Maven Build</code>, y creamos una nueva configuración de arranque rellenando el campo <code>Goals</code> con <code>clean install jboss-as:deploy</code>. Pulsamos el botón <code>Apply</code> y a continuación el botón <code>Run</code> para que Maven realice el ciclo. En la ventana <em>Consola</em> de Eclipse se puede observar la salida de texto del plugin de Maven durante la ejecución del ciclo de construcción.</p>
+</div>
+<div class="paragraph">
+<p>Como antes para comprobar que la aplicación ha sido desplegada de nuevo vamos al navegador y escribimos la URL <code><a href="http://localhost:8080/jboss-helloworld" class="bare">http://localhost:8080/jboss-helloworld</a></code>.</p>
+</div>
+<div class="paragraph">
+<p>Observemos como se muestra nuestro proyecto dentro de Eclipse. En la perspectiva inicial por defecto mostrada vemos la estructura del proyecto en un recuadro a la izquierda de la pantalla. Aquí podemos usar tres views de Eclipse diferentes: Package Explorer, Project Explorer y Navigator. Esta última nos presenta la estructura de directorios del proyecto sin más aderezos y en ocasiones es más limpia y clara. En las otras dos Eclipse aporta información adicional en forma de iconos y carpetas extra.</p>
+</div>
+<div class="paragraph">
+<p>Vayamos a la view Package Explorer o a la Proyect Explorer, si no está abierta lo hacemos en <code>Window &gt; Show Wiew &gt; Other&#8230;&#8203;</code>, probablemente observaremos que sobre el icono del proyecto hay un icono de Warning. Vayamos a la pestaña <code>Problems</code> en la parte inferior de la pantalla para ver a que se debe esto.</p>
 </div>
         </section>
 
