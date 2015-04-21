@@ -130,6 +130,8 @@ Como antes para comprobar que la aplicación ha sido desplegada de nuevo vamos a
 
 Observemos como se muestra nuestro proyecto dentro de Eclipse. En la perspectiva inicial por defecto mostrada vemos la estructura del proyecto en un recuadro a la izquierda de la pantalla. Aquí podemos usar tres views de Eclipse diferentes: Package Explorer, Project Explorer y Navigator. Esta última nos presenta la estructura de directorios del proyecto sin más aderezos y en ocasiones es más limpia y clara. En las otras dos Eclipse aporta información adicional en forma de iconos y carpetas extra.
 
-Vayamos a la view Package Explorer o a la Proyect Explorer, si no está abierta lo hacemos en `Window > Show Wiew > Other...`, probablemente observaremos que sobre el icono del proyecto hay un icono de Warning. Vayamos a la pestaña `Problems` en la parte inferior de la pantalla para ver a que se debe esto.
+Si nos fijamos en la view Package Explorer o en la Proyect Explorer, si no está abierta lo hacemos en `Window > Show Wiew > Other...`, es probable que  observemos un icono de Warning sobre el de proyecto. Vayamos ahora a la pestaña `Problems` en la parte inferior de la pantalla para ver a que se debe esto.
+
+
 
 
