@@ -77,13 +77,44 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Dentro de la carpeta del proyecto Maven escribimos el comando `mvn clean install jboss-as:deploy`. Se inicia la bajada de los artefactos de dependencias y plugins necesarios y finalmente el comando se ejecuta. Con una sola línea de comando hemos llevado a cabo todo el ciclo de construcción del proyecto incluyendo el despliegue de la aplicación en nuestro recién instalado servidor. Aún con un proyecto tan simple podemos apreciar aquí la potencia de Maven. Sí observamos el comando vemos que hemos ejecutado dos phases y un goal. La primera fase, `clean`, elimina cualquier fichero creado en un ciclo de construcción anterior, la segunda ejecuta todas las fases de ciclo por defecto, incluida la fase `install`, que crea una versión snapshot en nuestro repositorio local. Finalmente el goal `deploy` del plugin de Red Hat `jboss-as` toma el artefacto instalable de la carpeta `target\` dentro de la carpeta del proyecto y lo despliega en el servidor.
 
-En este punto tenemos una aplicación web publicada. Abrimos un navegador y vamos a la dirección `http://localhost:8080/jboss-helloworld` y si todo ha ido bien veremos el conocido mensaje `Hello World!`.
+Abrimos un navegador y vamos a la dirección `http://localhost:8080/jboss-helloworld` y si todo ha ido bien veremos el conocido mensaje `Hello World!`.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig050.png[]
 
 ¿Y para desinstalar la aplicación? Otra única linea de comando: `mvn jboss-as:undeploy`. Refrescamos la ventana del navegador para ver el error 404 de recurso no disponible. 
 
-El plugin `jboss-as` es capaz de gestionar desde Maven casi cualquier operación contra el servidor JBoss. Para usarlo sobre un proyecto sólo es necesario declararlo en la sección `<build>` del fichero `pom.xml`.
+El plugin `jboss-as` es capaz de gestionar desde Maven cualquier operación contra el servidor JBoss. Para usarlo sobre un proyecto como acabamos de hacer sólo es necesario declararlo en la sección `<build>` del fichero `pom.xml`. Otra alternativa es incluir el goal de despliegue en la phase final del ciclo por defecto, la fase install, en el fichero pom.xml, y ejecutar entonces el comando mvn clean install, que ahora sólo hace referencia a las dos fases. En el fichero pom.xml tendríamos que tener lo siguiente:
+
+[source,xml]
+----
+<project>
+    ...
+    <build>
+        ...
+        <plugins>
+            ...
+            <plugin>
+                <groupId>org.jboss.as.plugins</groupId>
+                <artifactId>jboss-as-maven-plugin</artifactId>
+                <version>7.7.Final</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            ...
+        </plugins>
+        ...
+    </build>
+...
+</project>
+----
+
+
 
 Paramos ahora el servidor de manera manual. Como ha sido iniciado desde una consola de comandos lo que hacemos es cerrarla. Nos vamos a la consola y pulsamos Ctrl + C. Respondemos S si nos pregunta si queremos finalizar el archivo por lotes (el bat) y escribimos exit para que la ventana se cierre.
 
