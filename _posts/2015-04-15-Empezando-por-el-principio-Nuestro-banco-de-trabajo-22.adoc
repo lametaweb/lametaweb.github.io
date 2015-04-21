@@ -115,7 +115,6 @@ El plugin `jboss-as` es capaz de gestionar desde Maven cualquier operación cont
 ----
 
 
-
 Paramos ahora el servidor de manera manual. Como ha sido iniciado desde una consola de comandos lo que hacemos es cerrarla. Nos vamos a la consola y pulsamos Ctrl + C. Respondemos S si nos pregunta si queremos finalizar el archivo por lotes (el bat) y escribimos exit para que la ventana se cierre.
 
 Hagamos ahora lo mismo desde Eclipse. Abrimos Eclipse y aceptamos la carpeta para el espacio de trabajo. No marques el check en esta ventana porque no es infrecuente cambiar la localización del workspace.
