@@ -5,6 +5,7 @@ La metaweb
 :icons: font
 
 ++++
+<link rel="stylesheet"  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.1.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/hubpress/styles/asciidoctor.css" />
 <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/hubpress/styles/animations.css" />
 <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/hubpress/styles/blog.css" />
