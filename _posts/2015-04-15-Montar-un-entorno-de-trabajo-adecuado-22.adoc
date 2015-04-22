@@ -132,6 +132,11 @@ Observemos como se muestra nuestro proyecto dentro de Eclipse. En la perspectiva
 
 Si nos fijamos en la view Package Explorer o en la Proyect Explorer, si no está abierta lo hacemos en `Window > Show Wiew > Other...`, es probable que  observemos un icono de Warning sobre el de proyecto. Vayamos ahora a la pestaña `Problems` en la parte inferior de la pantalla para ver a que se debe esto.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig055.png[]
+
+Lo que nos dice Eclipse es que nuestro proyecto está configurado, en el fichero POM de Maven, para el JDK 1.6 y en nuestra máquina tenemos uno distinto. Si tenemos actualizado el JDK es probable que se trate de la versión 1.8. Veamos qué significan las dos entradas de la figura anterior:
+
+* `maven.compiler.source`: indica al compilador la versión del lenguaje que debe interpretar al leer nuestro código fuente. Por ejemplo si el valor que fijo para mi proyecto es 1.4 entonces no será capaz de interpretar una clase genérica, que fue introducida en el JDK 1.5, y obtendremos un error de compilación si existe alguna. Si por el contrario fijo digamos la versión 1.7 para un código antiguo, sea de la versión 1.4, entonces también puedo obtener un error si por ejemplo en el código antiguo usé la palabra clave _enum_, ya que los enumerados se introducen en la versión 1.5 y en Java 1.7, al ser posterior, saltaría el error. Esto puede verse en la lista de incompatibilidades de la versión 5.0 de Java respecto de la anterior  http://www.oracle.com/technetwork/java/javase/compatibility-137462.html[aquí].
 
 
 
