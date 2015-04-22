@@ -1,0 +1,162 @@
+= Montar un entorno de trabajo adecuado (1/2).
+La metaweb
+:hp-tags: JDK, Java, Maven, Java Workbench
+:published_at: 2015-04-15
+
+Bienvenido compañero. Tienes delante la primera entrada de un nuevo blog de desarrollo Java EE. Mi idea es hacer de él un lugar donde explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web basado en Java EE. El objetivo desmitificar el desarrollo Java EE usando para ello los ejemplos adecuados.
+
+Pienso que los que estamos ahora dedicados al desarrollo web tenemos suerte. Si volvemos la vista sólo diez años atrás el escenario era bien distinto. Ahora disponemos de los estándares y herramientas necesarios para permitir que toda nuestra energía y tiempo se empleen casi por completo en tareas productivas. Java EE ha tomado una buena velocidad de crucero y promete grandes cosas a medio y largo plazo.
+
+Brevemente, en cuanto a las tecnologías estándar, Java EE 7 está ya siendo usado en todos los nuevos proyectos. Por capas, JavaServer Faces 2.2.x ofrece estabilidad y consolida JSF2, complementado por PrimeFaces, y compatible con HTML5. La implementación típica de JSF es Mojarra. CDI aporta beans avanzados con inyección de dependencias normalizada y programación orientada a aspectos. Su estándar es Weld. EJB ahora simplifica más aún la capa de negocio y permite por ejemplo empaquetar componentes en un WAR. JPA, ya escindida de EJB en Java EE 5 se consolida con la última implementación de Hibernate. Finalmente los servicios web se simplifican aún más con JAX-RS 2.0 y el soporte al formato de datos JSON.
+
+Un panorama muy prometedor al que además hay que sumar por un lado la velocidad a la que aparecen y se mejoran las herramientas de desarrollo, como ejemplos, JRebel que evita los redeploys, XRebel para afinar el rendimiento del site, JBoss Tools con ayudas como el editor de HQL, Gradle como alternativa a Maven que evita el XML a favor del más flexible Groovy, etc, y por otro lado la gran actividad que actualmente existe detrás de la definición y mejora de las JRS dentro del JCP que desembocarán en Java EE 8 probablemente para finales del año que viene, incluyendo por ejemplo MVC 1.0, una nueva tecnología de interfaz de usuario que complementa a JSF, estandarización de la seguridad con Java EE Security API 1.0 o procesamiento directo del formato JSON con JSON Binding 1.0.
+
+Para arrancar con el blog, en estos primeros posts vamos, en primer lugar, a definir e instalar en nuestra máquina un entorno de trabajo adecuado, lo más parecido posible a lo que nos podamos encontrar hoy en una empresa. Y a continuación montaremos una mini aplicación con capa de presentación, negocio y datos. Lo vamos a hacer partiendo de cero y sin ningún tipo de asistente, de modo que consigamos desmitificar la creación de una aplicación Java EE por capas y ganar así la confianza necesaria para seguir, en sucesivos posts, experimentando con el amplio abanico de tecnologías y herramientas disponibles.
+
+NOTE: En el blog se utiliza una máquina con el sistema operativo Windows 8.1 para la realización de las tareas. La manera de hacer las cosas en otros sistemas operativos como OSX o Linux puede diferir, en estos casos una simple búsqueda en Google nos mostrará la manera de proceder.
+
+== Instalación de Java: EL JDK
+
+Bueno manos a la obra. Empecemos con el entorno de trabajo. Como IDE elegimos el más habitual, Eclipse, por supuesto con Maven como gestor del ciclo de desarrollo. Como servidor JBoss y como base de datos de momento algo ligerito, Java DB, también conocido como Derby, que nos evitará instalar una base de datos en esta primera versión de la aplicación.
+
+Lo primero será instalar el kit de desarrollo Java (JDK) en nuestro ordenador, que consiste resumidamente por un lado en la máquina virtual, que ejecutará nuestras aplicaciones, y por otro el compilador que convierte nuestro código fuente en bytecode ejecutable en esa maquina virtual.
+
+WARNING: Hay que saber que existen dos JDK. El de SE (Standard Edition) que es el que nos interesa, y el de EE (Enterprise Edition) que no nos interesa de momento ya que nos instala el servidor de referencia Glassfish, junto con ejemplos.
+
+Lo primero que hacemos por precaución es comprobar si tenemos ya instalado un JDK antiguo ejecutando lo siguiente desde una ventana de comandos:
+
+[source,dos]
+----
+forfiles /P c:\ /S /M javac.exe /C "cmd /c echo @path" 2>null
+----
+
+Obtenemos una línea por cada carpeta en la que exista un compilador de java. En principio tendriamos que obtener una sola línea similar a `c:\...\Java\jdk1.8.0_31\bin\javac.exe` o bien ninguna. Si tenemos más de una línea puede ser debido a que existan aplicaciones que instalaron su propio JDK. No debemos tocar esos JDK. Lo ideal es tener un único JDK de usuario instalado. En Windows no existe una actualización automática del JDK así que lo prudente es instalar nosotros mismos el nuevo JDK, si es que no tenemos ya instalado la última versión, desinstalando previamente a través de `Panel de Control > Programas y características` el o los JDKs antiguos (como ya se ha comentado sólo cuando estemos seguros de que no afectará a terceras aplicaciones, en general cuando se encuentran en la carpeta de la aplicación que los instaló). 
+
+NOTE: En los sistemas operativos Linux y OS X sí existen procedimientos de actualización automáticos, consultar en Internet para obtener más información.
+
+En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desintalando el resto, siempre que no hubieran sido instalados por aplicaciones de terceros.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png[]
+
+Para instalar la última versión de JDK nos vamos a la dirección:
+
+http://www.oracle.com/technetwork/es/java/javase/downloads/index.html
+
+y pulsamos el botón con la leyenda Java.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig002.png[]
+
+WARNING: El botón que aparece a la derecha del indicado, con la leyenda NetBeans baja también la última versión del JDK pero además se trae NetBeans. NetBeans es un IDE, una alternativa a Eclipse. Nosotros usaremos Eclipse de modo que no optamos por esta opción. Si más adelante queremos instalar Netbeans podemos hacerlo desde la URL proporcionada por Oracle. Netbeans ofrece un entorno de desarrollo con muchas ayudas y está soportado por Oracle que además mantiene otro IDE, JDeveloper, también con muchas y potentes ayudas al desarrollador. Sin embargo pienso que lo mejor al principio es trabajar con Eclipse y a continuación explorar los demás.
+
+Aceptamos la licencia para que se habiliten los links de bajada y si queremos bajar los ejemplos de java hacemos lo mismo más abajo donde aparecen el paquete con las demos.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig003.png[]
+
+TIP: Siempre que podáis instalad tanto el sistema operativo (excepto el teclado para no perder la eñe, acentos, etc) como vuestras herrmientas en el idioma Inglés ya que así, cuando queramos consultar en Google un mensaje dado por la aplicación, o resolver alguna duda sobre la misma, obtendremos mucha más información que si el mensaje lo obtuvieramos en castellano.
+
+Para instalar nuestro JDK hacemos doble click sobre el ejecutable descargado. En la pantalla inicial del wizard pulsamos `Next`, en la siguiente pantalla aceptamos los valores por defecto. La instalación del JDK comienza. A continuación aparece una ventana y se nos pregunta de nuevo por otra carpeta de instalación, se trata de la instalación del JRE público. Aceptamos el valor por defecto. Finalmente pulsamos `Close`.
+
+Lo que acabamos de instalar es, por un lado el JDK, necesario para desarrollar aplicaciones en Java, que además contiene un JRE privado, necesario para ejecutar Java y que será utilizado por nuestro IDE Eclipse; y por otro lado un JRE público que es que usarán las distintas aplicaciones de nuestro ordenador cuando necesiten ejecutar una aplicación Java, por ejemplo nuestro navegador de Internet preferido. Si entramos en "Panel de Control > Programas y características" podremos ver cómo aparecen tanto el JRE público como el JDK.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig005.png[]
+
+Para terminar con la instalación del JDK añadimos la variable de sistema `JAVA_HOME` con el valor de la ruta donde hemos instalado el JDK y a la variable `PATH` le añadimos al principio el literal `%JAVA_HOME%\bin;`. Por ejemplo:
+
+[cols="1a,3a", options="header"]
+|===
+|Nombre
+|Valor
+
+|`JAVA_HOME`
+|`C:\Program Files\Java\jdk1.8.0_40`
+
+|`PATH`
+|`%JAVA_HOME%\bin;...`
+|===
+
+TIP: Para ir a una carpeta en la consola de comandos puedo usar el carácter comodín asterisco `\*` y así ahorrarme pulsaciones y tiempo. Por ejemplo, si quiero ir a la carpeta `esta-carpeta-001`, escribo `cd est*`, y si existiera otra carpeta con el nombre `estados` entonces tendría que escribir `cd esta-*`. Del mismo modo puedo escribir sólo las terminaciones de las carpetas, por ejemplo con `cd *001` también entraríamos en `esta-carpeta-001`.
+
+Seguimos! Vamos con la instalación de Maven. En resumen Maven es un gestor del desarrollo de un proyecto. Hace muchas cosas, entre ellas: Interviene cada vez que realizo una modificación en mi programa: Compila tirando de las dependencias necesarias, empaqueta y despliega el proyecto en el entorno que le indiquemos... También pasa automáticamente las pruebas unitarias y las de integración que haya definido. Por otro lado gestiona las distintas distribuciones de mi proyecto. Y hace muchas cosas más y todas las que se te ocurran ya que es extensible. Maven es tanto más útil cuanto mayor es el tamaño del proyecto ya que con el tamaño la gestión del ciclo de vida se hace cada vez más complicada.
+
+En Maven tenemos que diferenciar varias cosas: 
+
+* La aplicación Maven en sí, el ejecutable, que no es más que un fichero `.zip` que se descomprime en el disco duro.
+* El repositorio local, localizado en la máquina propia, que es donde se guardan los snapshots de mi aplicación, por ejemplo versiones de un `.war` y además donde se copian las librerías de terceros de las que mi webapp depende, actuando como caché de los repositorios remotos.
+* El plugin de Maven para Eclipse, que me permite usar Maven desde Eclipse, que será en general lo que hagamos en el día a día.
+
+En la próxima entrada del Blog volveremos sobre Maven, ya desde Eclipse, y empezaremos a practicar con él. Ahora toca instalarlo. Decir primero que realmente no es necesario instalar Maven para el desarrollo desde Eclipse ya que éste ya lo que trae de serie (Embedded Maven) sin embargo si lo instalamos aparte (Local Maven) podremos usarlo fuera del IDE cuando lo necesitemos. Además la versión de Maven empotrada en Eclipse puede no ser la última y puede ser que necesitemos trabajar con una versión más reciente. Para ello tendremos que cambiar la configuración en Eclipse para que apunte al Maven local.
+
+Si ya teníamos una instalación de Maven no hay problema, podemos instalarlo en otra carpeta. Aunque como en el caso del JDK es mejor siempre tener una única instalación salvo que necesitemos más de una versión porque estemos trabajando con un proyecto antiguo por ejemplo. En este caso para desinstalar sólo tendremos que borrar la carpeta de instalación y editar varias variables de sistema. Vamos entonces a la URL http://maven.apache.org/download.cgi y nos bajamos el archivo Maven 3.3.1 (Binary tar.gz) si usamos Linux o el Maven 3.3.1 (Binary zip) si usamos Windows (la versión puede diferir). Ok, descomprimimos el zip en una carpeta, por ejemplo en la ruta `C:\Program Files\Apache Software Foundation\`.
+
+TIP: Para descomprimir puedes usar la aplicación gratuita 7zip en el enlace http://www.7-zip.org. Y para linux tenemos http://peazip.sourceforge.net/peazip-linux.html.
+
+Completamos la instalación añadiendo tres variables de sistema y editando la variable `PATH` para poder llamar a Maven desde cualquier carpeta de proyecto:
+
+[cols="1a,3a", options="header"]
+|===
+|Nombre
+|Valor
+
+|`M2_HOME`
+|`C:\Program Files\Apache Software Foundation\apache-maven-3.3.1`
+
+|`M2`
+|`%M2_HOME%\bin`
+
+|`PATH`
+|`%M2%;%JAVA_HOME%\bin;...`
+|===
+
+En este punto tenemos ya instalados Maven y el JDK, necesario para la correcta ejecución del primero. Abramos una ventana de comando (botón de Inicio y escribir `cmd` en la caja de búsqueda) para comprobar que Maven se instaló correctamente. Verifico primero que las variables de sistema se han creado bien con el comando `SET`:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig001.png[]
+
+Y para verificar que la instalación es correcta escribimos `mvn -version`. Si obtenemos una salida por pantalla similar a la que se muestra es que todo ha ido bien.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig006.png[]
+
+Vamos ahora a llamar a Maven siguiendo el ejercicio de cinco minutos propuesto en su página oficial en la dirección http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html. Es importante emplear un poco de nuestro tiempo en entender los conceptos básicos de esta herramienta. De verdad, os alegraréis, pues si bien al principio Maven puede parecer algo confuso, tras una lectura de los recursos que os voy a comentar y practicar minimamente nos daremos cuenta de que es una herramienta pensada para facilitarnos las cosas.
+
+Una vez en la dirección anterior nos vamos directamente al tercer apartado `Creating a Project`. Lo que vamos a hacer es crear un proyecto `Hola mundo!` sin escribir ni una sola línea de código. Es otra de las capacidades de Maven, nos permite, a partir de los llamados arquetipos, comenzar un nuevo proyecto a partir de una plantilla. Hay muchos arquetipos, muchos han sido creados por la gente de Maven, otros por otras empresas, y nosotros podemos también crear uno, de hecho las empresas crean arquetipos para disponer de puntos de partida para los nuevos proyectos. Los arquetipos están en los repositorios, que son almaceneces gestionados por Maven, donde también existen elementos de otra naturaleza como librerías, nuestros propios wars, etc. A todos estos elementos Maven los denomina artefactos. Bien, vamos con el ejercicio, abrimos una ventana de comandos, creamos un directorio, por ejemplo `c:\prueba-maven`, y nos situamos dentro de él. A continuación escribimos lo siguiente:
+
+[small]#`mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`#
+
+Si es la primera vez que ejecutamos Maven en nuestro ordenador el comando puede tardar un rato en finalizar, es debido a que Maven necesita bajar desde un repositorio remoto los elementos necesarios para aplicar el ciclo de vida al proyecto. Analicemos rápidamente el comando:
+
+`mvn`: Es el comando que invoca a Maven, que será análogo al que Eclipse invoque por defecto cuando estemos desarrollando un proyecto desde el IDE. Eclipse por defecto usa el Maven embebido que viene con el plugin M2Eclipse.
+
+`archetype:generate`: Es la parte del comando que indica lo que queremos que haga Maven. En este caso le estamos diciendo que ejecute el goal `generate` del plugin `archetype`. Los plugins son las unidades que continen los goals, que representan lo que podemos pedir a Maven que haga por nosotros, en este caso generar un proyecto a partir de un arquetipo.
+
+
+NOTE: Maven puede ejecutar además de un goal, como en el caso del ejemplo, una phase y todas las fases anteriores. El ciclo de vida estándar de Maven se compone de varias fases ordenadas, cada fase tiene asociada la ejecución de varios goals de varios plugins. Existen valores por defecto pero todo es configurable como iremos viendo. El formato del comando sería diferente, sin el carácter `:`, por ejemplo `mvn package`. No es necesario entender todo esto ahora. Al final del Post se dan links a recursos en la página oficial de Maven donde estos conceptos son claramente explicados. Tenemos que sacar un rato y leerlos para aprovechar de forma óptima los contenidos de los Posts futuros.
+
+* `-DgroupId=com.mycompany.app -DartifactId=my-app`: El resto del comando son parámetros que pasamos al goal. Los dos primeros parámetros son parte de las coordenadas del proyecto que vamos a crear. Todo proyecto Maven, tiene unas coordenadas, que lo identifican de forma unívoca y lo sitúan dentro de nuestro repositorio local como un artefacto. Estas coordenadas son: Id de grupo, Id de artefacto y versión. En este caso como estamos creando el proyecto la versión es de forma implícita la 1.0. Añadir que estos valores son utilizados por Maven para, en el caso del Id de grupo, establecer la estructura de paquetes de las clases Java del proyecto y en el caso del Id de artefacto para estabecer el nombre del artefacto.
+
+* `-DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`: El último parámetro simplemente hace que el comando se ejecute sin nuestra intervención. El primer parámetro es el más interesante ya que hace referencia al arquetipo o plantilla que queremos usar para generar nuestro nuevo proyecto. Recordemos que un arquetipo es un artefacto más y que todos los artefactos están en un repositorio.
+
+NOTE: Existen dos tipos de repositorio: Local y remoto. El local está en nuestro ordenador en general en la carpeta `.m2\` de la carpeta de usuario. Es una caché de los diferentes repositorios remotos y también donde se guardarán las snapshots de nuestros proyectos. El repositorio remoto es donde residen las releases de nuestros proyectos y todos los demás artefactos: plugins, dependencias, arquetipos, etc. Un repositorio remoto a su vez puede ser público o privado. El público permite a cualquier usuario acceder a su contenido, el más conocido es el repositorio central de Maven, en el que podemos buscar artefactos a través de la página http://search.maven.org/. El repositorio privado es el que probablemente tendrá nuestra empresa para almacenar las diferentes releases de los proyectos, las librerías estándar propias, etc. Nosotros mismos podemos montar un repositorio remoto con la herramienta Artifactory u otra equivalente.
+
+Ejecutamos el comando y vemos qué ocurre. Se ha creado una carpeta con el nombre de nuestro nuevo proyecto, que contiene una estructura de carpetas según el estándar de Maven,  la clase Java que genera la salida `Hello world!` y el fichero de proyecto de Maven `pom.xml`. Si lo abrimos con un editor de texto podremos ver que contiene las coordenadas del artefacto, el tipo de empaquetado, referencias a información adicional sobre el proyecto, y una sección para definir de qué artefactos depende. Tenemos un proyecto completo con la simple ejecución de un comando, no está mal. Es cierto que se trata de un proyecto sencillo pero sin mucho esfuerzo podremos montar un arquetipo tan complejo como queramos, que luego usaremos como punto de partida para otro proyecto.
+
+Ya tenemos nuestro proyecto, ahora toca generar la aplicación. Ejecutamos el comando `mvn install`, desde la carpeta del proyecto (donde está nuestro `pom.xml`) y como sabemos se ejecutarán entonces las fases install del ciclo de vida de construcción por defecto y todas las anteriores, lo que se traduce en la ejecución de una serie de goals de distintos plugins, que dan como resultado la distribución de nuestra aplicación en la carpeta `target\` y la copia de la misma en nuestro repositorio local, en la ruta `C:\Users\Usuario\.m2\repository\com\mycompany\app\my-app\1.0-SNAPSHOT`.
+
+Y el último paso, ejecutar la aplicación para comprobar que nuestro primer proyecto Maven se ha generado como es debido. Nos vamos a la carpeta `target\` y en la ventana de comandos escribimos el comando `java -cp my-app-1.0-SNAPSHOT.jar com.mycompany.app.App` para que la máquina virtual de nuestro JDK ejecute la aplicación Java. El resultado es el esperado Hola Mundo!
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig008.png[]
+
+Maven es una herramienta potente y con muchas posibilidades. Para sacar provecho de ella es importante tener claros los conceptos básicos y por suerte tenemos la información en la página web oficial. Merece la pena echar un rato de lectura porque Maven está en la gran mayoría de proyectos con los que nos vamos a encontrar en la vida real. Para tener una idea y conocer dónde buscar cuando lo necesitemos será suficiente con leer el minitutorial en la dirección 
+
+http://maven.apache.org/guides/getting-started/index.html
+
+y dentro de éste mirar estos enlaces:
+
+. Configuración de Maven. Ficheros de configuración, perfiles, repositorio propio: http://maven.apache.org/guides/mini/guide-configuring-maven.html
+. Arquetipos: http://maven.apache.org/guides/introduction/introduction-to-archetypes.html
+. Fichero POM. Super POM, POM minimo, herencia, agregación y variables: http://maven.apache.org/guides/introduction/introduction-to-the-pom.html
+. Estructura de directorios de proyecto: http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html
+. Introducción al concepto de repositorio:  http://maven.apache.org/guides/introduction/introduction-to-repositories.html
+. Nociones sobre el ciclo de vida de construcción de un proyecto Maven. Añadir a una phase un goal y configurarlo: http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+
+El mayor valor de Maven es haber sabido reunir una serie de estándares de gestión del desarrollo de un proyecto, desde las pruebas unitarias hasta el despliegue en producción pasando por los tests de integración. Y esto, unido a que se trata de una herramienta de código abierto y extensible hace que haya sustitido a Ant+Ivy y que conviva con un único compitidor, más joven, Gradle. Gradle es una opción muy válida en proyectos nuevos y ofrece un muy buen compromiso entre flexibilidad y simplicidad al sustituir el XML por el lenguaje Groovy.
+
+Y hasta aquí la primera entrada del Blog! En la siguiente terminaremos de montar y configurar nuestro banco de trabajo Java EE y lo dejaremos listo para empezar a recorrer las distintas tecnologías de la Web.
