@@ -1,0 +1,6 @@
+= Inyección de Dependencias con CDI
+lametaweb
+:hp-tags: pruebas,y,mas,pruebass
+:published_at: 2015-04-20
+
+el contenido...
