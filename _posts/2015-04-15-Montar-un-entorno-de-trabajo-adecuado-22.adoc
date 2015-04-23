@@ -1,4 +1,4 @@
-= Montar un entorno de trabajo adecuado (2/2).
+= Montar un entorno de trabajo adecuado (2/2)
 La metaweb
 :icons: font
 :hp-tags: Eclipse, JBoss, JBoss Tools
