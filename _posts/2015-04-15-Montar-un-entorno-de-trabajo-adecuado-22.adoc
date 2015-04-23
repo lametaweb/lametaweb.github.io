@@ -3,8 +3,6 @@ La metaweb
 :hp-tags: Eclipse, JBoss, JBoss Tools
 :published_at: 2015-04-15
 
-
-
 En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no es algo costoso, ni en tiempo de aprendizaje ni en tiempo de adaptación del proyecto si los gestionamos bajo Maven o Gradle.
 
 Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando la complejidad de las tecnologías empleadas tras el código fuente generado para resolver las tareas de los documentos de diseño del proyecto. Un ejemplo lo tenemos cuando creamos un web service, aquí el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API e implementar cada operación.
