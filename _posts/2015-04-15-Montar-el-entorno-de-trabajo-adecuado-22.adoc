@@ -1,4 +1,4 @@
-= Montar un entorno de trabajo adecuado (2/2)
+= Montar el entorno de trabajo adecuado (2/2)
 La metaweb
 :hp-tags: Eclipse, JBoss, JBoss Tools
 :published_at: 2015-04-15
@@ -134,9 +134,16 @@ Si nos fijamos en la view Package Explorer o en la Proyect Explorer, si no está
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig055.png[]
 
-Lo que nos dice Eclipse es que nuestro proyecto está configurado, en el fichero POM de Maven, para el JDK 1.6 y en nuestra máquina tenemos uno distinto. Si tenemos actualizado el JDK es probable que se trate de la versión 1.8. Veamos qué significan las dos entradas de la figura anterior:
+NOTE: A partir de la versión 1.4 la denominación y formato de versión cambia para el kit de desarrollo de Java Standard Edition. La versión cuatro se denomina J2SE 1.4 Development Kit y la cinco pasa a ser Java SE 5 Development Kit.
 
-* `maven.compiler.source`: indica al compilador la versión del lenguaje que debe interpretar al leer nuestro código fuente. Por ejemplo si el valor que fijo para mi proyecto es 1.4 entonces no será capaz de interpretar una clase genérica, que fue introducida en el JDK 1.5, y obtendremos un error de compilación si existe alguna. Si por el contrario fijo digamos la versión 1.7 para un código antiguo, sea de la versión 1.4, entonces también puedo obtener un error si por ejemplo en el código antiguo usé la palabra clave _enum_, ya que los enumerados se introducen en la versión 1.5 y en Java 1.7, al ser posterior, saltaría el error. Esto puede verse en la lista de incompatibilidades de la versión 5.0 de Java respecto de la anterior  http://www.oracle.com/technetwork/java/javase/compatibility-137462.html[aquí].
+Lo que nos dice Eclipse es que nuestro proyecto está configurado, en el fichero POM de Maven, para el JDK 6 y en nuestra máquina tenemos uno distinto. Si tenemos actualizado el JDK es probable que se trate de la versión 8. Veamos qué significan las dos entradas de la figura anterior:
+
+* `maven.compiler.source`: Indica al compilador la versión del lenguaje que seguir al leer nuestro código fuente. Por ejemplo si el valor que fijo para mi proyecto es 1.4 entonces no será capaz de interpretar una clase genérica, que fue introducida en el JDK 5, y obtendremos un error de compilación si existe alguna. Si por el contrario fijo digamos la versión 7 para un código antiguo, sea de la versión 1.4, entonces también puedo obtener un error si por ejemplo en el código antiguo usé la palabra clave _enum_, ya que los enumerados se introducen en la versión 5 y en Java 7, al ser posterior, saltaría el error. Esto puede verse en la lista de incompatibilidades de la versión 5 de Java respecto de la anterior http://www.oracle.com/technetwork/java/javase/compatibility-137462.html[aquí].
+
+* `maven.compiler.target`: Le dice al compilador para qué máquina virtual queremos compilar. En general la máquina virtual de Java es compatible hacia atrás de modo que código compilado para la máquina 6, por ejemplo el código de un proyecto antiguo, también se ejecutaría en un servidor con la máquina virtual 8.
+
+Dicho de otra manera, `source` es la versión de código Java en la que el compilador interpreta el fichero fuente cuando genera el bytecode. Y target es la versión que quiero de bytecode, que se corresponde con la versión de la máquina virtual que lo interpreta. Si queremos que un proyecto antiguo programado en la versión 1.4 se ejecute en el último servidor JBoss entonces source sería 1.4 y target 7.
+
 
 
 
