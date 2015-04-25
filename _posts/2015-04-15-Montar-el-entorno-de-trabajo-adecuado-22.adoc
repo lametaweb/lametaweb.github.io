@@ -148,7 +148,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Por lo tanto, para que desaparezca el _warning_, si tenemos instalada la versión 8 del JDK editamos en Eclipse el fichero pom.xml cambiando los dos valores anteriores a `1.8` y además actualizamos el proyecto pulsando botón derecho sobre el icono del proyecto > Maven > Update Project…
 
-El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un plugin
+El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un plugin, que es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE, en particular de las JBoss Tools,  
 
 
 
