@@ -1,4 +1,4 @@
-= Montar un entorno de trabajo adecuado (1/2).
+= Montar el entorno de trabajo adecuado (1/2)
 La metaweb
 :hp-tags: JDK, Java, Maven, Java Workbench
 :published_at: 2015-04-15
