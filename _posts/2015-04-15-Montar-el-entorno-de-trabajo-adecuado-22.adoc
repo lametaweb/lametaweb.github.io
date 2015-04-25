@@ -144,6 +144,7 @@ Lo que nos dice Eclipse es que nuestro proyecto está configurado, en el fichero
 
 Dicho de otra manera, _source_ es la versión de código Java en la que el compilador interpreta el fichero fuente cuando genera el _bytecode_. Y _target_ es la versión que quiero de _bytecode_, que se corresponde con la versión de la máquina virtual que lo interpreta. Si queremos que un proyecto antiguo programado en la versión 1.4 se ejecute en una máquina virtual 7 entonces fijo los valores _source_ sería 1.4 y _target_ 7. Además, si tenemos ese mismo proyecto ya compilado en su día, con _source_ 1.4 y _target_ 1.4, seguirá funcionando si actualizamos la máquina virtual en la máquina del servidor desde la 1.4 a la 7 porque se tiene compatibilidad hacia atrás, sin embargo en una máquina virtual antigua no siempre podré ejecutar código compilado en versión más reciente.
 
+Por lo tanto para que desaparezca el _warning_ si teníamos instalada la versión 8 del JDK editamreos en Eclipse el fichero pom.xml cambiando los dos valores anteriores a `1.8`.
 
 
 
