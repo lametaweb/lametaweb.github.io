@@ -36,7 +36,7 @@
     <meta property="og:description" content="En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no..." />
     <meta property="og:url" content="https://lametaweb.github.io/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-22.html" />
     <meta property="article:published_time" content="2015-04-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-04-26T11:38:41.964Z" />
+    <meta property="article:modified_time" content="2015-04-26T12:15:00.791Z" />
     <meta property="article:tag" content="Eclipse" />
     <meta property="article:tag" content="JBoss" />
     <meta property="article:tag" content="JBoss Tools" />
@@ -61,7 +61,7 @@
     "headline": "Montar el entorno de trabajo adecuado (2/2)",
     "url": "https://lametaweb.github.io/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-22.html",
     "datePublished": "2015-04-14T22:00:00.000Z",
-    "dateModified": "2015-04-26T11:38:41.964Z",
+    "dateModified": "2015-04-26T12:15:00.791Z",
     "keywords": "Eclipse,  JBoss,  JBoss Tools",
     "description": "En esta segunda entrada terminaremos de instalar y configurar el software que nos permitirá en adelante construir nuestras propias aplicaciones Java EE. Como IDE optamos por Eclipse, por ser el más extendido. El salto de uno a otro IDE no..."
 }
@@ -525,7 +525,7 @@ A partir de la versión 1.4 la denominación y formato de versión cambia para e
 </div>
 </div>
 <div class="paragraph">
-<p>Y ya podamos controlar nuestro servidor desde Eclipse! Si nos vamos a la pestaña Servidores vemos que ahora existe un icono para el servidor y si lo expandimos observamos que nuestra aplicación está allí enlazada. Ahora arrancamos simplemente pulsando sobre el icono del servidor con el botón derecho y seleccionando la opción <em>Start</em>.</p>
+<p>Y ya podamos controlar nuestro servidor desde Eclipse! Si nos vamos a la pestaña Servidores vemos que ahora existe un icono para el servidor y si lo expandimos observamos que nuestra aplicación está allí enlazada. Arranquemos ahora, simplemente pulsando sobre el icono del servidor con el botón derecho y seleccionando la opción <em>Start</em>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -533,7 +533,37 @@ A partir de la versión 1.4 la denominación y formato de versión cambia para e
 </div>
 </div>
 <div class="paragraph">
-<p>Además en la pestaña <em>Console</em> podremos ver los mensajes de salida del servidor fechados y con información del módulo que lo genera. Para ello hacemos botón derecho de nuevo sobre el servidor y seleccionamos Show In &gt; Console. Si le echamos un vistazo podemos ver los diferentes mensajes del inicio del servidor, entre ellos por ejmplo el de la carga del módulo de Weld CDI que usa nuestra pequeña aplicación de prueba.</p>
+<p>Además en la pestaña <em>Console</em> podremos ver los mensajes de salida del log del servidor fechados y con información del módulo que lo genera. Pulsamos botón derecho de nuevo sobre el servidor y seleccionamos <em>Show In &gt; Console</em>. En un primer vistazo podemos ver los diferentes mensajes del inicio del servidor, entre ellos por ejemplo el de la carga del módulo <em>Weld CDI</em> que usa nuestra pequeña aplicación de prueba para inyectar el bean de servicio que genera la cadena <em>Hello World!</em> que se muestra.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig110.png" alt="prac001 fig110.png">
+</div>
+</div>
+<div class="paragraph">
+<p>La aplicación será accesible desde nuestro navegador en la <em>URL</em> <a href="http://localhost:8080/jboss-helloworld" class="bare">http://localhost:8080/jboss-helloworld</a>.</p>
+</div>
+<div class="paragraph">
+<p>Vamos a echar un vistazo a la consola de administración del servidor en la <em>URL</em> <a href="http://127.0.0.1:9990" class="bare">http://127.0.0.1:9990</a> o la equivalente <a href="http://localhost:9990" class="bare">http://localhost:9990</a>. <em>127.0.0.1</em> no es más que la dirección <em>IP</em> de nuestra propia máquina, que es donde tenemos instalado nuestro servidor. Es equivalente al nombre <em>localhost</em> por convención. En Windows esto se  define en el fichero <em>C:\Windows\System32\drivers\etc\hots</em>.</p>
+</div>
+<div class="paragraph">
+<p>Necesitaremos las credenciales que definimos al crear el servidor (usuario: <em>admin</em>, contraseña: <em>abcd-1234</em>). La consola de administración tiene muchas posibilidades que se irán conociendo con la práctica. Por ejemplo para ver las aplicaciones instaladas me voy a <em>Runtime &gt; Server &gt; Manage Deployments</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig115.png" alt="prac001 fig115.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Muy bien, para terminar paramos el servidor (Ahora ya sin ventana de comandos!) bien desde la pestaña <em>Console</em>, pulsando el icono en forma de cuadrado rojo a la derecha, o bien pulsando con el botón derecho en Eclipse sobre nuestro recién creado enlace al servidor.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig120.png" alt="prac001 fig120.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Hasta aquí el segundo Post, que no es poco. Con el entorno montado ahora ya estamos en disposición de crear la pequeña aplicación que nos sirva como base para ensayar con cualquier tecnología o herramienta que nos interese, Java EE o no, e iniciar así un recorrido en el que vayamos ganando destreza como desarrolladores a través de la lectura y de la práctica. ¿Qué podría hacer nuestra pequeña aplicación? !Pues casi lo que se nos ocurra! Mostrar listas maquetadas con datos extraidos de una base de datos o solicitados a un servicio web de un tercero o implementado por nosotros mismos y desplegado en nuestro propio servidor u otro distinto. Que más, imprimir estas listas o hacer informes estadísticos de los datos y guardarlos en formato PDF o enviarlos por email a varios destinatarios, etc, etc. Todo esto iremos viéndolo en futuros Posts. Y todo esto no es muy diferente a lo que se maneja en un proyecto empresarial real en cualquier empresa. Hasta pronto!</p>
 </div>
                         <aside class="tags fi-pricetag-multiple">Posted on <a href="https://lametaweb.github.io/tag/Eclipse">Eclipse</a>, <a href="https://lametaweb.github.io/tag/JBoss"> JBoss</a>, <a href="https://lametaweb.github.io/tag/JBoss-Tools"> JBoss Tools</a></aside>
             </section>
