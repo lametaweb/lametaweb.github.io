@@ -216,5 +216,5 @@ Muy bien, para terminar paramos el servidor (Ahora ya sin ventana de comandos!) 
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig120.png[]
 
-Hasta aquí el segundo Post, que no es poco. Con el entorno montado lo siguiente será crear una aplicación inicial con los elementos básicos y sobre la que podamos ensayar las últimas tecnologías y herramientas a través de la implementación funcionalidades nuevas que se irán añadiendo. En el siguiente Post empezaremos a montar esta aplicación y lo haremos desde cero y sin usar ningún wizard, veréis que una aplicación Java EE no es más que un conjunto de carpetas y ficheros organizados de manera que cumplan con los estándares utilizados. Hasta pronto!
+Hasta aquí el segundo Post, que no es poco. Con el entorno montado lo siguiente será crear una aplicación inicial con los elementos básicos y sobre la que podamos ensayar las últimas tecnologías y herramientas a través de la implementación funcionalidades nuevas que se irán añadiendo. En el siguiente Post empezaremos a montar esta aplicación y lo haremos desde cero y sin usar ningún wizard, veréis que una aplicación Java EE no es más que un conjunto de carpetas y ficheros que cumplen con una serie de estándares. Hasta pronto!
 
