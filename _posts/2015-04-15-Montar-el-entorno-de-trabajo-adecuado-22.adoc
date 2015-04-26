@@ -152,7 +152,9 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado, agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un grupo de plugins (el plugin es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE) bajo el nombre de JBoss Tools. Entre ellos el que usaremos en este Post es uno que nos permite controlar nuestro servidor JBoss desde Eclipse evitando tener que recurrir a la ventana de comandos.
 
-image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig057.png[]
+Podemos ver los diferentes componentes contenidos en las JBoss Tools en la barra de menús de Eclipse en la opción `Help > Installation Details`. En la figura siguiente aparece seleccionado el componente mencionado para el acceso al servidor. Los plugins para cada componente se listan en la pestaña _Plugins_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig058.png[]
 
 
 
