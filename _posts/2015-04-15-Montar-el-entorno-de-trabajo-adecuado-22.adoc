@@ -148,7 +148,13 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Por lo tanto, para que desaparezca el _warning_, si tenemos instalada la versión 8 del JDK editamos en Eclipse el fichero pom.xml cambiando los dos valores anteriores a `1.8` y además actualizamos el proyecto pulsando botón derecho sobre el icono del proyecto > Maven > Update Project…
 
-El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un plugin, que es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE, en particular de las JBoss Tools,  
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig056.png[]
+
+El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado, agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un grupo de plugins (el plugin es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE) bajo el nombre de JBoss Tools. Entre ellos el que usaremos en este Post es uno que nos permite controlar nuestro servidor JBoss desde Eclipse evitando tener que recurrir a la ventana de comandos.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig057.png[]
+
+
 
 
 
