@@ -166,8 +166,6 @@ Al finalizar la instalación se nos pedirá que permitamos reiniciar Eclipse. Al
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig070.png[]
 
-Si necesitaramos esta pantalla de nuevo tan sólo pulsamos sobre el icono de acceso en la barra de herramientas:
+Para acceder de nuevo a la pantalla pulsaremos sobre el iconoimage:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig075.png[]en la barra de herramientas.
 
-yyyy
-icon:prueba[]
-yyyy
+Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación _Hello world!_ para que no entre en conflicto con el nuevo despliegue automático. Será la última vez que tengamos que hacer las cosas de forma manual! Como ya sabemos, abrimos una ventana de consola, y ejecutamos el comando standalone.bat de la carpeta del sevidor para iniciarlo.
