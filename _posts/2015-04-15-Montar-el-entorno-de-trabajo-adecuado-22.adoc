@@ -150,11 +150,13 @@ Por lo tanto, para que desaparezca el _warning_, si tenemos instalada la versió
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig056.png[]
 
-El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado, agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un grupo de plugins (el plugin es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE) bajo el nombre de JBoss Tools. Entre ellos el que usaremos en este Post es uno que nos permite controlar nuestro servidor JBoss desde Eclipse evitando tener que recurrir a la ventana de comandos.
+El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado, agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un conjunto de plugins (el plugin es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE) bajo el nombre de JBoss Tools. Entre ellos el que usaremos en este Post es uno que nos permite controlar nuestro servidor JBoss desde Eclipse evitando tener que recurrir a la ventana de comandos.
 
 Podemos ver los diferentes componentes contenidos en las JBoss Tools en la barra de menús de Eclipse en la opción `Help > Installation Details`. En la figura siguiente aparece seleccionado el componente mencionado para el acceso al servidor. Los plugins para cada componente se listan en la pestaña _Plugins_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig058.png[]
+
+En la URL http://tools.jboss.org/features/[JBoss Tools - Features] podemos ver la cantidad de tecnologías dentro y fuera del estándar Java EE para las que nos ofrece soporte. La parte de gestión del servidor lo proporciona se presenta en el enlace _Server Tooling_. El resto de características son muy interesantes, tenemos soporte para Hibernate (Persistencia) con ayudas como la generación automática de Entities a partir de la base de datos o un editor de Criteria y otro para consultas HQL. También hay soporte para CDI a la hora de escribir el código para nuestros beans, o soporte para Arquillian, un framework para pruebas unitarias en aplicaciones web empresariales. Para el aprendizaje de todas estas tecnologías el secreto es el mismo: Lectura de teoría básica para empezar, a continuación montar un aplicación básica y practicar y practicar tocando alli y allá y viendo los efectos producidos, y vuelta a la documentación para consultar, en un proceso ciclico que nos dará cada vez más confianza en el uso de esa tecnología.
 
 
 
