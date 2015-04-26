@@ -168,4 +168,39 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Para acceder de nuevo a la pantalla pulsaremos sobre el iconoimage:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig075.png[]en la barra de herramientas.
 
-Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación _Hello world!_ para que no entre en conflicto con el nuevo despliegue automático. Será la última vez que tengamos que hacer las cosas de forma manual! Como ya sabemos, abrimos una ventana de consola, y ejecutamos el comando standalone.bat de la carpeta del sevidor para iniciarlo.
+Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación _Hello world!_ para que no entre en conflicto con el nuevo despliegue automático. Abrimos una última vez una ventana de consola para esto, y ejecutamos el comando standalone.bat de la carpeta del sevidor para iniciarlo.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig076.png[]
+
+Abrimos otra ventana de comando, vamos a la carpeta de la aplicación _Hello world!_, similar a _C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-quickstarts-6.3.0.GA\helloworld_ y escribimos `mvn jboss-as:undeploy` para desistalarla.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig078.png[]
+
+Paramos ahora el servidor seleccionando la ventana de comandos donde lo iniciamos y pulsando la combinación de teclas _Ctrl+C_. Volvemos a Eclipse, nos vamos a la pestaña _Servers_ y pulsamos el enlace para crear un nuevo conector a nuestro servidor _Jboss_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig080.png[]
+
+Seleccionamos la plataforma _EAP 6.1+_ para iniciar el wizard de configuración del _Connector_ y pulsamos _Next_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig085.png[]
+
+Dejamos los valores como están en la siguiente pantalla y pulsamos _Next_. En la siguiente pantalla tenemos que proporcionar la carpeta de instalación de nuestro servidor y la localización de la máquina virtual.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig090.png[]
+
+Pulsamos el botón _Browse…_ y seleccionamos el directorio del servidor y a continuación seleccionamos el _JRE_ de nuestro _JDK_, el mismo que configuramos para Eclipse, para que así la máquina virtual que ejecute las aplicaciones sea la del JDK que compila. Para ello pulsamos en la opción _Alternate JRE_ y seleccionamos el _JRE_. Es posible que se muestre el mensaje _This runtime type requires a JDK. The selected virtual machine is not recognized as a JDK._. Sin embargo se trata se un mensaje equivocado provocado por la versión del _JDK_. Pulsamos _Next_ de nuevo.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig095.png[]
+
+En la siguiente pantalla añadimos al servidor nuestro proyecto _jboss-helloworld_ con el botón _Add_ para que éste se despliegue al iniciar.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig100.png[]
+
+Y ya podamos controlar nuestro servidor desde Eclipse! Si nos vamos a la pestaña Servidores vemos que ahora existe un icono para el servidor y si lo expandimos observamos que nuestra aplicación está allí enlazada. Ahora arrancamos simplemente pulsando sobre el icono del servidor con el botón derecho y seleccionando la opción _Start_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig105.png[]
+
+Además en la pestaña _Console_ podremos ver los mensajes de salida del servidor fechados y con información del módulo que lo genera. Para ello hacemos botón derecho de nuevo sobre el servidor y seleccionamos Show In &gt; Console. Si le echamos un vistazo podemos ver los diferentes mensajes del inicio del servidor, entre ellos por ejmplo el de la carga del módulo de Weld CDI que usa nuestra pequeña aplicación de prueba.
+
+
+
