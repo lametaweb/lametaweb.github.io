@@ -150,18 +150,71 @@ Por lo tanto, para que desaparezca el _warning_, si tenemos instalada la versió
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig056.png[]
 
-El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado, agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un grupo de plugins (el plugin es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE) bajo el nombre de JBoss Tools. Entre ellos el que usaremos en este Post es uno que nos permite controlar nuestro servidor JBoss desde Eclipse evitando tener que recurrir a la ventana de comandos.
+El último componente que vamos añadir a nuestro banco de trabajo de partida va a proporcionarnos un Eclipse vitaminado, agilizando bastante nuestro trabajo de desarrollo diario. Se trata de un conjunto de plugins (el plugin es el mecanismo empleado en Eclipse para suministrar características adicionales al IDE) bajo el nombre de JBoss Tools. Entre ellos el que usaremos en este Post es uno que nos permite controlar nuestro servidor JBoss desde Eclipse evitando tener que recurrir a la ventana de comandos.
 
 Podemos ver los diferentes componentes contenidos en las JBoss Tools en la barra de menús de Eclipse en la opción `Help > Installation Details`. En la figura siguiente aparece seleccionado el componente mencionado para el acceso al servidor. Los plugins para cada componente se listan en la pestaña _Plugins_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig058.png[]
 
+En la URL http://tools.jboss.org/features/[JBoss Tools - Features] podemos ver la cantidad de tecnologías dentro y fuera del estándar Java EE para las que nos ofrece soporte. La parte de gestión del servidor lo proporciona se presenta en el enlace _Server Tooling_. El resto de características son muy interesantes, tenemos soporte para Hibernate (Persistencia) con ayudas como la generación automática de Entities a partir de la base de datos o un editor de Criteria y otro para consultas HQL. También hay soporte para CDI a la hora de escribir el código para nuestros beans, o soporte para Arquillian, un framework para pruebas unitarias en aplicaciones web empresariales. Para el aprendizaje de todas estas tecnologías el secreto es el mismo: Lectura de teoría básica para empezar, a continuación montar un aplicación básica y practicar y practicar tocando alli y allá y viendo los efectos producidos, y vuelta a la documentación para consultar, en un proceso ciclico que nos dará cada vez más confianza en el uso de esa tecnología.
 
+Para instalar las Tools abrimos Eclipse y vamos a la opción del menú _Help > Eclipse Marketplace_. En la entrada _Find_ escribimos `JBoss Tools (Luna)` y en unos segundos aparecerá la entrada en la lista de productos, seleccionar y pulsar _Install_ para que comience la instalación. En la siguiente pantalla dejamos marcados todos los plugins y pulsamos _Confirmar_.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig065.png[]
 
+Al finalizar la instalación se nos pedirá que permitamos reiniciar Eclipse. Al entrar después del reinicio se mostrará la página de Jboss Central que no es más que una pantalla de acceso a información relacionada con Jboss Tools y Jboss Studio (Eclipse + Jboss Tools). Desmarcamos la opción _Show on Startup_ y cerramos la ventana.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig070.png[]
 
+Para acceder de nuevo a la pantalla pulsaremos sobre el iconoimage:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig075.png[]en la barra de herramientas.
 
+Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación _Hello world!_ para que no entre en conflicto con el nuevo despliegue automático. Abrimos una última vez una ventana de consola para esto, y ejecutamos el comando standalone.bat de la carpeta del sevidor para iniciarlo.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig076.png[]
 
+Abrimos otra ventana de comando, vamos a la carpeta de la aplicación _Hello world!_, similar a _C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-quickstarts-6.3.0.GA\helloworld_ y escribimos `mvn jboss-as:undeploy` para desistalarla.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig078.png[]
+
+Paramos ahora el servidor seleccionando la ventana de comandos donde lo iniciamos y pulsando la combinación de teclas _Ctrl+C_. Volvemos a Eclipse, nos vamos a la pestaña _Servers_ y pulsamos el enlace para crear un nuevo conector a nuestro servidor _Jboss_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig080.png[]
+
+Seleccionamos la plataforma _EAP 6.1+_ para iniciar el wizard de configuración del _Connector_ y pulsamos _Next_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig085.png[]
+
+Dejamos los valores como están en la siguiente pantalla y pulsamos _Next_. En la siguiente pantalla tenemos que proporcionar la carpeta de instalación de nuestro servidor y la localización de la máquina virtual.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig090.png[]
+
+Pulsamos el botón _Browse…_ y seleccionamos el directorio del servidor y a continuación seleccionamos el _JRE_ de nuestro _JDK_, el mismo que configuramos para Eclipse, para que así la máquina virtual que ejecute las aplicaciones sea la del JDK que compila. Para ello pulsamos en la opción _Alternate JRE_ y seleccionamos el _JRE_. Es posible que se muestre el mensaje _This runtime type requires a JDK. The selected virtual machine is not recognized as a JDK._. Sin embargo se trata se un mensaje equivocado provocado por la versión del _JDK_. Pulsamos _Next_ de nuevo.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig095.png[]
+
+En la siguiente pantalla añadimos al servidor nuestro proyecto _jboss-helloworld_ con el botón _Add_ para que éste se despliegue al iniciar.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig100.png[]
+
+Y ya podamos controlar nuestro servidor desde Eclipse! Si nos vamos a la pestaña Servidores vemos que ahora existe un icono para el servidor y si lo expandimos observamos que nuestra aplicación está allí enlazada. Arranquemos ahora, simplemente pulsando sobre el icono del servidor con el botón derecho y seleccionando la opción _Start_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig105.png[]
+
+Además en la pestaña _Console_ podremos ver los mensajes de salida del log del servidor fechados y con información del módulo que lo genera. Pulsamos botón derecho de nuevo sobre el servidor y seleccionamos _Show In > Console_. En un primer vistazo podemos ver los diferentes mensajes del inicio del servidor, entre ellos por ejemplo el de la carga del módulo _Weld CDI_ que usa nuestra pequeña aplicación de prueba para inyectar el bean de servicio que genera la cadena _Hello World!_ que se muestra.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig110.png[]
+
+La aplicación será accesible desde nuestro navegador en la _URL_ http://localhost:8080/jboss-helloworld.
+
+Vamos a echar un vistazo a la consola de administración del servidor en la _URL_ http://127.0.0.1:9990 o la equivalente http://localhost:9990. _127.0.0.1_ no es más que la dirección _IP_ de nuestra propia máquina, que es donde tenemos instalado nuestro servidor. Es equivalente al nombre _localhost_ por convención. En Windows esto se  define en el fichero _C:\Windows\System32\drivers\etc\hots_.
+
+Necesitaremos las credenciales que definimos al crear el servidor (usuario: _admin_, contraseña: _abcd-1234_). La consola de administración tiene muchas posibilidades que se irán conociendo con la práctica. Por ejemplo para ver las aplicaciones instaladas me voy a _Runtime > Server > Manage Deployments_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig115.png[]
+
+Muy bien, para terminar paramos el servidor (Ahora ya sin ventana de comandos!) bien desde la pestaña _Console_, pulsando el icono en forma de cuadrado rojo a la derecha, o bien pulsando con el botón derecho en Eclipse sobre nuestro recién creado enlace al servidor.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig120.png[]
+
+Hasta aquí el segundo Post, que no es poco. Con el entorno montado lo siguiente será crear una aplicación inicial con los elementos básicos y sobre la que podamos ensayar las últimas tecnologías y herramientas a través de la implementación funcionalidades nuevas que se irán añadiendo. En el siguiente Post empezaremos a montar esta aplicación y lo haremos desde cero y sin usar ningún wizard, veréis que una aplicación Java EE no es más que un conjunto de carpetas y ficheros que cumplen con una serie de estándares. Hasta pronto!
 
