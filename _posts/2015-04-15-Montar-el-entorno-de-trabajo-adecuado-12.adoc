@@ -31,27 +31,23 @@ forfiles /P c:\ /S /M javac.exe /C "cmd /c echo @path" 2>null
 
 Al ejecutar el  comando obtendremos una línea con un formato similar a _C:\...\Java\jdk1.8.0_31\bin\javac.exe_ por cada carpeta en la que exista un compilador de java. Si obtenemos más de una línea puede ser debido a que existan aplicaciones de terceros que instalaron su propio JDK. No debemos tocar esos JDK. Lo ideal es tener un único JDK de usuario (propio, no de terceros) instalado, que tendrá su propio JRE privado, junto a un único JRE pública (fuera del JDK). En Windows no existe un mecanismo de actualización automática para el JDK así que tendremos que gestionar nosotros mismos la actualización, si es que no tenemos ya instalado la última versión, desinstalando previamente a través de _Panel de Control > Programas y características_ el o los JDKs antiguos. En los sistemas operativos Linux y OS X sí existen procedimientos de actualización automáticos, consultar en Internet para obtener más información.
 
-WARNING: En la lista de aplicaciones instaladas no aparecen de forma explícita los JDKs de terceros Poner mucho cuidado  cuando desinstalemos JDKs antes de instalar una nueva versión. Hacerlo sólo cuando estemos seguros de que no afectará a aplicaciones de terceros. Un JDK de tercero se identifica porque se encuentra en la carpeta de la aplicación que lo instaló. 
+WARNING: En la lista de aplicaciones instaladas no aparecen de forma explícita los JDKs de terceros. Un JDK de tercero se identifica porque se encuentra en la carpeta de la aplicación que lo instaló y no debemos manipularlo en ningún caso.
 
-En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desintalando el resto, siempre que no hubieran sido instalados por aplicaciones de terceros.
+En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desintalando el resto.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png[]
 
-Para instalar la última versión de JDK nos vamos a la dirección:
-
-http://www.oracle.com/technetwork/es/java/javase/downloads/index.html
-
-y pulsamos el botón con la leyenda Java.
+Para instalar la última versión de JDK nos vamos a la http://www.oracle.com/technetwork/es/java/javase/downloads/index.html[página de descarga de Oracle] y pulsamos el botón con la leyenda _Java_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig002.png[]
 
-WARNING: El botón que aparece a la derecha del indicado, con la leyenda NetBeans baja también la última versión del JDK pero además se trae NetBeans. NetBeans es un IDE, una alternativa a Eclipse. Nosotros usaremos Eclipse de modo que no optamos por esta opción. Si más adelante queremos instalar Netbeans podemos hacerlo desde la URL proporcionada por Oracle. Netbeans ofrece un entorno de desarrollo con muchas ayudas y está soportado por Oracle que además mantiene otro IDE, JDeveloper, también con muchas y potentes ayudas al desarrollador. Sin embargo pienso que lo mejor al principio es trabajar con Eclipse y a continuación explorar los demás.
+El botón que aparece a la derecha del indicado, con la leyenda NetBeans baja también la última versión del JDK pero además se trae NetBeans. NetBeans es un IDE, una alternativa a Eclipse. Nosotros usaremos Eclipse de modo que no optamos por esta opción. Más adelante podéis instalar Netbeans desde https://netbeans.org/downloads/start.html?platform=windows&lang=en&option=javaee[aquí], yo os invito a que lo hagáis porque proporciona un entorno de desarrollo con muchas ayudas y está soportado por Oracle, que también ofrece otro IDE, JDeveloper, éste más orientado a grandes proyectos donde se elijan las directrices de Oracle ADF para el desarrollo de aplicaciones.
 
-Aceptamos la licencia para que se habiliten los links de bajada y si queremos bajar los ejemplos de java hacemos lo mismo más abajo donde aparecen el paquete con las demos.
+Aceptamos la licencia para que se habiliten los links de bajada y si queremos bajar los ejemplos de java, muy aconsejable, hacemos lo mismo más abajo donde aparecen el paquete con las demos.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig003.png[]
 
-TIP: Siempre que podáis instalad tanto el sistema operativo (excepto el teclado para no perder la eñe, acentos, etc) como vuestras herrmientas en el idioma Inglés ya que así, cuando queramos consultar en Google un mensaje dado por la aplicación, o resolver alguna duda sobre la misma, obtendremos mucha más información que si el mensaje lo obtuvieramos en castellano.
+TIP: Siempre que sea posible instalad el sistema operativo (menos el teclado para no perder la eñe, acentos, etc) y vuestras herrmientas de desarrollo en el idioma Inglés. Vuestras consultas en Google devolveran muchos más resultados cuando busquemos por un mensaje de error o por alguna opción de menú en Inglés. Y creedme, cuando se está desarrollando un proyecto se tira mucho de Google.
 
 Para instalar nuestro JDK hacemos doble click sobre el ejecutable descargado. En la pantalla inicial del wizard pulsamos `Next`, en la siguiente pantalla aceptamos los valores por defecto. La instalación del JDK comienza. A continuación aparece una ventana y se nos pregunta de nuevo por otra carpeta de instalación, se trata de la instalación del JRE público. Aceptamos el valor por defecto. Finalmente pulsamos `Close`.
 
