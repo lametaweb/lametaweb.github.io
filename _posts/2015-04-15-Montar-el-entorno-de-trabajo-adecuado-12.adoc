@@ -14,11 +14,11 @@ Para arrancar, en primer lugar, vamos a definir e instalar en nuestra máquina u
 
 NOTE: En el blog se utiliza una máquina con el sistema operativo Windows 8.1 para la realización de las tareas. La manera de hacer las cosas en otros sistemas operativos como OS X o Linux puede diferir, en estos casos una simple búsqueda en Google nos mostrará la manera de proceder.
 
-== Instalación de Java para desarrolladores
-
 Bueno manos a la obra. Como IDE elegimos el más habitual, Eclipse, que ya trae de serie Maven como gestor del ciclo de desarrollo. Como servidor JBoss y como base de datos de momento algo ligerito, Java DB, también conocido como Derby, que nos evitará la instalación de un servidor de base de datos para la primera versión de la aplicación.
 
-Lo primero será instalar el kit de desarrollo Java (JDK), que consiste básicamente por un lado en una máquina virtual, que ejecutará las aplicaciones, y por otro en un compilador que pasará nuestro código fuente a bytecode ejecutable para la maquina virtual.
+== Instalación de Java para desarrolladores
+
+Lo primero será instalar el kit de desarrollo de Java, más conocido por JDK, que consiste básicamente por un lado en una máquina virtual, que ejecutará las aplicaciones, y por otro en un compilador que pasará nuestro código fuente a bytecode ejecutable para la maquina virtual.
 
 WARNING: Hay que saber que existen dos kits de desarrollo. El JDK, de la SE (Standard Edition) que es el que nos interesa, y el SDK de la EE (Enterprise Edition) que no nos interesa de momento ya que nos instala el servidor de referencia, Glassfish, junto con ejemplos.
 
@@ -29,7 +29,7 @@ Lo primero que hacemos, por precaución, es comprobar si tenemos ya instalado un
 forfiles /P c:\ /S /M javac.exe /C "cmd /c echo @path" 2>null
 ----
 
-Al ejecutar el  comando obtendremos una línea con un formato similar a _C:\...\Java\jdk1.8.0_31\bin\javac.exe_ por cada carpeta en la que exista un compilador de java. Si obtenemos más de una línea puede ser debido a que existan aplicaciones de terceros que instalaron su propio JDK. No debemos tocar esos JDK. Lo ideal es tener un único JDK de usuario (propio, no de terceros) instalado, que tendrá su propio JRE privado, junto a un único JRE pública (fuera del JDK). En Windows no existe un mecanismo de actualización automática para el JDK así que tendremos que gestionar nosotros mismos la actualización, si es que no tenemos ya instalado la última versión, desinstalando previamente a través de _Panel de Control > Programas y características_ el o los JDKs antiguos. En los sistemas operativos Linux y OS X sí existen procedimientos de actualización automáticos, consultar en Internet para obtener más información.
+Al ejecutar el  comando obtendremos una línea con un formato similar a _C:\...\Java\jdk1.8.0_31\bin\javac.exe_ por cada carpeta en la que exista un compilador de java. Si obtenemos más de una línea puede ser debido a que existan aplicaciones de terceros que instalaron su propio JDK. No debemos tocar esos JDK. Lo ideal es tener un único JDK de usuario (propio, no de terceros) instalado, que tendrá su propio JRE privado, junto a un único JRE pública (fuera del JDK). En Windows no existe un mecanismo de actualización automática para el JDK así que tendremos que gestionar nosotros mismos las actualizaciones, desinstalando previamente a través de _Panel de Control > Programas y características_ el o los JDKs antiguos. En los sistemas operativos Linux y OS X sí existen procedimientos de actualización automáticos, consultar en Internet para obtener más información.
 
 WARNING: En la lista de aplicaciones instaladas no aparecen de forma explícita los JDKs de terceros. Un JDK de tercero se identifica porque se encuentra en la carpeta de la aplicación que lo instaló y no debemos manipularlo en ningún caso.
 
@@ -51,7 +51,11 @@ TIP: Siempre que sea posible instalad el sistema operativo (menos el teclado par
 
 Para instalar nuestro JDK hacemos doble click sobre el ejecutable descargado. En la pantalla inicial del wizard pulsamos _Next_, en la siguiente pantalla aceptamos los valores por defecto. La instalación del JDK comienza. A continuación aparece una ventana y se nos pregunta de nuevo por otra carpeta de instalación, se trata de la instalación del JRE público. Aceptamos el valor por defecto. Finalmente pulsamos _Close_.
 
-¿Qué hemos instalado? Por un lado el JDK, necesario para desarrollar aplicaciones en Java, que además contiene un JRE privado, necesario para ejecutar Java y que será utilizado por nuestro IDE Eclipse; y por otro lado un JRE público que es que usarán las distintas aplicaciones de nuestro ordenador cuando necesiten ejecutar una aplicación Java, por ejemplo nuestro navegador de Internet preferido. Si entramos en "Panel de Control > Programas y características" podremos ver cómo aparecen tanto el JRE público como el JDK.
+¿Qué hemos instalado? Por un lado el JDK, necesario para desarrollar aplicaciones en Java, y que además contiene un JRE para uso privado de éste, y por otro lado un JRE público del que tirarán las aplicaciones que necesiten ejecutar una aplicación Java como por ejemplo nuestro navegador. El JRE público sí se actualiza de forma automática, y es gestionable desde _Panel de Control > Java_ como vemos en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png[]
+
+Si entramos en "Panel de Control > Programas y características" podremos ver tanto el JRE público como el JDK.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig005.png[]
 
