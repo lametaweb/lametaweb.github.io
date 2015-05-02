@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Montar el entorno de trabajo adecuado (1/2)</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//www.lametaweb.com/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/asciidoctor.css?v=1.0.0" />
+
+    <link rel="canonical" href="http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html" />
+    
+    <meta property="og:site_name" content="La metaweb" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Montar el entorno de trabajo adecuado (1/2)" />
+    <meta property="og:description" content="Introducción Comienza aquí este blog sobre desarrollo Web en Java. La idea es que se convierta en un lugar para explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web alrededor de Java EE, y donde desmitificar el desarrollo..." />
+    <meta property="og:url" content="http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html" />
+    <meta property="article:published_time" content="2015-04-14T22:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-05-02T18:46:29.933Z" />
+    <meta property="article:tag" content="JDK" />
+    <meta property="article:tag" content="JRE" />
+    <meta property="article:tag" content="Maven" />
+    <meta property="article:tag" content="Java EE" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Montar el entorno de trabajo adecuado (1/2)" />
+    <meta name="twitter:description" content="Introducción Comienza aquí este blog sobre desarrollo Web en Java. La idea es que se convierta en un lugar para explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web alrededor de Java EE, y donde desmitificar el desarrollo..." />
+    <meta name="twitter:url" content="http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "La metaweb",
+    "author": {
+        "@type": "Person",
+        "name": "La metaweb",
+        "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": ""
+    },
+    "headline": "Montar el entorno de trabajo adecuado (1/2)",
+    "url": "http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html",
+    "datePublished": "2015-04-14T22:00:00.000Z",
+    "dateModified": "2015-05-02T18:46:29.933Z",
+    "keywords": "JDK,  JRE,  Maven,  Java EE",
+    "description": "Introducción Comienza aquí este blog sobre desarrollo Web en Java. La idea es que se convierta en un lugar para explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web alrededor de Java EE, y donde desmitificar el desarrollo..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="La metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-JDK tag-JRE tag-Maven tag-Java-EE">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar style="background: none">
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="http://www.lametaweb.com">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area bgimage" style="background-image: url(https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/red20vertical.jpg)">
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+                <li><a class="fi-torso" href="http://www.lametaweb.com/about"></a></li>
+                <li><a class="fi-mail" href="http://www.lametaweb.com/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="La metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo.gif" alt="Blog Logo" /></a>
+            <h1 class="blog-title">La metaweb</h1>
+            <hr>
+            <p class="blog-description">Blog sobre desarrollo web en el estándar Java EE, con algún off topic para desconectar ;-)</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-JDK tag-JRE tag-Maven tag-Java-EE">
+
+
+            <h1 class="post-title">Montar el entorno de trabajo adecuado (1/2)</h1>
+
+            <span class="post-meta label"><time datetime="2015-04-15">15 Apr 2015</time></span>
+
+            <section class="post-content">
+                <div class="sect1">
+<h2 id="_introducci_n">Introducción</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Comienza aquí este blog sobre desarrollo Web en Java. La idea es que se convierta en un lugar para explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web alrededor de Java EE, y donde desmitificar el desarrollo sobre Java EE usando para ello los ejemplos adecuados.</p>
+</div>
+<div class="paragraph">
+<p>Pienso que los que estamos ahora dedicados al desarrollo web tenemos suerte. Si volvemos la vista sólo diez años atrás el escenario era bien distinto. Ahora disponemos de herramientas y estándares maduros que nos permiten centrarnos en el problema y librarnos de las pesadas tareas improductivas. Java EE ha tomado una buena velocidad de crucero y promete grandes cosas a medio y largo plazo. Ahora Java EE 7 está ya siendo usado en todos los nuevos proyectos. Por capas, JavaServer Faces 2.2.x ofrece estabilidad y consolida la versión 2 del estándar, complementado por PrimeFaces, y con compatibilidad con HTML5. La implementación de referencia de JSF es Mojarra. CDI aporta beans avanzados con inyección de dependencias normalizada y programación orientada a aspectos. Su estándar es Weld. EJB 3 ahora simplifica más aún la capa de negocio y permite por ejemplo empaquetar componentes en un WAR. JPA, escindida de EJB en Java EE 5, se consolida con la versión 2.1, con la implementación de referencia EclipseLink y la conocida Hibernate. Los servicios web se simplifican aún más con JAX-RS 2.0 y el nuevo soporte al formato de datos JSON. Y no puedo dejar de citar la nueva API para Websokets que nos abre el camino a la implementación en nuestras aplicaciones de pantallas que muestran información en tiempo real dentro del navegador.</p>
+</div>
+<div class="paragraph">
+<p>Un panorama muy prometedor al que además hay que sumar por un lado la velocidad a la que aparecen y se mejoran las herramientas de desarrollo, con ejemplos como JRebel que evita los redeploys, XRebel para afinar el rendimiento del site, JBoss Tools con ayudas como el editor de HQL, Gradle como alternativa a Maven que evita el XML a favor del más flexible Groovy, etc, y por otro lado la gran actividad que actualmente existe en el JCP en la definición y mejora de las JRS para el futuro estándar Java EE 8, que estará listo probablemente para finales del año que viene, incluyendo por ejemplo MVC 1.0, una nueva tecnología de interfaz de usuario que complementa a JSF, estandarización de la seguridad con Java EE Security API 1.0 o procesamiento directo del contenido JSON con JSON Binding 1.0.</p>
+</div>
+<div class="paragraph">
+<p>Para arrancar, en primer lugar, vamos a definir e instalar en nuestra máquina un entorno de trabajo adecuado, lo más parecido posible a lo que nos podamos encontrar hoy en una software factory sobre Java EE. Y a continuación montaremos una mini aplicación con capa de presentación, negocio y datos. Lo vamos a hacer partiendo de cero y sin ningún tipo de asistente, de modo que consigamos desmitificar la creación de una aplicación Java EE por capas y ganar así la confianza necesaria para seguir, en sucesivos posts, experimentando con el amplio abanico de tecnologías y herramientas disponibles.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+En el blog se utiliza una máquina con el sistema operativo Windows 8.1 para la realización de las tareas. La manera de hacer las cosas en otros sistemas operativos como OS X o Linux puede diferir, en estos casos una simple búsqueda en Google nos mostrará la manera de proceder.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Bueno manos a la obra. Como IDE elegimos el más habitual, Eclipse, que ya trae de serie Maven como gestor del ciclo de desarrollo. Como servidor JBoss y como base de datos de momento algo ligerito, Java DB, también conocido como Derby, que nos evitará la instalación de un servidor de base de datos para la primera versión de la aplicación.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_instalaci_n_de_java_para_desarrolladores">Instalación de Java para desarrolladores</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lo primero será instalar el kit de desarrollo de Java, más conocido por JDK, que consiste básicamente por un lado en una máquina virtual, que ejecutará las aplicaciones, y por otro en un compilador que pasará nuestro código fuente a bytecode ejecutable para la maquina virtual.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Hay que saber que existen dos kits de desarrollo. El JDK, de la SE (Standard Edition) que es el que nos interesa, y el SDK de la EE (Enterprise Edition) que no nos interesa de momento ya que nos instala el servidor de referencia, Glassfish, junto con ejemplos.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Lo primero que hacemos, por precaución, es comprobar si tenemos ya instalado un JDK antiguo ejecutando lo siguiente desde una ventana de comandos:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-dos" data-lang="dos">forfiles /P c:\ /S /M javac.exe /C "cmd /c echo @path" 2&gt;null</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Al ejecutar el  comando obtendremos una línea con un formato similar a <em>C:...\Java\jdk1.8.0_31\bin\javac.exe</em> por cada carpeta en la que exista un compilador de java. Si obtenemos más de una línea puede ser debido a que existan aplicaciones de terceros que instalaron su propio JDK. No debemos tocar esos JDK. Lo ideal es tener un único JDK de usuario (propio, no de terceros) instalado, que tendrá su propio JRE privado, junto a un único JRE pública (fuera del JDK). En Windows no existe un mecanismo de actualización automática para el JDK así que tendremos que gestionar nosotros mismos las actualizaciones, desinstalando previamente a través de <em>Panel de Control &gt; Programas y características</em> el o los JDKs antiguos. En los sistemas operativos Linux y OS X sí existen procedimientos de actualización automáticos, consultar en Internet para obtener más información.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+En la lista de aplicaciones instaladas no aparecen de forma explícita los JDKs de terceros. Un JDK de tercero se identifica porque se encuentra en la carpeta de la aplicación que lo instaló y no debemos manipularlo en ningún caso.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desintalando el resto.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png" alt="prac001 fig004.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Para instalar la última versión de JDK nos vamos a la <a href="http://www.oracle.com/technetwork/es/java/javase/downloads/index.html">página de descarga de Oracle</a> y pulsamos el botón con la leyenda <em>Java</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig002.png" alt="prac001 fig002.png">
+</div>
+</div>
+<div class="paragraph">
+<p>El botón que aparece a la derecha del indicado, con la leyenda NetBeans baja también la última versión del JDK pero además se trae NetBeans. NetBeans es un IDE, una alternativa a Eclipse. Nosotros usaremos Eclipse de modo que no optamos por esta opción. Más adelante podéis instalar Netbeans desde <a href="https://netbeans.org/downloads/start.html?platform=windows&amp;lang=en&amp;option=javaee">aquí</a>, yo os invito a que lo hagáis porque proporciona un entorno de desarrollo con muchas ayudas y está soportado por Oracle, que también ofrece otro IDE, JDeveloper, éste más orientado a grandes proyectos donde se elijan las directrices de Oracle ADF para el desarrollo de aplicaciones.</p>
+</div>
+<div class="paragraph">
+<p>Aceptamos la licencia para que se habiliten los links de bajada y si queremos bajar los ejemplos de java, muy aconsejable, hacemos lo mismo más abajo donde aparecen el paquete con las demos.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig003.png" alt="prac001 fig003.png">
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Siempre que sea posible instalad el sistema operativo (menos el teclado para no perder la eñe, acentos, etc) y vuestras herrmientas de desarrollo en el idioma Inglés. Vuestras consultas en Google devolveran muchos más resultados cuando busquemos por un mensaje de error o por alguna opción de menú en Inglés. Y creedme, cuando se está desarrollando un proyecto se tira mucho de Google.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Para instalar nuestro JDK hacemos doble click sobre el ejecutable descargado. En la pantalla inicial del wizard pulsamos <em>Next</em>, en la siguiente pantalla aceptamos los valores por defecto. La instalación del JDK comienza. A continuación aparece una ventana y se nos pregunta de nuevo por otra carpeta de instalación, se trata de la instalación del JRE público. Aceptamos el valor por defecto. Finalmente pulsamos <em>Close</em>.</p>
+</div>
+<div class="paragraph">
+<p>¿Qué hemos instalado? Por un lado el JDK, necesario para desarrollar aplicaciones en Java, y que además contiene un JRE para uso privado de éste, y por otro lado un JRE público del que tirarán las aplicaciones que necesiten ejecutar una aplicación Java como por ejemplo nuestro navegador. El JRE público sí se actualiza de forma automática, y es gestionable desde <em>Panel de Control &gt; Java</em> como vemos en la siguiente figura:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png" alt="prac001 fig004.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Si entramos en <em>Panel de Control &gt; Programas y características</em> podremos ver tanto el JRE público como el JDK.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig005.png" alt="prac001 fig005.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Para terminar con la instalación del JDK añadimos la variable de sistema <em>JAVA_HOME</em> con el valor de la ruta donde hemos instalado el JDK y a la variable <em>PATH</em> le añadimos al principio la cadena <code>%JAVA_HOME%\bin;</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Nombre</th>
+<th class="tableblock halign-left valign-top">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><code>JAVA_HOME</code></p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><code>C:\Program Files\Java\jdk1.8.0_40</code></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><code>PATH</code></p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><code>%JAVA_HOME%\bin;&#8230;&#8203;</code></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Para ir a una carpeta en la consola de comandos puedo usar el carácter comodín asterisco <code>*</code> y así ahorrarme pulsaciones y tiempo. Por ejemplo, si quiero ir a la carpeta <code>esta-carpeta-001</code>, escribo <code>cd est*</code>, y si existiera otra carpeta con el nombre <code>estados</code> entonces tendría que escribir <code>cd esta-*</code>. Del mismo modo puedo escribir sólo las terminaciones de las carpetas, por ejemplo con <code>cd *001</code> también entraríamos en <code>esta-carpeta-001</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Seguimos! Vamos ahora con la instalación de Maven. En resumen Maven es un gestor del desarrollo de un proyecto. Hace muchas cosas, entre ellas: Interviene cada vez que realizo una modificación en mi programa: Compila tirando de las dependencias necesarias, empaqueta y despliega el proyecto en el entorno que le indiquemos, también pasa automáticamente las pruebas unitarias y las de integración que yo haya definido. Por otro lado gestiona las distintas distribuciones de mi proyecto. Y hace muchas cosas más y otras que están por venir ya que es extensible. Maven es tanto más útil cuanto mayor es el tamaño del proyecto ya que es en proyectos grandes y multimódulo cuando las dependencias y demás aspectos empiezan a complicarse.</p>
+</div>
+<div class="paragraph">
+<p>Antes de nada para no liarnos tenemos que distinguir bien estos tres elementos:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La aplicación Maven en sí, el ejecutable, que no es más que un fichero <code>.zip</code> que se instala descomprimiéndolo en el disco duro.</p>
+</li>
+<li>
+<p>El repositorio local, localizado en nuestra propia máquina, que es donde se guardan los snapshots o versiones de desarrollo de mi aplicación en forma de fichero, por ejemplo un <em>.war</em> si se trata de una aplicación web, y además donde se copian las librerías de terceros de las que mi webapp depende, actuando como caché de los repositorios remotos.</p>
+</li>
+<li>
+<p>El plugin de Maven para Eclipse, que me permite usar Maven desde Eclipse, que será en general lo que hagamos en el día a día. Lo veremos en la próxima entrada del Blog.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Realmente no es necesario instalar Maven para el desarrollo desde Eclipse ya que éste ya lo trae de serie (Embedded Maven), sin embargo lo instalaremos ahora aparte (Local Maven) para poder usarlo fuera de Eclipse cuando lo necesitemos. Puede ser también que necesitemos en nuestro proyecto la versión más reciente de Maven en Eclipse, que en general no es la embebida, y que por tanto tengamos que instalarla y decirle a Eclipse que use mi Maven local y no el embebido, aunque esto es poco común.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Si ya teníamos una instalación de Maven en nuestra máquina no hay problema, podemos instalarlo ahora en otra carpeta. Aunque como en el caso del JDK es mejor siempre tener una única instalación salvo que necesitemos más de una versión porque estemos trabajando con un proyecto antiguo y otro más reciente por ejemplo. En este caso para desinstalar sólo tendremos que borrar la carpeta de instalación y editar varias variables de sistema. Vamos entonces a la <a href="http://maven.apache.org/download.cgi">URL de descarga</a> y nos bajamos el archivo <em>Maven 3.3.1 (Binary tar.gz)</em> si usamos Linux o el <em>Maven 3.3.1 (Binary zip)</em> si usamos Windows (la versión puede diferir). Ok, descomprimimos el zip en una carpeta, por ejemplo en la ruta <em>C:\Program Files\Apache Software Foundation\</em>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Para descomprimir puedes usar la aplicación gratuita 7zip en <a href="http://www.7-zip.org">este enlace</a>. Y para linux tenemos <a href="http://peazip.sourceforge.net/peazip-linux.html">esta otra</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Completamos la instalación añadiendo tres variables de sistema y editando la variable <em>PATH</em> para poder llamar a Maven desde cualquier carpeta de proyecto:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Nombre</th>
+<th class="tableblock halign-left valign-top">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><em>M2_HOME</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><code>C:\Program Files\Apache Software Foundation\apache-maven-3.3.1</code></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><em>M2</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><code>%M2_HOME%\bin</code></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><em>PATH</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><code>%M2%;%JAVA_HOME%\bin;&#8230;&#8203;</code></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Comprobamos que la instalación es correcta. Abrimos una ventana de comando (botón de Inicio y escribir <code>cmd</code> en la caja de búsqueda). Verifico primero que las variables de sistema se han creado con el comando <code>SET</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig001.png" alt="prac001 fig001.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Y luego la instalación escribiendo <code>mvn -version</code>. Si obtenemos una salida por pantalla similar a la que se muestra es que todo ha ido bien.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig006.png" alt="prac001 fig006.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Veamos un sencillo ejemplo de uso de Maven siguiendo el "ejercicio de cinco minutos" propuesto en <a href="http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html">su página oficial</a>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Es importante emplear un poco de nuestro tiempo ahora en entender los conceptos básicos de esta herramienta pues si bien al principio puede parecer confusa, después de una lectura de los recursos que os comento más adelante y siguiendo el ejemplo propuesto, nos damos cuenta de su gran potencial para simplificar nuestro trabajo.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Una vez en la dirección anterior nos vamos directamente al tercer apartado <em>Creating a Project</em>. Lo que vamos a hacer es crear un proyecto <em>Hola mundo!</em> sin escribir ni una sola línea de código. Es otra de las capacidades de Maven, nos permite, a partir de los llamados arquetipos, comenzar un nuevo proyecto a partir de una plantilla. Hay muchos arquetipos, creados por el equipo de Maven o por otras empresas. Nosotros mismos podemos también crear uno, de hecho las empresas crean arquetipos para disponer de puntos de partida óptimos para sus nuevos proyectos. Los arquetipos están en los repositorios, que son almaceneces gestionados por Maven, donde también existen elementos de otra naturaleza como librerías, nuestros propios wars, etc. A todos estos elementos Maven los denomina artefactos. Un arquetipo es por tanto un artefacto. Bien, vamos con el ejercicio, abrimos una ventana de comandos, creamos una carpeta, por ejemplo <em>c:\prueba-maven</em>, y nos situamos dentro de ella. A continuación escribimos lo siguiente:</p>
+</div>
+<div class="paragraph">
+<p><span class="small"><code>mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</code></span></p>
+</div>
+<div class="paragraph">
+<p>Si es la primera vez que ejecutamos Maven en nuestro ordenador el comando puede tardar un rato en terminar, es debido a que Maven necesita bajar desde un repositorio remoto los elementos necesarios para su ejecución. Analicemos rápidamente el comando:</p>
+</div>
+<div class="paragraph">
+<p><code>mvn</code>: Es el comando que invoca a Maven.</p>
+</div>
+<div class="paragraph">
+<p><code>archetype:generate</code>: Indica lo que queremos que haga Maven. En este caso le estamos diciendo que ejecute el goal <code>generate</code> del plugin <code>archetype</code>. Los plugins (de Maven, no confundir con los de Eclipse) son las unidades que continen los goals, que representan lo que podemos pedir a Maven que haga por nosotros, en este caso generar un proyecto a partir de un arquetipo.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Maven puede ejecutar además de un goal, como en el caso del ejemplo, una phase. El ciclo de vida estándar de Maven se compone de varias fases ordenadas, cada fase tiene asociada la ejecución de varios goals de varios plugins. Existen valores por defecto pero todo es configurable como iremos viendo. El formato del comando sería diferente, sin el carácter <code>:</code>, por ejemplo <code>mvn package</code> ejecuta la fase de creación del fichero desplegable de un proyecto, y todas las fases anteriores. No es necesario entender todo esto ahora, los conceptos se afianzarán con las lecturas propuestas y el uso.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>-DgroupId=com.mycompany.app -DartifactId=my-app</code>: El resto del comando son parámetros que pasamos al goal. Los dos primeros parámetros son parte de las coordenadas del proyecto que vamos a crear. Todo proyecto Maven, tiene unas coordenadas, que lo identifican de forma unívoca y lo sitúan dentro de cualquier repositorio, como artefacto. Estas coordenadas son tres: Id de grupo, Id de artefacto y versión. En este caso como estamos creando el proyecto la versión es de forma implícita la 1.0. Añadir que estos valores son utilizados por Maven para, en el caso del Id de grupo, establecer la estructura de paquetes de las clases Java del proyecto y en el caso del Id de artefacto para establecer el nombre del artefacto.</p>
+</li>
+<li>
+<p><code>-DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</code>: El último parámetro simplemente hace que el comando se ejecute sin nuestra intervención. El primer parámetro es el más interesante ya que hace referencia al arquetipo o plantilla que queremos usar para generar nuestro nuevo proyecto. Recordemos que un arquetipo es un artefacto más y que todos los artefactos están en un repositorio.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Existen dos tipos de repositorio: Local y remoto. El local está en nuestro ordenador en general en la subcarpeta <code>.m2\</code> de la carpeta de usuario. Es una caché de los diferentes repositorios remotos y también donde se guardarán las snapshots (versiones de desarrollo) de nuestros proyectos. El repositorio remoto es donde residen las releases (versiones de producción) de nuestros proyectos y todos los demás artefactos: plugins, dependencias, arquetipos, etc. Un repositorio remoto a su vez puede ser público o privado. El público permite a cualquier usuario acceder a su contenido, el más conocido es el <a href="http://search.maven.org/">repositorio central de Maven</a>. El repositorio privado es el que probablemente tendrá nuestra empresa para almacenar las diferentes releases de los proyectos, las librerías estándar propias, etc. Se montan usando herramientas como Artifactory u otra equivalente.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ejecutemos el comando y veamos qué ocurre. Se ha creado una carpeta con el nombre de nuestro nuevo proyecto, que contiene una estructura de carpetas según el estándar de Maven,  la clase Java que genera la salida <code>Hello world!</code> y el fichero de proyecto de Maven <em>pom.xml</em>. Si lo abrimos con un editor de texto vemos que contiene las coordenadas del artefacto, el tipo de empaquetado, referencias a información adicional sobre el proyecto, y una sección para definir de qué artefactos depende. Tenemos un proyecto completo con la simple ejecución de un comando, no está mal. Es cierto que se trata de un proyecto sencillo pero sin mucho esfuerzo podremos montar un arquetipo tan complejo como queramos, que luego usaremos como punto de partida para nuestros proyectos.</p>
+</div>
+<div class="paragraph">
+<p>Ahora toca generar la aplicación. Ejecutamos el comando <code>mvn install</code>, desde la carpeta del proyecto (donde está nuestro <em>pom.xml</em>) y como sabemos se ejecutarán entonces las fases install del ciclo de vida de construcción por defecto y todas las anteriores, lo que se traduce en la ejecución de una serie de goals de distintos plugins, que dan como resultado la distribución de nuestra aplicación en la carpeta <em>target\</em> y en nuestro repositorio local, en la ruta <em>C:\Users\Usuario\.m2\repository\com\mycompany\app\my-app\1.0-SNAPSHOT</em>.</p>
+</div>
+<div class="paragraph">
+<p>El último paso, ejecutar la aplicación para comprobar que nuestro primer proyecto Maven se ha generado como es debido. Nos vamos a la carpeta <em>target\</em> y en la ventana de comandos escribimos el comando <code>java -cp my-app-1.0-SNAPSHOT.jar com.mycompany.app.App</code> para que la máquina virtual de nuestro JDK ejecute la aplicación Java. El resultado es el esperado <em>Hello World!</em></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig008.png" alt="prac001 fig008.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Maven es una herramienta potente y con muchas posibilidades. Para sacar provecho de ella es importante tener claros los conceptos básicos y por suerte tenemos buena información en la página web oficial. Merece la pena echar un rato de lectura porque Maven está presente en la gran mayoría de proyectos con los que nos vamos a encontrar en la vida real.</p>
+</div>
+<div class="paragraph">
+<p>Para tener una idea general y conocer dónde acudir cuando tengamos alguna duda en su uso será suficiente con leer <a href="http://maven.apache.org/guides/getting-started/index.html">el minitutorial</a>, y dentro de éste mirar estos enlaces:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="http://maven.apache.org/guides/mini/guide-configuring-maven.html">Configuración de Maven</a>: Ficheros de configuración, perfiles, repositorio propio.</p>
+</li>
+<li>
+<p><a href="http://maven.apache.org/guides/introduction/introduction-to-archetypes.html">Arquetipos</a>.</p>
+</li>
+<li>
+<p><a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">Fichero POM</a>: Super POM, POM minimo, herencia, agregación y variables</p>
+</li>
+<li>
+<p><a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html">Estructura de directorios de proyecto</a>.</p>
+</li>
+<li>
+<p><a href="http://maven.apache.org/guides/introduction/introduction-to-repositories.html">Introducción al concepto de repositorio</a>.</p>
+</li>
+<li>
+<p><a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">Ciclo de vida</a>: Nociones sobre el ciclo de vida de construcción de un proyecto Maven. Añadir a una phase un goal y configurarlo.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>El mayor valor de Maven a mi parecer es haber sabido reunir un conjunto completo de estándares de gestión del desarrollo de un proyecto, desde las pruebas unitarias hasta el despliegue en producción pasando por los tests de integración en una única herramienta de código abierto y extensible. Es el motivo de que  haya sustitido a Ant+Ivy y de que conviva con un único compitidor, más joven, Gradle, una opción muy válida en proyectos nuevos y que ofrece un muy buen compromiso entre flexibilidad y simplicidad al sustituir el XML por el lenguaje Groovy.</p>
+</div>
+<div class="paragraph">
+<p>Y hasta aquí la primera entrada del Blog! En la siguiente terminaremos de montar y configurar nuestro banco de trabajo Java EE y lo dejaremos listo para crear la miniaplicación sobre la que recorrer las distintas tecnologías de la Web.</p>
+</div>
+</div>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JDK">JDK</a>, <a href="http://www.lametaweb.com/tag/JRE"> JRE</a>, <a href="http://www.lametaweb.com/tag/Maven"> Maven</a>, <a href="http://www.lametaweb.com/tag/Java-EE"> Java EE</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Montar%20el%20entorno%20de%20trabajo%20adecuado%20(1%2F2)&amp;url=http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>La metaweb</h4>
+                        <img src="https://avatars.githubusercontent.com/u/11819148?v=3">
+                        
+                        
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+</body>
+</html>
