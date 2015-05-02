@@ -75,6 +75,8 @@ Para terminar con la instalación del JDK añadimos la variable de sistema _JAVA
 
 TIP: Para ir a una carpeta en la consola de comandos puedo usar el carácter comodín asterisco `\*` y así ahorrarme pulsaciones y tiempo. Por ejemplo, si quiero ir a la carpeta `esta-carpeta-001`, escribo `cd est*`, y si existiera otra carpeta con el nombre `estados` entonces tendría que escribir `cd esta-*`. Del mismo modo puedo escribir sólo las terminaciones de las carpetas, por ejemplo con `cd *001` también entraríamos en `esta-carpeta-001`.
 
+== Instalación de Maven
+
 Seguimos! Vamos ahora con la instalación de Maven. En resumen Maven es un gestor del desarrollo de un proyecto. Hace muchas cosas, entre ellas: Interviene cada vez que realizo una modificación en mi programa: Compila tirando de las dependencias necesarias, empaqueta y despliega el proyecto en el entorno que le indiquemos, también pasa automáticamente las pruebas unitarias y las de integración que yo haya definido. Por otro lado gestiona las distintas distribuciones de mi proyecto. Y hace muchas cosas más y otras que están por venir ya que es extensible. Maven es tanto más útil cuanto mayor es el tamaño del proyecto ya que es en proyectos grandes y multimódulo cuando las dependencias y demás aspectos empiezan a complicarse.
 
 Antes de nada para no liarnos tenemos que distinguir bien estos tres elementos: 
