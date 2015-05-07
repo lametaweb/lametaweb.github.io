@@ -3,8 +3,9 @@ La metaweb
 :hp-tags: JDK, JRE, Maven, Java EE
 :published_at: 2015-04-15
 
-== Introducción
 Comienza aquí este blog sobre desarrollo Web en Java. La idea es que se convierta en un lugar para explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web alrededor de Java EE, y donde desmitificar el desarrollo sobre Java EE usando para ello los ejemplos adecuados.
+
+== Introducción
 
 Pienso que los que estamos ahora dedicados al desarrollo web tenemos suerte. Si volvemos la vista sólo diez años atrás el escenario era bien distinto. Ahora disponemos de herramientas y estándares maduros que nos permiten centrarnos en el problema y librarnos de las pesadas tareas improductivas. Java EE ha tomado una buena velocidad de crucero y promete grandes cosas a medio y largo plazo. Ahora Java EE 7 está ya siendo usado en todos los nuevos proyectos. Por capas, JavaServer Faces 2.2.x ofrece estabilidad y consolida la versión 2 del estándar, complementado por PrimeFaces, y con compatibilidad con HTML5. La implementación de referencia de JSF es Mojarra. CDI aporta beans avanzados con inyección de dependencias normalizada y programación orientada a aspectos. Su estándar es Weld. EJB 3 ahora simplifica más aún la capa de negocio y permite por ejemplo empaquetar componentes en un WAR. JPA, escindida de EJB en Java EE 5, se consolida con la versión 2.1, con la implementación de referencia EclipseLink y la conocida Hibernate. Los servicios web se simplifican aún más con JAX-RS 2.0 y el nuevo soporte al formato de datos JSON. Y no puedo dejar de citar la nueva API para Websokets que nos abre el camino a la implementación en nuestras aplicaciones de pantallas que muestran información en tiempo real dentro del navegador.
 
@@ -74,6 +75,8 @@ Para terminar con la instalación del JDK añadimos la variable de sistema _JAVA
 |===
 
 TIP: Para ir a una carpeta en la consola de comandos puedo usar el carácter comodín asterisco `\*` y así ahorrarme pulsaciones y tiempo. Por ejemplo, si quiero ir a la carpeta `esta-carpeta-001`, escribo `cd est*`, y si existiera otra carpeta con el nombre `estados` entonces tendría que escribir `cd esta-*`. Del mismo modo puedo escribir sólo las terminaciones de las carpetas, por ejemplo con `cd *001` también entraríamos en `esta-carpeta-001`.
+
+== Instalación de Maven
 
 Seguimos! Vamos ahora con la instalación de Maven. En resumen Maven es un gestor del desarrollo de un proyecto. Hace muchas cosas, entre ellas: Interviene cada vez que realizo una modificación en mi programa: Compila tirando de las dependencias necesarias, empaqueta y despliega el proyecto en el entorno que le indiquemos, también pasa automáticamente las pruebas unitarias y las de integración que yo haya definido. Por otro lado gestiona las distintas distribuciones de mi proyecto. Y hace muchas cosas más y otras que están por venir ya que es extensible. Maven es tanto más útil cuanto mayor es el tamaño del proyecto ya que es en proyectos grandes y multimódulo cuando las dependencias y demás aspectos empiezan a complicarse.
 
