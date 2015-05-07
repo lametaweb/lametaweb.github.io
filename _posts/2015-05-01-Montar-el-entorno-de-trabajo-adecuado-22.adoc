@@ -5,6 +5,7 @@ La metaweb
 
 En esta segunda entrada terminaremos de instalar y configurar el software del entorno de desarrollo Java EE. Como IDE elegimos Eclipse, por ser el más extendido. El cambio de IDE no es algo costoso si nuestro proyecto está bajo Maven o Gradle.
 
+
 == Preliminares
 
 Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando al máximo la complejidad de las tecnologías empleadas. Por ejemplo cuando creamos un web service el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API REST e implementar cada operación.
