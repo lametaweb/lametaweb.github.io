@@ -53,7 +53,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Después de introducir una serie de datos básicos aceptamos los términos del  Programa de Desarrollador de Jboss. Esperamos a que la bajada del fichero acabe. Copiamos el fichero en la carpeta `C:\TALLER\Servidor\` y lo arrancamos escribiendo el comando `java -jar jboss-eap-6.3.0-installer.jar`.
 
-Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca del Firewall de Windows elegid la opción `Permitir`. A la hora de elegir la carpeta de instalación seleccionad como antes, `C:\TALLER\Servidor\`. Escribimos luego un nombre de usuario y una contraseña. Estas credenciales son las del usuario administrador del servidor, que lo gestionará a través del navegador usando la Consola de Administración. Apuntad en un sitio seguro estos datos para no olvidarlos. En la instalación de este servidor se eligieron las credenciales:
+Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca del Firewall de Windows elegid la opción `Permitir`. A la hora de elegir la carpeta de instalación seleccionad como antes, `C:\TALLER\Servidor\`. Escribimos luego un nombre de usuario y una contraseña. Estas credenciales son las del usuario administrador del servidor, que lo gestionará a través del navegador usando la Consola de Administración. En la instalación de este servidor se eligieron las credenciales:
 
 [cols="1h,2", width="40"]
 |===
@@ -63,6 +63,8 @@ Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca
 |password
 |abcd-1234
 |===
+
+WARNING: Apuntad siempre en un sitio seguro los datos de las credenciales que vayáis necesitando para recordarlas cuando sea necesario. En este Post ya llevamos dos credenciales.
 
 Es interesante instalar también los ejemplos que trae el servidor. Son varios proyectos Maven que muestran ejemplos sencillos sobre el uso de las diferentes tecnologías Java EE incidiendo en las gestionadas desde Red Hat: JPA (Hibernate), CDI (Weld), EJB, JSF, etc. Si abrimos el `pom.xml` de alguno de estos proyectos veremos como se definen de las dependencias en proyectos que se despliegan en el servidor JBoss.
 
