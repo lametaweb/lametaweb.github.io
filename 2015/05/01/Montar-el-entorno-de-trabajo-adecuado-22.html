@@ -36,7 +36,7 @@
     <meta property="og:description" content="En esta segunda entrada terminaremos de instalar y configurar el software del entorno de desarrollo Java EE. Como IDE elegimos Eclipse, por ser el más extendido. El cambio de IDE no es algo costoso si nuestro proyecto está bajo Maven..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/05/01/Montar-el-entorno-de-trabajo-adecuado-22.html" />
     <meta property="article:published_time" content="2015-04-30T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-05-08T09:16:51.489Z" />
+    <meta property="article:modified_time" content="2015-05-13T08:31:27.784Z" />
     <meta property="article:tag" content="Eclipse" />
     <meta property="article:tag" content="JBoss" />
     <meta property="article:tag" content="JBoss Tools" />
@@ -61,7 +61,7 @@
     "headline": "Montar el entorno de trabajo adecuado (2/2)",
     "url": "http://www.lametaweb.com/2015/05/01/Montar-el-entorno-de-trabajo-adecuado-22.html",
     "datePublished": "2015-04-30T22:00:00.000Z",
-    "dateModified": "2015-05-08T09:16:51.489Z",
+    "dateModified": "2015-05-13T08:31:27.784Z",
     "keywords": "Eclipse,  JBoss,  JBoss Tools",
     "description": "En esta segunda entrada terminaremos de instalar y configurar el software del entorno de desarrollo Java EE. Como IDE elegimos Eclipse, por ser el más extendido. El cambio de IDE no es algo costoso si nuestro proyecto está bajo Maven..."
 }
@@ -260,7 +260,7 @@ No marquéis el check <code>Use this as the default and do not ask again</code> 
 <p>Después de introducir una serie de datos básicos aceptamos los términos del  Programa de Desarrollador de Jboss. Esperamos a que la bajada del fichero acabe. Copiamos el fichero en la carpeta <code>C:\TALLER\Servidor\</code> y lo arrancamos escribiendo el comando <code>java -jar jboss-eap-6.3.0-installer.jar</code>.</p>
 </div>
 <div class="paragraph">
-<p>Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca del Firewall de Windows elegid la opción <code>Permitir</code>. A la hora de elegir la carpeta de instalación seleccionad como antes, <code>C:\TALLER\Servidor\</code>. Escribimos luego un nombre de usuario y una contraseña. Estas credenciales son las del usuario administrador del servidor, que lo gestionará a través del navegador usando la Consola de Administración. Apuntad en un sitio seguro estos datos para no olvidarlos. En la instalación de este servidor se eligieron las credenciales:</p>
+<p>Se iniciará un sencillo wizard de instalación. Si os aparece un mensaje acerca del Firewall de Windows elegid la opción <code>Permitir</code>. A la hora de elegir la carpeta de instalación seleccionad como antes, <code>C:\TALLER\Servidor\</code>. Escribimos luego un nombre de usuario y una contraseña. Estas credenciales son las del usuario administrador del servidor, que lo gestionará a través del navegador usando la Consola de Administración. En la instalación de este servidor se eligieron las credenciales:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 40%;">
 <colgroup>
@@ -278,6 +278,18 @@ No marquéis el check <code>Use this as the default and do not ask again</code> 
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Apuntad siempre en un sitio seguro los datos de las credenciales que vayáis necesitando para recordarlas cuando sea necesario. En este Post ya llevamos dos credenciales.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Es interesante instalar también los ejemplos que trae el servidor. Son varios proyectos Maven que muestran ejemplos sencillos sobre el uso de las diferentes tecnologías Java EE incidiendo en las gestionadas desde Red Hat: JPA (Hibernate), CDI (Weld), EJB, JSF, etc. Si abrimos el <code>pom.xml</code> de alguno de estos proyectos veremos como se definen de las dependencias en proyectos que se despliegan en el servidor JBoss.</p>
 </div>
