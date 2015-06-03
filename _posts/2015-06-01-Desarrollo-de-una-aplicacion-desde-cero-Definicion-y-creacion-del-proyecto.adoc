@@ -143,3 +143,16 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la codificación del proyecto a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y Properties > Resource > Text File encoding > Other: UTF-8.
 
+.Significado de los elementos creados en el proyecto
+[cols="1,3", options="header"]
+|===
+
+|Name of Column 1 
+|Name of Column 2
+
+|user
+|admin
+
+|password
+|abcd-1234
+|===
