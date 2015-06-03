@@ -51,50 +51,52 @@ A continuación establecemos la arquitectura de la aplicación, que es de lo que
 
 Muy bien, manos a la obra, primero haremos algunos ajuste a nuestro recien estrenado entorno de desarrollo. Añadimos el siguiente elemento `<profile>` al fichero de configuración de Maven a nivel de usuario, localizado en una ruta del tipo _C:\Users\Usuario\.m2\settings.xml_, para que nuestro IDE pueda descargar las dependencias específicas de JBoss que vamos a usar en el proyecto.
 
-[source,xml]
+[source,xml,indent=0]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
-	<profiles>
-		<profile>
-			<id>jboss-public-repository</id>
-			<repositories>
-				<repository>
-					<id>jboss-public-repository-group</id>
-					<name>JBoss Public Maven Repository Group</name>
-					<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-					<layout>default</layout>
-					<releases>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</snapshots>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>jboss-public-repository-group</id>
-					<name>JBoss Public Maven Repository Group</name>
-					<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-					<layout>default</layout>
-					<releases>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-	</profiles>
-	<activeProfiles>
-		<activeProfile>jboss-public-repository</activeProfile>
-	</activeProfiles>
+  <profiles>
+    <profile>
+      <id>jboss-public-repository</id>
+      <repositories>
+        <repository>
+          <id>jboss-public-repository-group</id>
+          <name>JBoss Public Maven Repository Group</name>
+          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>jboss-public-repository-group</id>
+          <name>JBoss Public Maven Repository Group</name>
+          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>jboss-public-repository</activeProfile>
+  </activeProfiles>
 </settings>
 ----
+
+
 
