@@ -159,8 +159,8 @@ Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la c
 |Carpeta _target_
 |[small]#Contendrá los productos generados a partir de los elementos de la carpeta _src_. En este caso será un fichero desplegable _.war_ conteniendo nuestra aplicación que incluirá toda la información para su despliegue en el servidor.#
 
-|Carpeta _src_
-|[small]#x#
+|Fichero _.classpath_
+|[small]#Generado por Eclipse para registrar los lugares donde buscar clases java.#
 
 |Carpeta _src_
 |[small]#x#
