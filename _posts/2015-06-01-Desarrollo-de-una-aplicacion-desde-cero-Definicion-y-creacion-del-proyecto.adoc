@@ -98,5 +98,9 @@ Muy bien, manos a la obra, primero haremos algunos ajuste a nuestro recien estre
 </settings>
 ----
 
+Por otro lado, para que en la carpeta de nuestro workspace no se generen ficheros de índice de gran tamaño nos vamos a Eclipse a la opción del menú _Window > Preferences > Maven_ y dejamos las opciones tal como se indican en la figura.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig005.png[]
+
 
 
