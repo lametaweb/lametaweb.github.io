@@ -13,9 +13,11 @@ conoce qué necesita y quienes sabemos cómo construirlo.
 
 Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traido también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución. Tras varias reuniones con los empleados designados como interlocutores para el proyecto detectamos estas carencias:
 
-	1. Dificultad en la planificación de trabajos: El Gerente no conoce la disponibilidad de aparatos para una fecha.
-	2. Carencia de datos de trabajos realizados: El Jefe Técnico no dispone de información sobre trabajos ya realizados, necesarios
-		cuando éstos han de repetirse o cuando se inician trabajos similares.
-	3. Desconocimiento del progreso de cada trabajo: El Jefe de Operación no puede informar de forma clara al cliente en cada momento
-		del progreso del trabajo encargado.
-	4. Falta de información estadistica: Variaciones de carga de trabajo estacionales, frecuencia de averías de componentes por modelo de drone, etc.
+1. Dificultad en la planificación de trabajos: El Gerente no conoce la disponibilidad de aparatos para una fecha y no puede dar a sus clientes fechas de comienzo del trabajo con agilidad.
+2. Carencia de datos sobre trabajos ya realizados: El Jefe Técnico no dispone de información sobre trabajos ya realizados, útiles cuando éstos han de repetirse o cuando se inician trabajos similares.
+3. Desconocimiento del progreso de cada trabajo: El Jefe de Operación no puede informar de forma clara al cliente en cada momento del progreso del trabajo encargado.
+4. Ausencia de información estadística: Variaciones de carga de trabajo estacionales, frecuencia de averías por componentes y por modelo de drone, etc.
+
+
+    
+    
