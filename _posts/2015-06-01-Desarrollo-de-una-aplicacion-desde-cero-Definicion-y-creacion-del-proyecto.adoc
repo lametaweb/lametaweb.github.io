@@ -154,10 +154,10 @@ Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la c
 |[small]#Es generada por el propio Eclipse para guardar información de configuración del proyecto. No es parte constituyente de nuestro proyecto ya que es creada para gestión interna del IDE.# 
 
 |Carpeta _src_
-|[small]#x#
+|[small]#Aquí situaremos todos los elementos de nuestro proyecto organizados en carpetas según las convenciones adoptadas por Maven. En la subcarpeta _main_ están los elementos necesarios para generar la aplicación y en la carpeta _test_ los elementos para las pruebas unitarias.#
 
-|Carpeta _src_
-|[small]#x#
+|Carpeta _target_
+|[small]#Contendrá los productos generados a partir de los elementos de la carpeta _src_. En este caso será un fichero desplegable _.war_ conteniendo nuestra aplicación que incluirá toda la información para su despliegue en el servidor.#
 
 |Carpeta _src_
 |[small]#x#
