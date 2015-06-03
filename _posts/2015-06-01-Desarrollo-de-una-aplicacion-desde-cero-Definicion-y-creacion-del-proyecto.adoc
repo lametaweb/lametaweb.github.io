@@ -126,4 +126,20 @@ _Create a simple proyect (skip archetype selection)_ y pulsamos _Next_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig020.png[]
 
+Definimos las propiedades básicas del proyecto: Coordenadas en el repositorio Maven, empaquetado y datos descriptivos:
+
+* GroupId : com.lametaweb.javaee
+* ArtifactId : jdrone
+* pakcaging : war
+* Name : jDrone Lite
+* Description : Proyecto Maven Java EE basico desde cero
+
+Los demás campos los dejamos a su valor por defecto y pulsamos el botón _Finish_. Después de unos segundos el proyecto se habrá creado. Si abrimos
+el nodo correspondiente al proyecto veremos que la estructura y ficheros es la que corresponde a un proyecto Maven. Para ver de forma
+más limpia los elementos del proyecto abrimos la View _Navigator_. Esta vista nos muestra simplemente carpetas y ficheros, es decir lo que
+constituye en proyecto Java EE sin más.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig025.png[]
+
+Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la codificación del proyecto a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y Properties > Resource > Text File encoding > Other: UTF-8.
 
