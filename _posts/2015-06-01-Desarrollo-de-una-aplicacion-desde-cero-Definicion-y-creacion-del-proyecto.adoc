@@ -151,7 +151,7 @@ Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la c
 |Name of Column 2
 
 |user
-|admin
+|admin 
 
 |password
 |abcd-1234
