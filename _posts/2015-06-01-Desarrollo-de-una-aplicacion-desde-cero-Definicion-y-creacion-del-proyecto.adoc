@@ -11,7 +11,11 @@ Lo que haremos es imaginar un cliente con una necesidad, analizarla para entende
 a medida que vayamos entendiendo con mayor profundidad la realidad del cliente irán produciéndose ajustes que afectarán tanto al análisis, como al diseño, y a las tecnologías empleadas. La creación de una aplicación es similar al proceso de pintar un cuadro. El cuadro no se empieza por arriba y se acaba por abajo como lo haría la impresora que tenemos en casa sino que se va definiendo y perfilando en su conjunto, incluso en ocasiones descartando, añadiendo o cambiando elementos completos de la escena. En pintura el pintor dialoga consigo mismo al crear su obra, en el desarrollo del software debe existir un dialogo continuado y fluido entre quien
 conoce qué necesita y quienes sabemos cómo construirlo.
 
-Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traido también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución. Tras varias reuniones con los empleados designados como interlocutores para el proyecto detectamos estas carencias:
+Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traido también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución.
+
+== Análisis
+
+Tras varias reuniones con los empleados designados como interlocutores para el proyecto detectamos estas carencias:
 
 1. Dificultad en la planificación de trabajos: El Gerente no conoce la disponibilidad de aparatos para una fecha y no puede dar a sus clientes fechas de comienzo del trabajo con agilidad.
 2. Carencia de datos sobre trabajos ya realizados: El Jefe Técnico no dispone de información sobre trabajos ya realizados, útiles cuando éstos han de repetirse o cuando se inician trabajos similares.
@@ -43,5 +47,54 @@ A continuación establecemos la arquitectura de la aplicación, que es de lo que
 * Framework de persistencia: JPA 2.1 implementado con Hibernate.
 * Base de datos: Derby embebida en la aplicación con base de datos en el disco duro (no en memoria).
 
+== Ajuste del entorno
 
-    
+Muy bien, manos a la obra, primero haremos algunos ajuste a nuestro recien estrenado entorno de desarrollo. Añadimos el siguiente elemento `<profile>` al fichero de configuración de Maven a nivel de usuario, localizado en una ruta del tipo _C:\Users\Usuario\.m2\settings.xml_, para que nuestro IDE pueda descargar las dependencias específicas de JBoss que vamos a usar en el proyecto.
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<profiles>
+		<profile>
+			<id>jboss-public-repository</id>
+			<repositories>
+				<repository>
+					<id>jboss-public-repository-group</id>
+					<name>JBoss Public Maven Repository Group</name>
+					<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+					<layout>default</layout>
+					<releases>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>jboss-public-repository-group</id>
+					<name>JBoss Public Maven Repository Group</name>
+					<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+					<layout>default</layout>
+					<releases>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>jboss-public-repository</activeProfile>
+	</activeProfiles>
+</settings>
+----
+
