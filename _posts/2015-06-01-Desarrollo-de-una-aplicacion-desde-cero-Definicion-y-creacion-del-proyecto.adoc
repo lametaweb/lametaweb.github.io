@@ -167,8 +167,18 @@ Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la c
 
 |Fichero _pom.xml_
 |[small]#Contiene la configuración de construcción para Maven de nuestro proyecto.#
-
-
-
 |===
+
+TIP: Cuando abrimos un fichero de proyecto con contenido XML en general preferimos visualizarlo como texto y no a modo de formulario 
+como lo muestra por defecto Eclipse. Para esto nos vamos al menú a la opción
+	_Window > Preferences > General > Editors > File associantions > *.xml > XML Editor_ y pulsamos _Default_ y finalmente _OK_.
+
+El empaquetado por defecto para un proyecto Maven como es el nuestro es JAR, sin embargo nosotros queremos crear una aplicación web. Se hace necesario por tanto especificar el empaquetado de forma explícita en el fichero _pom.xml_. Añadamos la línea `<packaging>war</packaging>` bajo el elemento raiz _<proyect>_ y Ctrl + S para guardar los cambios.
+
+Sin embargo después de guardar veremos que aparece una indicación de error abajo en la solapa _Markers_. Lo que nos está diciendo es que tenemos que actualizar el proyecto para que tome los cambios del fichero POM. En general
+siempre que modifiquemos el POM tenemos que actualizar para que sus cambios vayan al proyecto. Pulsamos botón derecho sobre el icono del proyecto y _Maven > Update Project..._. El warning en cuestión desaparece de la escena.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig030.png[]
+
+
 
