@@ -18,6 +18,14 @@ Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con 
 3. Desconocimiento del progreso de cada trabajo: El Jefe de Operación no puede informar de forma clara al cliente en cada momento del progreso del trabajo encargado.
 4. Ausencia de información estadística: Variaciones de carga de trabajo estacionales, frecuencia de averías por componentes y por modelo de drone, etc.
 
+Lo anterior naturalmente no es un análisis de requisitos exhaustivo, pero muestra cómo una aplicación puede facilitar en gran medida las tareas dentro de una organicación. Cómo nuestro objetivo ahora es entender las partes de una aplicación Java EE tomaremos en cuenta sólo el primer punto de la lista.
 
+Delimitamos primero el sistema a desarrollar. Como entidades del modelo de dominio distinguimos las siguientes:
+
+. Drone: Dispositivo mecánico que tiene una serie de trabajos programados.
+	Trabajo:	Tarea de un drone que se extiende en el tiempo desde un momento inicial a otro final estimados y
+				que consiste en la realización de un recorrido
+				con un punto inicial, o despegue, N puntos intermedios, y un punto final, o aterrizaje, geolocalizados.
+	PuntoRuta:	Representa cada punto geolocalizado que forma parte de la ruta que se define para un Trabajo.
     
     
