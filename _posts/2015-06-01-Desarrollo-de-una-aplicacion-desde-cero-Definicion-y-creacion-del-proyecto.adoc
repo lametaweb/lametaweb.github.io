@@ -102,5 +102,15 @@ Por otro lado, para que en la carpeta de nuestro workspace no se generen fichero
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig005.png[]
 
+Además podemos buscar en esta carpeta los ficheros con la extensión _.cfs_ y borrar los que sean de gran tamaño.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig010.png[]
+
+Adicionalmente disponemos de una View de Eclipse donde podemos visualizar los repositorios que tenemos configurados y tocar la configuración sobre los índices que queremos descargar para cada uno de ellos.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig015.png[]
+
+OK, nos vamos a Eclipse y elegimos como espacio de trabajo la carpeta que creamos para tal fin, similar a _C:\TALLER\workspace\_. Si es la primera vez
+que entramos en el workspace pulsamos el botón Workbench en la esquina superior derecha de la pantalla de bienvenida para retirarla, desmarcamos el check _Show on Startup_ en la ventana de JBoss Central que aparece en el centro del IDE y la cerramos. Finalmente maximizamos la ventana de Eclipse para trabajar con el mayor espacio posible.
 
 
