@@ -13,7 +13,7 @@ conoce qué necesita y quienes sabemos cómo construirlo.
 
 Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traido también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución.
 
-== Análisis
+== Análisis inicial
 
 Tras varias reuniones con los empleados designados como interlocutores para el proyecto detectamos estas carencias:
 
@@ -112,5 +112,18 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 OK, nos vamos a Eclipse y elegimos como espacio de trabajo la carpeta que creamos para tal fin, similar a _C:\TALLER\workspace\_. Si es la primera vez
 que entramos en el workspace pulsamos el botón Workbench en la esquina superior derecha de la pantalla de bienvenida para retirarla, desmarcamos el check _Show on Startup_ en la ventana de JBoss Central que aparece en el centro del IDE y la cerramos. Finalmente maximizamos la ventana de Eclipse para trabajar con el mayor espacio posible.
+
+Antes de crear cualquier elemento de la aplicación definimos la codificación que Eclipse empleará en los ficheros del proyecto. Esta cuestión
+es importante ya que evita que tengamos problemas con los caracteres mostrados que estén fuera del estándar ASCII. Para ello nos vamos al menú
+_Window > Preferences > General > Workspace > Text File Encoding > Other > UTF-8_ y en esa misma ventana desmarcamos la opción _Build automatically_.
+
+NOTE: Si no lo hemos hecho aún es conveniente quitar el revisor de sintaxis de Eclipse. Ir a _Window > Preferences > General > Editors > Text Editors > Spelling_  y desmarcar _Enable Spell Checking_. Así podremos distinguir mejor los errores y los warnings que aparezcan en nuestro código fuente durante el desarrollo.
+
+== Entrando en materia. Creación del proyecto.
+	
+Creamos un proyecto Maven en blanco en la opción _File > New > Maven Project_. En la primera pantalla del wizard marcamos la primera opción
+_Create a simple proyect (skip archetype selection)_ y pulsamos _Next_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig020.png[]
 
 
