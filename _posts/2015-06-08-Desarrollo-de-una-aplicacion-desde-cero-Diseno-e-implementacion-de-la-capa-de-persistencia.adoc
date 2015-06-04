@@ -10,7 +10,9 @@ La capa de persistencia tiene como cometido establecer un mapeo con la base de d
 
 En el plano tecnológico tenemos que definir lo siguiente:
 
-. El proveedor de persistencia: Es el conjunto de librerías que implementan el ORM. Elegimos Hibernate, ya que es el más extendido y además viene de serie en nuestro servidor JBoss.
+* El proveedor de persistencia: Es el conjunto de librerías que implementan el ORM. Elegimos Hibernate, ya que es el más extendido y además viene de serie en nuestro servidor JBoss.
 
-. El gestor de base de datos: Usamos una base de datos Derby embebida lo que nos permite simplificar de momento la capa de Datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro, nosotros elegimos esta última opción, para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae ya el servidor JBoss EAP, y es similar a la base de datos Derby, para que veamos un ejemplo de como desplegar recursos en el servidor desde Maven.
+* El gestor de base de datos: Usamos una base de datos Derby embebida lo que nos permite simplificar de momento la capa de Datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro, nosotros elegimos esta última opción para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae puesta el servidor JBoss EAP, similar a la base de datos Derby, para que veamos también como desplegar recursos en el servidor desde Maven.
+
+
 
