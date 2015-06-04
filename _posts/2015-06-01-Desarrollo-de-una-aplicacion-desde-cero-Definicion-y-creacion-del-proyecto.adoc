@@ -200,4 +200,19 @@ se interpretará nuestro código ni la versión de máquina virtual para a que g
 	</build>
 ----
 
+El elemento <finalName> en la segunda línea no tiene nada que ver con las versiones de Java, en cambio lo que hace es fijar un nombre simple para nuestro artefacto WAR final, en nuestro caso "jdrone.war". Esto es importante porque por defecto este nombre es el que el servidor usa para nombrar el contexto de la aplicación en el proceso de despliegue. El contexto de un aplicación web es lo que la distingue de los demás elementos instalados en el servidor y nos permite por tanto referenciarla, y siempre es conveniente que este nombre
+sea sencillo.
+
+El resto corresponde como se ha indicado a la especificación de las versiones de Java usadas durante la compilación de las clases en
+el proyecto, puedes consultar el primer Post para recordar los detalles. Aquí hemos declarado que trabajaremos con la máquina virtual de
+Java 8 y así mismo escribiremos el código en la versión 8. Es importante señalar que la versión del servidor que usemos en los distíntos
+ámbitos: Desarrollo, preproducción y producción, debe ser compatible con Java 8. En nuestro caso sí es así ya que la versión 6.3 del servidor
+JBoss EAP con la Update 3 es compatible. La versión 6.4 también tiene compatibilidad completa con Java 8.
+ 
+Como hemos visto para configurar un plugin para nuestro proyecto debemos declarlo en el POM, aquí hemos modificando la configuración 
+del plugin Compilador. Y finalmente como siempre actualizamos el proyecto como antes se ha indicado y el observamos que el warning desaparece.
+
+Es interesante ver como Eclipse después de la inclusión del plugin Compilador de Maven a actualizado las facetas de nuestro proyecto. Inicialmente no teniamos ninguna y ahora tras definir el empaquetado WAR en el POM tendremos la facetas: Web, Java y Javascript. Podemos comprobarlo con un click en botón derecho sobre proyecto en la opción _Properties > Project Facets_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig035.png[]
 
