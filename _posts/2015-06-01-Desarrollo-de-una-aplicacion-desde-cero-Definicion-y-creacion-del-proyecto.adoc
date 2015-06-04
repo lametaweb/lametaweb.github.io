@@ -48,7 +48,7 @@ A continuación establecemos la arquitectura de la aplicación, que es de lo que
 
 == Ajuste del entorno
 
-Muy bien, manos a la obra, primero haremos algunos ajustes a nuestro recién estrenado entorno de desarrollo. Para que nuestro IDE pueda descargar a través de Maven las dependencias específicas de JBoss que vamos a necesitar en el proyecto, añadiremos un elemento adicional <profile> al fichero de configuración de Maven local a nivel de usuario, localizado en la ruta _C:\Users\Usuario\.m2\settings.xml_. Si la instalación de Maven es nueva y no existían cambios en esta configuración podemos copiar y pegar directamente todo el contenido XML mostrado más abajo. Si ya existía una configuración previa copiamos el contenido del elemento <profile> y lo pegamos dentro del elemento <profiles>.
+Muy bien, manos a la obra, primero haremos algunos ajustes a nuestro recién estrenado entorno de desarrollo. Para que nuestro IDE pueda descargar a través de Maven las dependencias específicas de JBoss que vamos a necesitar en el proyecto, añadiremos un elemento adicional <profile> al fichero de configuración de Maven local a nivel de usuario, localizado en la ruta _C:\Users\Usuario\.m2\settings.xml_. Si la instalación de Maven es nueva y no existían cambios en esta configuración podemos copiar y pegar directamente todo el contenido XML mostrado más abajo. Si ya existía una configuración previa copiamos el contenido del elemento <profile> y lo pegamos dentro del elemento <profiles> y el elemento <activeProfiles> dentro del elemento <settings>.
 
 [source,xml,indent=0]
 ----
@@ -96,7 +96,7 @@ Muy bien, manos a la obra, primero haremos algunos ajustes a nuestro recién est
 	</settings>
 ----
 
-Por otro lado, para que en la carpeta de nuestro workspace no se generen ficheros de índice de gran tamaño nos vamos a Eclipse a la opción del menú _Window > Preferences > Maven_ y dejamos las opciones tal como se indican en la figura.
+Por otro lado, para que en la carpeta de nuestro workspace Maven no genere ficheros de índice de gran tamaño nos vamos a Eclipse a la opción del menú _Window > Preferences > Maven_ y dejamos las opciones tal como se indican en la figura.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig005.png[]
 
@@ -108,18 +108,15 @@ Adicionalmente disponemos de una View de Eclipse donde podemos visualizar los re
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig015.png[]
 
-OK, nos vamos a Eclipse y elegimos como espacio de trabajo la carpeta que creamos para tal fin, similar a _C:\TALLER\workspace\_. Si es la primera vez
-que entramos en el workspace pulsamos el botón Workbench en la esquina superior derecha de la pantalla de bienvenida para retirarla, desmarcamos el check _Show on Startup_ en la ventana de JBoss Central que aparece en el centro del IDE y la cerramos. Finalmente maximizamos la ventana de Eclipse para trabajar con el mayor espacio posible.
+OK, nos vamos a Eclipse y elegimos como espacio de trabajo la carpeta que creamos para tal fin, que será similar a _C:\TALLER\workspace\_. Si es la primera vez que entramos en Eclipse con ese el workspace tendremos que retirar la pantalla de bienvenida pulsando el botón _Workbench_ en la esquina superior derecha de la pantalla. A continuación, ya dentro de la Perspectiva inicial de Eclipse, desmarcamos el check _Show on Startup_ en la ventana de JBoss Central que aparece en el centro del IDE y la cerramos. Finalmente maximizamos la ventana de Eclipse para trabajar con el mayor espacio posible.
 
-Antes de crear cualquier elemento de la aplicación definimos la codificación que Eclipse empleará en los ficheros del proyecto. Esta cuestión
-es importante ya que evita que tengamos problemas con los caracteres mostrados que estén fuera del estándar ASCII. Para ello nos vamos al menú
-_Window > Preferences > General > Workspace > Text File Encoding > Other > UTF-8_ y en esa misma ventana desmarcamos la opción _Build automatically_.
+Antes de crear cualquier elemento de la aplicación definimos la codificación que Eclipse empleará en los ficheros del proyecto. Esta cuestión es importante ya que evita que tengamos problemas con los caracteres mostrados que estén fuera del estándar ASCII. Para ello nos vamos al menú _Window > Preferences > General > Workspace > Text File Encoding > Other > UTF-8_ y en esa misma ventana desmarcamos la opción _Build automatically_.
 
-NOTE: Si no lo hemos hecho aún es conveniente quitar el revisor de sintaxis de Eclipse. Ir a _Window > Preferences > General > Editors > Text Editors > Spelling_  y desmarcar _Enable Spell Checking_. Así podremos distinguir mejor los errores y los warnings que aparezcan en nuestro código fuente durante el desarrollo.
+NOTE: Si no lo has cambiado aún es conveniente quitar el revisor de sintaxis de Eclipse. Ve a _Window > Preferences > General > Editors > Text Editors > Spelling_  y desmarca _Enable Spell Checking_. Así podremos distinguir mejor los errores y los warnings que aparezcan en nuestro código fuente durante el desarrollo.
 
 == Entrando en materia. Creación del proyecto.
 	
-Creamos un proyecto Maven en blanco en la opción _File > New > Maven Project_. En la primera pantalla del wizard marcamos la primera opción
+Creamos un proyecto Maven en blanco con la opción del menú _File > New > Maven Project_. En la primera pantalla del wizard marcamos la primera opción
 _Create a simple proyect (skip archetype selection)_ y pulsamos _Next_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig020.png[]
@@ -133,16 +130,14 @@ Definimos las propiedades básicas del proyecto: Coordenadas en el repositorio M
 * Description : Proyecto Maven Java EE basico desde cero
 
 Los demás campos los dejamos a su valor por defecto y pulsamos el botón _Finish_. Después de unos segundos el proyecto se habrá creado. Si abrimos
-el nodo correspondiente al proyecto veremos que la estructura y ficheros es la que corresponde a un proyecto Maven. Para ver de forma
-más limpia los elementos del proyecto abrimos la View _Navigator_. Esta vista nos muestra simplemente carpetas y ficheros, es decir lo que
-constituye en proyecto Java EE sin más.
+el nodo correspondiente al proyecto veremos que la estructura y ficheros es la que corresponde a un proyecto Maven. Para ver de forma más limpia los elementos del proyecto abrimos la View _Navigator_. Esta vista nos muestra simplemente carpetas y ficheros, es decir lo que constituye un proyecto Java EE sin más.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig025.png[]
 
-Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la codificación del proyecto a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y Properties > Resource > Text File encoding > Other: UTF-8.
+Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la codificación a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y _Properties > Resource > Text File encoding > Other: UTF-8_.
 
 .Elementos generados en la creación del proyecto
-[cols="1,3", options="header"]
+[cols="6,15", options="header"]
 |===
 
 |Elemento 
@@ -155,31 +150,28 @@ Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la c
 |[small]#Aquí situaremos todos los elementos de nuestro proyecto organizados en carpetas según las convenciones adoptadas por Maven. En la subcarpeta _main_ están los elementos necesarios para generar la aplicación y en la carpeta _test_ los elementos para las pruebas unitarias.#
 
 |Carpeta _target_
-|[small]#Contendrá los productos generados a partir de los elementos de la carpeta _src_. En este caso será un fichero desplegable _.war_ conteniendo nuestra aplicación que incluirá toda la información para su despliegue en el servidor.#
+|[small]#Contendrá los productos generados a partir de los elementos de la carpeta _src_. En este caso será un fichero desplegable _.war_ conteniendo nuestra aplicación, que incluirá toda la información para su despliegue en el servidor.#
 
 |Fichero _.classpath_
-|[small]#Generado por Eclipse para registrar información de tiempo de compilación: Qué compilar, dónde y los lugares donde buscar clases java de terceros. No es parte constituyente de nuestro aplicación.#
+|[small]#Generado por Eclipse para registrar información de tiempo de compilación: Qué compilar, dónde y los lugares donde buscar clases java de terceros. Es de uso interno de Eclipse y no es parte constituyente de nuestra aplicación.#
 
 |Fichero _.project_
 |[small]#Contiene metainformación del proyecto para su autodescripción. No es parte constituyente de nuestro aplicación.#
 
 |Fichero _pom.xml_
-|[small]#Contiene la configuración de construcción para Maven de nuestro proyecto.#
+|[small]#Es el fichero que contiene toda la información para la construcción del proyecto. Es decir el proceso de generación de artefactos instalables a partir de los distintos elementos de nuestro proyecto.#
 |===
 
-TIP: Cuando abrimos un fichero de proyecto con contenido XML en general preferimos visualizarlo como texto y no a modo de formulario 
-como lo muestra por defecto Eclipse. Para esto nos vamos al menú a la opción
-	_Window > Preferences > General > Editors > File associantions > *.xml > XML Editor_ y pulsamos _Default_ y finalmente _OK_.
+TIP: Cuando abrimos un fichero de proyecto con contenido XML en general preferimos visualizarlo como texto y no a modo de formulario como lo muestra por defecto Eclipse. Para cambier esto nos vamos al menú a la opción _Window > Preferences > General > Editors > File associantions > *.xml > XML Editor_ y pulsamos _Default_ y finalmente _OK_.
 
 El empaquetado por defecto para un proyecto Maven como es el nuestro es JAR, sin embargo nosotros queremos crear una aplicación web. Se hace necesario por tanto especificar el empaquetado de forma explícita en el fichero _pom.xml_. Añadamos la línea `<packaging>war</packaging>` bajo el elemento raiz _<proyect>_ y Ctrl + S para guardar los cambios.
 
-Sin embargo después de guardar veremos que aparece una indicación de error abajo en la solapa _Markers_. Lo que nos está diciendo es que tenemos que actualizar el proyecto para que tome los cambios del fichero POM. En general
-siempre que modifiquemos el POM tenemos que actualizar para que los cambios vayan al proyecto. Pulsamos botón derecho sobre el icono del proyecto y _Maven > Update Project..._. El warning en cuestión desaparece de la escena.
+Pero algo ocurre, después de guardar vemos que aparece una nueva indicación de error abajo en la solapa _Markers_. Lo que nos está diciendo es que tenemos que actualizar el proyecto para que tome los cambios del fichero POM. En general
+siempre que modifiquemos el POM tenemos que actualizar para que los cambios vayan al proyecto. Pulsamos botón derecho sobre el icono del proyecto y _Maven > Update Project..._ o de manera más directa con la hotkey Alt + F5. El warning en cuestión desaparece de la escena.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig030.png[]
 
-Pero si nos fijamos en la solapa Markers vemos que aún tenemos un warning. Es debido a que no hemos especificado la versión de Java en que
-se interpretará nuestro código ni la versión de máquina virtual para a que generaremos el código. Añadiremos lo siguiente al POM bajo el elemento <project>:
+Pero si nos fijamos en la solapa _Markers_ vemos que aún tenemos un warning. Es debido a que no hemos especificado la versión de Java en que se interpretará nuestro código ni la versión de máquina virtual para a que generaremos el código. Añadamos lo siguiente al POM bajo el elemento <project>:
 
 [source,xml,indent=0]
 ----
@@ -199,22 +191,16 @@ se interpretará nuestro código ni la versión de máquina virtual para a que g
 	</build>
 ----
 
-El elemento <finalName> en la segunda línea no tiene nada que ver con las versiones de Java, en cambio lo que hace es fijar un nombre simple para nuestro artefacto WAR final, en nuestro caso "jdrone.war". Esto es importante porque por defecto este nombre es el que el servidor usa para nombrar el contexto de la aplicación en el proceso de despliegue. El contexto de un aplicación web es lo que la distingue de los demás elementos instalados en el servidor y nos permite por tanto referenciarla, y siempre es conveniente que este nombre
-sea sencillo.
+El elemento <finalName> en la segunda línea no tiene nada que ver con las versiones de Java, en cambio lo que hace es fijar un nombre simple para nuestro artefacto WAR final, en nuestro caso "jdrone.war". Esto es importante porque por defecto este nombre es el que el servidor usa para nombrar el contexto de la aplicación en el proceso de despliegue. El contexto de un aplicación web es lo que la distingue de los demás elementos instalados en el servidor y nos permite por tanto referenciarla, y siempre es conveniente que este nombre sea sencillo.
 
-El resto corresponde como se ha indicado a la especificación de las versiones de Java usadas durante la compilación de las clases en
-el proyecto, puedes consultar el primer Post para recordar los detalles. Aquí hemos declarado que trabajaremos con la máquina virtual de
-Java 8 y así mismo escribiremos el código en la versión 8. Es importante señalar que la versión del servidor que usemos en los distíntos
-ámbitos: Desarrollo, preproducción y producción, debe ser compatible con Java 8. En nuestro caso sí es así ya que la versión 6.3 del servidor
-JBoss EAP con la Update 3 es compatible. La versión 6.4 también tiene compatibilidad completa con Java 8.
+El resto corresponde como se ha indicado a la especificación de las versiones de Java usadas durante la compilación de las clases en el proyecto, puedes consultar el primer post para recordar los detalles. Aquí hemos declarado que trabajaremos con la máquina virtual de Java 8 y así mismo escribiremos el código en la versión 8. Es importante señalar que la versión del servidor que usemos en los distíntos ámbitos: Desarrollo, preproducción y producción, debe ser por tanto compatible con Java 8. En nuestro caso sí es así ya que la versión 6.3 del servidor JBoss EAP con la Update 3 es compatible. La versión 6.4 también tiene compatibilidad completa con Java 8.
  
-Como hemos visto para configurar un plugin para nuestro proyecto debemos declarlo en el POM, aquí hemos modificando la configuración 
-del plugin Compilador. Y finalmente como siempre actualizamos el proyecto como antes se ha indicado y el observamos que el warning desaparece.
+Como hemos visto para configurar un plugin para nuestro proyecto debemos declarlo en el POM, aquí hemos modificando la configuración del plugin compilador. Y finalmente como siempre actualizamos el proyecto como antes se ha indicado y observamos que el warning ya no aparece.
 
-Es interesante ver como Eclipse después de la inclusión del plugin Compilador de Maven a actualizado las facetas de nuestro proyecto. Inicialmente no teniamos ninguna y ahora tras definir el empaquetado WAR en el POM tendremos la facetas: Web, Java y Javascript. Podemos comprobarlo con un click en botón derecho sobre proyecto en la opción _Properties > Project Facets_.
+Es interesante ver como Eclipse después actualizar la información de configuración en el fichero POM ha actualizado las facetas de nuestro proyecto. Inicialmente no teniamos ninguna y ahora tenemos las facetas: Web, Java y Javascript. Podemos comprobarlo con un click en botón derecho sobre proyecto en la opción _Properties > Project Facets_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig035.png[]
 
-Hasta aquí el primer Post de esta serie. Hemos creado un proyecto dirigido por Maven y lo hemos dejado listo para empezar a añadir los elementos de las distintas tecnologías Java EE que generenen finalmente el artefacto WAR para dar respuesta a las necesidades nuestro cliente, TAS. 
+Y hasta aquí el primer post de la serie. Hemos creado un proyecto dirigido por Maven y lo hemos dejado listo para empezar a añadir cada uno de los elementos de las distintas tecnologías Java EE que generen finalmente el artefacto WAR que darán respuesta a las necesidades nuestro cliente, TAS. 
 
-En el siguiente Post empezaremos con el diseño de las clases de la capa de persistencia. Un interesante tema. Nos vemos en breve!
+En el siguiente post empezaremos con el diseño de las clases de la capa de persistencia. Un interesante tema. Nos vemos en breve!
