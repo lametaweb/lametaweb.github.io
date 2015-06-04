@@ -1,0 +1,16 @@
+= Desarrollo de una aplicación desde cero. Diseño e implementación de la capa de persistencia.
+La metaweb
+:hp-tags: JPA, Hibernate, persistencia, diagrama de clases
+:published_at: 2015-06-08
+
+
+Continuamos con la implementación de la aplicación. Construiremos la aplicación desde la capa de persistencia hacia arriba hasta la capa de presentación, que es el modo habitual para los desarrollos Java EE por capas.
+
+La capa de persistencia tiene como cometido establecer un mapeo con la base de datos para las entidades persistentes del modelo de dominio de manera que podamos manipular la información a través de una jerarquía de objetos Java y nos abstraiga totalmente de los detalles de la base de datos. El modelo de dominio es un documento de la fase de análisis del proyecto que consiste en una serie de diagramas de clase donde se determinan las entidades relevantes para nuestro proyecto, la información contenida en cada una y las relaciones entre ellas. 
+
+En el plano tecnológico tenemos que definir lo siguiente:
+
+. El proveedor de persistencia: Es el conjunto de librerías que implementan el ORM. Elegimos Hibernate, ya que es el más extendido y además viene de serie en nuestro servidor JBoss.
+
+. El gestor de base de datos: Usamos una base de datos Derby embebida lo que nos permite simplificar de momento la capa de Datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro, nosotros elegimos esta última opción, para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae ya el servidor JBoss EAP, y es similar a la base de datos Derby, para que veamos un ejemplo de como desplegar recursos en el servidor desde Maven.
+
