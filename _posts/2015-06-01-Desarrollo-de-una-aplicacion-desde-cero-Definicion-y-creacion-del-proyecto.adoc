@@ -180,7 +180,7 @@ siempre que modifiquemos el POM tenemos que actualizar para que los cambios vaya
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig030.png[]
 
 Pero si nos fijamos en la solapa Markers vemos que aún tenemos un warning. Es debido a que no hemos especificado la versión de Java en que
-se interpretará nuestro código ni la versión de máquina virtual para a que generaremos el código. Añadiremos lo siguiente al pom:
+se interpretará nuestro código ni la versión de máquina virtual para a que generaremos el código. Añadiremos lo siguiente al POM bajo el elemento <project>:
 
 [source,xml,indent=0]
 ----
@@ -199,4 +199,5 @@ se interpretará nuestro código ni la versión de máquina virtual para a que g
 		</plugins>
 	</build>
 ----
+
 
