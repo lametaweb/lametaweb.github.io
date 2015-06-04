@@ -216,3 +216,6 @@ Es interesante ver como Eclipse después de la inclusión del plugin Compilador 
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig035.png[]
 
+Hasta aquí el primer Post de esta serie. Hemos creado un proyecto dirigido por Maven y lo hemos dejado listo para empezar a añadir los elementos de las distintas tecnologías Java EE que generenen finalmente el artefacto WAR para dar respuesta a las necesidades nuestro cliente, TAS. 
+
+En el siguiente Post empezaremos con el diseño de las clases de la capa de persistencia. Un interesante tema. Nos vemos en breve!
