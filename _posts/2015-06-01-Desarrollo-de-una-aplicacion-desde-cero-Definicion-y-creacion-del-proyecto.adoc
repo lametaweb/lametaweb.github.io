@@ -49,53 +49,52 @@ A continuación establecemos la arquitectura de la aplicación, que es de lo que
 
 == Ajuste del entorno
 
-Muy bien, manos a la obra, primero haremos algunos ajuste a nuestro recien estrenado entorno de desarrollo. Añadimos el siguiente elemento `<profile>` al fichero de configuración de Maven a nivel de usuario, localizado en una ruta del tipo _C:\Users\Usuario\.m2\settings.xml_, para que nuestro IDE pueda descargar las dependencias específicas de JBoss que vamos a usar en el proyecto.
+Muy bien, manos a la obra, primero haremos algunos ajustes a nuestro recién estrenado entorno de desarrollo. Para que nuestro IDE pueda descargar a través de Maven las dependencias específicas de JBoss que vamos a necesitar en el proyecto, añadiremos un elemento adicional <profile> al fichero de configuración de Maven local a nivel de usuario, localizado en la ruta _C:\Users\Usuario\.m2\settings.xml_. Si la instalación de Maven es nueva y no existían cambios en esta configuración podemos copiar y pegar directamente todo el contenido XML mostrado más abajo. Si ya existía una configuración previa copiamos el contenido del elemento <profile> y lo pegamos dentro del elemento <profiles>.
 
 [source,xml,indent=0]
 ----
-<?xml version="1.0" encoding="UTF-8"?>
-<settings>
-  <profiles>
-    <profile>
-      <id>jboss-public-repository</id>
-      <repositories>
-        <repository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
-        </repository>
-      </repositories>
-      <pluginRepositories>
-        <pluginRepository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-  </profiles>
-  <activeProfiles>
-    <activeProfile>jboss-public-repository</activeProfile>
-  </activeProfiles>
-</settings>
+	<settings>
+		<profiles>
+			<profile>
+				<id>jboss-public-repository</id>
+				<repositories>
+					<repository>
+						<id>jboss-public-repository-group</id>
+						<name>JBoss Public Maven Repository Group</name>
+						<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+						<layout>default</layout>
+						<releases>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</releases>
+						<snapshots>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</snapshots>
+					</repository>
+				</repositories>
+				<pluginRepositories>
+					<pluginRepository>
+						<id>jboss-public-repository-group</id>
+						<name>JBoss Public Maven Repository Group</name>
+						<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+						<layout>default</layout>
+						<releases>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</releases>
+						<snapshots>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</snapshots>
+					</pluginRepository>
+				</pluginRepositories>
+			</profile>
+		</profiles>
+		<activeProfiles>
+			<activeProfile>jboss-public-repository</activeProfile>
+		</activeProfiles>
+	</settings>
 ----
 
 Por otro lado, para que en la carpeta de nuestro workspace no se generen ficheros de índice de gran tamaño nos vamos a Eclipse a la opción del menú _Window > Preferences > Maven_ y dejamos las opciones tal como se indican en la figura.
@@ -176,9 +175,28 @@ como lo muestra por defecto Eclipse. Para esto nos vamos al menú a la opción
 El empaquetado por defecto para un proyecto Maven como es el nuestro es JAR, sin embargo nosotros queremos crear una aplicación web. Se hace necesario por tanto especificar el empaquetado de forma explícita en el fichero _pom.xml_. Añadamos la línea `<packaging>war</packaging>` bajo el elemento raiz _<proyect>_ y Ctrl + S para guardar los cambios.
 
 Sin embargo después de guardar veremos que aparece una indicación de error abajo en la solapa _Markers_. Lo que nos está diciendo es que tenemos que actualizar el proyecto para que tome los cambios del fichero POM. En general
-siempre que modifiquemos el POM tenemos que actualizar para que sus cambios vayan al proyecto. Pulsamos botón derecho sobre el icono del proyecto y _Maven > Update Project..._. El warning en cuestión desaparece de la escena.
+siempre que modifiquemos el POM tenemos que actualizar para que los cambios vayan al proyecto. Pulsamos botón derecho sobre el icono del proyecto y _Maven > Update Project..._. El warning en cuestión desaparece de la escena.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig030.png[]
 
+Pero si nos fijamos en la solapa Markers vemos que aún tenemos un warning. Es debido a que no hemos especificado la versión de Java en que
+se interpretará nuestro código ni la versión de máquina virtual para a que generaremos el código. Añadiremos lo siguiente al pom:
 
+[source,xml,indent=0]
+----
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+----
 
