@@ -37,9 +37,9 @@ A continuación establecemos la arquitectura de la aplicación, que es de lo que
 
 * Entorno de desarrollo (IDE): Eclipse con conjunto de plugins de JBoss.
 * Gestor de ciclo de vida: Maven. Que viene ya incluído e integrado con el IDE.
-* Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista de manera que las ampliaciones posteriores a esta versiones estén ya versionadas.
-* Empaquetado de la aplicación: WAR.
-* Servidor: JBoss EAP 6. Certificado para Java EE 6.
+* Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista, de manera que los desarollos posteriores estén ya versionados.
+* Empaquetado de la aplicación: WAR (Web ARchive).
+* Servidor: JBoss EAP 6.3. Certificado para Java EE 6.
 * Framework de capa de presentación: JSF 2.1.
 * Framework de capa de negocio: EJB 3.1.
 * Gestión de beans: CDI 1.1.
