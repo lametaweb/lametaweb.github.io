@@ -27,16 +27,16 @@ Siguiendo con el análisis, delimitemos el alcance del sistema. Como entidades d
 
 * Drone: Dispositivo mecánico que tiene una serie de trabajos programados.
 
-* Trabajo: Tarea de un drone que se extiende en el tiempo desde un momento inicial a otro final estimados y que consiste en la realización de un recorrido con un punto inicial, o despegue, N puntos intermedios, y un punto final, o aterrizaje, geolocalizados.
+* Trabajo: Tarea de un drone que se extiende en el tiempo desde un momento inicial a otro final estimados y que consiste en la realización de un recorrido con un punto inicial, o despegue, N puntos intermedios consecutivos, y un punto final, o aterrizaje, geolocalizados.
 
 * PuntoRuta: Representa un punto geolocalizado que forma parte de la ruta que se define para un Trabajo.
 
-El primer requisito genera un caso de uso, donde el usuario introduce una fecha y hora y solicita un listado de los drones que están realizando un trabajo en esa fecha y hora. La interfaz de usuario necesaria será por tanto una única pantalla con un componente para la entrada de una fecha y un área para mostrar el listado de los drones. Para cerrar esta "minifase" de analisis sólo nos falta ponerle el nombre al proyecto, y sin tirar de demasiada imaginación lo bautizamos con el nombre de jDrone.
+Nuestro requisito genera un único caso de uso, donde el usuario introduce una fecha y hora y solicita un listado de los drones que están realizando un trabajo en esa fecha y hora. La interfaz de usuario necesaria será por tanto una sola pantalla con componentes para la entrada de la fecha/hora y un área para mostrar el listado de los drones. Para cerrar el análisis sólo nos falta ponerle el nombre al proyecto, y sin tirar de demasiada imaginación lo bautizaremos con el nombre de jDrone.
 
-A continuación establecemos la arquitectura de la aplicación, que es de lo que se trata realmente en este Post. Haciendo una lista de todos los elementos tecnológicos implicados tenemos:
+A continuación establecemos la arquitectura de la aplicación, que es de lo que se trata realmente en este post. Haciendo una lista de todos los elementos tecnológicos implicados tenemos:
 
-* Entorno de desarrollo (IDE): Eclipse con conjunto el de plugins de JBoss.
-* Gestor de ciclo de vida: Maven .Que viene ya incluido e integrado con el IDE.
+* Entorno de desarrollo (IDE): Eclipse con conjunto de plugins de JBoss.
+* Gestor de ciclo de vida: Maven. Que viene ya incluído e integrado con el IDE.
 * Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista de manera que las ampliaciones posteriores a esta versiones estén ya versionadas.
 * Empaquetado de la aplicación: WAR.
 * Servidor: JBoss EAP 6. Certificado para Java EE 6.
