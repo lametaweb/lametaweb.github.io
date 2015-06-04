@@ -14,5 +14,9 @@ En el plano tecnológico tenemos que definir lo siguiente:
 
 * El gestor de base de datos: Usamos una base de datos Derby embebida lo que nos permite simplificar de momento la capa de Datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro, nosotros elegimos esta última opción para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae puesta el servidor JBoss EAP, similar a la base de datos Derby, para que veamos también como desplegar recursos en el servidor desde Maven.
 
+¿Y qué elementos tenemos que añadir a la capa de persistencia? Pues por un lado un fichero de configuración, donde definimos todo lo relevante, y que leerá Hibernate, y por otro las clases del mapeo objeto relacional, basadas en la tecnología JPA, y que eran tres: Drone, Trabajo y PuntoRuta. Y no hay más, mucho más simple y limpio que en versiones pasadas de EJB.
+
+Vamos primero con el fichero de configuración. El fichero de configuración de la unidad de persitencia es _persistence.xml_. Según la especificación JPA2 (JSR-338) en un fichero WAR, cuando no empaquetemos las clases dentro del mismo en otro fichero JAR, el fichero de configuración deberá ir en la carpeta _WEB-INF/classes/META-INF/_. Por lo tanto y con arreglo a la configuración por defecto de Maven para los ficheros de recursos tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero con la opción de menú _New > Other... > XML > XML File_.
+
 
 
