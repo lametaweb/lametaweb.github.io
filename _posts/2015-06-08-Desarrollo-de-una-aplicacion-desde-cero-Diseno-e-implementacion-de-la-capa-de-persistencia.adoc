@@ -112,3 +112,35 @@ el resto de entidades.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
+La clase en la parte superior del diagrama corresponde a la capa de negocio y la implementaremos más adelante. El resto constituye la capa de persistencia.
+
+NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente inicial para las clases persistentes, al que luego añadiremos información adicional en forma de anotaciones para definir distintos aspectos relacionados con el mapeo.
+	
+Antes de nada vamos a añadir a nuestro proyecto la dependencia del proveedor de persistencia Hibernate para poder implementar y compilar las entidades. Hasta este momento habíamos definido ninguna dependecia. En primer lugar añadimos este fragmento XML bajo el elemento <project>:
+
+[source,xml,indent=0]
+----
+	<dependencyManagement>
+		<dependencies>
+			<!-- Define the version of JBoss' Java EE 6 APIs we want to import. 
+				Any dependencies from org.jboss.spec will have their version defined by this 
+				BOM -->
+			<!-- JBoss distributes a complete set of Java EE 6 APIs including a 
+				Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or a 
+				collection) of artifacts. We use this here so that we always get the correct 
+				versions of artifacts. Here we use the jboss-javaee-6.0-with-tools stack 
+				(you can read this as the JBoss stack of the Java EE 6 APIs, with some extras 
+				tools for your project, such as Arquillian for testing) and the jboss-javaee-6.0-with-hibernate 
+				stack you can read this as the JBoss stack of the Java EE 6 APIs, with extras 
+				from the Hibernate family of projects) -->
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-tools</artifactId>
+				<version>${version.jboss.bom.eap}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>										
+		</dependencies>
+	</dependencyManagement>
+----
+
