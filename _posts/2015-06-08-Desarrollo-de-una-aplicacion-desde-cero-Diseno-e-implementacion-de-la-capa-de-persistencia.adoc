@@ -20,7 +20,7 @@ Vamos primero con el fichero de configuración. El fichero de configuración de 
 
 
 .Fichero de configuración de persistencia
-[cols="1h,5"]
+[cols="1h,5", width="70%"]
 |===
 |Nombre 
 |persistence.xml 
@@ -71,25 +71,44 @@ lugar de un mismo modo por lo que necesitamos una única unidad.
 NOTE: Si usamos Hibernate como proveedor de persistencia en JBoss, que es lo habitual, podemos obviar el elemento
 <provider>org.hibernate.ejb.HibernatePersistence</provider> en el fichero persistence.xml.
 
-.Atributos en las clases de persistencia
-[cols="1h,2"]
+. Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object)
+con anotaciones con la información del mapeo de persistencia para los atributos de la propia entidad y las relaciones con
+el resto de entidades.
+
+. A partir de la etapa de análisis la información que se asignará a cada entidad será la siguiente:
+
+.Atributos definidos en las clases de persistencia
+[cols="1,2", width="70%"]
 |===
-.5+|Drone 
-|modelo
+.5+|*Drone* 
 |numeroDeSerie
+|modelo
 |autonomia
 |numMotores
 |pesoMaximoDespegue
 		
-.5+|Trabajo
+.5+|*Trabajo*
 |numeroDeRegistro
-|velocidad
 |fechaHoraDeInicio
 |fechaHoraDeFinalizacion
+|velocidad
 |descripcion
 		
-.3+|PuntoRuta
-|cX
-|cY
-|cZ
+.3+|*PuntoRuta*
+|latitud
+|longitud
+|altitud
 |===
+
+. Además cada entidad tendrá un atributo adicional que actúe como clave única a través del cual implementaremos las relaciones entre
+	las entidades.
+. Estas relacaciones se derivan de la siguiente información facilitada por el cliente en la etapa de análisis:
+
+	. Un Trabajo se asigna a un único Drone de entre los Drones disponibles en la fecha del trabajo.
+	. Un Drone tiene ninguno, uno o varios trabajos programados.
+	. Un Trabajo se compone de un recorrido formado por dos o más puntos de ruta.
+	
+. Con toda esta información podemos ya elaborar el diagrama de clases que establezca el diseño de nuestras clases de persistencia.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
+
