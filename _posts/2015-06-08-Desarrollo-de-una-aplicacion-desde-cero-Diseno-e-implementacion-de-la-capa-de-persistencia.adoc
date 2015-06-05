@@ -116,7 +116,8 @@ La clase en la parte superior del diagrama corresponde a la capa de negocio y la
 
 NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente inicial para las clases persistentes, al que luego añadiremos información adicional en forma de anotaciones para definir distintos aspectos relacionados con el mapeo.
 	
-Antes de nada vamos a añadir a nuestro proyecto la dependencia del proveedor de persistencia Hibernate para poder implementar y compilar las entidades. Hasta este momento habíamos definido ninguna dependecia. En primer lugar añadimos este fragmento XML bajo el elemento <project>:
+Antes de escribie el fuente de las clases tenemos que añadir al proyecto la información de dependencias para Hibernate. Primero añadimos este fragmento XML bajo el elemento <project> del archivo pom.xml:
+
 
 [source,xml,indent=0]
 ----
@@ -143,4 +144,31 @@ Antes de nada vamos a añadir a nuestro proyecto la dependencia del proveedor de
 		</dependencies>
 	</dependencyManagement>
 ----
+
+Se trata de información proporcionada por JBoss que resuelve automáticamente las versiones de nuestras dependencias.
+
+Y a continueción, también bajo el elemento <project> añadimos las dependencias en sí:
+
+[source,xml,indent=0]
+----
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<scope>provided</scope>
+		</dependency
+		<dependency>
+			<groupId>org.jboss.spec.javax.annotation</groupId>
+			<artifactId>jboss-annotations-api_1.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>							
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+----
+
+NOTE: Si el contenido del archivo pom.xml se muestra en Eclipse como un formulario es posible que tengamos que ir a la opción _Window > Preferences > Maven > User Interface_ y desmarcar el check para la opción _Open XML page in the POM editor by default_.
 
