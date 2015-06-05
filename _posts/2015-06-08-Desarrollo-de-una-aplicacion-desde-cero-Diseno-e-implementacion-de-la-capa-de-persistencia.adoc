@@ -71,3 +71,25 @@ lugar de un mismo modo por lo que necesitamos una única unidad.
 NOTE: Si usamos Hibernate como proveedor de persistencia en JBoss, que es lo habitual, podemos obviar el elemento
 <provider>org.hibernate.ejb.HibernatePersistence</provider> en el fichero persistence.xml.
 
+.Atributos en las clases de persistencia
+[cols="1h,2"]
+|===
+.5+|Drone 
+|modelo
+|numeroDeSerie
+|autonomia
+|numMotores
+|pesoMaximoDespegue
+		
+.5+|Trabajo
+|numeroDeRegistro
+|velocidad
+|fechaHoraDeInicio
+|fechaHoraDeFinalizacion
+|descripcion
+		
+.3+|PuntoRuta
+|cX
+|cY
+|cZ
+|===
