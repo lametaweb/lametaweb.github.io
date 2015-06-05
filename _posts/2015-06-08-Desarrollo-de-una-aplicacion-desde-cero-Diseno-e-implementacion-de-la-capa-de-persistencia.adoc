@@ -18,6 +18,33 @@ En el plano tecnológico tenemos que definir lo siguiente:
 
 Vamos primero con el fichero de configuración. El fichero de configuración de la unidad de persitencia es _persistence.xml_. La especificación JPA2 (JSR-338) permite desplegar clases de persistencia fuera de un empaquetado JAR, directamente dentro del WAR de nuestra aplicación. En este caso se indica que el fichero persistence.xml debe situarse en la carpeta _WEB-INF/classes/META-INF/_ . Por lo tanto, y con arreglo a la configuración por defecto de Maven para los ficheros de recursos, en nuestro proyecto tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero en la opción de menú _New > Other... > XML > XML File_.
 
-Nombre			|	persistence.xml
-Ruta			|	jdrone/src/main/resources/META-INF/
+
+.Fichero de configuración de persistencia
+[cols="1h,5"]
+|===
+|Nombre 
+|persistence.xml 
+
+|Ruta
+|jdrone/src/main/resources/META-INF/
+|===
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig040.png[]
+
+Copiamos el siguiente contenido en el fichero persistence.xml:
+
+[source,xml,identation=0]
+----
+	<?xml version="1.0" encoding="UTF-8"?>
+	<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+		<persistence-unit name="datosdrones" transaction-type="JTA">
+			<jta-data-source>java:jboss/datasources/DerbyDS</jta-data-source>
+			<exclude-unlisted-classes>false</exclude-unlisted-classes>
+			<properties>
+				<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" />
+				<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			</properties>
+		</persistence-unit>
+	</persistence>
+----
 
