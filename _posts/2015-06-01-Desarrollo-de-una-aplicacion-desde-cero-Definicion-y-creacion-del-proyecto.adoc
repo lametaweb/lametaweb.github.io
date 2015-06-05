@@ -43,7 +43,7 @@ A continuación establecemos la arquitectura de la aplicación, que es de lo que
 * Framework de capa de presentación: JSF 2.1.
 * Framework de capa de negocio: EJB 3.1.
 * Gestión de beans: CDI 1.1.
-* Framework de persistencia: JPA 2.1 implementado con Hibernate.
+* Framework de persistencia: JPA 2.0 implementado con Hibernate.
 * Base de datos: Derby embebida en la aplicación con base de datos en el disco duro (no en memoria).
 
 == Ajuste del entorno
