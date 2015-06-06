@@ -319,5 +319,28 @@ Sin embargo como ya hebréis advertido surge un pequeño problema, cuando pulsam
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig055.png[]
 
+Para buscar el artefacto que nos resuelva la dependencia buscamos a través de Google el nombre completo de la clase. Es este caso el nombre es org.hibernate.validator.constraints.Range. Nos vamos a continuación a la página del gestor de repositorios público de JBoss,  https://repository.jboss.org/nexus/[aquí], metemos nuestras credenciales de JBoss Developer y accedemos a la página de búsqueda
+donde pegamos el nombre completo de la clase.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig060.png[]
+ 
+Entre los resultados obtenidos localizamos, moviendo la barra de desplazamiento hacia abajo, el item con el grupo org.hibernate y la versión final más reciente. Copiamos el contenido de la dependencia que aparece abajo a la derecha y la pegamos en nuestro pom.xml, dentro del elemento <dependencies>. Guardamos los cambios y botón derecho sobre proyecto _> Maven > Update Project_ o directamente con la hotkey Alt + F5. Y ahora sí resolvemos el error pulsando Ctrl + Shift + O en la clase Drone y guardando los cambios con Crtl + S.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig065.png[]
+
+=== Entidad PuntoRuta
+
+De la misma manera añadimos los atributos y el ID y generamos los getters y setters.
+
+[source,java,indent=0]
+----
+	private Integer idPuntoRuta;
+	private Float latitud;
+	private Float longitud;
+	private Float altura;
+----
+
+Y aplicamos las anotaciones de persistencia de manera análoga a lo visto con las dos clases anteriores.
+
+Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento de implementar las tres relaciones reflejadas en el diagrama de clases, vamos a ello.
 
