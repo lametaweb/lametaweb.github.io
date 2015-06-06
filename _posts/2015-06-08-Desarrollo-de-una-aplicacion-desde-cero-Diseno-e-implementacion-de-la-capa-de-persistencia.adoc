@@ -6,6 +6,8 @@ La metaweb
 
 Continuamos con la implementación de la aplicación. Construiremos la aplicación desde la capa de persistencia hacia arriba hasta la capa de presentación, que es el modo habitual para los desarrollos Java EE por capas.
 
+== Introducción
+
 La capa de persistencia tiene como cometido establecer un mapeo con la base de datos para las entidades persistentes del modelo de dominio de manera que podamos manipular la información a través de una jerarquía de objetos Java y nos abstraiga totalmente de los detalles de la base de datos. El modelo de dominio es un documento de la fase de análisis del proyecto que consiste en una serie de diagramas de clase donde se determinan las entidades relevantes para nuestro proyecto, la información contenida en cada una y las relaciones entre ellas. 
 
 En el plano tecnológico tenemos que definir lo siguiente:
@@ -15,6 +17,8 @@ En el plano tecnológico tenemos que definir lo siguiente:
 * El gestor de base de datos: Usamos una base de datos Derby embebida lo que nos permite simplificar de momento la capa de Datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro, nosotros elegimos esta última opción para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae puesta el servidor JBoss EAP, similar a la base de datos Derby, para que veamos también como desplegar recursos en el servidor desde Maven.
 
 ¿Y qué elementos tenemos que añadir a la capa de persistencia? Pues por un lado un fichero de configuración, donde definimos todo lo relevante, y que leerá Hibernate, y por otro las clases del mapeo objeto relacional, basadas en la tecnología JPA, y que eran tres: Drone, Trabajo y PuntoRuta. Y no hay más, mucho más simple y limpio que en versiones pasadas de EJB.
+
+== La configuración
 
 Vamos primero con el fichero de configuración. El fichero de configuración de la unidad de persitencia es _persistence.xml_. La especificación JPA2 (JSR-338) permite desplegar clases de persistencia fuera de un empaquetado JAR, directamente dentro del WAR de nuestra aplicación. En este caso se indica que el fichero persistence.xml debe situarse en la carpeta _WEB-INF/classes/META-INF/_ . Por lo tanto, y con arreglo a la configuración por defecto de Maven para los ficheros de recursos, en nuestro proyecto tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero en la opción de menú _New > Other... > XML > XML File_.
 
@@ -71,53 +75,7 @@ lugar de un mismo modo por lo que necesitamos una única unidad.
 NOTE: Si usamos Hibernate como proveedor de persistencia en JBoss, que es lo habitual, podemos obviar el elemento
 <provider>org.hibernate.ejb.HibernatePersistence</provider> en el fichero persistence.xml.
 
-. Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object)
-con anotaciones con la información del mapeo de persistencia para los atributos de la propia entidad y las relaciones con
-el resto de entidades.
-
-. A partir de la etapa de análisis la información que se asignará a cada entidad será la siguiente:
-
-.Atributos definidos en las clases de persistencia
-[cols="1,2", width="70%"]
-|===
-.5+|*Drone* 
-|numeroDeSerie
-|modelo
-|autonomia
-|numMotores
-|pesoMaximoDespegue
-		
-.5+|*Trabajo*
-|numeroDeRegistro
-|fechaHoraDeInicio
-|fechaHoraDeFinalizacion
-|velocidad
-|descripcion
-		
-.3+|*PuntoRuta*
-|latitud
-|longitud
-|altitud
-|===
-
-. Además cada entidad tendrá un atributo adicional que actúe como clave única a través del cual implementaremos las relaciones entre
-	las entidades.
-. Estas relacaciones se derivan de la siguiente información facilitada por el cliente en la etapa de análisis:
-
-	. Un Trabajo se asigna a un único Drone de entre los Drones disponibles en la fecha del trabajo.
-	. Un Drone tiene ninguno, uno o varios trabajos programados.
-	. Un Trabajo se compone de un recorrido formado por dos o más puntos de ruta.
-	
-. Con toda esta información podemos ya elaborar el diagrama de clases que establezca el diseño de nuestras clases de persistencia.
-
-image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
-
-La clase en la parte superior del diagrama corresponde a la capa de negocio y la implementaremos más adelante. El resto constituye la capa de persistencia.
-
-NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente inicial para las clases persistentes, al que luego añadiremos información adicional en forma de anotaciones para definir distintos aspectos relacionados con el mapeo.
-	
-Antes de escribie el fuente de las clases tenemos que añadir al proyecto la información de dependencias para Hibernate. Primero añadimos este fragmento XML bajo el elemento <project> del archivo pom.xml:
-
+Antes de escribir el fuente de las clases tenemos que añadir al proyecto la información de dependencias para Hibernate. Primero añadimos este fragmento XML bajo el elemento <project> del archivo pom.xml:
 
 [source,xml,indent=0]
 ----
@@ -200,9 +158,53 @@ Las propiedades tienen dos usos:
 			<sourceEncoding>UTF-8</sourceEncoding>
 ----
 
-Ahora sí vamos con las clases. Creamos las tres clases primero y no una a una para evitar errores por referencias a clases inexistentes.
-Añadimos las tres clases haciendo click en
-botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si no está visible buscar _Java > Class_ en la opción _New > Other..._.
+
+. Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object)
+con anotaciones con la información del mapeo de persistencia para los atributos de la propia entidad y las relaciones con
+el resto de entidades.
+
+. A partir de la etapa de análisis la información que se asignará a cada entidad será la siguiente:
+
+.Atributos definidos en las clases de persistencia
+[cols="1,2", width="70%"]
+|===
+.5+|*Drone* 
+|numeroDeSerie
+|modelo
+|autonomia
+|numMotores
+|pesoMaximoDespegue
+		
+.5+|*Trabajo*
+|numeroDeRegistro
+|fechaHoraDeInicio
+|fechaHoraDeFinalizacion
+|velocidad
+|descripcion
+		
+.3+|*PuntoRuta*
+|latitud
+|longitud
+|altitud
+|===
+
+. Además cada entidad tendrá un atributo adicional que actúe como clave única a través del cual implementaremos las relaciones entre
+	las entidades.
+. Estas relacaciones se derivan de la siguiente información facilitada por el cliente en la etapa de análisis:
+
+	. Un Trabajo se asigna a un único Drone de entre los Drones disponibles en la fecha del trabajo.
+	. Un Drone tiene ninguno, uno o varios trabajos programados.
+	. Un Trabajo se compone de un recorrido formado por dos o más puntos de ruta.
+	
+. Con toda esta información podemos ya elaborar el diagrama de clases que establezca el diseño de nuestras clases de persistencia.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
+
+La clase en la parte superior del diagrama corresponde a la capa de negocio y la implementaremos más adelante. El resto constituye la capa de persistencia.
+
+NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente inicial para las clases persistentes, al que luego añadiremos información adicional en forma de anotaciones para definir distintos aspectos relacionados con el mapeo.
+	
+Bien, vamos con la implementación. Creamos las tres clases primero y no una a una para evitar errores por referencias a clases inexistentes. Añadimos cada clase haciendo click en botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si la opción del menú no está visible ir a la opción _Java > Class_ después de hacer _New > Other..._.
 
 .Datos para creación de clases de persistencia
 [cols="1h,5"]
@@ -216,7 +218,8 @@ botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si no está v
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig050.png[]
 
-Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones de las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases de la fase de diseño.
+Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases de la fase de diseño.
+
 
 
 
