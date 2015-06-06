@@ -3,100 +3,204 @@ La metaweb
 :hp-tags: Modelo de Dominio, Maven, Eclipse, Java EE, desde cero
 :published_at: 2015-06-01
 
-En los dos Posts anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos Posts recorreremos un camino que nos llevará hasta la creación de una aplicación Java EE básica sobre la que podremos experimentar a nuestro antojo con técnicas, tecnologías y herramientas en la esfera de Java EE. Enfocaremos su desarrollo de manera pragmática, creando un proyecto desde cero y sin recurrir a ningún asistente. De este modo seremos realmente conscientes de cada elemento que compone la aplicación y de que ningún otro es necesario. En los proyectos reales al contrario, donde el objetivo es desarrollar de la manera más eficaz y eficiente, se utilizan diferentes tipos de herramientas integradas o no en Eclipse u otros IDEs. Algunas de ellas seguro que tendrán un merecido hueco en el este Blog en futuros Posts.
+En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos posts recorreremos un camino que nos llevará hasta la creación de una aplicación Java EE básica sobre la que podremos experimentar a nuestro antojo con técnicas, tecnologías y herramientas en la esfera de Java EE. Enfocaremos su desarrollo de manera pragmática, creando un proyecto desde cero y sin recurrir a ningún asistente. De este modo seremos realmente conscientes de cada elemento que compone la aplicación y de que ningún otro es necesario. En los proyectos reales al contrario, donde el objetivo es desarrollar de la manera más eficaz y eficiente, se utilizan diferentes tipos de herramientas integradas o no en Eclipse. Algunas de ellas seguro que tendrán un merecido hueco en el este Blog en futuras publicaciones.
 
 == Motivación de la aplicación
 
-Lo que haremos es imaginar un cliente con una necesidad, analizarla para entenderla y finalmente darle respuesta en forma de aplicación. Haremos ahora un análisis a partir del que generaremos una documentación que será la base para la fase de implementación. La construcción de una webapp, por otro lado, no es un proceso lineal sino más bien cíclico, donde tendremos que ir trabajando sobre todas las fases, desde el análisis a la implementación, hasta el fin del ciclo de vida de la aplicación, porque 
-a medida que vayamos entendiendo con mayor profundidad la realidad del cliente irán produciéndose ajustes que afectarán tanto al análisis, como al diseño, y a las tecnologías empleadas. La creación de una aplicación es similar al proceso de pintar un cuadro. El cuadro no se empieza por arriba y se acaba por abajo como lo haría la impresora que tenemos en casa sino que se va definiendo y perfilando en su conjunto, incluso en ocasiones descartando, añadiendo o cambiando elementos completos de la escena. En pintura el pintor dialoga consigo mismo al crear su obra, en el desarrollo del software debe existir un dialogo continuado y fluido entre quien
+Lo que haremos es imaginar un cliente con una necesidad, analizarla para entenderla y finalmente darle respuesta en forma de aplicación. Empezaramos con un análisis a partir del que generaremos una documentación que será la base para la fase de implementación. La construcción de una aplicación web, por otro lado, no es un proceso lineal sino más bien cíclico, donde tendremos que ir trabajando sobre todas las fases, desde el análisis a la implementación, hasta el final del ciclo de vida de la aplicación, porque a medida que vayamos entendiendo con mayor profundidad la realidad del cliente irán produciéndose ajustes que afectarán tanto al análisis, como al diseño, y a las tecnologías empleadas. La creación de una aplicación es similar al proceso de pintar un cuadro. El cuadro no se empieza por arriba y se acaba por abajo como lo haría la impresora que tenemos en casa sino que se va definiendo y perfilando en su conjunto, incluso en ocasiones descartando, añadiendo o cambiando elementos completos de la escena. En pintura el pintor dialoga consigo mismo al crear su obra, en el desarrollo de software debe existir un dialogo continuado y fluido entre quien
 conoce qué necesita y quienes sabemos cómo construirlo.
 
 Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traido también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución.
 
-== Análisis
+== Análisis inicial
 
 Tras varias reuniones con los empleados designados como interlocutores para el proyecto detectamos estas carencias:
 
-1. Dificultad en la planificación de trabajos: El Gerente no conoce la disponibilidad de aparatos para una fecha y no puede dar a sus clientes fechas de comienzo del trabajo con agilidad.
-2. Carencia de datos sobre trabajos ya realizados: El Jefe Técnico no dispone de información sobre trabajos ya realizados, útiles cuando éstos han de repetirse o cuando se inician trabajos similares.
-3. Desconocimiento del progreso de cada trabajo: El Jefe de Operación no puede informar de forma clara al cliente en cada momento del progreso del trabajo encargado.
-4. Ausencia de información estadística: Variaciones de carga de trabajo estacionales, frecuencia de averías por componentes y por modelo de drone, etc.
+1. Dificultad en la planificación de trabajos: El Gerente no conoce la disponibilidad de aparatos para una fecha y no puede dar a sus clientes plazos de comienzo con agilidad.
+2. Carencia de datos sobre trabajos ya realizados: El Jefe Técnico no dispone de datos sobre trabajos ya realizados, muy útiles cuando éstos han de repetirse o cuando se inician trabajos similares.
+3. Desconocimiento del progreso de cada trabajo: El Jefe de Operación no puede informar de forma clara a los clientes en cada momento del progreso de los trabajos contratados.
+4. Ausencia de información estadística: Variaciones de carga de trabajo estacionales, frecuencia de averías por componentes y por modelo y marca de drone, etc.
 
-Lo anterior naturalmente no es un análisis de requisitos exhaustivo, pero muestra cómo una aplicación puede facilitar en gran medida las tareas dentro de una organicación. Cómo nuestro objetivo ahora es entender las partes de una aplicación Java EE tomaremos en cuenta sólo el primer punto de la lista.
+Lo anterior naturalmente no es un análisis de requisitos exhaustivo, pero muestra cómo una aplicación puede facilitar en gran medida las tareas dentro de una organicación. Cómo nuestro objetivo ahora es entender las partes de una aplicación Java EE tomaremos en cuenta sólo el primer punto de la lista y lo convertiremos en nuestro requisito funcional único.
 
-Delimitamos primero el sistema a desarrollar. Como entidades del modelo de dominio distinguimos las siguientes:
+Siguiendo con el análisis, delimitemos el alcance del sistema. Como entidades del modelo de dominio distinguimos las siguientes:
 
 * Drone: Dispositivo mecánico que tiene una serie de trabajos programados.
 
-* Trabajo: Tarea de un drone que se extiende en el tiempo desde un momento inicial a otro final estimados y que consiste en la realización de un recorrido con un punto inicial, o despegue, N puntos intermedios, y un punto final, o aterrizaje, geolocalizados.
+* Trabajo: Tarea de un drone que se extiende en el tiempo desde un momento inicial a otro final estimados y que consiste en la realización de un recorrido con un punto inicial, o despegue, N puntos intermedios consecutivos, y un punto final, o aterrizaje, geolocalizados.
 
 * PuntoRuta: Representa un punto geolocalizado que forma parte de la ruta que se define para un Trabajo.
 
-El primer requisito genera un caso de uso, donde el usuario introduce una fecha y hora y solicita un listado de los drones que están realizando un trabajo en esa fecha y hora. La interfaz de usuario necesaria será por tanto una única pantalla con un componente para la entrada de una fecha y un área para mostrar el listado de los drones. Para cerrar esta "minifase" de analisis sólo nos falta ponerle el nombre al proyecto, y sin tirar de demasiada imaginación lo bautizamos con el nombre de jDrone.
+Nuestro requisito genera un único caso de uso, donde el usuario introduce una fecha y hora y solicita un listado de los drones que están realizando un trabajo en esa fecha y hora. La interfaz de usuario necesaria será por tanto una sola pantalla con componentes para la entrada de la fecha/hora y un área para mostrar el listado de los drones. Para cerrar el análisis sólo nos falta ponerle el nombre al proyecto, y sin tirar de demasiada imaginación lo bautizaremos con el nombre de jDrone.
 
-A continuación establecemos la arquitectura de la aplicación, que es de lo que se trata realmente en este Post. Haciendo una lista de todos los elementos tecnológicos implicados tenemos:
+A continuación establecemos la arquitectura de la aplicación, que es de lo que se trata realmente en este post. Haciendo una lista de todos los elementos tecnológicos implicados tenemos:
 
-* Entorno de desarrollo (IDE): Eclipse con conjunto el de plugins de JBoss.
-* Gestor de ciclo de vida: Maven .Que viene ya incluido e integrado con el IDE.
-* Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista de manera que las ampliaciones posteriores a esta versiones estén ya versionadas.
-* Empaquetado de la aplicación: WAR.
-* Servidor: JBoss EAP 6. Certificado para Java EE 6.
+* Entorno de desarrollo (IDE): Eclipse con conjunto de plugins de JBoss.
+* Gestor de ciclo de vida: Maven. Que viene ya incluído e integrado con el IDE.
+* Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista, de manera que los desarollos posteriores estén ya versionados.
+* Empaquetado de la aplicación: WAR (Web ARchive).
+* Servidor: JBoss EAP 6.3. Certificado para Java EE 6.
 * Framework de capa de presentación: JSF 2.1.
 * Framework de capa de negocio: EJB 3.1.
 * Gestión de beans: CDI 1.1.
-* Framework de persistencia: JPA 2.1 implementado con Hibernate.
+* Framework de persistencia: JPA 2.0 implementado con Hibernate.
 * Base de datos: Derby embebida en la aplicación con base de datos en el disco duro (no en memoria).
 
 == Ajuste del entorno
 
-Muy bien, manos a la obra, primero haremos algunos ajuste a nuestro recien estrenado entorno de desarrollo. Añadimos el siguiente elemento `<profile>` al fichero de configuración de Maven a nivel de usuario, localizado en una ruta del tipo _C:\Users\Usuario\.m2\settings.xml_, para que nuestro IDE pueda descargar las dependencias específicas de JBoss que vamos a usar en el proyecto.
+Muy bien, manos a la obra, primero haremos algunos ajustes a nuestro recién estrenado entorno de desarrollo. Para que nuestro IDE pueda descargar a través de Maven las dependencias específicas de JBoss que vamos a necesitar en el proyecto, añadiremos un elemento adicional <profile> al fichero de configuración de Maven local a nivel de usuario, localizado en la ruta _C:\Users\Usuario\.m2\settings.xml_. Si la instalación de Maven es nueva y no existían cambios en esta configuración podemos copiar y pegar directamente todo el contenido XML mostrado más abajo. Si ya existía una configuración previa copiamos el contenido del elemento <profile> y lo pegamos dentro del elemento <profiles> y el elemento <activeProfiles> dentro del elemento <settings>.
 
 [source,xml,indent=0]
 ----
-<?xml version="1.0" encoding="UTF-8"?>
-<settings>
-  <profiles>
-    <profile>
-      <id>jboss-public-repository</id>
-      <repositories>
-        <repository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
-        </repository>
-      </repositories>
-      <pluginRepositories>
-        <pluginRepository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-  </profiles>
-  <activeProfiles>
-    <activeProfile>jboss-public-repository</activeProfile>
-  </activeProfiles>
-</settings>
+	<settings>
+		<profiles>
+			<profile>
+				<id>jboss-public-repository</id>
+				<repositories>
+					<repository>
+						<id>jboss-public-repository-group</id>
+						<name>JBoss Public Maven Repository Group</name>
+						<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+						<layout>default</layout>
+						<releases>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</releases>
+						<snapshots>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</snapshots>
+					</repository>
+				</repositories>
+				<pluginRepositories>
+					<pluginRepository>
+						<id>jboss-public-repository-group</id>
+						<name>JBoss Public Maven Repository Group</name>
+						<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+						<layout>default</layout>
+						<releases>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</releases>
+						<snapshots>
+							<enabled>true</enabled>
+							<updatePolicy>never</updatePolicy>
+						</snapshots>
+					</pluginRepository>
+				</pluginRepositories>
+			</profile>
+		</profiles>
+		<activeProfiles>
+			<activeProfile>jboss-public-repository</activeProfile>
+		</activeProfiles>
+	</settings>
 ----
 
+Por otro lado, para que en la carpeta de nuestro workspace Maven no genere ficheros de índice de gran tamaño nos vamos a Eclipse a la opción del menú _Window > Preferences > Maven_ y dejamos las opciones tal como se indican en la figura.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig005.png[]
 
+Además podemos buscar en esta carpeta los ficheros con la extensión _.cfs_ y borrar los que sean de gran tamaño.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig010.png[]
+
+Adicionalmente disponemos de una View de Eclipse donde podemos visualizar los repositorios que tenemos configurados y tocar la configuración sobre los índices que queremos descargar para cada uno de ellos.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig015.png[]
+
+OK, nos vamos a Eclipse y elegimos como espacio de trabajo la carpeta que creamos para tal fin, que será similar a _C:\TALLER\workspace\_. Si es la primera vez que entramos en Eclipse con ese el workspace tendremos que retirar la pantalla de bienvenida pulsando el botón _Workbench_ en la esquina superior derecha de la pantalla. A continuación, ya dentro de la Perspectiva inicial de Eclipse, desmarcamos el check _Show on Startup_ en la ventana de JBoss Central que aparece en el centro del IDE y la cerramos. Finalmente maximizamos la ventana de Eclipse para trabajar con el mayor espacio posible.
+
+Antes de crear cualquier elemento de la aplicación definimos la codificación que Eclipse empleará en los ficheros del proyecto. Esta cuestión es importante ya que evita que tengamos problemas con los caracteres mostrados que estén fuera del estándar ASCII. Para ello nos vamos al menú _Window > Preferences > General > Workspace > Text File Encoding > Other > UTF-8_ y en esa misma ventana desmarcamos la opción _Build automatically_.
+
+NOTE: Si no lo has cambiado aún es conveniente quitar el revisor de sintaxis de Eclipse. Ve a _Window > Preferences > General > Editors > Text Editors > Spelling_  y desmarca _Enable Spell Checking_. Así podremos distinguir mejor los errores y los warnings que aparezcan en nuestro código fuente durante el desarrollo.
+
+== Entrando en materia. Creación del proyecto.
+	
+Creamos un proyecto Maven en blanco con la opción del menú _File > New > Maven Project_. En la primera pantalla del wizard marcamos la primera opción
+_Create a simple proyect (skip archetype selection)_ y pulsamos _Next_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig020.png[]
+
+Definimos las propiedades básicas del proyecto: Coordenadas en el repositorio Maven, empaquetado y datos descriptivos:
+
+* GroupId : com.lametaweb.javaee
+* ArtifactId : jdrone
+* pakcaging : war
+* Name : jDrone Lite
+* Description : Proyecto Maven Java EE basico desde cero
+
+Los demás campos los dejamos a su valor por defecto y pulsamos el botón _Finish_. Después de unos segundos el proyecto se habrá creado. Si abrimos
+el nodo correspondiente al proyecto veremos que la estructura y ficheros es la que corresponde a un proyecto Maven. Para ver de forma más limpia los elementos del proyecto abrimos la View _Navigator_. Esta vista nos muestra simplemente carpetas y ficheros, es decir lo que constituye un proyecto Java EE sin más.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig025.png[]
+
+Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la codificación a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y _Properties > Resource > Text File encoding > Other: UTF-8_.
+
+.Elementos generados en la creación del proyecto
+[cols="6,15", options="header"]
+|===
+
+|Elemento 
+|Descripción
+
+|Carpeta _.settings_
+|[small]#Es generada por el propio Eclipse para guardar información de configuración del proyecto. No es parte constituyente de nuestro aplicación ya que es creada para gestión interna del IDE.# 
+
+|Carpeta _src_
+|[small]#Aquí situaremos todos los elementos de nuestro proyecto organizados en carpetas según las convenciones adoptadas por Maven. En la subcarpeta _main_ están los elementos necesarios para generar la aplicación y en la carpeta _test_ los elementos para las pruebas unitarias.#
+
+|Carpeta _target_
+|[small]#Contendrá los productos generados a partir de los elementos de la carpeta _src_. En este caso será un fichero desplegable _.war_ conteniendo nuestra aplicación, que incluirá toda la información para su despliegue en el servidor.#
+
+|Fichero _.classpath_
+|[small]#Generado por Eclipse para registrar información de tiempo de compilación: Qué compilar, dónde y los lugares donde buscar clases java de terceros. Es de uso interno de Eclipse y no es parte constituyente de nuestra aplicación.#
+
+|Fichero _.project_
+|[small]#Contiene metainformación del proyecto para su autodescripción. No es parte constituyente de nuestro aplicación.#
+
+|Fichero _pom.xml_
+|[small]#Es el fichero que contiene toda la información para la construcción del proyecto. Es decir el proceso de generación de artefactos instalables a partir de los distintos elementos de nuestro proyecto.#
+|===
+
+TIP: Cuando abrimos un fichero de proyecto con contenido XML en general preferimos visualizarlo como texto y no a modo de formulario como lo muestra por defecto Eclipse. Para cambier esto nos vamos al menú a la opción _Window > Preferences > General > Editors > File associantions > *.xml > XML Editor_ y pulsamos _Default_ y finalmente _OK_.
+
+El empaquetado por defecto para un proyecto Maven como es el nuestro es JAR, sin embargo nosotros queremos crear una aplicación web. Se hace necesario por tanto especificar el empaquetado de forma explícita en el fichero _pom.xml_. Añadamos la línea `<packaging>war</packaging>` bajo el elemento raiz _<proyect>_ y Ctrl + S para guardar los cambios.
+
+Pero algo ocurre, después de guardar vemos que aparece una nueva indicación de error abajo en la solapa _Markers_. Lo que nos está diciendo es que tenemos que actualizar el proyecto para que tome los cambios del fichero POM. En general
+siempre que modifiquemos el POM tenemos que actualizar para que los cambios vayan al proyecto. Pulsamos botón derecho sobre el icono del proyecto y _Maven > Update Project..._ o de manera más directa con la hotkey Alt + F5. El warning en cuestión desaparece de la escena.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig030.png[]
+
+Pero si nos fijamos en la solapa _Markers_ vemos que aún tenemos un warning. Es debido a que no hemos especificado la versión de Java en que se interpretará nuestro código ni la versión de máquina virtual para a que generaremos el código. Añadamos lo siguiente al POM bajo el elemento <project>:
+
+[source,xml,indent=0]
+----
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+----
+
+El elemento <finalName> en la segunda línea no tiene nada que ver con las versiones de Java, en cambio lo que hace es fijar un nombre simple para nuestro artefacto WAR final, en nuestro caso "jdrone.war". Esto es importante porque por defecto este nombre es el que el servidor usa para nombrar el contexto de la aplicación en el proceso de despliegue. El contexto de un aplicación web es lo que la distingue de los demás elementos instalados en el servidor y nos permite por tanto referenciarla, y siempre es conveniente que este nombre sea sencillo.
+
+El resto corresponde como se ha indicado a la especificación de las versiones de Java usadas durante la compilación de las clases en el proyecto, puedes consultar el primer post para recordar los detalles. Aquí hemos declarado que trabajaremos con la máquina virtual de Java 8 y así mismo escribiremos el código en la versión 8. Es importante señalar que la versión del servidor que usemos en los distíntos ámbitos: Desarrollo, preproducción y producción, debe ser por tanto compatible con Java 8. En nuestro caso sí es así ya que la versión 6.3 del servidor JBoss EAP con la Update 3 es compatible. La versión 6.4 también tiene compatibilidad completa con Java 8.
+ 
+Como hemos visto para configurar un plugin para nuestro proyecto debemos declarlo en el POM, aquí hemos modificando la configuración del plugin compilador. Y finalmente como siempre actualizamos el proyecto como antes se ha indicado y observamos que el warning ya no aparece.
+
+Es interesante ver como Eclipse después actualizar la información de configuración en el fichero POM ha actualizado las facetas de nuestro proyecto. Inicialmente no teniamos ninguna y ahora tenemos las facetas: Web, Java y Javascript. Podemos comprobarlo con un click en botón derecho sobre proyecto en la opción _Properties > Project Facets_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig035.png[]
+
+Y hasta aquí el primer post de la serie. Hemos creado un proyecto dirigido por Maven y lo hemos dejado listo para empezar a añadir cada uno de los elementos de las distintas tecnologías Java EE que generen finalmente el artefacto WAR que darán respuesta a las necesidades nuestro cliente, TAS. 
+
+En el siguiente post empezaremos con el diseño de las clases de la capa de persistencia. Un interesante tema. Nos vemos en breve!
