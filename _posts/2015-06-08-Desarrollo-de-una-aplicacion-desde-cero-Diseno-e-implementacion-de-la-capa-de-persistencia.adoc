@@ -1,4 +1,4 @@
-= Desarrollo de una aplicación desde cero. Diseño e implementación de la capa de persistencia.
+= Desarrollo de una aplicación desde cero: Diseño e implementación de la capa de persistencia.
 La metaweb
 :hp-tags: JPA, Hibernate, persistencia, diagrama de clases
 :published_at: 2015-06-08
@@ -343,4 +343,42 @@ De la misma manera añadimos los atributos y el ID y generamos los getters y set
 Y aplicamos las anotaciones de persistencia de manera análoga a lo visto con las dos clases anteriores.
 
 Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento de implementar las tres relaciones reflejadas en el diagrama de clases, vamos a ello.
+
+=== Relación entre Trabajo y Drone
+
+Entre estas dos entidades existe una relación de asociación ya que ambas se relacionan de manera continuada en el tiempo pero además no existe un relación de todo/parte. Establecemos que la relación sea bidireccional, es decir que exista navegabilidad en los dos sentidos, dado que se estima que en la capa de negocio necesitaremos en algún momento acceder desde una entidad a la otra y viceversa. En cada extremo además tenemos que definir las cardinalidades y roles. Para establecer los roles deberemos preguntarnos cómo ve una entidad a la otra dentro de la relación.
+
+La bidireccionalidad implica añadir un atributo en cada clase. El nombre del atributo en cada clase será el nombre del rol de la otra clase y el tipo del atributo el tipo de la otra clase cuando la cardinalidad sea 0 ó 1 y una colección del tipo cuando sea superior.
+
+En la entidad Drone añadimos el atributo así `private List<Trabajo> trabajosAsignados = new ArrayList<Trabajo>();` y en la entidad Trabajo escribimos `private Drone droneAsignado;`.
+
+Generamos como antes los métodos getters y setters para que los datos sean accesibles y guardamos los cambios.
+
+Ahora hay que suministrar la información de persistencia para la relación. Siguiendo las directrices de JPA, en la entidad Drone anotamos el nuevo atributo (también es posible hacerlo en el método get) con
+
+[source,java,indent=0]
+----
+@OneToMany(mappedBy = "droneAsignado")
+----
+y en la entidad Trabajo añadimos
+
+[source,java,indent=0]
+----
+@JoinColumn (referencedColumnName = "iddrone")
+@ManyToOne
+----
+
+Veamos en detalle los aspectos de cada anotación:
+
+* @OneToMany(mappedBy = "droneAsignado")
+
+** Establece una relación uno a muchos.
+
+** El atributo mappedBy existe porque hay bidireccionalidad. El valor "droneAsignado" se corresponde con el nombre del atributo de la otra entidad que recoje la relación inversa y que es la que tiene la información de enlace entre las entidades. 
+** El atributo cascade no aparece porque que no existe una relación todo/parte de tipo composición y se aplica su valor por defecto en Hibernate que no propaga ninguna acción de persistencia.
+
+* @ManyToOne
+** Establece una relación muchos a uno.	
+* @JoinColumn(name = "referencedColumnName = "iddrone")
+** El atributo referencedColumnName es el que contiene la información del enlace, y de la que tira la relación inversa desde Trabajo a Drone. El nombre asignado por defecto a una columna de datos es el nombre del atributo que mapea, sin distinguir entre mayúscula y minúscula por eso la columna se nombre "iddrone" o bien "IDDRONE".
 
