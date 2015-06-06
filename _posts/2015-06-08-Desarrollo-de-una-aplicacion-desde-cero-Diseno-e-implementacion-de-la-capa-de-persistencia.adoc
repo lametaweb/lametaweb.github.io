@@ -105,7 +105,7 @@ Antes de escribir el fuente de las clases tenemos que añadir al proyecto la inf
 
 Se trata de información proporcionada por JBoss que resuelve automáticamente las versiones de nuestras dependencias.
 
-Y a continueción, también bajo el elemento <project> añadimos las dependencias en sí:
+Y a continuación, también bajo el elemento <project>, añadimos las dependencias en sí:
 
 [source,xml,indent=0]
 ----
@@ -128,11 +128,11 @@ Y a continueción, también bajo el elemento <project> añadimos las dependencia
 	</dependencies>
 ----
 
-Es posible que el archivo pom.xml se abra en Eclipse como un formulario, para mostrarlo en adelante como un fichero XML pulsamos con el botón derecho sobre el fichero y seleccionamos la opción _Open With > JBoss Tools XML Editor_ como se indica en la siguiente figura:
+Es posible que el archivo pom.xml se nos abra en Eclipse como un formulario. Para mostrarlo en adelante como un fichero XML pulsamos con el botón derecho sobre el fichero y seleccionamos la opción _Open With > JBoss Tools XML Editor_ como se indica en la siguiente figura:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig047.png[]
 
-Vamos a añadir ahora un par de propiedades al fichero POM. Copiamos y pegamos bajo el elemento <project> lo siguiente:
+Añadimos además un par de propiedades al fichero POM. Copiamos y pegamos bajo el elemento <project> lo siguiente:
 
 [source,xml,indent=0]
 ----
@@ -159,11 +159,11 @@ Las propiedades tienen dos usos:
 ----
 
 
-. Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object)
+Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object)
 con anotaciones con la información del mapeo de persistencia para los atributos de la propia entidad y las relaciones con
 el resto de entidades.
 
-. A partir de la etapa de análisis la información que se asignará a cada entidad será la siguiente:
+A partir de la etapa de análisis la información que se asignará a cada entidad será la siguiente:
 
 .Atributos definidos en las clases de persistencia
 [cols="1,2", width="70%"]
@@ -188,15 +188,15 @@ el resto de entidades.
 |altitud
 |===
 
-. Además cada entidad tendrá un atributo adicional que actúe como clave única a través del cual implementaremos las relaciones entre
-	las entidades.
-. Estas relacaciones se derivan de la siguiente información facilitada por el cliente en la etapa de análisis:
+Además todas las entidades tendrán un atributo adicional que actúa como clave única a través del cual implementaremos las relaciones entre las entidades.
 
-	. Un Trabajo se asigna a un único Drone de entre los Drones disponibles en la fecha del trabajo.
-	. Un Drone tiene ninguno, uno o varios trabajos programados.
-	. Un Trabajo se compone de un recorrido formado por dos o más puntos de ruta.
+Las relaciones las deducimos de los requisitos tomados antes en la etapa de análisis:
+
+* Un Trabajo se asigna a un único Drone de entre los Drones disponibles en la fecha del trabajo.
+* Un Drone tiene ninguno, uno o varios trabajos programados.
+* Un Trabajo se compone de un recorrido formado por dos o más puntos de ruta.
 	
-. Con toda esta información podemos ya elaborar el diagrama de clases que establezca el diseño de nuestras clases de persistencia.
+Con toda esta información podemos ya elaborar el diagrama de clases que establece el diseño de nuestras clases de persistencia.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
@@ -218,7 +218,7 @@ Bien, vamos con la implementación. Creamos las tres clases primero y no una a u
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig050.png[]
 
-Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases de la fase de diseño.
+Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases anterir de la fase de diseño.
 
 
 
