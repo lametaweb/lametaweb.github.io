@@ -216,7 +216,7 @@ botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si no está v
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig050.png[]
 
-
+Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones de las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases de la fase de diseño.
 
 
 
