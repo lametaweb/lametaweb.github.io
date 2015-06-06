@@ -158,6 +158,7 @@ Las propiedades tienen dos usos:
 			<sourceEncoding>UTF-8</sourceEncoding>
 ----
 
+== Diseño de entidades persistentes
 
 Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object)
 con anotaciones con la información del mapeo de persistencia para los atributos de la propia entidad y las relaciones con
@@ -203,7 +204,9 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 La clase en la parte superior del diagrama corresponde a la capa de negocio y la implementaremos más adelante. El resto constituye la capa de persistencia.
 
 NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente inicial para las clases persistentes, al que luego añadiremos información adicional en forma de anotaciones para definir distintos aspectos relacionados con el mapeo.
-	
+
+== Implementación de entidades persistentes
+
 Bien, vamos con la implementación. Creamos las tres clases primero y no una a una para evitar errores por referencias a clases inexistentes. Añadimos cada clase haciendo click en botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si la opción del menú no está visible ir a la opción _Java > Class_ después de hacer _New > Other..._.
 
 .Datos para creación de clases de persistencia
@@ -219,6 +222,48 @@ Bien, vamos con la implementación. Creamos las tres clases primero y no una a u
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig050.png[]
 
 Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases anterir de la fase de diseño.
+
+Para la entidad Trabajo nos vamos a la clase correspondiente y añadimos los cinco atributos definidos en el diagrama. Para implementar el identificador único podemos optar por la estrategia de ID Natural, que consiste en tomar como ID de la entidad un subconjunto de los atributos de la misma, o bien por la estrategia de ID Generado, que en general es más aconsejable, dado que en el primer caso la eficiencia en las consultas es menor y además podemos tener problemas si el significado de los campos escogidos cambia en el tiempo. 
+Un ID Generado podemos implementarlo añadiendo un atributo adicional de tipo numérico a la clase. 
+
+Copiamos y pegamos el siguiente fragmento de código en de la clase:
+[source,java,indent=0]
+----
+private Integer idTrabajo;
+private String numeroDeRegistro;
+private Date fechaHoraDeInicio;
+private Date fechaHoraFinalizacion;
+private Float velocidad;
+private String descripcion;
+----
+
+Y pulsamos la combinación de teclas o hotkey ctrl+shift+O para traernos las importaciones necesarias. En este caso se da una 
+ambigüedad porque hay dos clases Dates en paquetes diferentes, nosotros tenemos que elegir el paquete java.util.Date.
+ 
+Generamos ahora los métodos de acceso a estos atributos, con botón derecho sobre la clase y _> Source > Generate Getters and Setters_, Seleccionar todos los atributos y pulsar OK. Dejamos el código fuente ordenado con botón derecho _> Source > Format_. Finalmente guardamos la clase pulsando el icono del disquette o usando la hotkey Ctrl + S.
+ 
+A nivel de clase hacemos los siguientes cambios: 
+
+. Convertimos la clase en serializable. Esto es una buena práctica en general porque en ciertas situaciones es necesario que el bean sea serializable.
+Podéis consultar http://www.adam-bien.com/roller/abien/entry/do_jpa_entities_have_to[este link] para más información.
+
+[source,java,indent=0]
+----
+	public class Trabajo implements Serializable{
+----
+
+Aparecerá un warning que solucionamos añadiendo la línea `private static final long serialVersionUID = 1L;` justo antes de los atributos de la clase.
+Esta constante se utiliza para cotejar versiones en clases que se serializan explícitamente.
+
+Y añadimos la anotación `@Entity` encima de la delcaración de la clase para que sea tratada como un bean JPA persistente.
+
+[source,java,indent=0]
+----
+	@Entity
+	public class Trabajo implements Serializable{
+----
+
+A nivel de atributos añadimos:
 
 
 
