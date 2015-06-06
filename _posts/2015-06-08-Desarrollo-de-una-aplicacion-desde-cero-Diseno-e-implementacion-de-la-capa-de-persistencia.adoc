@@ -174,6 +174,34 @@ Es posible que el archivo pom.xml se abra en Eclipse como un formulario, para mo
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig047.png[]
 
+Vamos a añadir ahora un par de propiedades al fichero POM. Copiamos y pegamos bajo el elemento <project> lo siguiente:
+
+[source,xml,indent=0]
+----
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.jboss.bom.eap>1.0.0.CR1</version.jboss.bom.eap>
+	</properties> 
+----
+
+La primera propiedad fija la codificación usada por el compilador y otros plugins a UTF-8 y la segunda representa una variable. 
+
+Las propiedades tienen dos usos:
+. Para definir una variable que es usada en uno o más puntos del documento.
+. Para asignar un valor a un elemento del documento, por ejemplo la línea
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> equivale a añadir el elemento <sourceEncoding> bajo el elemento <build> así:
+
+[source,xml,indent=0]
+----
+	<project>
+		...
+		<build>
+			...
+			<sourceEncoding>UTF-8</sourceEncoding>
+----
+
+
+
 
 
 
