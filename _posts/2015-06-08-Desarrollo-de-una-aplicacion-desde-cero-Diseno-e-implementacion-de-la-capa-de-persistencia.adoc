@@ -200,6 +200,22 @@ Las propiedades tienen dos usos:
 			<sourceEncoding>UTF-8</sourceEncoding>
 ----
 
+Ahora sí vamos con las clases. Creamos las tres clases primero y no una a una para evitar errores por referencias a clases inexistentes.
+Añadimos las tres clases haciendo click en
+botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si no está visible buscar _Java > Class_ en la opción _New > Other..._.
+
+.Datos para creación de clases de persistencia
+[cols="1h,5"]
+|===
+|Nombres 
+|Drone, Trabajo, PuntoRuta
+
+|Paquetes
+|paquete idem para las tres: com.lametaweb.jdrone.persistencia
+|===
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig050.png[]
+
 
 
 
