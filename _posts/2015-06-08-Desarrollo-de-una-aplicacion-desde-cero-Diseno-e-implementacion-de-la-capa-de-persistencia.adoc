@@ -223,10 +223,13 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases anterir de la fase de diseño.
 
+=== Entidad Trabajo
+
 Para la entidad Trabajo nos vamos a la clase correspondiente y añadimos los cinco atributos definidos en el diagrama. Para implementar el identificador único podemos optar por la estrategia de ID Natural, que consiste en tomar como ID de la entidad un subconjunto de los atributos de la misma, o bien por la estrategia de ID Generado, que en general es más aconsejable, dado que en el primer caso la eficiencia en las consultas es menor y además podemos tener problemas si el significado de los campos escogidos cambia en el tiempo. 
 Un ID Generado podemos implementarlo añadiendo un atributo adicional de tipo numérico a la clase. 
 
 Copiamos y pegamos el siguiente fragmento de código en de la clase:
+
 [source,java,indent=0]
 ----
 private Integer idTrabajo;
@@ -244,7 +247,7 @@ Generamos ahora los métodos de acceso a estos atributos, con botón derecho sob
  
 A nivel de clase hacemos los siguientes cambios: 
 
-. Convertimos la clase en serializable. Esto es una buena práctica en general porque en ciertas situaciones es necesario que el bean sea serializable.
+Convertimos la clase en serializable. Esto es una buena práctica en general porque en ciertas situaciones es necesario que el bean sea serializable.
 Podéis consultar http://www.adam-bien.com/roller/abien/entry/do_jpa_entities_have_to[este link] para más información.
 
 [source,java,indent=0]
@@ -263,10 +266,58 @@ Y añadimos la anotación `@Entity` encima de la delcaración de la clase para q
 	public class Trabajo implements Serializable{
 ----
 
-A nivel de atributos añadimos:
+A nivel de atributos añadimos las siguientes anotaciones de persistencia:
 
+* idTrabajo:
 
+	** `@Id`: Indica que este campo va a ser el identificador único de la entidad persistente. En la base de datos se mapeará como la clave primaria.
+	** `@GeneratedValue(strategy=GenerationType.SEQUENCE)`: Establece la estrategia de generación de valores únicos.
+		Aquí hay dos alternativas, podemos generar nosotros mismos los valores o delegar en JPA para que la generación tenga lugar
+		en la base de datos, en general se delega en JPA. Y dentro de estra opción 
+		existen tres posibilidades
+		IDENTITY, SEQUENCE y TABLE. Optamos por SEQUENCE ya que los otros dos métodos son menos convenientes. Puedes ver una explicación más
+		detallada http://en.wikibooks.org/wiki/Java_Persistence/Identity_and_Sequencing[aquí].
+Como siempre pulsamos Ctrl + Shift + O para importar las clases necesarias.
 
+* numeroDeRegistro:
+	** @Basic(optional = false): Indica que el valor de este atributo no puede ser nulo cuando la entidad se persista. Es decir que
+	obligamos a que los trabajos guardados en la base de datos tengan su número de registro.
+
+* fechaHoraDeInicio y fechaHoraFinalizacion:
+	** @Basic(optional = false)
+	** @Temporal(TemporalType.TIMESTAMP): Es necesaria en campos de tipo fecha para especificar si es un campo que indica una fecha, una hora,
+		o ambos. En nuestro caso guardamos fecha y hora.
+
+* velocidad:
+	** @Basic(optional = false)	
+
+* descripcion:
+	** @Lob: Ya que preveemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente con
+		un tipo de datos Basic.
+    ** @Size(max = 65535): Mapeamos este campo con un CLOB, con un tamaño de 64Kb. Lo hacemos así porque se prevé que
+		la longitud de esta información textual sea mayor que los 32Kb que soporta el tipo VARCHAR generado para un tipo Basic String.
+		
+Como práctica haced vosotros lo mismo para las dos clases restantes. Es todo análogo excepto algún detalle que os comento.
+
+=== Entidad Drone
+
+Añadimos los atributos y el identificador `idDrone` y generamos los métodos getters y setters.
+
+[source,java,indent=0]
+----
+	private Integer idDrone;
+	private String numeroDeSerie;	// es un valor obligatorio
+	private String modelo;
+	private Integer autonomia;
+	private Integer numMotores;		// debe estar en el intervalo cerrado [4,8]
+	private Integer pesoMaximoDespegue;
+----
+
+El resto es todo análogo a lo realizado con la entidad Trabajo exceptuando los dos detalles que se indican en los comentarios junto a los atributos. Para el atributo numeroDeSerie, como antes, añadimos la anotación `@Basic(optional = false)` y para el rango numérico en el atributo numMotores usamos la anotación, `@Range(min = 4, max = 8)`. Y eso es todo.
+
+Sin embargo como ya hebréis advertido surge un pequeño problema, cuando pulsamos la combinación de teclas Ctrl + Shift + O para traernos los imports nos damos cuenta de que Eclipse no es capaz de localizar el paquete para la anotación @Range. El motivo es que se trata de una anotación especifica del proveedor de persistencia, Hibernate, y que queda fuera por tanto del estándar JPA. Así que nos toca añadir otra dependencia a nuestro fichero pom.xml.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig055.png[]
 
 
 
