@@ -170,5 +170,11 @@ Y a continueción, también bajo el elemento <project> añadimos las dependencia
 	</dependencies>
 ----
 
-NOTE: Si el contenido del archivo pom.xml se muestra en Eclipse como un formulario es posible que tengamos que ir a la opción _Window > Preferences > Maven > User Interface_ y desmarcar el check para la opción _Open XML page in the POM editor by default_.
+Es posible que el archivo pom.xml se abra en Eclipse como un formulario, para mostrarlo en adelante como un fichero XML pulsamos con el botón derecho sobre el fichero y seleccionamos la opción _Open With > JBoss Tools XML Editor_ como se indica en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig047.png[]
+
+
+
+
 
