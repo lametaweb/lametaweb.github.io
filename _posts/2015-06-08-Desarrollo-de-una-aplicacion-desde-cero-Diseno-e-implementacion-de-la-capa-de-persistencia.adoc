@@ -59,16 +59,13 @@ Veamos el significado de cada elemento:
 * *<persistence>*: Es el elemento raíz y declara los diferentes espacios de nombres que contienen las reglas de escritura del documento y además indica la versión JPA utilizada, en este caso la 2.0, que es la que correspende a Java EE 6. Dentro del elemento raíz podemos definir varias de unidades de persistencia. Nosotros queremos mapear nuestros objetos en un único lugar y de un mismo modo por lo que crearemos una única unidad.
 * *<persistence-unit>*: Describe la unidad de persistencia, que es el mecanismo que genera el contexto de persistencia donde residen nuestros beans persistentes. El atributo _name_ lo usaremos para referirnos a ella desde el código. Por otro lado el atributo _transaction-type_ provee de la tecnología JTA para la gestión automática de las transacciones.
 * *<jta-data-source>*: Define el nombre JNDI del origen de datos, un recurso de servidor a través del cual nuestra aplicación accede a la base de datos. Más adelante veremos como instalarlo. El nombre JNDI seguirá el formato java:jboss/datasources/<nombre_origen_datos>.
-* *<exclude-unlisted-classes>*: Evita tener que nombrar aquí las clases del contexto estableciendo que todas las clases anotadas como entidades
-	pertenerán a este contexto de persistencia.
-* *<properties>*: Las propiedades adicionales las necesita el proveedor de peristencia elegido, en nuestro caso Hibernate, que recordemos que es
-	el que ya trae integrado el servidor JBoss. Tenemos dos propiedades definidas:
-	** La propiedad _hibernate.dialect_ de indica al proveedor que nuestra base de datos será Derby.
-	** La propiedad _hibernate.hbm2ddl.auto_ indica al proveedor que genere los elementos del esquema de la base de datos de forma automática
-		a partir de la información de las entidades persistentes de nuestro código fuente. Recordad que nosotros tendremos tres.
+* *<exclude-unlisted-classes>*: Evita tener que nombrar en el fichero las clases persistentes estableciendo que todas las clases anotadas como entidades pertenecerán a este contexto de persistencia.
+* *<properties>*: Propiedades para el proveedor de peristencia elegido, en nuestro caso Hibernate. Suministramos dos propiedades:
+	** _hibernate.dialect_ indica al proveedor que la base de datos es Derby.
+	** _hibernate.hbm2ddl.auto_ indica al proveedor que genere los elementos del esquema de la base de datos de forma automática a partir de la información de las entidades persistentes de nuestro código fuente. O sea que crea la base de datos por nosotros!.
 
 NOTE: Si usamos Hibernate como proveedor de persistencia en JBoss, que es lo habitual, podemos obviar el elemento
-<provider>org.hibernate.ejb.HibernatePersistence</provider> en el fichero persistence.xml.
+<provider>org.hibernate.ejb.HibernatePersistence</provider> dentro de persistence.xml.
 
 Antes de escribir el fuente de las clases tenemos que añadir al proyecto la información de dependencias para Hibernate. Primero añadimos este fragmento XML bajo el elemento <project> del archivo pom.xml:
 
