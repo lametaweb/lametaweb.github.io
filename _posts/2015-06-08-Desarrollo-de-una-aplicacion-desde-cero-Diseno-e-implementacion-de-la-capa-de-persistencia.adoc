@@ -180,7 +180,7 @@ Partiendo del trabajo de análisis la información que asignamos a cada entidad 
 |altitud
 |===
 
-Además todas las entidades tendrán un atributo adicional que actúa como clave única a través del cual implementaremos las relaciones entre las entidades.
+Además todas las entidades tendrán un atributo adicional que actúa como clave única a través de los cuales implementaremos las relaciones entre las entidades.
 
 Las relaciones las deducimos de los requisitos tomados antes en la etapa de análisis:
 
@@ -188,17 +188,17 @@ Las relaciones las deducimos de los requisitos tomados antes en la etapa de aná
 * Un Drone tiene ninguno, uno o varios trabajos programados.
 * Un Trabajo se compone de un recorrido formado por dos o más puntos de ruta.
 	
-Con toda esta información podemos ya elaborar el diagrama de clases que establece el diseño de nuestras clases de persistencia.
+Con esta información podemos ya elaborar el diagrama de clases que establezca el diseño de nuestras clases de persistencia.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
 La clase en la parte superior del diagrama corresponde a la capa de negocio y la implementaremos más adelante. El resto constituye la capa de persistencia.
 
-NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente inicial para las clases persistentes, al que luego añadiremos información adicional en forma de anotaciones para definir distintos aspectos relacionados con el mapeo.
+NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente de partida para las clases persistentes, que luego podremos modificar para que se ajuste a lo que necesitemos.
 
 == Implementación de entidades persistentes
 
-Bien, vamos con la implementación. Creamos las tres clases primero y no una a una para evitar errores por referencias a clases inexistentes. Añadimos cada clase haciendo click en botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si la opción del menú no está visible ir a la opción _Java > Class_ después de hacer _New > Other..._.
+Bien, vamos con la implementación. Creamos las tres clases primero, y no una a una, para evitar errores por referencias a clases inexistentes. Añadimos cada clase haciendo click en botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si la opción del menú no está visible ir a la opción _Java > Class_ después de hacer _New > Other..._.
 
 .Datos para creación de clases de persistencia
 [cols="1h,5"]
@@ -210,16 +210,18 @@ Bien, vamos con la implementación. Creamos las tres clases primero y no una a u
 |paquete idem para las tres: com.lametaweb.jdrone.persistencia
 |===
 
+Aspecto del proyecto después de crear las clases de persistencia:
+
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig050.png[]
 
-Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases anterir de la fase de diseño.
+Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases anterior de la fase de diseño.
 
 === Entidad Trabajo
 
 Para la entidad Trabajo nos vamos a la clase correspondiente y añadimos los cinco atributos definidos en el diagrama. Para implementar el identificador único podemos optar por la estrategia de ID Natural, que consiste en tomar como ID de la entidad un subconjunto de los atributos de la misma, o bien por la estrategia de ID Generado, que en general es más aconsejable, dado que en el primer caso la eficiencia en las consultas es menor y además podemos tener problemas si el significado de los campos escogidos cambia en el tiempo. 
 Un ID Generado podemos implementarlo añadiendo un atributo adicional de tipo numérico a la clase. 
 
-Copiamos y pegamos el siguiente fragmento de código en de la clase:
+Copiamos y pegamos el siguiente fragmento de código en la clase:
 
 [source,java,indent=0]
 ----
@@ -231,15 +233,14 @@ private Float velocidad;
 private String descripcion;
 ----
 
-Y pulsamos la combinación de teclas o hotkey ctrl+shift+O para traernos las importaciones necesarias. En este caso se da una 
-ambigüedad porque hay dos clases Dates en paquetes diferentes, nosotros tenemos que elegir el paquete java.util.Date.
+Y pulsamos la combinación de teclas o hotkey ctrl + shift + O para traernos las importaciones necesarias. En este caso se da una ambigüedad porque existen dos clases Date en paquetes diferentes, nosotros tenemos que elegir la del paquete java.util.Date.
  
-Generamos ahora los métodos de acceso a estos atributos, con botón derecho sobre la clase y _> Source > Generate Getters and Setters_, Seleccionar todos los atributos y pulsar OK. Dejamos el código fuente ordenado con botón derecho _> Source > Format_. Finalmente guardamos la clase pulsando el icono del disquette o usando la hotkey Ctrl + S.
+Generamos ahora los métodos de acceso a estos atributos, con botón derecho sobre la clase y _> Source > Generate Getters and Setters_, Seleccionar todos los atributos y pulsar OK. Dejamos el código fuente ordenado con botón derecho y _> Source > Format_. Finalmente guardamos la clase pulsando el icono del disquette o usando la hotkey Ctrl + S.
  
 A nivel de clase hacemos los siguientes cambios: 
 
 Convertimos la clase en serializable. Esto es una buena práctica en general porque en ciertas situaciones es necesario que el bean sea serializable.
-Podéis consultar http://www.adam-bien.com/roller/abien/entry/do_jpa_entities_have_to[este link] para más información.
+Podéis consultar http://www.adam-bien.com/roller/abien/entry/do_jpa_entities_have_to[este link] si queréis una explicación más detallada.
 
 [source,java,indent=0]
 ----
@@ -249,7 +250,7 @@ Podéis consultar http://www.adam-bien.com/roller/abien/entry/do_jpa_entities_ha
 Aparecerá un warning que solucionamos añadiendo la línea `private static final long serialVersionUID = 1L;` justo antes de los atributos de la clase.
 Esta constante se utiliza para cotejar versiones en clases que se serializan explícitamente.
 
-Y añadimos la anotación `@Entity` encima de la delcaración de la clase para que sea tratada como un bean JPA persistente.
+Y añadimos la anotación `@Entity` encima de la declaración de la clase para que sea tratada como un bean JPA persistente.
 
 [source,java,indent=0]
 ----
@@ -259,36 +260,26 @@ Y añadimos la anotación `@Entity` encima de la delcaración de la clase para q
 
 A nivel de atributos añadimos las siguientes anotaciones de persistencia:
 
-* idTrabajo:
+* En idTrabajo:
 
 	** `@Id`: Indica que este campo va a ser el identificador único de la entidad persistente. En la base de datos se mapeará como la clave primaria.
-	** `@GeneratedValue(strategy=GenerationType.SEQUENCE)`: Establece la estrategia de generación de valores únicos.
-		Aquí hay dos alternativas, podemos generar nosotros mismos los valores o delegar en JPA para que la generación tenga lugar
-		en la base de datos, en general se delega en JPA. Y dentro de estra opción 
-		existen tres posibilidades
-		IDENTITY, SEQUENCE y TABLE. Optamos por SEQUENCE ya que los otros dos métodos son menos convenientes. Puedes ver una explicación más
-		detallada http://en.wikibooks.org/wiki/Java_Persistence/Identity_and_Sequencing[aquí].
-Como siempre pulsamos Ctrl + Shift + O para importar las clases necesarias.
+	** `@GeneratedValue(strategy=GenerationType.SEQUENCE)`: Establece la estrategia de generación de valores únicos. Aquí hay dos alternativas: Podemos generar nosotros mismos los valores o bien delegar en JPA para que la generación tenga lugar en la base de datos. En general se delega en JPA. Y dentro de esta opción existen tres posibilidades IDENTITY, SEQUENCE y TABLE. Optamos por SEQUENCE ya que los otros dos métodos son menos convenientes. Podéis ir al http://en.wikibooks.org/wiki/Java_Persistence/Identity_and_Sequencing[siguiente link] para ver esto con mayor profundidad. Como siempre pulsamos Ctrl + Shift + O para importar las clases necesarias.
 
-* numeroDeRegistro:
-	** @Basic(optional = false): Indica que el valor de este atributo no puede ser nulo cuando la entidad se persista. Es decir que
-	obligamos a que los trabajos guardados en la base de datos tengan su número de registro.
+* En numeroDeRegistro:
+	** `@Basic(optional = false)`: Indica que el valor de este atributo no puede ser nulo cuando la entidad se persista. Es decir que obligamos a que los trabajos guardados en la base de datos tengan un número de registro.
 
-* fechaHoraDeInicio y fechaHoraFinalizacion:
-	** @Basic(optional = false)
-	** @Temporal(TemporalType.TIMESTAMP): Es necesaria en campos de tipo fecha para especificar si es un campo que indica una fecha, una hora,
-		o ambos. En nuestro caso guardamos fecha y hora.
+* En fechaHoraDeInicio y fechaHoraFinalizacion:
+	** `@Basic(optional = false)`
+	** `@Temporal(TemporalType.TIMESTAMP)`: Es necesaria en campos de tipo fecha para especificar si es un campo que indica una fecha, una hora, o ambos. En nuestro caso guardamos ambos: Fecha y hora.
 
-* velocidad:
-	** @Basic(optional = false)	
+* En velocidad:
+	** `@Basic(optional = false)`	
 
-* descripcion:
-	** @Lob: Ya que preveemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente con
-		un tipo de datos Basic.
-    ** @Size(max = 65535): Mapeamos este campo con un CLOB, con un tamaño de 64Kb. Lo hacemos así porque se prevé que
-		la longitud de esta información textual sea mayor que los 32Kb que soporta el tipo VARCHAR generado para un tipo Basic String.
+* En descripcion:
+	** `@Lob`: Ya que preveemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente espacio con un tipo de datos Basic.
+    ** `@Size(max = 65535)`: Mapeamos este campo con un CLOB, con un tamaño de 64Kb. Lo hacemos así porque se prevé que la longitud de esta información textual sea mayor que los 32Kb que soporta el tipo VARCHAR generado para un tipo Basic String.
 		
-Como práctica haced vosotros lo mismo para las dos clases restantes. Es todo análogo excepto algún detalle que os comento.
+Y ya tendríamos terminado los atributos de la clase Trabajo. Como práctica haced vosotros lo mismo para las dos clases restantes. Es todo análogo excepto algún detalle que os comento a continuación.
 
 === Entidad Drone
 
@@ -304,18 +295,17 @@ Añadimos los atributos y el identificador `idDrone` y generamos los métodos ge
 	private Integer pesoMaximoDespegue;
 ----
 
-El resto es todo análogo a lo realizado con la entidad Trabajo exceptuando los dos detalles que se indican en los comentarios junto a los atributos. Para el atributo numeroDeSerie, como antes, añadimos la anotación `@Basic(optional = false)` y para el rango numérico en el atributo numMotores usamos la anotación, `@Range(min = 4, max = 8)`. Y eso es todo.
+El resto es todo análogo a lo visto con la entidad Trabajo exceptuando los dos detalles que se indican en los comentarios junto a sus atributos. Para el atributo numeroDeSerie, como antes, añadimos la anotación `@Basic(optional = false)` y para el rango numérico en el atributo numMotores usamos la anotación `@Range(min = 4, max = 8)`. Y eso es todo.
 
-Sin embargo como ya hebréis advertido surge un pequeño problema, cuando pulsamos la combinación de teclas Ctrl + Shift + O para traernos los imports nos damos cuenta de que Eclipse no es capaz de localizar el paquete para la anotación @Range. El motivo es que se trata de una anotación especifica del proveedor de persistencia, Hibernate, y que queda fuera por tanto del estándar JPA. Así que nos toca añadir otra dependencia a nuestro fichero pom.xml.
+Sin embargo como ya hebréis advertido surge un pequeño problema, cuando pulsamos la combinación de teclas Ctrl + Shift + O para traernos los imports nos damos cuenta de que Eclipse no es capaz de localizar el paquete para la anotación @Range. El motivo es que se trata de una anotación especifica del proveedor de persistencia Hibernate, y queda fuera por tanto del estándar JPA. Así que nos toca añadir otra dependencia a nuestro fichero pom.xml.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig055.png[]
 
-Para buscar el artefacto que nos resuelva la dependencia buscamos a través de Google el nombre completo de la clase. Es este caso el nombre es org.hibernate.validator.constraints.Range. Nos vamos a continuación a la página del gestor de repositorios público de JBoss,  https://repository.jboss.org/nexus/[aquí], metemos nuestras credenciales de JBoss Developer y accedemos a la página de búsqueda
-donde pegamos el nombre completo de la clase.
+Para buscar el artefacto que nos resuelva la dependencia buscamos a través de Google el nombre completo de la clase. Es este caso el nombre es org.hibernate.validator.constraints.Range. Nos vamos a continuación a la página del gestor de repositorios público de JBoss,  https://repository.jboss.org/nexus/[aquí], metemos nuestras credenciales de JBoss Developer y accedemos a la página de búsqueda donde pegaremos el nombre completo de la clase.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig060.png[]
  
-Entre los resultados obtenidos localizamos, moviendo la barra de desplazamiento hacia abajo, el item con el grupo org.hibernate y la versión final más reciente. Copiamos el contenido de la dependencia que aparece abajo a la derecha y la pegamos en nuestro pom.xml, dentro del elemento <dependencies>. Guardamos los cambios y botón derecho sobre proyecto _> Maven > Update Project_ o directamente con la hotkey Alt + F5. Y ahora sí resolvemos el error pulsando Ctrl + Shift + O en la clase Drone y guardando los cambios con Crtl + S.
+Entre los resultados obtenidos localizamos, moviendo la barra de desplazamiento hacia abajo, el item con el grupo _org.hibernate_ y la versión final más reciente. Copiamos el contenido de la dependencia que aparece abajo a la derecha y la pegamos en nuestro pom.xml dentro del elemento <dependencies>. Guardamos los cambios y botón derecho sobre proyecto _> Maven > Update Project_ o directamente con la hotkey Alt + F5. Y ahora sí resolvemos el error pulsando Ctrl + Shift + O en la clase Drone y guardando los cambios con Crtl + S.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig065.png[]
 
@@ -333,7 +323,7 @@ De la misma manera añadimos los atributos y el ID y generamos los getters y set
 
 Y aplicamos las anotaciones de persistencia de manera análoga a lo visto con las dos clases anteriores.
 
-Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento de implementar las dos relaciones reflejadas en el diagrama de clases, vamos a ello.
+Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento de implementar las dos relaciones reflejadas en el diagrama de clases. Vamos a ello.
 
 === Relación entre Trabajo y Drone
 
