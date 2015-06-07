@@ -342,7 +342,7 @@ De la misma manera añadimos los atributos y el ID y generamos los getters y set
 
 Y aplicamos las anotaciones de persistencia de manera análoga a lo visto con las dos clases anteriores.
 
-Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento de implementar las tres relaciones reflejadas en el diagrama de clases, vamos a ello.
+Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento de implementar las dos relaciones reflejadas en el diagrama de clases, vamos a ello.
 
 === Relación entre Trabajo y Drone
 
@@ -380,5 +380,30 @@ Veamos en detalle los aspectos de cada anotación:
 * @ManyToOne
 ** Establece una relación muchos a uno.	
 * @JoinColumn(name = "referencedColumnName = "iddrone")
-** El atributo referencedColumnName es el que contiene la información del enlace, y de la que tira la relación inversa desde Trabajo a Drone. El nombre asignado por defecto a una columna de datos es el nombre del atributo que mapea, sin distinguir entre mayúscula y minúscula por eso la columna se nombre "iddrone" o bien "IDDRONE".
+** El atributo referencedColumnName es el que contiene la información del enlace, y de la que tira la relación inversa desde Trabajo a Drone. El nombre asignado por defecto a una columna de datos es el nombre del atributo que mapea, sin distinguir entre mayúscula y minúscula por eso la columna se nombra "iddrone" o bien "IDDRONE".
 
+ 
+=== Relación entre Trabajo y PuntoRuta
+
+Se trata de una relación de composición. Un punto de ruta existe asociado a un único trabajo durante todo su ciclo de vida. En cuanto a las cardinalidades un trabajo deberá tener como mínimo dos puntos de ruta, el inicial y el final, y un punto de ruta se asocia con un Trabajo como se ha dicho. La navegabilidad aquí la establecemos solo en la dirección desde el Trabajo al punto de ruta. Veamos los detalles de implementación.
+
+Tendremos una relación uno a muchos unidireccional por lo que sólo necesitamos un atributo en la entidad Trabajo. Queremos que los puntos de ruta se ordenen según la posición en que los insertemos por lo que usaremos una colección
+ordenada. Añadimos el siguiente atributo a la clase Trabajo
+
+[source,java,indent=0]
+----
+private List<PuntoRuta> puntosDeRuta = new LinkedList<PuntoRuta>();
+----
+
+Generamos el método getter y el método setter y anotamos el atributo así
+
+[source,java,indent=0]
+----
+@OneToMany
+@OrderColumn
+----
+
+En este punto paramos y pensamos si realmente merece la pena crear una entidad PuntoRuta. Esto dependerá sobre todo de si de los requisitos se deduce la necesidad de lanzar consultas sobre la entidad PuntoRuta, por ejemplo para
+ consultar los trabajos programados en una determinada área geográfica. Para nuestro proyecto supondremos que estas consultas sí interesan al cliente. Si tuvieramos el supuesto contrario la ruta la implementaríamos como una colección embeddable.
+
+Con la implementanción de estas tres clases damos por terminada la implementación de la capa de persistencia. En el próximo post veremos como se despliga el datasource que necesita esta capa y también un modo de implementar la carga inicial de datos desde la propia aplicación usando la tecnología EJB. Hasta pronto!
