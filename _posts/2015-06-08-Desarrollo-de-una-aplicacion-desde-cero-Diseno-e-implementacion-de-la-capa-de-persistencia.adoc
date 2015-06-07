@@ -21,7 +21,7 @@ En el plano tecnológico tenemos que definir lo siguiente:
 
 == La configuración
 
-Vamos primero con el fichero de configuración. El fichero de configuración de la unidad de persitencia es _persistence.xml_. La especificación JPA2 (JSR-338) permite desplegar clases de persistencia fuera de un empaquetado JAR, directamente dentro del WAR de nuestra aplicación. En este caso se indica que el fichero persistence.xml debe situarse en la carpeta _WEB-INF/classes/META-INF/_ . Por lo tanto, y con arreglo a la configuración por defecto de Maven para los ficheros de recursos, en nuestro proyecto tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero en la opción de menú _New > Other... > XML > XML File_.
+Vamos primero con la configuración. El fichero de configuración de la unidad de persitencia es _persistence.xml_. La especificación JPA 2 (JSR-338) permite desplegar clases de persistencia fuera de un empaquetado JAR, directamente dentro del WAR de nuestra aplicación. En este caso se indica que el fichero _persistence.xml_ debe situarse en la carpeta _WEB-INF/classes/META-INF/_. Por lo tanto, y con arreglo a la configuración por defecto de Maven para los ficheros de recursos, en nuestro proyecto tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero con la opción de menú _New > Other... > XML > XML File_.
 
 
 .Fichero de configuración de persistencia
@@ -36,7 +36,7 @@ Vamos primero con el fichero de configuración. El fichero de configuración de 
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig040.png[]
 
-Copiamos el siguiente contenido en el fichero persistence.xml:
+Copiamos y pegamos el siguiente contenido en el fichero persistence.xml:
 
 [source,xml,indent=0]
 ----
@@ -56,12 +56,8 @@ Copiamos el siguiente contenido en el fichero persistence.xml:
 Veamos el significado de cada elemento:
 
 * La primera línea indica que se trata de un fichero XML.
-* *<persistence>*: Es el elemento raíz y declara los diferentes espacios de nombres que contienen las reglas de escritura del documento y
-además indica la versión JPA que hemos adoptado, en este caso la 2.0, que es la que correspende a Java EE 6. Dentro del elemento raíz
- podemos definir varias de unidades de persistencia. Nosotros queremos mapear nuestros objetos en un único
-lugar de un mismo modo por lo que necesitamos una única unidad.
-* *<persistence-unit>*: El siguiente elemento describe la unidad de persistencia, que es el mecanismo que genera el contexto de persistencia donde
- residen nuestros beans persistentes. El atributo name lo usaremos para referirnos a ella desde el código. Por otro lado el atributo
+* *<persistence>*: Es el elemento raíz y declara los diferentes espacios de nombres que contienen las reglas de escritura del documento y además indica la versión JPA utilizada, en este caso la 2.0, que es la que correspende a Java EE 6. Dentro del elemento raíz podemos definir varias de unidades de persistencia. Nosotros queremos mapear nuestros objetos en un único lugar y de un mismo modo por lo que crearemos una única unidad.
+* *<persistence-unit>*: Describe la unidad de persistencia, que es el mecanismo que genera el contexto de persistencia donde residen nuestros beans persistentes. El atributo name lo usaremos para referirnos a ella desde el código. Por otro lado el atributo
 	transaction-type provee la provee de la tecnología JTA para la gestión automática de las transacciones.
 * *<jta-data-source>*: Define el nombre JNDI del origen de datos que es el recurso de servidor a través del cual nuestra aplicación accede
 	a la base de datos. Más adelante veremos como instalarlo. EL nombre JNDI seguirá el formato java:jboss/datasources/<nombre_origen_datos>.
