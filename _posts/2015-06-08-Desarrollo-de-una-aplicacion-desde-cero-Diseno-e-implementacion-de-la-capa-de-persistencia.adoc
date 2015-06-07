@@ -3,20 +3,21 @@ La metaweb
 :hp-tags: JPA, Hibernate, persistencia, diagrama de clases
 :published_at: 2015-06-08
 
-
-Continuamos con la implementación de la aplicación. Construiremos la aplicación desde la capa de persistencia hacia arriba hasta la capa de presentación, que es el modo habitual para los desarrollos Java EE por capas.
+Una vez creado el proyecto iniciamos la implementación de la aplicación. Lo haremos desde la capa de persistencia hacia arriba hasta la capa de presentación, que es el modo habitual para los desarrollos Java EE por capas.
 
 == Introducción
 
-La capa de persistencia tiene como cometido establecer un mapeo con la base de datos para las entidades persistentes del modelo de dominio de manera que podamos manipular la información a través de una jerarquía de objetos Java y nos abstraiga totalmente de los detalles de la base de datos. El modelo de dominio es un documento de la fase de análisis del proyecto que consiste en una serie de diagramas de clase donde se determinan las entidades relevantes para nuestro proyecto, la información contenida en cada una y las relaciones entre ellas. 
+La capa de persistencia es por un lado la responsable de establecer un mapeo entre las entidades persistentes del modelo de dominio y los elementos de la base de datos que nos abstraiga de los detalles de la misma, y por otro de proporcionar una API para la manipulación y consulta de los datos usando ese mapeo. El modelo de dominio es un documento de la fase de análisis del proyecto que consiste en una serie de diagramas de clase donde se muestran las entidades relevantes para nuestro proyecto, la información contenida en cada una y las relaciones entre ellas.
+
+La tecnología JPA nos permite trabajar dentro de nuestra aplicación usando sólo nuestras jerarquías de objetos, simplificando los aspectos relacionados con la persistencia e independizándonos totalmente del gestor de base de datos utilizado. Para las consultas proporciona JPQL, un lenguaje de consulta basado en objetos. Además usando la tecnología JTA no tendremos que preocuparnos en general por la gestión de las transacciones.
 
 En el plano tecnológico tenemos que definir lo siguiente:
 
-* El proveedor de persistencia: Es el conjunto de librerías que implementan el ORM. Elegimos Hibernate, ya que es el más extendido y además viene de serie en nuestro servidor JBoss.
+* El proveedor de persistencia: Es el conjunto de librerías que implementan la especificación JPA. Elegimos Hibernate, ya que es el más extendido y además viene de serie en nuestro servidor JBoss.
 
-* El gestor de base de datos: Usamos una base de datos Derby embebida lo que nos permite simplificar de momento la capa de Datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro, nosotros elegimos esta última opción para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae puesta el servidor JBoss EAP, similar a la base de datos Derby, para que veamos también como desplegar recursos en el servidor desde Maven.
+* El gestor de base de datos: Usamos una base de datos Derby embebida, lo que nos permite simplificar de momento la capa de datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro. Nosotros elegimos esta última opción para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae puesta el servidor JBoss EAP, similar a la base de datos Derby, para que veamos también como desplegar recursos en el servidor usando Maven.
 
-¿Y qué elementos tenemos que añadir a la capa de persistencia? Pues por un lado un fichero de configuración, donde definimos todo lo relevante, y que leerá Hibernate, y por otro las clases del mapeo objeto relacional, basadas en la tecnología JPA, y que eran tres: Drone, Trabajo y PuntoRuta. Y no hay más, mucho más simple y limpio que en versiones pasadas de EJB.
+¿Y qué elementos tendremos que añadir a la capa de persistencia? Pues por un lado un fichero de configuración, donde definimos todo lo relevante, y que leerá Hibernate, y por otro las clases del mapeo objeto relacional, que serán tres: Drone, Trabajo y PuntoRuta. Y no hay más. Los que conozcáis EJB 2 estaréis de acuerdo conmigo en que ahora afortunadamente todo es es mucho más simple y limpio.
 
 == La configuración
 
