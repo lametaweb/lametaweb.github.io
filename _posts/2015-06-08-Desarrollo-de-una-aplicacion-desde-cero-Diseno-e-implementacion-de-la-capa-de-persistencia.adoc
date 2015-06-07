@@ -95,7 +95,7 @@ Antes de escribir el fuente de las clases tenemos que añadir al proyecto la inf
 	</dependencyManagement>
 ----
 
-Se trata de información proporcionada por JBoss que resuelve automáticamente las versiones de nuestras dependencias.
+Se trata de información proporcionada por ficheros del repositorio de JBoss que resuelve automáticamente las versiones de nuestras dependencias.
 
 Y a continuación, también bajo el elemento <project>, añadimos las dependencias en sí:
 
@@ -137,8 +137,9 @@ Añadimos además un par de propiedades al fichero POM. Copiamos y pegamos bajo 
 La primera propiedad fija la codificación usada por el compilador y otros plugins a UTF-8 y la segunda representa una variable. 
 
 Las propiedades tienen dos usos:
-. Para definir una variable que es usada en uno o más puntos del documento.
-. Para asignar un valor a un elemento del documento, por ejemplo la línea
+
+* Definir una variable que es usada en uno o más puntos del documento.
+* Asignar un valor a un elemento del documento, por ejemplo la línea
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> equivale a añadir el elemento <sourceEncoding> bajo el elemento <build> así:
 
 [source,xml,indent=0]
@@ -152,11 +153,9 @@ Las propiedades tienen dos usos:
 
 == Diseño de entidades persistentes
 
-Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object)
-con anotaciones con la información del mapeo de persistencia para los atributos de la propia entidad y las relaciones con
-el resto de entidades.
+Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object) con anotaciones para el mapeo de los atributos de la propia entidad y de las relaciones con el resto de entidades.
 
-A partir de la etapa de análisis la información que se asignará a cada entidad será la siguiente:
+Partiendo del trabajo de análisis la información que asignamos a cada entidad es la siguiente:
 
 .Atributos definidos en las clases de persistencia
 [cols="1,2", width="70%"]
