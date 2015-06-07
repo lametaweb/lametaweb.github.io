@@ -329,19 +329,19 @@ Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento 
 
 Entre estas dos entidades existe una relación de asociación ya que ambas se relacionan de manera continuada en el tiempo pero además no existe un relación de todo/parte. Establecemos que la relación sea bidireccional, es decir que exista navegabilidad en los dos sentidos, dado que se estima que en la capa de negocio necesitaremos en algún momento acceder desde una entidad a la otra y viceversa. En cada extremo además tenemos que definir las cardinalidades y roles. Para establecer los roles deberemos preguntarnos cómo ve una entidad a la otra dentro de la relación.
 
-La bidireccionalidad implica añadir un atributo en cada clase. El nombre del atributo en cada clase será el nombre del rol de la otra clase y el tipo del atributo el tipo de la otra clase cuando la cardinalidad sea 0 ó 1 y una colección del tipo cuando sea superior.
+La bidireccionalidad implica añadir un atributo en cada clase. El nombre de cada atributo será el nombre del rol de la otra clase y el tipo del atributo el tipo de la otra clase cuando la cardinalidad sea 0 ó 1, o una colección del tipo cuando sea superior.
 
 En la entidad Drone añadimos el atributo así `private List<Trabajo> trabajosAsignados = new ArrayList<Trabajo>();` y en la entidad Trabajo escribimos `private Drone droneAsignado;`.
 
 Generamos como antes los métodos getters y setters para que los datos sean accesibles y guardamos los cambios.
 
-Ahora hay que suministrar la información de persistencia para la relación. Siguiendo las directrices de JPA, en la entidad Drone anotamos el nuevo atributo (también es posible hacerlo en el método get) con
+Ahora hay que suministrar la información de persistencia para la relación. Siguiendo las directrices de JPA, en la entidad Drone anotamos el nuevo atributo (también es posible hacerlo en el método get) con:
 
 [source,java,indent=0]
 ----
 @OneToMany(mappedBy = "droneAsignado")
 ----
-y en la entidad Trabajo añadimos
+y en la entidad Trabajo añadimos:
 
 [source,java,indent=0]
 ----
@@ -361,7 +361,7 @@ Veamos en detalle los aspectos de cada anotación:
 * @ManyToOne
 ** Establece una relación muchos a uno.	
 * @JoinColumn(name = "referencedColumnName = "iddrone")
-** El atributo referencedColumnName es el que contiene la información del enlace, y de la que tira la relación inversa desde Trabajo a Drone. El nombre asignado por defecto a una columna de datos es el nombre del atributo que mapea, sin distinguir entre mayúscula y minúscula por eso la columna se nombra "iddrone" o bien "IDDRONE".
+** El atributo referencedColumnName es el que contiene la información del enlace, y de la que tira la relación inversa desde Trabajo a Drone. El nombre asignado por defecto a una columna de datos es el nombre del atributo que mapea, sin distinguir entre mayúscula o minúscula, por eso la columna se nombra "iddrone" o bien "IDDRONE".
 
  
 === Relación entre Trabajo y PuntoRuta
@@ -384,7 +384,6 @@ Generamos el método getter y el método setter y anotamos el atributo así
 @OrderColumn
 ----
 
-En este punto paramos y pensamos si realmente merece la pena crear una entidad PuntoRuta. Esto dependerá sobre todo de si de los requisitos se deduce la necesidad de lanzar consultas sobre la entidad PuntoRuta, por ejemplo para
- consultar los trabajos programados en una determinada área geográfica. Para nuestro proyecto supondremos que estas consultas sí interesan al cliente. Si tuvieramos el supuesto contrario la ruta la implementaríamos como una colección embeddable.
+En este punto paramos un momento y pensamos si realmente merece la pena crear una entidad PuntoRuta. Esto dependerá sobre todo de si de los requisitos se deduce la necesidad de lanzar consultas sobre la entidad PuntoRuta, por ejemplo para consultar los trabajos programados en una determinada área geográfica. Para nuestro proyecto supondremos que estas consultas sí interesan al cliente. Si tuvieramos el supuesto contrario la ruta la implementaríamos como una colección embeddable.
 
-Con la implementanción de estas tres clases damos por terminada la implementación de la capa de persistencia. En el próximo post veremos como se despliga el datasource que necesita esta capa y también un modo de implementar la carga inicial de datos desde la propia aplicación usando la tecnología EJB. Hasta pronto!
+Con la implementanción de estas tres clases damos por terminada la implementación de la capa de persistencia. En el próximo post veremos como se despliga el datasource para la capa de persistencia y también un modo de implementar la carga inicial de datos desde la propia aplicación usando la tecnología EJB. Hasta pronto!
