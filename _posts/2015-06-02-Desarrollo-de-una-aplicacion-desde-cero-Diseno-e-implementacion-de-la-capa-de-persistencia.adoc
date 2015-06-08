@@ -277,8 +277,7 @@ A nivel de atributos añadimos las siguientes anotaciones de persistencia:
 * En descripcion:
 	** `@Lob`: Ya que preveemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente espacio con un tipo de datos Basic.
     ** `@Size(max = 65535)`: Mapeamos este campo con un CLOB, con un tamaño de 64Kb. Lo hacemos así porque se prevé que la longitud de esta información textual sea mayor que los 32Kb que soporta el tipo VARCHAR generado para un tipo Basic String.
-
-
+    ** `@Basic(fetch=FetchType.LAZY)`: Los atributos de tipo Basic son extraídos de la base de datos y asignados por defecto en una consulta. Sin embargo este atributo tendrá en general un tamaño elevado y para que el rendimiento de las consultas que muestran listados de drones sea óptimo indicamos a Hibernate que no lea el contenido del atributo a menos que se lo indiquemos de manera explícita.
 
 Y ya tendríamos terminado los atributos de la clase Trabajo. Como práctica haced vosotros lo mismo para las dos clases restantes. Es todo análogo excepto algún detalle que os comento a continuación.
 
