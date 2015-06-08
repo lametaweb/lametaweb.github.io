@@ -269,16 +269,17 @@ A nivel de atributos añadimos las siguientes anotaciones de persistencia:
 	** `@Basic(optional = false)`: Indica que el valor de este atributo no puede ser nulo cuando la entidad se persista. Es decir que obligamos a que los trabajos guardados en la base de datos tengan un número de registro.
 
 * En fechaHoraDeInicio y fechaHoraFinalizacion:
-	** `@Basic(optional = false)`
 	** `@Temporal(TemporalType.TIMESTAMP)`: Es necesaria en campos de tipo fecha para especificar si es un campo que indica una fecha, una hora, o ambos. En nuestro caso guardamos ambos: Fecha y hora.
 
 * En velocidad:
-	** `@Basic(optional = false)`	
+	** Este atributo no lleva ninguna anotación ya que se trata de un tipo Basic con un mapeo por defecto. http://en.wikibooks.org/wiki/Java_Persistence/Basic_Attributes[Aquí] tenéis una explicación clara sobre los tipos Basic en JPA.	
 
 * En descripcion:
 	** `@Lob`: Ya que preveemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente espacio con un tipo de datos Basic.
     ** `@Size(max = 65535)`: Mapeamos este campo con un CLOB, con un tamaño de 64Kb. Lo hacemos así porque se prevé que la longitud de esta información textual sea mayor que los 32Kb que soporta el tipo VARCHAR generado para un tipo Basic String.
-		
+
+
+
 Y ya tendríamos terminado los atributos de la clase Trabajo. Como práctica haced vosotros lo mismo para las dos clases restantes. Es todo análogo excepto algún detalle que os comento a continuación.
 
 === Entidad Drone
