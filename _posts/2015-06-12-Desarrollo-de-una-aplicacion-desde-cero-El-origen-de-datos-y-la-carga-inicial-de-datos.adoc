@@ -1,0 +1,124 @@
+= Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.
+La metaweb
+:hp-tags: JPA, Hibernate, persistencia, datasource, carga inicial de datos
+:published_at: 2015-06-12
+
+En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia, y su configuración e instalación adaptado a las caraccterísticas de nuestra aplicación. Y por otro lado implementaremos una carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, y además nos mostrará un primer ejemplo de persistencia de datos con JPA y un tipo interesante de bean EJB introducido en la versión 6 de Java EE.
+
+Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con el gestor de la base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un esquema de datos. El origen de datos necesita a su vez un driver, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc. 
+
+La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.
+
+Bien, empezamos. Abrimos Eclipse y a continuación el fichero pom.xml del proyecto. Añadimos la dependencia correspondiente al driver JDBC de Derby del que tirará el datasource con un copia pega del siguiente fragmento de XML dentro del elemento <dependencies>:
+
+[source,xml,indent=0]
+----
+	<dependency>
+		<groupId>org.apache.derby</groupId>
+		<artifactId>derby</artifactId>
+		<version>10.11.1.1</version>
+		<scope>runtime</scope>
+	</dependency>
+----
+
+Como vemos el scope de la dependencia es _runtime_, ya que no es necesario en tiempo de compilación pero si cuando la aplicación se esté ejecutando en el servidor. Es decir, el proveedor de persistencia lo invocará para llevar a cabo las operaciones contra la base de datos, pero en ningún lugar de nuestro código usaremos ninguna de las clases de las librerías del driver directamente.
+
+Y ahora viene lo interesante, hacemos uso del plugin de Maven para el servidor JBoss para llevar a cabo de forma automatizada las tareas de despliegue que necesitamos, que por orden son las siguientes:
+
+* Desinstalar una instalación pevia de la aplicación si existía.
+* Instalar el artefacto correspondiente al driver a nivel de servidor como un despliegue estándar.
+* Instalar el datasource como recurso de servidor si éste no está ya instalado.
+* Y finalmente desplegar nuestra aplicación.
+
+Y todo esto haciendo un simple click de ratón. Es un buen ejemplo de como Maven puede ayudarnos a centrarnos en implementar el diseño de nuestra aplicación evitándonos tener que dedicar tiempo a tareas que no son puramente de desarrollo.
+
+Copiamos y pegamos en el fichero pom.xml lo siguiente bajo el elemento _project/build/plugins_. Recordad que podemos formatear el XML con la hotkey Ctrl + Shift + F para que quede más ordenado después de pegar el contenido.
+
+[source,xml,indent=0]
+----
+	<plugin>
+		<groupId>org.jboss.as.plugins</groupId>
+		<artifactId>jboss-as-maven-plugin</artifactId>
+		<version>7.6.Final</version>
+
+		<executions>
+			<execution>
+				<id>undeploy</id>
+				<phase>install</phase>
+				<goals>
+					<goal>undeploy</goal>
+				</goals>
+			</execution>
+			<execution>
+				<id>deploy-driver</id>
+				<phase>install</phase>
+				<configuration>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<name>derby.jar</name>
+				</configuration>
+				<goals>
+					<goal>deploy-artifact</goal>
+				</goals>
+			</execution>
+			<execution>
+				<id>add-datasource</id>
+				<phase>install</phase>
+				<configuration>
+					<address>subsystem=datasources,data-source=DerbyDS</address>
+					<resource>
+						<enableResource>true</enableResource>
+						<properties>
+							<connection-url>jdbc:derby:c:\BD\drones;create=true</connection-url>
+							<driver-class>org.apache.derby.jdbc.EmbeddedDriver</driver-class>
+							<jndi-name>java:jboss/datasources/DerbyDS</jndi-name>
+							<enabled>true</enabled>
+							<enable>true</enable>
+							<pool-name>DerbyDS</pool-name>
+							<user-name>root</user-name>
+							<password>root</password>
+							<driver-name>derby.jar</driver-name>
+							<use-ccm>false</use-ccm>
+							<force>true</force>
+						</properties>
+					</resource>
+				</configuration>
+				<goals>
+					<goal>add-resource</goal>
+				</goals>
+			</execution>
+			<execution>
+				<id>deploy</id>
+				<phase>install</phase>
+				<goals>
+					<goal>deploy</goal>
+				</goals>
+			</execution>
+
+		</executions>
+	</plugin>
+----
+
+En general bajo el elemento <plugins> podemos declarar plugins de Maven para diferentes propósitos:
+
+* Ejecutarlo en nuestro proyecto de forma manual, bien a través de la linea de comnandos o bien desde Eclipse en la opción _Run > Run Configurations..._.
+* Cambiar la configuración de un plugin del ciclo de vida por defecto.
+* Incluir la ejecución de uno o más goals como parte de alguna fase del ciclo de vida por defecto. Para esto debemos declarar el plugin, y añadir un elemento <execution> por cada goal/fase que queramos añadir.
+
+El fragmento añadido es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutan en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html[enlace].
+
+Aprovechamos que estamos tocando el pom.xml para añadir un elemento <plugin> adicional que evitará de momento la ejecución de las pruebas unitarias, en la fase Test,  hasta que tengamos alguna prueba implementada. Esto sería un ejemplo del segundo tipo visto en la lista anterior.
+
+[source,xml,indent=0]
+----
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>2.18.1</version>
+		<configuration>
+			<skipTests>true</skipTests>
+		</configuration>
+	</plugin>
+----
+
+Hasta aquí el despliegue automatizado con Maven. Veamos el mismo despliegue realizado de forma manual. La manera en que se instalan los recursos es diferente desde la versión 6 de JBoss, y se basa en módulos.
