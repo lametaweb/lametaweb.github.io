@@ -129,4 +129,31 @@ En resumen hay que hacer dos cosas. La primera es añadir un nuevo módulo está
 
 Los pasos a seguir para la instalación manual son:
 
-. 
+* Instalación del módulo para la carga del driver derby.jar:
+
+** Descargar el fichero .zip de derby en http://db.apache.org/derby/releases/release-10.10.1.1.html[esta dirección].
+
+** Extraer el fichero \lib\derby.jar y copiarlo en un lugar temporal, por ejemplo en el escritorio.
+
+** Ir a la carpeta _C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-6.3\modules\system\layers\base\org\apache\_
+
+** Crear dentro de la anterior la carpeta _derby\main\_
+
+** Situarnos dentro de la nueva carpeta.
+
+** Copiar el fichero derby.jar en la carpeta.
+
+** Con un editor de textos, por ejemplo Notepad++, crear un fichero con el nombre _module.xml_ en la misma carpeta y con el siguiente contenido:
+
+[source,xml,indent=0]
+----
+	<?xml version="1.0" encoding="UTF-8"?>
+	<module xmlns="urn:jboss:module:1.0" name="org.apache.derby">
+		<resources>
+			<resource-root path="derby.jar"/>
+		</resources>
+		<dependencies>
+			<module name="javax.api"/>
+		</dependencies>
+	</module>
+----
