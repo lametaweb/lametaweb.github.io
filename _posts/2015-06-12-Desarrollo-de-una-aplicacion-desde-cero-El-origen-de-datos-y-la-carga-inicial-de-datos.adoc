@@ -129,7 +129,7 @@ En resumen hay que hacer dos cosas. La primera es añadir un nuevo módulo está
 
 Los pasos a seguir para la instalación manual son:
 
-* Instalación del módulo para la carga del driver derby.jar:
+* Creación del módulo para la carga del driver derby.jar:
 
 ** Descargar el fichero .zip de derby en http://db.apache.org/derby/releases/release-10.10.1.1.html[esta dirección].
 
@@ -157,3 +157,45 @@ Los pasos a seguir para la instalación manual son:
 		</dependencies>
 	</module>
 ----
+
+* Añadir el datasource:
+
+** Ir a la carpeta _C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-6.3\standalone\configuration\_
+
+** Abrir el fichero _standalone.xml_ con un editor de textos.
+
+** Añadir el siguiente fragmento XML dentro del elemento _<subsystem xmlns="urn:jboss:domain:datasources:1.2"><datasources>_:
+
+[source,xml,indent=0]
+----
+  <datasource jndi-name="java:jboss/datasources/DerbyDS" pool-name="DerbyDS" enabled="true" use-ccm="false">
+      <connection-url>jdbc:derby:c:\BD\drones;create=true</connection-url>
+      <driver>org.apache.derby</driver>
+      <security>
+          <user-name>root</user-name>
+          <password>root</password>
+      </security>
+      <validation>
+          <validate-on-match>false</validate-on-match>
+          <background-validation>false</background-validation>
+      </validation>
+      <statement>
+          <share-prepared-statements>false</share-prepared-statements>
+      </statement>
+  </datasource>
+----
+
+** Añadir también el siguiente fragmento XML dentro del elemento _<subsystem xmlns="urn:jboss:domain:datasources:1.2"><datasources><drivers>_:
+
+[source,xml,indent=0]
+----
+	<driver name="org.apache.derby" module="org.apache.derby">
+		<xa-datasource-class>org.apache.derby.jdbc.EmbeddedXADataSource</xa-datasource-class>
+	</driver>
+----
+
+Y con esto bastaría para instalar de forma permanente un origen de datos específico para nuestra aplicación y por otro lado un driver de acceso a bases de datos Derby que puede ser usado por cualquier aplicación que despleguemos en el servidor.
+
+Bien, veamos lo relevante de los fichero XML anteriores:
+
+* module.xml: 
