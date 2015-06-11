@@ -241,7 +241,7 @@ Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado 
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig062.png[]
 
-Para este bean singleton usamos además, como se ve en la figura, otra nueva característica de Java EE 6, No-interface View, que permite evitar la creación de una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de las interfaces.
+Para este bean singleton usamos además, como se ve en la figura, otra nueva característica de Java EE 6, No-interface View, a través de la anotación _@LocalBean_, que permite evitar la creación de una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de las interfaces.
 
 Seguimos con la implementación de nuestro bean CargaInicialDatos:
 
@@ -255,4 +255,109 @@ Seguimos con la implementación de nuestro bean CargaInicialDatos:
     private EntityManager em;
 ----
     
-* 
+* Y finalmente añadimos el método para la carga inicial de datos anotado con _@PostConstruct_, quedándo el código de la clase así:
+
+[source,java]
+----
+package com.lametaweb.jdrone.negocio;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.annotation.PostConstruct;
+import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import com.lametaweb.jdrone.persistencia.Drone;
+import com.lametaweb.jdrone.persistencia.PuntoRuta;
+import com.lametaweb.jdrone.persistencia.Trabajo;
+
+/**
+ * Session Bean implementation class CargaInicialDatos
+ */
+@Singleton
+@Startup
+@LocalBean
+public class CargaInicialDatos {
+
+    /**
+     * Default constructor. 
+     */
+	
+    @PersistenceContext(unitName = "datosdrones")
+    private EntityManager em;
+    
+    public CargaInicialDatos() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    @PostConstruct
+    public void cargaDeDatos(){
+    	
+    	// Puntos de Ruta
+	PuntoRuta pr01tr01dr01 = new PuntoRuta();
+	PuntoRuta pr02tr01dr01 = new PuntoRuta();
+	PuntoRuta pr03tr01dr01 = new PuntoRuta();
+	PuntoRuta pr04tr01dr01 = new PuntoRuta();
+	PuntoRuta pr05tr01dr01 = new PuntoRuta();
+
+	// Datos Puntos de Ruta
+	pr01tr01dr01.setLatitud(37.367873f);
+	pr01tr01dr01.setLongitud(-6.003724f); 
+	pr01tr01dr01.setAltitud(100.0f);
+	pr02tr01dr01.setLatitud(37.374797f);
+	pr02tr01dr01.setLongitud(-5.996119f);
+	pr02tr01dr01.setAltitud(200.0f);
+	pr03tr01dr01.setLatitud(37.3726373f);
+	pr03tr01dr01.setLongitud(-5.995503f);
+	pr03tr01dr01.setAltitud(300.0f);
+	pr04tr01dr01.setLatitud(37.367873f);
+	pr04tr01dr01.setLongitud(-6.003724f);
+	pr04tr01dr01.setAltitud(100.0f);
+	pr05tr01dr01.setLatitud(37.367873f);
+	pr05tr01dr01.setLongitud(-6.003724f);
+	pr05tr01dr01.setAltitud(0.0f);
+
+	GregorianCalendar gc = new GregorianCalendar();
+	// hora inicio adelantando una hora
+	gc.add(GregorianCalendar.HOUR, -1);
+	Date fechaHoraInicio = gc.getTime();
+	// hora finalización atrasando una hora
+	gc.add(GregorianCalendar.HOUR, 2);
+	Date fechaHoraFinalizacion = gc.getTime();
+		
+	Trabajo tr01dr01 = new Trabajo();
+	tr01dr01.setNumeroDeRegistro("TR01DR01");
+	tr01dr01.setVelocidad(10f);
+	tr01dr01.setDescripcion("Reconocimiento de zona a baja cota.");
+	tr01dr01.setFechaHoraInicio(fechaHoraInicio);
+	tr01dr01.setFechaHoraFinalizacion(fechaHoraFinalizacion);
+		
+	tr01dr01.getPuntosDeRuta().add(pr01tr01dr01);
+	tr01dr01.getPuntosDeRuta().add(pr02tr01dr01);
+	tr01dr01.getPuntosDeRuta().add(pr03tr01dr01);
+	tr01dr01.getPuntosDeRuta().add(pr04tr01dr01);
+	tr01dr01.getPuntosDeRuta().add(pr05tr01dr01);
+		
+	Drone dr01 = new Drone();
+	dr01.setNumeroDeSerie("FJHCAM01001");
+	dr01.setModelo("Observer II");
+	dr01.setPesoMaximoDespegue(1500);
+	dr01.setAutonomia(25);
+	dr01.setNumMotores(6);
+	em.persist(dr01);
+		
+	tr01dr01.setDroneAsignado(dr01);
+	em.persist(tr01dr01);
+		
+	dr01.getTrabajosAsignados().add(tr01dr01);
+	em.merge(dr01);
+    	
+    } 
+}
+----
+
+++++
+<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d6341.548136844798!2d-5.9974985!3d37.3715225!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1434039908896" width="400" height="300" frameborder="0" style="border:0"></iframe>
+++++
