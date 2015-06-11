@@ -196,6 +196,9 @@ Los pasos a seguir para la instalación manual son:
 
 Y con esto bastaría para instalar de forma permanente un origen de datos específico para nuestra aplicación y por otro lado un driver de acceso a bases de datos Derby que puede ser usado por cualquier aplicación que despleguemos en el servidor.
 
-Bien, veamos lo relevante de los fichero XML anteriores:
+Bien, veamos lo más relevante del contenido XML:
 
-* module.xml: 
+* Fichero module.xml: Es el fichero de configuración de un módulo en JBoss. Un módulo representa una serie de recursos o bien una serie de dependencias o ambas cosas como en nuestro caso. El nombre del módulo es _org.apache.derby_ y el fichero module.xml debe estar en la carpeta _RUTA_BASE_MODULOS\org\apache\derby\main\_. Dentro de esta carpeta también está el recurso, derby.jar. Nuestro módulo dependerá del módulo "javax.api" que representa a su vez múltiples dependencias con paquetes del grupo javax que el driver necesitará para su ejecución.
+
+* Elemento <datasource>: Define un origen de datos identificado por un nombre JNDI del tipo java:jboss/datasources/NOMBRE_DS. Como nombre del pool podemos usar el que queramos. El elemento <connection-url> nos dice que ruta de la base de datos estará en el disco duro en la ruta C:\BD\drones\ y que se creará una base de datos vacía si no existía ya anteriormente.
+
