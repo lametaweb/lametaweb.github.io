@@ -196,9 +196,63 @@ Los pasos a seguir para la instalación manual son:
 
 Y con esto bastaría para instalar de forma permanente un origen de datos específico para nuestra aplicación y por otro lado un driver de acceso a bases de datos Derby que puede ser usado por cualquier aplicación que despleguemos en el servidor.
 
-Bien, veamos lo más relevante del contenido XML:
+Veamos lo más relevante del contenido XML:
 
 * Fichero module.xml: Es el fichero de configuración de un módulo en JBoss. Un módulo representa una serie de recursos o bien una serie de dependencias o ambas cosas como en nuestro caso. El nombre del módulo es _org.apache.derby_ y el fichero module.xml debe estar en la carpeta _RUTA_BASE_MODULOS\org\apache\derby\main\_. Dentro de esta carpeta también está el recurso, derby.jar. Nuestro módulo dependerá del módulo "javax.api" que representa a su vez múltiples dependencias con paquetes del grupo javax que el driver necesitará para su ejecución.
 
-* Elemento <datasource>: Define un origen de datos identificado por un nombre JNDI del tipo java:jboss/datasources/NOMBRE_DS. Como nombre del pool podemos usar el que queramos. El elemento <connection-url> nos dice que ruta de la base de datos estará en el disco duro en la ruta C:\BD\drones\ y que se creará una base de datos vacía si no existía ya anteriormente.
+* Elemento <datasource>: Define un origen de datos identificado por un nombre JNDI del tipo _java:jboss/datasources/NOMBRE_DS_. Como nombre del pool podemos usar el que queramos. El elemento <connection-url> nos dice que ruta de la base de datos estará en el disco duro en la ruta _C:\BD\drones\_ y que se creará una base de datos vacía si no existía ya anteriormente. En el elemento <driver> pondremos el nombre del módulo que hemos creado.
 
+Vamos con la segunda parte del post, implementar una carga inicial de datos. He decidido hacerlo desde la propia aplicación porque así podemos ver un primer ejemplo de persistencia de datos con JPA y además un tipo de bean EJB que permite realizar acciones en el inicio de una aplicación web.
+
+Necesitamos una manera de ejecutar el código Java de carga en el inicio de la aplicación y para esto tenemos que ínstanciar un bean en ese momento y colocar el código en un método anotado con _@PostConstruct_ para que se ejecute sin necesidad de una llamada explícita al mismo. La carga del bean podemos hacerla de tres maneras diferentes usando en cada caso una tecnología diferente: EJB, JSF o bien CDI. Vemos cada caso y al final decidimos cual es el más conveniente para nosotros.
+
+* EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez la primera vez que se hace referencia al mismo desde la aplicación. La anotación _@Startup_ se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:
+
+[source,java,indent=0]
+----
+	@Singleton
+	@Startup
+	@ConcurrencyManagement(BEAN)
+	public class PropertyRegistry {
+		@PostConstruct
+		public void applicationStartup() {
+			// carga inicial
+		}
+	}
+----
+
+* JSF: Esta alternativa, aunque la cito, de entrada no la usaremos ya que pasa por usar un atributo en la anotación _@ManageadBean_, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. En vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como _@ViewScoped_ o _@FlowScoped_. En este caso la clase del bean de controlador tendría este aspecto:
+
+[source,java,indent=0]
+----
+	@ManagedBean(eager=true)
+	@ApplicationScoped
+	public class GlobalBean {
+		@PostConstruct
+		public void applicationStartup() {
+			// carga inicial
+		}
+	}
+----
+
+* CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión 1.1, la incluida con Java EE 7. Es previsible que en el futuro se extienda la anotación _@Startup_ de EJB a cualquier bean de CDI con el nuevo stack Java EE 8. Actualmente, si lo necesitaramos, podríamos implementar nosotros mismos una extensión de CDI para obtener cargas iniciales usando la técnica que se explica en http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html[este enlace].
+
+Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean singleton. Vamos a ello. Abrimos a Eclipse, hacemos botón derecho sobre la carpeta negocio y elegimos la opción _New > Other... > EJB > Session Bean_. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig062.png[]
+
+Para este bean singleton usamos además, como se ve en la figura, otra nueva característica de Java EE 6, No-interface View, que permite evitar la creación de una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de las interfaces.
+
+Seguimos con la implementación de nuestro bean CargaInicialDatos:
+
+* Añadimos la anotación _@Startup_ a la clase.
+
+* Añadimos el atributo de clase _em_ para inyectar el entity manager:
+
+[source,java,indent=0]
+----
+    @PersistenceContext(unitName = "datosdrones")
+    private EntityManager em;
+----
+    
+* 
