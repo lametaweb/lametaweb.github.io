@@ -358,16 +358,30 @@ public void cargaDeDatos(){
 }
 ----
 
-Lo que hace nuestro método cargaDeDatos es dar de alta en la base de datos un Trabajo con una ruta determinada y un Drone que es el que se programa para realizar ese trabajo. Como veis en todo momento trabajo con los objetos de la capa de datos y la base de datos queda oculta por JPA. Vamos a ver un poco más en detalle el código desde el principio, es conveniente que tengáis delante el diagrama de diseño que vimos en el post anterior para entender mejor las operaciones:
+En resumen el método cargaDeDatos da de alta en la base de datos un Trabajo con una ruta determinada y un Drone que es el que se configura para realizar ese trabajo. Podeis ver que sólo necesito manejar objetos de la capa de datos, quedando los detalles de la base de datos ocultos por la tecnología JPA. Vamos a ver un poco más en detalle el código desde el principio. Es conveniente que tengáis delante el diagrama de diseño que vimos en el post anterior para entender más facilmente el código:
 
-* Tenemos que crear la jerarquía de objetos que deseamos persistir, dar valor a los atributos de cada objeto y finalmente establecer las relaciones entre ellos.
+* Tenemos que crear la jerarquía de objetos que queremos dar de alta, dar valor a los atributos y finalmente establecer las relaciones entre ellos. Veamos.
 
-* Empezamos creando los objetos PuntaRuta de la ruta para el Trabajo. Creamos cada uno de los objetos y damos valor a los atributos. Se define una ruta triangular cerrada siendo el punto inicial y final por tanto el mismo. Podéis verla en la siguiente figura:
+* Creamos y setemos los PuntaRuta de la ruta para el Trabajo.  Se define una ruta triangular cerrada siendo el punto inicial y final por tanto el mismo. Podéis verla en la siguiente figura:
 
-++++
-<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d6341.548136844798!2d-5.9974985!3d37.3715225!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1434039908896" width="400" height="300" frameborder="0" style="border:0"></iframe>
-++++
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig063.png[]
 
-* A continuación se crea el objeto Trabajo y se inicializan sus atributos. Para el intervalo de comienzo y finalización del trabajo se calcula una hora hacia atrás y una hacia delante respecto del momento en que iniciamos la aplicación. Esto lo hago simplemente para que en la aplicación se muestre este drone introduciendo una fecha y hora que correspondan a ese momento.
+* A continuación se crea el objeto Trabajo y se inicializan sus atributos. Para el intervalo de comienzo y finalización del trabajo se calcula una hora hacia atrás y una hacia delante respecto del momento en que iniciamos la aplicación. Esto lo hago simplemente para que en la aplicación se muestre este drone introduciendo una fecha y hora que correspondan aproximadamente a la fecha y hora de ese momento.
 
-* Explicar EL ESTADO DE LOS OBJETOS Y LA TRANS INICIADA.
+* Los objetos PuntoRuta son añadidos a la colección que implementa la relación uno a mucho entre Trabajo y PuntoRuta.
+
+* Creamos el objeto Drone y seteamos los atributos.
+
+* Queremos guardar dos objetos independientes pero donde existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona con N objetos dependientes. Tendremos por tanto que persistir por separado los dos objetos independientes y luego establecer la relación en el sentido desde el primero al segundo.
+
+* Persistimos primero por ejemplo el objeto Drone, usando el método _persist_ del entity manager. Ahora podemos ya establecer la relación muchos a uno entre Trabajo y Drone (que ya está en estado persistido) y persistir el objeto Trabajo.
+
+* Finalmente establecemos la relación uno a muchos entre Drone y Trabajo y la persistimos. Aquí no uso persist porque el objeto implicado, Drone, ya está en estado persistido.
+
+* Todas estas operaciones de persistencia se engloban en una transacción que comienza y acaba al mismo tiempo que el método cargaDeDatos. Es algo que se gestiona de forma automática por el servidor a través de la tecnología JTA.
+
+Y esto es todo. Como podeis ver no tiene precio el poder abstraerse de la base de datos y poder hacerlo todo conociendo simplemente los fundamentos de JPA. Para afianzar los conceptos os explico rapidamente esos fundamentos de JPA.
+
+
+
+TODO: Ver qué pasa si hay cascade desde drone a trabajo.
