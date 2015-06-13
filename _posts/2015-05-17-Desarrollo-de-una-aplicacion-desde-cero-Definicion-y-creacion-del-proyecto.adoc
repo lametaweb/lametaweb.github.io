@@ -1,7 +1,7 @@
-= Desarrollo de una aplicación desde cero. Definición y creación del proyecto.
+= Desarrollo de una aplicación desde cero: Definición y creación del proyecto.
 La metaweb
 :hp-tags: Modelo de Dominio, Maven, Eclipse, Java EE, desde cero
-:published_at: 2015-06-01
+:published_at: 2015-05-17
 
 En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos posts recorreremos un camino que nos llevará hasta la creación de una aplicación Java EE básica sobre la que podremos experimentar a nuestro antojo con técnicas, tecnologías y herramientas en la esfera de Java EE. Enfocaremos su desarrollo de manera pragmática, creando un proyecto desde cero y sin recurrir a ningún asistente. De este modo seremos realmente conscientes de cada elemento que compone la aplicación y de que ningún otro es necesario. En los proyectos reales al contrario, donde el objetivo es desarrollar de la manera más eficaz y eficiente, se utilizan diferentes tipos de herramientas integradas o no en Eclipse. Algunas de ellas seguro que tendrán un merecido hueco en el este Blog en futuras publicaciones.
 

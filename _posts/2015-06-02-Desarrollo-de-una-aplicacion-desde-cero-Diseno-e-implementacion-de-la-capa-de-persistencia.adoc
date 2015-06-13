@@ -1,0 +1,391 @@
+= Desarrollo de una aplicación desde cero: Diseño e implementación de la capa de persistencia.
+La metaweb
+:hp-tags: JPA, Hibernate, persistencia, diagrama de clases, diseño
+:published_at: 2015-06-02
+
+Una vez creado el proyecto iniciamos la implementación de la aplicación. Lo haremos desde la capa de persistencia hacia arriba hasta la capa de presentación, que es el modo habitual para los desarrollos Java EE por capas.
+
+== Introducción
+
+La capa de persistencia es por un lado la responsable de establecer un mapeo entre las entidades persistentes del modelo de dominio y los elementos de la base de datos que nos abstraiga de los detalles de la misma, y por otro de proporcionar una API para la manipulación y consulta de los datos usando ese mapeo. El modelo de dominio es un documento de la fase de análisis del proyecto que consiste en una serie de diagramas de clase donde se muestran las entidades relevantes para nuestro proyecto, la información contenida en cada una y las relaciones entre ellas.
+
+La tecnología JPA nos permite trabajar dentro de nuestra aplicación usando sólo nuestras jerarquías de objetos, simplificando los aspectos relacionados con la persistencia e independizándonos totalmente del gestor de base de datos utilizado. Para las consultas proporciona JPQL, un lenguaje de consulta basado en objetos. Además usando la tecnología JTA no tendremos que preocuparnos en general por la gestión de las transacciones.
+
+En el plano tecnológico tenemos que definir lo siguiente:
+
+* El proveedor de persistencia: Es el conjunto de librerías que implementan la especificación JPA. Elegimos Hibernate, ya que es el más extendido y además viene de serie en nuestro servidor JBoss.
+
+* El gestor de base de datos: Usamos una base de datos Derby embebida, lo que nos permite simplificar de momento la capa de datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro. Nosotros elegimos esta última opción para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae puesta el servidor JBoss EAP, similar a la base de datos Derby, para que veamos también como desplegar recursos en el servidor usando Maven.
+
+¿Y qué elementos tendremos que añadir a la capa de persistencia? Pues por un lado un fichero de configuración, donde definimos todo lo relevante, y que leerá Hibernate, y por otro las clases del mapeo objeto relacional, que serán tres: Drone, Trabajo y PuntoRuta. Y no hay más. Los que conozcáis EJB 2 estaréis de acuerdo conmigo en que ahora afortunadamente todo es es mucho más simple y limpio.
+
+== La configuración
+
+Vamos primero con la configuración. El fichero de configuración de la unidad de persitencia es _persistence.xml_. La especificación JPA 2 (JSR-338) permite desplegar clases de persistencia fuera de un empaquetado JAR, directamente dentro del WAR de nuestra aplicación. En este caso se indica que el fichero _persistence.xml_ debe situarse en la carpeta _WEB-INF/classes/META-INF/_. Por lo tanto, y con arreglo a la configuración por defecto de Maven para los ficheros de recursos, en nuestro proyecto tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero con la opción de menú _New > Other... > XML > XML File_.
+
+
+.Fichero de configuración de persistencia
+[cols="1h,5", width="70%"]
+|===
+|Nombre 
+|persistence.xml 
+
+|Ruta
+|jdrone/src/main/resources/META-INF/
+|===
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig040.png[]
+
+Copiamos y pegamos el siguiente contenido en el fichero persistence.xml:
+
+[source,xml,indent=0]
+----
+	<?xml version="1.0" encoding="UTF-8"?>
+	<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+		<persistence-unit name="datosdrones" transaction-type="JTA">
+			<jta-data-source>java:jboss/datasources/DerbyDS</jta-data-source>
+			<exclude-unlisted-classes>false</exclude-unlisted-classes>
+			<properties>
+				<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" />
+				<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			</properties>
+		</persistence-unit>
+	</persistence>
+----
+
+Veamos el significado de cada elemento:
+
+* La primera línea indica que se trata de un fichero XML.
+* *<persistence>*: Es el elemento raíz y declara los diferentes espacios de nombres que contienen las reglas de escritura del documento y además indica la versión JPA utilizada, en este caso la 2.0, que es la que correspende a Java EE 6. Dentro del elemento raíz podemos definir varias de unidades de persistencia. Nosotros queremos mapear nuestros objetos en un único lugar y de un mismo modo por lo que crearemos una única unidad.
+* *<persistence-unit>*: Describe la unidad de persistencia, que es el mecanismo que genera el contexto de persistencia donde residen nuestros beans persistentes. El atributo _name_ lo usaremos para referirnos a ella desde el código. Por otro lado el atributo _transaction-type_ provee de la tecnología JTA para la gestión automática de las transacciones.
+* *<jta-data-source>*: Define el nombre JNDI del origen de datos, un recurso de servidor a través del cual nuestra aplicación accede a la base de datos. Más adelante veremos como instalarlo. El nombre JNDI seguirá el formato java:jboss/datasources/<nombre_origen_datos>.
+* *<exclude-unlisted-classes>*: Evita tener que nombrar en el fichero las clases persistentes estableciendo que todas las clases anotadas como entidades pertenecerán a este contexto de persistencia.
+* *<properties>*: Propiedades para el proveedor de peristencia elegido, en nuestro caso Hibernate. Suministramos dos propiedades:
+	** _hibernate.dialect_ indica al proveedor que la base de datos es Derby.
+	** _hibernate.hbm2ddl.auto_ indica al proveedor que genere los elementos del esquema de la base de datos de forma automática a partir de la información de las entidades persistentes de nuestro código fuente. O sea que crea la base de datos por nosotros!.
+
+NOTE: Si usamos Hibernate como proveedor de persistencia en JBoss, que es lo habitual, podemos obviar el elemento
+<provider>org.hibernate.ejb.HibernatePersistence</provider> dentro de persistence.xml.
+
+Antes de escribir el fuente de las clases tenemos que añadir al proyecto la información de dependencias para Hibernate. Primero añadimos este fragmento XML bajo el elemento <project> del archivo pom.xml:
+
+[source,xml,indent=0]
+----
+	<dependencyManagement>
+		<dependencies>
+			<!-- Define the version of JBoss' Java EE 6 APIs we want to import. 
+				Any dependencies from org.jboss.spec will have their version defined by this 
+				BOM -->
+			<!-- JBoss distributes a complete set of Java EE 6 APIs including a 
+				Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or a 
+				collection) of artifacts. We use this here so that we always get the correct 
+				versions of artifacts. Here we use the jboss-javaee-6.0-with-tools stack 
+				(you can read this as the JBoss stack of the Java EE 6 APIs, with some extras 
+				tools for your project, such as Arquillian for testing) and the jboss-javaee-6.0-with-hibernate 
+				stack you can read this as the JBoss stack of the Java EE 6 APIs, with extras 
+				from the Hibernate family of projects) -->
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-tools</artifactId>
+				<version>${version.jboss.bom.eap}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>										
+		</dependencies>
+	</dependencyManagement>
+----
+
+Se trata de información proporcionada por ficheros del repositorio de JBoss que resuelve automáticamente las versiones de nuestras dependencias.
+
+Y a continuación, también bajo el elemento <project>, añadimos las dependencias en sí:
+
+[source,xml,indent=0]
+----
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<scope>provided</scope>
+		</dependency
+		<dependency>
+			<groupId>org.jboss.spec.javax.annotation</groupId>
+			<artifactId>jboss-annotations-api_1.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>							
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+----
+
+Es posible que el archivo pom.xml se nos abra en Eclipse como un formulario. Para mostrarlo en adelante como un fichero XML pulsamos con el botón derecho sobre el fichero y seleccionamos la opción _Open With > JBoss Tools XML Editor_ como se indica en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig047.png[]
+
+Añadimos además un par de propiedades al fichero POM. Copiamos y pegamos bajo el elemento <project> lo siguiente:
+
+[source,xml,indent=0]
+----
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.jboss.bom.eap>1.0.0.CR1</version.jboss.bom.eap>
+	</properties> 
+----
+
+La primera propiedad fija la codificación usada por el compilador y otros plugins a UTF-8 y la segunda representa una variable. 
+
+Las propiedades tienen dos usos:
+
+* Definir una variable que es usada en uno o más puntos del documento.
+* Asignar un valor a un elemento del documento, por ejemplo la línea
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> equivale a añadir el elemento <sourceEncoding> bajo el elemento <build> así:
+
+[source,xml,indent=0]
+----
+	<project>
+		...
+		<build>
+			...
+			<sourceEncoding>UTF-8</sourceEncoding>
+----
+
+== Diseño de entidades persistentes
+
+Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object) con anotaciones para el mapeo de los atributos de la propia entidad y de las relaciones con el resto de entidades.
+
+Partiendo del trabajo de análisis la información que asignamos a cada entidad es la siguiente:
+
+.Atributos definidos en las clases de persistencia
+[cols="1,2", width="70%"]
+|===
+.5+|*Drone* 
+|numeroDeSerie
+|modelo
+|autonomia
+|numMotores
+|pesoMaximoDespegue
+		
+.5+|*Trabajo*
+|numeroDeRegistro
+|fechaHoraDeInicio
+|fechaHoraDeFinalizacion
+|velocidad
+|descripcion
+		
+.3+|*PuntoRuta*
+|latitud
+|longitud
+|altitud
+|===
+
+Además todas las entidades tendrán un atributo adicional que actúa como clave única a través de los cuales implementaremos las relaciones entre las entidades.
+
+Las relaciones las deducimos de los requisitos tomados antes en la etapa de análisis:
+
+* Un Trabajo se asigna a un único Drone de entre los Drones disponibles en la fecha del trabajo.
+* Un Drone tiene ninguno, uno o varios trabajos programados.
+* Un Trabajo se compone de un recorrido formado por dos o más puntos de ruta.
+	
+Con esta información podemos ya elaborar el diagrama de clases que establezca el diseño de nuestras clases de persistencia.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
+
+La clase en la parte superior del diagrama corresponde a la capa de negocio y la implementaremos más adelante. El resto constituye la capa de persistencia.
+
+NOTE: Otro planteamiento a la hora de implementar la capa de persistencia es crear primero el esquema de la base de datos y a partir de él, con un asistente, generar un código fuente de partida para las clases persistentes, que luego podremos modificar para que se ajuste a lo que necesitemos.
+
+== Implementación de entidades persistentes
+
+Bien, vamos con la implementación. Creamos las tres clases primero, y no una a una, para evitar errores por referencias a clases inexistentes. Añadimos cada clase haciendo click en botón derecho sobre la carpeta _/src/main/java/_ y _New > Class_. Si la opción del menú no está visible ir a la opción _Java > Class_ después de hacer _New > Other..._.
+
+.Datos para creación de clases de persistencia
+[cols="1h,5"]
+|===
+|Nombres 
+|Drone, Trabajo, PuntoRuta
+
+|Paquetes
+|paquete idem para las tres: com.lametaweb.jdrone.persistencia
+|===
+
+Aspecto del proyecto después de crear las clases de persistencia:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig050.png[]
+
+Por orden, escribiremos primero las variables correspondientes a los atributos en las tres entidades y sus anotaciones de persistencia, y a continuación escribiremos las variables y anotaciones para las relaciones entre las entidades. Tomamos como referencia y guía el diagrama de clases anterior de la fase de diseño.
+
+=== Entidad Trabajo
+
+Para la entidad Trabajo nos vamos a la clase correspondiente y añadimos los cinco atributos definidos en el diagrama. Para implementar el identificador único podemos optar por la estrategia de ID Natural, que consiste en tomar como ID de la entidad un subconjunto de los atributos de la misma, o bien por la estrategia de ID Generado, que en general es más aconsejable, dado que en el primer caso la eficiencia en las consultas es menor y además podemos tener problemas si el significado de los campos escogidos cambia en el tiempo. 
+Un ID Generado podemos implementarlo añadiendo un atributo adicional de tipo numérico a la clase. 
+
+Copiamos y pegamos el siguiente fragmento de código en la clase:
+
+[source,java,indent=0]
+----
+private Integer idTrabajo;
+private String numeroDeRegistro;
+private Date fechaHoraDeInicio;
+private Date fechaHoraFinalizacion;
+private Float velocidad;
+private String descripcion;
+----
+
+Y pulsamos la combinación de teclas o hotkey ctrl + shift + O para traernos las importaciones necesarias. En este caso se da una ambigüedad porque existen dos clases Date en paquetes diferentes, nosotros tenemos que elegir la del paquete java.util.Date.
+ 
+Generamos ahora los métodos de acceso a estos atributos, con botón derecho sobre la clase y _> Source > Generate Getters and Setters_, Seleccionar todos los atributos y pulsar OK. Dejamos el código fuente ordenado con botón derecho y _> Source > Format_. Finalmente guardamos la clase pulsando el icono del disquette o usando la hotkey Ctrl + S.
+ 
+A nivel de clase hacemos los siguientes cambios: 
+
+Convertimos la clase en serializable. Esto es una buena práctica en general porque en ciertas situaciones es necesario que el bean sea serializable.
+Podéis consultar http://www.adam-bien.com/roller/abien/entry/do_jpa_entities_have_to[este link] si queréis una explicación más detallada.
+
+[source,java,indent=0]
+----
+	public class Trabajo implements Serializable{
+----
+
+Aparecerá un warning que solucionamos añadiendo la línea `private static final long serialVersionUID = 1L;` justo antes de los atributos de la clase.
+Esta constante se utiliza para cotejar versiones en clases que se serializan explícitamente.
+
+Y añadimos la anotación `@Entity` encima de la declaración de la clase para que sea tratada como un bean JPA persistente.
+
+[source,java,indent=0]
+----
+	@Entity
+	public class Trabajo implements Serializable{
+----
+
+A nivel de atributos añadimos las siguientes anotaciones de persistencia:
+
+* En idTrabajo:
+
+	** `@Id`: Indica que este campo va a ser el identificador único de la entidad persistente. En la base de datos se mapeará como la clave primaria.
+	** `@GeneratedValue(strategy=GenerationType.SEQUENCE)`: Establece la estrategia de generación de valores únicos. Aquí hay dos alternativas: Podemos generar nosotros mismos los valores o bien delegar en JPA para que la generación tenga lugar en la base de datos. En general se delega en JPA. Y dentro de esta opción existen tres posibilidades IDENTITY, SEQUENCE y TABLE. Optamos por SEQUENCE ya que los otros dos métodos son menos convenientes. Podéis ir al http://en.wikibooks.org/wiki/Java_Persistence/Identity_and_Sequencing[siguiente link] para ver esto con mayor profundidad. Como siempre pulsamos Ctrl + Shift + O para importar las clases necesarias.
+
+* En numeroDeRegistro:
+	** `@Basic(optional = false)`: Indica que el valor de este atributo no puede ser nulo cuando la entidad se persista. Es decir que obligamos a que los trabajos guardados en la base de datos tengan un número de registro.
+
+* En fechaHoraDeInicio y fechaHoraFinalizacion:
+	** `@Temporal(TemporalType.TIMESTAMP)`: Es necesaria en campos de tipo java.util.Date para especificar si es un campo que indica una fecha, una hora, o ambos. En nuestro caso guardamos ambos: Fecha y hora.
+
+* En velocidad:
+	** Este atributo no lleva ninguna anotación ya que se trata de un tipo Basic con un mapeo por defecto. http://en.wikibooks.org/wiki/Java_Persistence/Basic_Attributes[Aquí] tenéis una explicación clara sobre los tipos Basic en JPA.	
+
+* En descripcion:
+	** `@Lob`: Ya que preveemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente espacio con un tipo de datos Basic.
+    ** `@Size(max = 65535)`: Mapeamos este campo con un CLOB, con un tamaño de 64Kb. Lo hacemos así porque se prevé que la longitud de esta información textual sea mayor que los 32Kb que soporta el tipo VARCHAR generado para un tipo Basic String.
+    ** `@Basic(fetch=FetchType.LAZY)`: Los atributos de tipo Basic son extraídos de la base de datos y asignados por defecto en una consulta. Sin embargo este atributo tendrá en general un tamaño elevado y para que el rendimiento de las consultas que muestran listados de drones sea óptimo indicamos a Hibernate que no lea el contenido del atributo a menos que se lo indiquemos de manera explícita.
+
+Y ya tendríamos terminado los atributos de la clase Trabajo. Como práctica haced vosotros lo mismo para las dos clases restantes. Es todo análogo excepto algún detalle que os comento a continuación.
+
+=== Entidad Drone
+
+Añadimos los atributos y el identificador `idDrone` y generamos los métodos getters y setters.
+
+[source,java,indent=0]
+----
+	private Integer idDrone;
+	private String numeroDeSerie;	// es un valor obligatorio
+	private String modelo;
+	private Integer autonomia;
+	private Integer numMotores;		// debe estar en el intervalo cerrado [4,8]
+	private Integer pesoMaximoDespegue;
+----
+
+El resto es todo análogo a lo visto con la entidad Trabajo exceptuando los dos detalles que se indican en los comentarios junto a sus atributos. Para el atributo numeroDeSerie, como antes, añadimos la anotación `@Basic(optional = false)` y para el rango numérico en el atributo numMotores usamos la anotación `@Range(min = 4, max = 8)`. Y eso es todo.
+
+Sin embargo como ya hebréis advertido surge un pequeño problema, cuando pulsamos la combinación de teclas Ctrl + Shift + O para traernos los imports nos damos cuenta de que Eclipse no es capaz de localizar el paquete para la anotación @Range. El motivo es que se trata de una anotación especifica del proveedor de persistencia Hibernate, y queda fuera por tanto del estándar JPA. Así que nos toca añadir otra dependencia a nuestro fichero pom.xml.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig055.png[]
+
+Para buscar el artefacto que nos resuelva la dependencia buscamos a través de Google el nombre completo de la clase. Es este caso el nombre es org.hibernate.validator.constraints.Range. Nos vamos a continuación a la página del gestor de repositorios público de JBoss,  https://repository.jboss.org/nexus/[aquí], metemos nuestras credenciales de JBoss Developer y accedemos a la página de búsqueda donde pegaremos el nombre completo de la clase.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig060.png[]
+ 
+Entre los resultados obtenidos localizamos, moviendo la barra de desplazamiento hacia abajo, el item con el grupo _org.hibernate_ y la versión final más reciente. Copiamos el contenido de la dependencia que aparece abajo a la derecha y la pegamos en nuestro pom.xml dentro del elemento <dependencies>. Guardamos los cambios y botón derecho sobre proyecto _> Maven > Update Project_ o directamente con la hotkey Alt + F5. Y ahora sí resolvemos el error pulsando Ctrl + Shift + O en la clase Drone y guardando los cambios con Crtl + S.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig065.png[]
+
+=== Entidad PuntoRuta
+
+De la misma manera añadimos los atributos y el ID y generamos los getters y setters.
+
+[source,java,indent=0]
+----
+	private Integer idPuntoRuta;
+	private Float latitud;
+	private Float longitud;
+	private Float altura;
+----
+
+Y aplicamos las anotaciones de persistencia de manera análoga a lo visto con las dos clases anteriores.
+
+Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento de implementar las dos relaciones reflejadas en el diagrama de clases. Vamos a ello.
+
+=== Relación entre Trabajo y Drone
+
+Entre estas dos entidades existe una relación de asociación ya que ambas se relacionan de manera continuada en el tiempo pero además no existe un relación de todo/parte. Establecemos que la relación sea bidireccional, es decir que exista navegabilidad en los dos sentidos, dado que se estima que en la capa de negocio necesitaremos en algún momento acceder desde una entidad a la otra y viceversa. En cada extremo además tenemos que definir las cardinalidades y roles. Para establecer los roles deberemos preguntarnos cómo ve una entidad a la otra dentro de la relación.
+
+La bidireccionalidad implica añadir un atributo en cada clase. El nombre de cada atributo será el nombre del rol de la otra clase y el tipo del atributo el tipo de la otra clase cuando la cardinalidad sea 0 ó 1, o una colección del tipo cuando sea superior.
+
+En la entidad Drone añadimos el atributo así `private List<Trabajo> trabajosAsignados = new ArrayList<Trabajo>();` y en la entidad Trabajo escribimos `private Drone droneAsignado;`.
+
+Generamos como antes los métodos getters y setters para que los datos sean accesibles y guardamos los cambios.
+
+Ahora hay que suministrar la información de persistencia para la relación. Siguiendo las directrices de JPA, en la entidad Drone anotamos el nuevo atributo (también es posible hacerlo en el método get) con:
+
+[source,java,indent=0]
+----
+@OneToMany(mappedBy = "droneAsignado")
+----
+y en la entidad Trabajo añadimos:
+
+[source,java,indent=0]
+----
+@JoinColumn (referencedColumnName = "iddrone")
+@ManyToOne
+----
+
+Veamos en detalle los aspectos de cada anotación:
+
+* @OneToMany(mappedBy = "droneAsignado")
+
+** Establece una relación uno a muchos.
+
+** El atributo mappedBy existe porque hay bidireccionalidad. El valor "droneAsignado" se corresponde con el nombre del atributo de la otra entidad que recoje la relación inversa y que es la que tiene la información de enlace entre las entidades. 
+** El atributo cascade no aparece porque que no existe una relación todo/parte de tipo composición y se aplica su valor por defecto en Hibernate que no propaga ninguna acción de persistencia.
+
+* @ManyToOne
+** Establece una relación muchos a uno.	
+* @JoinColumn(name = "referencedColumnName = "iddrone")
+** El atributo referencedColumnName es el que contiene la información del enlace, y de la que tira la relación inversa desde Trabajo a Drone. El nombre asignado por defecto a una columna de datos es el nombre del atributo que mapea, sin distinguir entre mayúscula o minúscula, por eso la columna se nombra "iddrone" o bien "IDDRONE".
+
+ 
+=== Relación entre Trabajo y PuntoRuta
+
+Se trata de una relación de composición. Un punto de ruta existe asociado a un único trabajo durante todo su ciclo de vida. En cuanto a las cardinalidades un trabajo deberá tener como mínimo dos puntos de ruta, el inicial y el final, y un punto de ruta se asocia con un Trabajo como se ha dicho. La navegabilidad aquí la establecemos solo en la dirección desde el Trabajo al punto de ruta. Veamos los detalles de implementación.
+
+Tendremos una relación uno a muchos unidireccional por lo que sólo necesitamos un atributo en la entidad Trabajo. Queremos que los puntos de ruta se ordenen según la posición en que los insertemos por lo que usaremos una colección
+ordenada. Añadimos el siguiente atributo a la clase Trabajo
+
+[source,java,indent=0]
+----
+private List<PuntoRuta> puntosDeRuta = new LinkedList<PuntoRuta>();
+----
+
+Generamos el método getter y el método setter y anotamos el atributo así
+
+[source,java,indent=0]
+----
+@OneToMany
+@OrderColumn
+----
+
+En este punto paramos un momento y pensamos si realmente merece la pena crear una entidad PuntoRuta. Esto dependerá sobre todo de si de los requisitos se deduce la necesidad de lanzar consultas sobre la entidad PuntoRuta, por ejemplo para consultar los trabajos programados en una determinada área geográfica. Para nuestro proyecto supondremos que estas consultas sí interesan al cliente. 
+
+Si en cambio tuvieramos el supuesto contrario podríamos plantearnos distintas implementaciones haciendo uso del concepto de embeddable de JPA. Una clase embeddable es persistida al mismo tiempo y en el mismo lugar que su entidad padre. En nuestro caso podríamos añadir una nueva clase Ruta embeddable que contuviera la lista de PuntoRuta, que ya no serie una Entity, y añadir un atributo de tipo Ruta embedded a la centidad Trabajo. En general tendremos siempre varias alternativas a la hora de modelar nuestros diagramas de clases persistentes y tendremos que encontrar la solución más conveniente en cada caso a través de la realización de pruebas y en base a nuestra experiencia.   
+
+Con la implementanción de estas tres clases damos por terminada la implementación de la capa de persistencia. En el próximo post veremos como se despliga el datasource para la capa de persistencia y también un modo de implementar la carga inicial de datos desde la propia aplicación usando la tecnología EJB. Hasta pronto!
