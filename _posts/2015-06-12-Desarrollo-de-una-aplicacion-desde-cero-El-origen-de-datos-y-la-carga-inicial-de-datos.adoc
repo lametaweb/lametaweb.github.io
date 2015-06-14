@@ -383,11 +383,11 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 * Queremos guardar dos objetos independientes, Trabajo y Drone, donde existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona con N objetos dependientes PuntoRuta. Entendemos independientes como que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos por tanto que persistir por separado los dos objetos y luego establecer la relación en el sentido desde el primero al segundo. Esto es así porque lógicamente no puedo persistir un objeto que tenga una referencia a otro en estado new e independiente de él. Para los beans PuntoRuta no ocurre igual como veremos en un momento. 
 
-* Persistimos primero por ejemplo el objeto Drone, usando el método _persist_ del entity manager. Ahora podemos ya establecer la relación muchos a uno en Trabajo entre Trabajo y Drone (que ya está en estado persistido) y persistir el objeto Trabajo.
+* Persistimos primero por ejemplo el objeto Drone, usando el método _persist_ del entity manager. Esto provoca un cambio de estado en el objeto Drone desde new a managed. El objeto está ahora dentro del contexto de persistencia. No está aún en la base de datos. Ahora podemos ya establecer la relación muchos a uno en Trabajo entre Trabajo y Drone y persistir el objeto Trabajo.
 
-* Existe una relación de composición entre Trabajo y PuntoRuta y por tanto cuando persistamos un trabajo se deben persistir los puntos de ruta asociados. Esto se implementa con el atributo cascade de la anotación @OneToMany `@OneToMany (cascade = CascadeType.ALL)`.
+* Existe una relación de composición entre Trabajo y PuntoRuta y por tanto cuando persistamos un trabajo debemos persistir los puntos de ruta asociados. Esto se implementa con el atributo cascade de la anotación @OneToMany `@OneToMany (cascade = CascadeType.ALL)`. En este punto toda la jerarquía está dentro del contexto en estado managed. Y nada de momento en la base de datos.
 
-* Finalmente establecemos la relación uno a muchos entre Drone y Trabajo y la persistimos. Aquí no uso persist porque el objeto implicado, Drone, ya está en estado persistido.
+* Finalmente establecemos la relación uno a muchos entre Drone y Trabajo y la persistimos. Aquí no uso persist porque el objeto implicado, Drone, ya está en estado managed.
 
 * Todas estas operaciones de persistencia se engloban en una transacción que comienza y acaba al mismo tiempo que el método cargaDeDatos. Es algo que se gestiona de forma automática por el servidor a través de la tecnología JTA.
 
