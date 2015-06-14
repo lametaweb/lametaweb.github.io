@@ -358,11 +358,20 @@ public void cargaDeDatos(){
 }
 ----
 
-En resumen el método cargaDeDatos da de alta en la base de datos un Trabajo con una ruta determinada y un Drone que es el que se configura para realizar ese trabajo. Podeis ver que sólo necesito manejar objetos de la capa de datos, quedando los detalles de la base de datos ocultos por la tecnología JPA. Vamos a ver un poco más en detalle el código desde el principio. Es conveniente que tengáis delante el diagrama de diseño que vimos en el post anterior para entender más facilmente el código:
+Antes de analizar el código de este método veamos una introducción exprés a JPA. 
 
-* Tenemos que crear la jerarquía de objetos que queremos dar de alta, dar valor a los atributos y finalmente establecer las relaciones entre ellos. Veamos.
+En JPA el objeto central es el EntityManager. A través de los métodos de este objeto llevaremos a cabo las operaciones de persistencia que necesitemos. Los datos asociados a estas operaciones de persistencia serán jerarquías de las entidades persistentes, Drone, Trabajo y PuntoRuta, y deberemos gestionarlos dentro de una zona de memoria llamada contexto de persistencia cuya configuración se encuentra en el fichero persistence.xml.
 
-* Creamos y setemos los PuntaRuta de la ruta para el Trabajo.  Se define una ruta triangular cerrada siendo el punto inicial y final por tanto el mismo. Podéis verla en la siguiente figura:
+Las operaciones de persistencia que más usaremos serán: persist, merge, remove, detach y find, que corresponden a las operaciones de alta, modificación, baja y consulta, respectivamenete, conocidas por sus iniciales en inglés CRUD (Create,
+Read o Retrieve, Update y Delete). Por otra parte una entidad persistente, como por ejemplo Drone puede existir sólo en cuatro estados: new, managed, detached y removed.
+
+El objeto EntityManager es usado desde la capa de negocio, donde se sitúa el bean para la carga inicial de datos CargaInicialDatos y el bean que veremos en el próximo post para la implementación del caso de uso de nuestra aplicación. Como ya sabemos nuestra capa de negocio usa la tecnología EJB. En un bean EJB puedo inyectar directamente un contexto de persistencia gestionado por el contenedor y si además uso la tecnología JTA la gestion de las transacciones será automática de modo que dentro de una transacción accederé por inyección siempre al mismo entitymanager, y el éste será destruido cuando la transacción finalice. Así que usando EJB y JTA me puedo centrar totalmente en las operaciones de negocio abstrayéndome de los detalles técnicos.
+
+Vamos con nuestro código de carga inicial de datos. En resumen, da de alta en la base de datos un Trabajo con una ruta determinada y un Drone que es el que se configura para realizar ese trabajo. Podeis ver que sólo necesito manejar objetos de la capa de datos, quedando los detalles de la base de datos ocultos por la tecnología JPA. Veamos  un poco más en detalle el código desde el principio. Es conveniente que tengáis delante el diagrama de diseño que vimos en el post anterior para entender más facilmente el código:
+
+* En una carga de datos nuestro objetivo es dar de alta una serie de datos en la base de datos. En JPA para dar de alta información tengo que crear la jerarquía de objetos que queremos dar de alta, dar valor a los atributos y establecer las relaciones entre ellos. Los nuevos objetos tienen un estado new en el cual aún no están dentro del contexto de persistencia.
+
+* Creamos y seteamos los beans PuntoRuta de la ruta para el trabajo. Se define una ruta triangular cerrada siendo el punto inicial y final por tanto el mismo. Podéis verla en la siguiente figura:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig063.png[]
 
@@ -370,9 +379,9 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 * Los objetos PuntoRuta son añadidos a la colección que implementa la relación uno a mucho entre Trabajo y PuntoRuta.
 
-* Creamos el objeto Drone y seteamos los atributos.
+* Creamos el objeto Drone y seteamos los atributos. En este punto el contexto de persistencia está aún vacío.
 
-* Queremos guardar dos objetos independientes pero donde existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona con N objetos dependientes. Tendremos por tanto que persistir por separado los dos objetos independientes y luego establecer la relación en el sentido desde el primero al segundo.
+* Queremos guardar dos objetos independientes, Trabajo y Drone, donde existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona con N objetos dependientes PuntoRuta. Entendemos independientes como que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos por tanto que persistir por separado los dos objetos y luego establecer la relación en el sentido desde el primero al segundo. Esto es así porque lógicamente no puedo persistir un objeto que tenga una referencia a otro en estado new e independiente de él. Para los beans PuntoRuta no ocurre igual como veremos en un momento. 
 
 * Persistimos primero por ejemplo el objeto Drone, usando el método _persist_ del entity manager. Ahora podemos ya establecer la relación muchos a uno en Trabajo entre Trabajo y Drone (que ya está en estado persistido) y persistir el objeto Trabajo.
 
