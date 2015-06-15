@@ -216,7 +216,7 @@ Nuestro objetivo es que los datos existan antes de que la aplicación pueda reci
 	}
 ----
 
-* Usando JSF: Esta alternativa, aunque la cito, de entrada no la usaremos ya que pasa por usar un atributo en la anotación _@ManageadBean_, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. En vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como _@ViewScoped_ o _@FlowScoped_. En este caso la clase del bean de controlador tendría este aspecto:
+* Usando JSF: Esta alternativa, aunque la cito, de entrada no la elegimos ya que pasa por usar un atributo en la anotación _@ManageadBean_, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. Para los beans de controlador, como ya veremos al llegar a la capa de presentación de la aplicación, en vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como _@ViewScoped_ o _@FlowScoped_. En este caso la clase del bean de controlador tendría este aspecto:
 
 [source,java,indent=0]
 ----
