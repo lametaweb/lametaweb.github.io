@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T10:54:39.500Z" />
+    <meta property="article:modified_time" content="2015-06-15T11:01:37.643Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T10:54:39.500Z",
+    "dateModified": "2015-06-15T11:01:37.643Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -306,7 +306,7 @@
 <p>La manera en que se añaden nuevas recursos a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer <a href="https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html">esta documentación</a> para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.</p>
 </div>
 <div class="paragraph">
-<p>De hecho en el despligue anterior del driver desde Maven el servidor ha generado un modulo. En este caso un módulo dinámico con el nombre <em>deployment.derby.jar</em> asociado al despliegue de la librería derby.jar. En el despliegue manual lo que creamos es un módulo estático, que se carga en el arranque del servidor y no asociado al despliegue de una aplicación como en el caso del dinámico.</p>
+<p>De hecho, en el despligue que hemos configurado desde Maven, el servidor generará, cuando ejecutemos el ciclo de vida de construcción, un módulo para el driver. En este caso será un módulo dinámico con el nombre <em>deployment.derby.jar</em> asociado al despliegue de la librería derby.jar. En el despliegue manual lo que se genera es un módulo estático, que se carga en el arranque del servidor y que no está asociado al despliegue de una aplicación como en el caso del dinámico.</p>
 </div>
 <div class="paragraph">
 <p>En resumen hay que hacer dos cosas. La primera es añadir un nuevo módulo estático para incluir el driver JDBC de Derby en el servidor, y en segundo lugar tenemos que añadir la configuración del datasource en el fichero de configuración del servidor. Lógicamente tenéis que optar por una de las dos estrategías, la automatizada con Maven ya vista o ésta que vamos a ver ahora. Para librerías de uso general compartidas por varias aplicaciones es más conveniente delegar en el equipo de administradores de sistemas la creación de los módulos estáticos que requiramos.</p>
