@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T22:12:53.719Z" />
+    <meta property="article:modified_time" content="2015-06-15T22:14:33.880Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T22:12:53.719Z",
+    "dateModified": "2015-06-15T22:14:33.880Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -645,7 +645,7 @@ public class CargaInicialDatos {
 <p>Creamos el objeto Drone y seteamos los atributos. En este punto el contexto de persistencia está aún vacío.</p>
 </li>
 <li>
-<p>Queremos guardar dos objetos independientes, Trabajo y Drone, entre los que existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona además con N objetos dependientes PuntoRuta. Entendemos independientes en el sentido de que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos por tanto que persistir por separado los dos objetos, además de la relación. Para los beans PuntoRuta no ocurre igual como veremos en un momento.</p>
+<p>Queremos guardar dos objetos independientes, Trabajo y Drone, entre los que existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona además con N objetos dependientes PuntoRuta. Entendemos independientes en el sentido de que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos que persistir por separado los dos objetos, además de la relación. Para los beans PuntoRuta no ocurre igual como veremos en un momento.</p>
 </li>
 <li>
 <p>En una relación bidireccional existe lo que se entiende por lado dueño de la relación, que es aquel en el que se expresa la relación. En este caso el lado dueño de la relación entre Drone y Trabajo está en la entidad Trabajo ya que a través de la anotación @JoinColumn se expresa la relación. Como lo que queremos es persistir la relación bastará con dar valor al lado dueño de la relación.</p>
