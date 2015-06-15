@@ -370,7 +370,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 * Creamos el objeto Drone y seteamos los atributos. En este punto el contexto de persistencia está aún vacío.
 
-* Queremos guardar dos objetos independientes, Trabajo y Drone, entre los que existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona además con N objetos dependientes PuntoRuta. Entendemos independientes en el sentido de que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos por tanto que persistir por separado los dos objetos, además de la relación. Para los beans PuntoRuta no ocurre igual como veremos en un momento. 
+* Queremos guardar dos objetos independientes, Trabajo y Drone, entre los que existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona además con N objetos dependientes PuntoRuta. Entendemos independientes en el sentido de que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos que persistir por separado los dos objetos, además de la relación. Para los beans PuntoRuta no ocurre igual como veremos en un momento. 
 
 * En una relación bidireccional existe lo que se entiende por lado dueño de la relación, que es aquel en el que se expresa la relación. En este caso el lado dueño de la relación entre Drone y Trabajo está en la entidad Trabajo ya que a través de la anotación @JoinColumn se expresa la relación. Como lo que queremos es persistir la relación bastará con dar valor al lado dueño de la relación.
 
