@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T16:07:34.329Z" />
+    <meta property="article:modified_time" content="2015-06-15T16:09:58.637Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T16:07:34.329Z",
+    "dateModified": "2015-06-15T16:09:58.637Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -607,7 +607,7 @@ public class CargaInicialDatos {
 <p>Antes de analizar el código del método será bueno ver una introducción exprés a la persistencia en JPA.</p>
 </div>
 <div class="paragraph">
-<p>En JPA el objeto central es el EntityManager. A través de los métodos de este objeto llevaremos a cabo las operaciones de persistencia que necesitemos. Los datos asociados a estas operaciones de persistencia serán jerarquías de las entidades persistentes, Drone, Trabajo y PuntoRuta, y deberemos gestionarlos dentro de una zona de memoria llamada contexto de persistencia. El contexto de persistencia no debe confundirse con la unidad de persistencia, cuya configuración se encuentra en el fichero persistence.xml, y que define un conjunto de entidades persistentes y su almacen de datos.</p>
+<p>En JPA el objeto central es el EntityManager. A través de los métodos de este objeto llevaremos a cabo las operaciones de persistencia que necesitemos. Los datos asociados a estas operaciones de persistencia serán jerarquías de las entidades persistentes, Drone, Trabajo y PuntoRuta, y deberemos gestionarlos dentro de una zona de memoria llamada contexto de persistencia. El contexto de persistencia no debe confundirse con la unidad de persistencia, cuya configuración se encuentra en el fichero persistence.xml, y que define un conjunto de entidades persistentes y su almacen de datos. En nuestra aplicación la unidad de persistencia será creada automáticamente y no tenemos que preocuparnos por esto.</p>
 </div>
 <div class="paragraph">
 <p>Las operaciones de persistencia que más usaremos serán: persist, merge, remove y find, que implementan, a grandes rasgos, las operaciones de alta, modificación, baja y consulta, respectivamenete, conocidas por sus iniciales en inglés CRUD (Create, Read o Retrieve, Update y Delete). Por otra parte una entidad persistente, como por ejemplo Drone puede existir sólo en cuatro estados: new, managed, detached y removed.</p>
