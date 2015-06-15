@@ -364,7 +364,7 @@ Después de esta breve introducción teórica examinemos el código del método 
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig063.png[]
 
-* A continuación se crea el objeto Trabajo y se inicializan sus atributos. Para el intervalo de comienzo y finalización del trabajo se calcula una hora hacia atrás y una hacia delante respecto del momento en que iniciamos la aplicación. Esto lo hago simplemente para que en la aplicación se muestre este drone introduciendo una fecha y hora que correspondan aproximadamente a la fecha y hora de ese momento.
+* A continuación se crea el objeto Trabajo y se inicializan sus atributos. Para el intervalo de comienzo y finalización del trabajo se calcula una hora hacia atrás y una hacia delante respecto del momento en que desplegamos la aplicación. Esto lo hago simplemente para que en la aplicación se muestre este drone introduciendo una fecha y hora que correspondan aproximadamente a la fecha y hora de ese momento.
 
 * Los objetos PuntoRuta son añadidos a la colección que implementa la relación uno a mucho entre Trabajo y PuntoRuta.
 
