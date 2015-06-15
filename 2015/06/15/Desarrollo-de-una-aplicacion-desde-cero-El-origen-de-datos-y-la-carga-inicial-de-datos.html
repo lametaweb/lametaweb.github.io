@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T11:11:37.286Z" />
+    <meta property="article:modified_time" content="2015-06-15T11:46:33.900Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T11:11:37.286Z",
+    "dateModified": "2015-06-15T11:46:33.900Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -321,22 +321,16 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Descargar el fichero .zip de derby en <a href="http://db.apache.org/derby/releases/release-10.10.1.1.html">esta dirección</a>.</p>
+<p>Descargar el fichero .zip de derby desde <a href="http://db.apache.org/derby/releases/release-10.10.1.1.html">esta dirección</a>.</p>
 </li>
 <li>
-<p>Extraer el fichero \lib\derby.jar y copiarlo en un lugar temporal, por ejemplo en el escritorio.</p>
+<p>Extraer el fichero \lib\derby.jar y copiarlo en un lugar temporal, por ejemplo en el Escritorio.</p>
 </li>
 <li>
 <p>Ir a la carpeta <em>C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-6.3\modules\system\layers\base\org\apache\</em></p>
 </li>
 <li>
-<p>Crear dentro de la anterior la carpeta <em>derby\main\</em></p>
-</li>
-<li>
-<p>Situarnos dentro de la nueva carpeta.</p>
-</li>
-<li>
-<p>Copiar el fichero derby.jar en la carpeta.</p>
+<p>Crear dentro de ella la carpeta <em>derby\main\</em> y copiar ahí el fichero derby.jar.</p>
 </li>
 <li>
 <p>Con un editor de textos, por ejemplo Notepad++, crear un fichero con el nombre <em>module.xml</em> en la misma carpeta y con el siguiente contenido:</p>
