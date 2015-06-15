@@ -292,32 +292,31 @@ public class CargaInicialDatos {
         // TODO Auto-generated constructor stub
     }
     
-@PostConstruct
-public void cargaDeDatos(){
-    	
-    	// Puntos de Ruta
-	PuntoRuta pr01tr01dr01 = new PuntoRuta();
-	PuntoRuta pr02tr01dr01 = new PuntoRuta();
-	PuntoRuta pr03tr01dr01 = new PuntoRuta();
-	PuntoRuta pr04tr01dr01 = new PuntoRuta();
-	PuntoRuta pr05tr01dr01 = new PuntoRuta();
+    @PostConstruct
+    public void cargaDeDatos(){
+	// Puntos de Ruta
+	PuntoRuta puntoRuta01 = new PuntoRuta();
+	PuntoRuta puntoRuta02 = new PuntoRuta();
+	PuntoRuta puntoRuta03 = new PuntoRuta();
+	PuntoRuta puntoRuta04 = new PuntoRuta();
+	PuntoRuta puntoRuta05 = new PuntoRuta();
 
 	// Datos Puntos de Ruta
-	pr01tr01dr01.setLatitud(37.367873f);
-	pr01tr01dr01.setLongitud(-6.003724f); 
-	pr01tr01dr01.setAltitud(100.0f);
-	pr02tr01dr01.setLatitud(37.374797f);
-	pr02tr01dr01.setLongitud(-5.996119f);
-	pr02tr01dr01.setAltitud(200.0f);
-	pr03tr01dr01.setLatitud(37.3726373f);
-	pr03tr01dr01.setLongitud(-5.995503f);
-	pr03tr01dr01.setAltitud(300.0f);
-	pr04tr01dr01.setLatitud(37.367873f);
-	pr04tr01dr01.setLongitud(-6.003724f);
-	pr04tr01dr01.setAltitud(100.0f);
-	pr05tr01dr01.setLatitud(37.367873f);
-	pr05tr01dr01.setLongitud(-6.003724f);
-	pr05tr01dr01.setAltitud(0.0f);
+	puntoRuta01.setLatitud(37.367873f);
+	puntoRuta01.setLongitud(-6.003724f);
+	puntoRuta01.setAltitud(100.0f);
+	puntoRuta02.setLatitud(37.374797f);
+	puntoRuta02.setLongitud(-5.996119f);
+	puntoRuta02.setAltitud(200.0f);
+	puntoRuta03.setLatitud(37.372000f);
+	puntoRuta03.setLongitud(-5.992500f);
+	puntoRuta03.setAltitud(300.0f);
+	puntoRuta04.setLatitud(37.367873f);
+	puntoRuta04.setLongitud(-6.003724f);
+	puntoRuta04.setAltitud(100.0f);
+	puntoRuta05.setLatitud(37.367873f);
+	puntoRuta05.setLongitud(-6.003724f);
+	puntoRuta05.setAltitud(0.0f);
 
 	GregorianCalendar gc = new GregorianCalendar();
 	// hora inicio adelantando una hora
@@ -327,43 +326,38 @@ public void cargaDeDatos(){
 	gc.add(GregorianCalendar.HOUR, 2);
 	Date fechaHoraFinalizacion = gc.getTime();
 		
-	Trabajo tr01dr01 = new Trabajo();
-	tr01dr01.setNumeroDeRegistro("TR01DR01");
-	tr01dr01.setVelocidad(10f);
-	tr01dr01.setDescripcion("Reconocimiento de zona a baja cota.");
-	tr01dr01.setFechaHoraInicio(fechaHoraInicio);
-	tr01dr01.setFechaHoraFinalizacion(fechaHoraFinalizacion);
+	Trabajo trabajo = new Trabajo();
+	trabajo.setNumeroDeRegistro("trabajo");
+	trabajo.setVelocidad(10f);
+	trabajo.setDescripcion("Reconocimiento de zona a baja cota.");
+	trabajo.setFechaHoraInicio(fechaHoraInicio);
+	trabajo.setFechaHoraFinalizacion(fechaHoraFinalizacion);
 		
-	tr01dr01.getPuntosDeRuta().add(pr01tr01dr01);
-	tr01dr01.getPuntosDeRuta().add(pr02tr01dr01);
-	tr01dr01.getPuntosDeRuta().add(pr03tr01dr01);
-	tr01dr01.getPuntosDeRuta().add(pr04tr01dr01);
-	tr01dr01.getPuntosDeRuta().add(pr05tr01dr01);
+	trabajo.getPuntosDeRuta().add(puntoRuta01);
+	trabajo.getPuntosDeRuta().add(puntoRuta02);
+	trabajo.getPuntosDeRuta().add(puntoRuta03);
+	trabajo.getPuntosDeRuta().add(puntoRuta04);
+	trabajo.getPuntosDeRuta().add(puntoRuta05);
 		
-	Drone dr01 = new Drone();
-	dr01.setNumeroDeSerie("FJHCAM01001");
-	dr01.setModelo("Observer II");
-	dr01.setPesoMaximoDespegue(1500);
-	dr01.setAutonomia(25);
-	dr01.setNumMotores(6);
-	em.persist(dr01);
+	Drone drone = new Drone();
+	drone.setNumeroDeSerie("FJHCAM01001");
+	drone.setModelo("Observer II");
+	drone.setPesoMaximoDespegue(1500);
+	drone.setAutonomia(25);
+	drone.setNumMotores(6);
+	em.persist(drone);
+	em.persist(trabajo);
 		
-	tr01dr01.setDroneAsignado(dr01);
-	em.persist(tr01dr01);
-		
-	dr01.getTrabajosAsignados().add(tr01dr01);
-	em.merge(dr01);
-    	
+	trabajo.setDroneAsignado(drone);
     } 
 }
 ----
 
-Antes de analizar el código de este método veamos una introducción exprés a JPA. 
+Antes de analizar el código del método será bueno ver una introducción exprés a la persistencia en JPA. 
 
 En JPA el objeto central es el EntityManager. A través de los métodos de este objeto llevaremos a cabo las operaciones de persistencia que necesitemos. Los datos asociados a estas operaciones de persistencia serán jerarquías de las entidades persistentes, Drone, Trabajo y PuntoRuta, y deberemos gestionarlos dentro de una zona de memoria llamada contexto de persistencia. El contexto de persistencia no debe confundirse con la unidad de persistencia, cuya configuración se encuentra en el fichero persistence.xml, y que define un conjunto de entidades persistentes y su almacen de datos. 
 
-Las operaciones de persistencia que más usaremos serán: persist, merge, remove, detach y find, que corresponden a las operaciones de alta, modificación, baja y consulta, respectivamenete, conocidas por sus iniciales en inglés CRUD (Create,
-Read o Retrieve, Update y Delete). Por otra parte una entidad persistente, como por ejemplo Drone puede existir sólo en cuatro estados: new, managed, detached y removed.
+Las operaciones de persistencia que más usaremos serán: persist, merge, remove y find, que implementan, a grandes rasgos, las operaciones de alta, modificación, baja y consulta, respectivamenete, conocidas por sus iniciales en inglés CRUD (Create, Read o Retrieve, Update y Delete). Por otra parte una entidad persistente, como por ejemplo Drone puede existir sólo en cuatro estados: new, managed, detached y removed.
 
 El objeto EntityManager es usado desde la capa de negocio, donde se sitúa el bean para la carga inicial de datos CargaInicialDatos y el bean que veremos en el próximo post para la implementación del caso de uso de nuestra aplicación. Como ya sabemos nuestra capa de negocio usa la tecnología EJB. En un bean EJB puedo inyectar directamente un contexto de persistencia gestionado por el contenedor y entonces tendré disponible la tecnología JTA que proporciona una gestion de las transacciones automática de modo que dentro de una transacción accederé por inyección siempre al mismo entitymanager, y éste será destruido cuando la transacción finalice. Así que usando EJB y JTA me puedo centrar totalmente en las operaciones de negocio abstrayéndome de los detalles técnicos.
 
@@ -385,18 +379,14 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 * En una relación bidireccional existe lo que se entiende por lado dueño de la relación, que es aquel en el que se expresa la relación. En este caso el lado dueño de la relación entre Drone y Trabajo está en la entidad Trabajo ya que a través de la anotación @JoinColumn se expresa la relación. Como lo que queremos es persistir la relación bastará con dar valor al lado dueño de la relación.
 
-* La persistencia la hacemos de la siguiente manera: Persistimos primero por ejemplo el objeto Drone, usando el método _persist_ del entity manager. Esto provoca un cambio de estado en el objeto Drone desde new a managed. El objeto está ahora dentro del contexto de persistencia. No está aún en la base de datos. Y a continuación persistimos el objeto Trabajo. Y finalmente damos valor al lado dueño de la relación. No es la única manera manera pero he querido hacerlo en ese orden para aclarar los conceptos. Al persistir una entidad esta pasa a managed en el contexto como ya hemos visto, pues bien todos las asignaciones sobre los atributos de una entidad managed serán persistidas, cuando la transacción se complete, o sea cuando el método termine de ejecutarse.
+* La persistencia la hacemos de la siguiente manera: Persistimos primero por ejemplo el objeto Drone, usando el método _persist_ del entity manager. Esto provoca un cambio de estado en el objeto Drone desde new a managed. El objeto está ahora dentro del contexto de persistencia. No está aún en la base de datos. Y a continuación persistimos el objeto Trabajo. Y finalmente damos valor al lado dueño de la relación. No es la única manera manera pero he querido hacerlo en ese orden para aclarar los conceptos. Al persistir una entidad esta pasa a managed en el contexto como ya hemos visto, pues bien todos las asignaciones sobre los atributos de una entidad managed serán persistidas, cuando la transacción se complete. La transacción se completa cuando el método termina de ejecutarse. En este punto el proveedor de persistencia sincroniza el contexto de  persistencia con la base de datos. Verá que en el contexto existen varias entidades managed que no existen en la base de datos y procederá a darlas de alta. 
+
+* En cuanto a las entidades PuntoRuta, si miramos el diagrama de diseño observamos que existe una relación de composición con Trabajo, y por tanto cuando persistamos un trabajo deberemos persistir también los puntos de ruta asociados. Esto se implementa con el atributo cascade de la anotación @OneToMany `@OneToMany (cascade = CascadeType.ALL)`. Por tanto tras el método persist sobre Trabajo todos los PuntoRuta pasaron del estado new al estado managed, y al finalizar la transacción de igual manera se persistieron.
 
 * Y entonces surge la pregunta, ¿y el método merge, no era el que debía usar para hacer un update? Bueno, sí y no. En este caso en que el objeto sobre el que hago el update es managed, porque le he aplicado un persist tras crearlo, o bien en el caso en que lo hubiera leido desde la base de datos con un find donde su estado también sería managed, la operación update se realiza automáticamente con el commit de la transacción. El método merge se usa para realizar un update sobre entidades que leo de la base de datos y mantengo en el controlador por ejemplo durante una sesión de edición de usuario a través del navegador web. Cuando el usuario pulsa el botón Guardar lo que se envía a la capa de negocio es una entidad en el estado detached, o sea con identidad persistente pero fuera del contexto de persistencia, y en este caso es el método merge el que mete de nuevo al objeto en el contexto de persistencia, y como en el primer caso, ahora sí cuando la transacción termina los cambios se hacen efectivos en la base de datos.
 
-* Veamos ahora la relación entre Trabajo y PuntoRuta, si miramos el diagrama de diseño observamos que existe una relación de composición, y por tanto cuando persistamos un trabajo deberemos persistir también los puntos de ruta asociados. Esto se implementa con el atributo cascade de la anotación @OneToMany `@OneToMany (cascade = CascadeType.ALL)`. En este punto toda la jerarquía está dentro del contexto en estado managed. Y nada de momento en la base de datos.
+Como veis hemos sido capaces de implementar las operaciones de persistencia abstrayéndonos totalmente de los detalles de la base de datos. Si logramos entender bien los distintos estados de una entidad y las distintas operaciones de persistencia seremos entonces capaces de desarrollar componentes de negocio para cualquier base de datos. 
 
-Y esto es todo. Como veis hemos sido capaces de implementar las operaciones de persistencia abstrayéndonod totalmente de los detalles de la base de datos.
+Para afianzar los conceptos de persistencia vistos en este ejemplo y entender otros que en el ejemplo no aparecen podeis leer el contenido de https://en.wikibooks.org/wiki/Java_Persistence/Persisting[esta dirección].
 
-
-
-
-
-
-
-TODO: Ver qué pasa si hay cascade desde drone a trabajo.
+Y hasta aquí este post dedicado a la capa de datos. En el anterior vimos la parte de mapeo y aquí la configuración y una introducción a las operaciones de persistencia a través de la carga inicial de datos. En el proximo post veremos rápidamente cómo inspeccionar la base de datos Derby que Hibernate nos genera y nos meteremos ya con la capa de negocio. Nos vemos en breve!
