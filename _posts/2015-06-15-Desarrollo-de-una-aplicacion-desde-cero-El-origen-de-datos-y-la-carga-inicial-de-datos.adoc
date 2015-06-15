@@ -141,7 +141,7 @@ Los pasos a seguir para la instalación manual son:
 
 ** Crear dentro de ella la carpeta _derby\main\_ y copiar ahí el fichero derby.jar.
 
-** Con un editor de textos, por ejemplo Notepad++, crear un fichero con el nombre _module.xml_ en la misma carpeta y con el siguiente contenido:
+** Con un editor de textos, por ejemplo Notepad++, crear un fichero con el nombre _module.xml_ en la misma carpeta con el siguiente contenido:
 
 [source,xml,indent=0]
 ----
@@ -191,8 +191,6 @@ Los pasos a seguir para la instalación manual son:
 		<xa-datasource-class>org.apache.derby.jdbc.EmbeddedXADataSource</xa-datasource-class>
 	</driver>
 ----
-
-Y con esto bastaría para instalar de forma permanente un origen de datos específico para nuestra aplicación y por otro lado un driver de acceso a bases de datos Derby que puede ser usado por cualquier aplicación que despleguemos en el servidor.
 
 Veamos lo más relevante del contenido XML:
 
