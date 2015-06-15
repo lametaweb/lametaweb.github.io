@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T10:17:25.665Z" />
+    <meta property="article:modified_time" content="2015-06-15T10:35:38.933Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T10:17:25.665Z",
+    "dateModified": "2015-06-15T10:35:38.933Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -154,13 +154,13 @@
 <p>En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, disponer de datos que gestionar, y además nos mostrará un primer ejemplo de persistencia en JPA y además un tipo interesante de bean EJB introducido en la versión 6 de Java EE.</p>
 </div>
 <div class="paragraph">
-<p>Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc.</p>
+<p>Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver JDBC, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc.</p>
 </div>
 <div class="paragraph">
-<p>La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.</p>
+<p>La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria para el despliegue en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.</p>
 </div>
 <div class="paragraph">
-<p>Bien, empezamos. Abrimos Eclipse y a continuación el fichero pom.xml del proyecto. Añadimos la dependencia correspondiente al driver JDBC de Derby del que tirará el datasource con un copia pega del siguiente fragmento de XML dentro del elemento &lt;dependencies&gt;:</p>
+<p>Bien, empezamos. Abrimos Eclipse y a continuación el fichero pom.xml del proyecto. Añadimos la dependencia correspondiente al driver JDBC de Derby del que tirará el datasource con un copia pega del siguiente fragmento de XML dentro del elemento <em>&lt;dependencies&gt;</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -176,7 +176,7 @@
 <p>Como vemos el scope de la dependencia es <em>runtime</em>, ya que no es necesario en tiempo de compilación pero si cuando la aplicación se esté ejecutando en el servidor. Es decir, el proveedor de persistencia lo invocará para llevar a cabo las operaciones contra la base de datos, pero en ningún lugar de nuestro código usaremos ninguna de las clases de las librerías del driver directamente.</p>
 </div>
 <div class="paragraph">
-<p>Y ahora viene lo interesante, hacemos uso del plugin de Maven para el servidor JBoss para llevar a cabo de forma automatizada las tareas de despliegue que necesitamos, que por orden son las siguientes:</p>
+<p>Y ahora viene lo interesante, hacemos uso del plugin de Maven para el servidor JBoss para llevar a cabo de forma automatizada las tareas de despliegue que necesitamos, que son, por orden:</p>
 </div>
 <div class="ulist">
 <ul>
