@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T12:16:22.364Z" />
+    <meta property="article:modified_time" content="2015-06-15T12:17:01.962Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T12:16:22.364Z",
+    "dateModified": "2015-06-15T12:17:01.962Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -428,7 +428,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez la primera vez que se hace referencia al mismo desde la aplicación. La anotación <em>@Startup</em> se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:</p>
+<p>Usando EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez la primera vez que se hace referencia al mismo desde la aplicación. La anotación <em>@Startup</em> se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:</p>
 </li>
 </ul>
 </div>
@@ -448,7 +448,7 @@ public class PropertyRegistry {
 <div class="ulist">
 <ul>
 <li>
-<p>JSF: Esta alternativa, aunque la cito, de entrada no la usaremos ya que pasa por usar un atributo en la anotación <em>@ManageadBean</em>, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. En vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como <em>@ViewScoped</em> o <em>@FlowScoped</em>. En este caso la clase del bean de controlador tendría este aspecto:</p>
+<p>Usando JSF: Esta alternativa, aunque la cito, de entrada no la usaremos ya que pasa por usar un atributo en la anotación <em>@ManageadBean</em>, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. En vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como <em>@ViewScoped</em> o <em>@FlowScoped</em>. En este caso la clase del bean de controlador tendría este aspecto:</p>
 </li>
 </ul>
 </div>
@@ -467,7 +467,7 @@ public class GlobalBean {
 <div class="ulist">
 <ul>
 <li>
-<p>CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión 1.1, la incluida con Java EE 7. Es previsible que en el futuro se extienda la anotación <em>@Startup</em> de EJB a cualquier bean de CDI con el nuevo stack Java EE 8. Actualmente, si lo necesitaramos, podríamos implementar nosotros mismos una extensión de CDI para obtener cargas iniciales usando la técnica que se explica en <a href="http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html">este enlace</a>.</p>
+<p>Usando CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión 1.1, la incluida con Java EE 7. Es previsible que en el futuro se extienda la anotación <em>@Startup</em> de EJB a cualquier bean de CDI con el nuevo stack Java EE 8. Actualmente, si lo necesitaramos, podríamos implementar nosotros mismos una extensión de CDI para obtener cargas iniciales usando la técnica que se explica en <a href="http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html">este enlace</a>.</p>
 </li>
 </ul>
 </div>
