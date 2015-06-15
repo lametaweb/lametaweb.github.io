@@ -1,11 +1,11 @@
 = Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.
 La metaweb
-:hp-tags: JPA, Hibernate, persistencia, datasource, carga inicial de datos
+:hp-tags: JPA, Hibernate, Persistencia, DataSource, EntityManager
 :published_at: 2015-06-15
 
-En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia, y su configuración e instalación adaptado a las características de nuestra aplicación. Y por otro lado implementaremos una carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, y además nos mostrará un primer ejemplo de persistencia de datos con JPA y un tipo interesante de bean EJB introducido en la versión 6 de Java EE.
+En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, disponer de datos que gestionar, y además nos mostrará un primer ejemplo de persistencia en JPA y además un tipo interesante de bean EJB introducido en la versión 6 de Java EE.
 
-Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con el gestor de la base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un esquema de datos. El origen de datos necesita a su vez un driver, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc. 
+Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc. 
 
 La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.
 
