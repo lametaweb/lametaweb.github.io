@@ -202,7 +202,7 @@ Bien, entramos en la segunda parte de este post, la carga inicial de datos. Como
 
 Nuestro objetivo es que los datos existan antes de que la aplicación reciba las primeras peticiones de usuario. Necesitamos por tanto una manera de ejecutar código Java en el despliegue de la misma y para esto tendremos que instanciar un bean en ese momento y colocar el código en un método anotado con _@PostConstruct_ para que se ejecute sin necesidad de una llamada explícita. La carga del bean podemos hacerla de tres maneras diferentes, usando tecnologías diferentes: EJB, JSF o bien CDI. Veamos cada caso antes de decidir la más conveniente:
 
-* Usando EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez la primera vez que se hace referencia al mismo desde la aplicación. La anotación _@Startup_ se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:
+* Usando EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez, la primera vez que se hace referencia al mismo desde la aplicación. La anotación _@Startup_ se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:
 
 [source,java,indent=0]
 ----
