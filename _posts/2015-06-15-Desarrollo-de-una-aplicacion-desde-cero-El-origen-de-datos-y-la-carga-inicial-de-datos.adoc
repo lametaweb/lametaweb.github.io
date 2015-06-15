@@ -232,11 +232,11 @@ Nuestro objetivo es que los datos existan antes de que la aplicación pueda reci
 
 * Usando CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión, la 1.1, incluida en Java EE 7. Es previsible que en el futuro, con el nuevo stack Java EE 8, se extienda la anotación _@Startup_ de EJB a cualquier bean CDI. Si en algún momento necesitamos cargar un bean CDI en una aplicación tras su despliegue en un servidor Java EE 6 ó 7 lo que podemos hacer es implementar nosotros mismos una extensión CDI usando la técnica que se explica en http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html[este enlace].
 
-Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean singleton. Vamos a ello. Abrimos a Eclipse, hacemos botón derecho sobre la carpeta negocio y elegimos la opción _New > Other... > EJB > Session Bean_. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
+Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta _negocio_ del proyecto y elegimos la opción _New > Other... > EJB > Session Bean_. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig062.png[]
 
-Para este bean singleton usamos además, como se ve en la figura, otra nueva característica de Java EE 6, No-interface View, a través de la anotación _@LocalBean_, que permite evitar la creación de una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de las interfaces.
+Para este bean singleton usaremos además, como se ve en la figura, otra nueva característica de Java EE 6, la No-interface View, a través de la anotación _@LocalBean_, que evita crear una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de la interfaz.
 
 Seguimos con la implementación de nuestro bean CargaInicialDatos:
 
