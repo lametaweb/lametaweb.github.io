@@ -127,7 +127,7 @@ La manera en que se añaden nuevas recursos a nivel de servidor es diferente des
 
 De hecho, en el despligue que hemos configurado desde Maven, el servidor generará, cuando ejecutemos el ciclo de vida de construcción, un módulo para el driver. En este caso será un módulo dinámico con el nombre _deployment.derby.jar_ asociado al despliegue de la librería derby.jar. En el despliegue manual lo que se genera es un módulo estático, que se carga en el arranque del servidor y que no está asociado al despliegue de una aplicación como en el caso del dinámico.
 
-En resumen hay que hacer dos cosas, pero recordad, no las hagais ahora porque colisionaría con el despliegue de Maven. La primera es añadir un nuevo módulo estático para incluir el driver JDBC de Derby en el servidor, y la otra añadir la configuración del datasource en el fichero de configuración del servidor. Para librerías de uso general compartidas por varias aplicaciones es más conveniente este despliegue manual , que en general se delega en el equipo de administradores de sistemas que crearán para nosotros los módulos estáticos que requiramos.
+En resumen hay que hacer dos cosas, pero recordad, no las hagais ahora porque colisionaría con el despliegue de Maven. La primera es añadir un nuevo módulo estático para incluir el driver JDBC de Derby en el servidor, y la otra añadir la configuración del datasource en el fichero de configuración del servidor. Para librerías de uso general compartidas por varias aplicaciones es más conveniente este despliegue manual, que en general se delega en el equipo de administradores de sistemas que crearán para nosotros los módulos estáticos y configuraciones que requiramos.
 
 Los pasos a seguir para la instalación manual son:
 
