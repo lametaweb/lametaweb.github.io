@@ -123,7 +123,7 @@ Aprovechamos que estamos tocando el pom.xml para añadir un elemento <plugin> ad
 
 Hasta aquí el despliegue automatizado con Maven. A continuación veremos un despliegue equivalente pero realizado de forma manual. No apliquéis en el servidor los cambios que se van a explicar ahora porque el despliegue del datasource ya lo hemos implementado en Maven. Si queréis, una vez que tengamos la aplicación funcionando podéis comentar, con comentarios de HTML <!-- &nbsp;...&nbsp; -\->, los fragmentos añadidos al pom.xml y aplicar el desliegue manual tal como os paso a explicar.
 
-La manera en que se añaden nuevas librerías a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html[esta documentación] para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.
+La manera en que se añaden nuevas recursos a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html[esta documentación] para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.
 
 De hecho en el despligue anterior del driver desde Maven el servidor ha generado un modulo. En este caso un módulo dinámico con el nombre _deployment.derby.jar_ asociado al despliegue de la librería derby.jar. En el despliegue manual lo que creamos es un módulo estático, que se carga en el arranque del servidor y no asociado al despliegue de una aplicación como en el caso del dinámico.
 
