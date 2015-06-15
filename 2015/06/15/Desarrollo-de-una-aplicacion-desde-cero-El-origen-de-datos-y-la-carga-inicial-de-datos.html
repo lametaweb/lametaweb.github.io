@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T10:35:38.933Z" />
+    <meta property="article:modified_time" content="2015-06-15T10:40:54.279Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T10:35:38.933Z",
+    "dateModified": "2015-06-15T10:40:54.279Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -190,7 +190,7 @@
 <p>Instalar el datasource como recurso de servidor si éste no está ya instalado.</p>
 </li>
 <li>
-<p>Y finalmente desplegar nuestra aplicación.</p>
+<p>Finalmente desplegar nuestra aplicación.</p>
 </li>
 </ul>
 </div>
@@ -271,18 +271,18 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Ejecutarlo en nuestro proyecto de forma manual, bien a través de la linea de comnandos o bien desde Eclipse en la opción <em>Run &gt; Run Configurations&#8230;&#8203;</em>.</p>
+<p>Ejecutarlo en nuestro proyecto de forma manual, a través de la linea de comnandos o bien desde Eclipse en la opción <em>Run &gt; Run Configurations&#8230;&#8203;</em>.</p>
 </li>
 <li>
 <p>Cambiar la configuración de un plugin del ciclo de vida por defecto.</p>
 </li>
 <li>
-<p>Incluir la ejecución de uno o más goals como parte de alguna fase del ciclo de vida por defecto. Para esto debemos declarar el plugin, y añadir un elemento &lt;execution&gt; por cada goal/fase que queramos añadir.</p>
+<p>Añadir la ejecución de uno o más goals a alguna fase del ciclo de vida por defecto. Para esto debemos declarar el plugin y añadir un elemento &lt;execution&gt; por cada goal/fase que queramos añadir.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>El fragmento añadido es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutan en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este <a href="https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html">enlace</a>.</p>
+<p>El fragmento que acabamos de añadir es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutan en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este <a href="https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html">enlace</a>.</p>
 </div>
 <div class="paragraph">
 <p>Aprovechamos que estamos tocando el pom.xml para añadir un elemento &lt;plugin&gt; adicional que evitará de momento la ejecución de las pruebas unitarias, en la fase Test,  hasta que tengamos alguna prueba implementada. Esto sería un ejemplo del segundo tipo visto en la lista anterior.</p>
