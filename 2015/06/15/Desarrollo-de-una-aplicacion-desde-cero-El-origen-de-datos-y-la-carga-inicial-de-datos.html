@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T10:40:54.279Z" />
+    <meta property="article:modified_time" content="2015-06-15T10:52:54.024Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T10:40:54.279Z",
+    "dateModified": "2015-06-15T10:52:54.024Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -282,7 +282,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>El fragmento que acabamos de añadir es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutan en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este <a href="https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html">enlace</a>.</p>
+<p>El fragmento que acabamos de añadir es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutarán en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este <a href="https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html">enlace</a>.</p>
 </div>
 <div class="paragraph">
 <p>Aprovechamos que estamos tocando el pom.xml para añadir un elemento &lt;plugin&gt; adicional que evitará de momento la ejecución de las pruebas unitarias, en la fase Test,  hasta que tengamos alguna prueba implementada. Esto sería un ejemplo del segundo tipo visto en la lista anterior.</p>
@@ -300,7 +300,10 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Hasta aquí el despliegue automatizado con Maven. Veamos un despliegue equivalente pero realizado de forma manual. La manera en que se añaden nuevas librerías a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer <a href="https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html">esta documentación</a> para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.</p>
+<p>Hasta aquí el despliegue automatizado con Maven. A continuación veremos un despliegue equivalente pero realizado de forma manual. No apliquéis en el servidor los cambios que se van a explicar ahora porque el despliegue del datasource ya lo hemos implementado en Maven. Si queréis, una vez que tengamos la aplicación funcionando podéis comentar, con comentarios de HTML &lt;!-- &nbsp;&#8230;&#8203;&nbsp; --&gt;, los fragmentos añadidos al pom.xml y aplicar el desliegue manual tal como os paso a explicar.</p>
+</div>
+<div class="paragraph">
+<p>La manera en que se añaden nuevas librerías a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer <a href="https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html">esta documentación</a> para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.</p>
 </div>
 <div class="paragraph">
 <p>De hecho en el despligue anterior del driver desde Maven el servidor ha generado un modulo. En este caso un módulo dinámico con el nombre <em>deployment.derby.jar</em> asociado al despliegue de la librería derby.jar. En el despliegue manual lo que creamos es un módulo estático, que se carga en el arranque del servidor y no asociado al despliegue de una aplicación como en el caso del dinámico.</p>
