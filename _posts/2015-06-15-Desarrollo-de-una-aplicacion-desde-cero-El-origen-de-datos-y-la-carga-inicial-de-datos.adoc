@@ -1,7 +1,7 @@
 = Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.
 La metaweb
 :hp-tags: JPA, Hibernate, persistencia, datasource, carga inicial de datos
-:published_at: 2015-06-12
+:published_at: 2015-06-15
 
 En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia, y su configuración e instalación adaptado a las caraccterísticas de nuestra aplicación. Y por otro lado implementaremos una carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, y además nos mostrará un primer ejemplo de persistencia de datos con JPA y un tipo interesante de bean EJB introducido en la versión 6 de Java EE.
 
