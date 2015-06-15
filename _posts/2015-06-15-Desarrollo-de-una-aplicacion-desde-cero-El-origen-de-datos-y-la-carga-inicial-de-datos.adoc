@@ -202,7 +202,7 @@ Bien, entramos en la segunda parte de este post, la carga inicial de datos. Como
 
 Nuestro objetivo es que los datos existan antes de que la aplicación reciba las primeras peticiones de usuario. Necesitamos por tanto una manera de ejecutar código Java en el despliegue de la misma y para esto tendremos que instanciar un bean en ese momento y colocar el código en un método anotado con _@PostConstruct_ para que se ejecute sin necesidad de una llamada explícita. La carga del bean podemos hacerla de tres maneras diferentes, usando tecnologías diferentes: EJB, JSF o bien CDI. Veamos cada caso antes de decidir la más conveniente:
 
-* EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez la primera vez que se hace referencia al mismo desde la aplicación. La anotación _@Startup_ se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:
+* Usando EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez la primera vez que se hace referencia al mismo desde la aplicación. La anotación _@Startup_ se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:
 
 [source,java,indent=0]
 ----
@@ -217,7 +217,7 @@ Nuestro objetivo es que los datos existan antes de que la aplicación reciba las
 	}
 ----
 
-* JSF: Esta alternativa, aunque la cito, de entrada no la usaremos ya que pasa por usar un atributo en la anotación _@ManageadBean_, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. En vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como _@ViewScoped_ o _@FlowScoped_. En este caso la clase del bean de controlador tendría este aspecto:
+* Usando JSF: Esta alternativa, aunque la cito, de entrada no la usaremos ya que pasa por usar un atributo en la anotación _@ManageadBean_, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. En vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como _@ViewScoped_ o _@FlowScoped_. En este caso la clase del bean de controlador tendría este aspecto:
 
 [source,java,indent=0]
 ----
@@ -231,7 +231,7 @@ Nuestro objetivo es que los datos existan antes de que la aplicación reciba las
 	}
 ----
 
-* CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión 1.1, la incluida con Java EE 7. Es previsible que en el futuro se extienda la anotación _@Startup_ de EJB a cualquier bean de CDI con el nuevo stack Java EE 8. Actualmente, si lo necesitaramos, podríamos implementar nosotros mismos una extensión de CDI para obtener cargas iniciales usando la técnica que se explica en http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html[este enlace].
+* Usando CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión 1.1, la incluida con Java EE 7. Es previsible que en el futuro se extienda la anotación _@Startup_ de EJB a cualquier bean de CDI con el nuevo stack Java EE 8. Actualmente, si lo necesitaramos, podríamos implementar nosotros mismos una extensión de CDI para obtener cargas iniciales usando la técnica que se explica en http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html[este enlace].
 
 Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean singleton. Vamos a ello. Abrimos a Eclipse, hacemos botón derecho sobre la carpeta negocio y elegimos la opción _New > Other... > EJB > Session Bean_. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
 
