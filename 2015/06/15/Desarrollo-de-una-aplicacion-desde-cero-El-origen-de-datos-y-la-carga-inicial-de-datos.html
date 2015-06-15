@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T11:56:43.279Z" />
+    <meta property="article:modified_time" content="2015-06-15T12:06:09.423Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T11:56:43.279Z",
+    "dateModified": "2015-06-15T12:06:09.423Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -412,15 +412,15 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Fichero module.xml: Es el fichero de configuración de un módulo en JBoss. Un módulo representa una serie de recursos o bien una serie de dependencias o ambas cosas como en nuestro caso. El nombre del módulo es <em>org.apache.derby</em> y el fichero module.xml debe estar en la carpeta <em>RUTA_BASE_MODULOS\org\apache\derby\main\</em>. Dentro de esta carpeta también está el recurso, derby.jar. Nuestro módulo dependerá del módulo "javax.api" que representa a su vez múltiples dependencias con paquetes del grupo javax que el driver necesitará para su ejecución.</p>
+<p>Fichero module.xml: Es el fichero de configuración de un módulo en JBoss. Un módulo representa una serie de recursos o bien una serie de dependencias o ambas cosas como en nuestro caso. El nombre del módulo es <em>org.apache.derby</em> y el fichero module.xml debe estar en la carpeta <em>RUTA_BASE_MODULOS\org\apache\derby\main\</em>. Observad la correspondencia entre el nombre del módulo y la ruta. Nuestro módulo depende del módulo "javax.api" que representa a su vez múltiples dependencias con paquetes del grupo javax que el driver necesitará para su ejecución.</p>
 </li>
 <li>
-<p>Elemento &lt;datasource&gt;: Define un origen de datos identificado por un nombre JNDI del tipo <em>java:jboss/datasources/NOMBRE_DS</em>. Como nombre del pool podemos usar el que queramos. El elemento &lt;connection-url&gt; nos dice que ruta de la base de datos estará en el disco duro en la ruta <em>C:\BD\drones\</em> y que se creará una base de datos vacía si no existía ya anteriormente. En el elemento &lt;driver&gt; pondremos el nombre del módulo que hemos creado.</p>
+<p>Elemento &lt;datasource&gt;: Define un origen de datos identificado por un nombre JNDI del tipo <em>java:jboss/datasources/NOMBRE_DS</em>. Como nombre del pool podemos usar el que queramos. El elemento &lt;connection-url&gt; nos dice que la base de datos se creará en el disco duro en la ruta <em>C:\BD\drones\</em>, vacía, si no existía ya anteriormente. En el elemento &lt;driver&gt; pondremos el nombre del módulo que hemos creado.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Vamos con la segunda parte del post, implementar una carga inicial de datos. He decidido hacerlo desde la propia aplicación porque así podemos ver un primer ejemplo de persistencia de datos con JPA y además un tipo de bean EJB que permite realizar acciones en el inicio de una aplicación web.</p>
+<p>Bien, entramos en la segunda parte de este post, la carga inicial de datos. Como os comentaba al principio, he decidido implementarla desde la propia aplicación porque así podemos ver un primer ejemplo de persistencia de datos con JPA y además un tipo de bean EJB que permite realizar acciones en el inicio de una aplicación web.</p>
 </div>
 <div class="paragraph">
 <p>Necesitamos una manera de ejecutar el código Java de carga en el inicio de la aplicación y para esto tenemos que ínstanciar un bean en ese momento y colocar el código en un método anotado con <em>@PostConstruct</em> para que se ejecute sin necesidad de una llamada explícita al mismo. La carga del bean podemos hacerla de tres maneras diferentes usando en cada caso una tecnología diferente: EJB, JSF o bien CDI. Vemos cada caso y al final decidimos cual es el más conveniente para nosotros.</p>
