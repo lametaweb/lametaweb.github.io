@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T15:50:55.206Z" />
+    <meta property="article:modified_time" content="2015-06-15T16:07:34.329Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T15:50:55.206Z",
+    "dateModified": "2015-06-15T16:07:34.329Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -471,7 +471,7 @@ public class CargaInicialDatos {
 </ul>
 </div>
 <div class="paragraph">
-<p>Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean singleton. Vamos a ello. Abrimos a Eclipse, hacemos botón derecho sobre la carpeta negocio y elegimos la opción <em>New &gt; Other&#8230;&#8203; &gt; EJB &gt; Session Bean</em>. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón <em>Finish</em>:</p>
+<p>Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta <em>negocio</em> del proyecto y elegimos la opción <em>New &gt; Other&#8230;&#8203; &gt; EJB &gt; Session Bean</em>. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón <em>Finish</em>:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -479,7 +479,7 @@ public class CargaInicialDatos {
 </div>
 </div>
 <div class="paragraph">
-<p>Para este bean singleton usamos además, como se ve en la figura, otra nueva característica de Java EE 6, No-interface View, a través de la anotación <em>@LocalBean</em>, que permite evitar la creación de una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de las interfaces.</p>
+<p>Para este bean singleton usaremos además, como se ve en la figura, otra nueva característica de Java EE 6, la No-interface View, a través de la anotación <em>@LocalBean</em>, que evita crear una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de la interfaz.</p>
 </div>
 <div class="paragraph">
 <p>Seguimos con la implementación de nuestro bean CargaInicialDatos:</p>
