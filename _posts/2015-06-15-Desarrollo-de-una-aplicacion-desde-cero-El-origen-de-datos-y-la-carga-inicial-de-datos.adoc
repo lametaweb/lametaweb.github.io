@@ -28,7 +28,7 @@ Y ahora viene lo interesante, hacemos uso del plugin de Maven para el servidor J
 * Desinstalar una instalación pevia de la aplicación si existía.
 * Instalar el artefacto correspondiente al driver a nivel de servidor como un despliegue estándar.
 * Instalar el datasource como recurso de servidor si éste no está ya instalado.
-* Y finalmente desplegar nuestra aplicación.
+* Finalmente desplegar nuestra aplicación.
 
 Y todo esto haciendo un simple click de ratón. Es un buen ejemplo de como Maven puede ayudarnos a centrarnos en implementar el diseño de nuestra aplicación evitándonos tener que dedicar tiempo a tareas que no son puramente de desarrollo.
 
@@ -101,11 +101,11 @@ Copiamos y pegamos en el fichero pom.xml lo siguiente bajo el elemento _project/
 
 En general bajo el elemento <plugins> podemos declarar plugins de Maven para diferentes propósitos:
 
-* Ejecutarlo en nuestro proyecto de forma manual, bien a través de la linea de comnandos o bien desde Eclipse en la opción _Run > Run Configurations..._.
+* Ejecutarlo en nuestro proyecto de forma manual, a través de la linea de comnandos o bien desde Eclipse en la opción _Run > Run Configurations..._.
 * Cambiar la configuración de un plugin del ciclo de vida por defecto.
-* Incluir la ejecución de uno o más goals como parte de alguna fase del ciclo de vida por defecto. Para esto debemos declarar el plugin, y añadir un elemento <execution> por cada goal/fase que queramos añadir.
+* Añadir la ejecución de uno o más goals a alguna fase del ciclo de vida por defecto. Para esto debemos declarar el plugin y añadir un elemento <execution> por cada goal/fase que queramos añadir.
 
-El fragmento añadido es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutan en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html[enlace].
+El fragmento que acabamos de añadir es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutan en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html[enlace].
 
 Aprovechamos que estamos tocando el pom.xml para añadir un elemento <plugin> adicional que evitará de momento la ejecución de las pruebas unitarias, en la fase Test,  hasta que tengamos alguna prueba implementada. Esto sería un ejemplo del segundo tipo visto en la lista anterior.
 
