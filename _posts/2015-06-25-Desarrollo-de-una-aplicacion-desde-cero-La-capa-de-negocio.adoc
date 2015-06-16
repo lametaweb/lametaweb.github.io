@@ -13,31 +13,20 @@ La herramienta cliente que Derby proporciona se llama _ij_ y se encuentra en la 
 .Variables del Sistema para Derby
 [cols="1,1,2"]
 |===
-h|Variable 
-h|Acción
-h|Valor
+h|[small]#Variable# 
+h|[small]#Acción#
+h|[small]#Valor#
 
-|a
-|b
-|c
+|[small]#CLASSPATH#
+|[small]#Crear/Añadir#
+|[small]#%DERBY_HOME%\lib\derby.jar;%DERBY_HOME%\lib\derbytools.jar;#
 
-|
-|
-|
+|[small]#DERBY_HOME#
+|[small]#Crear#
+|[small]#C:\TALLER\BD\db-derby-10.11.1.1-bin#
 
-|
-|
-|
-
-|
-|
-|
-
-|
-|
-|
-
-|
-|
-|
+|[small]#PATH#
+|[small]#Añadir#
+|[small]#;%DERBY_HOME%\bin#
 |===
+
