@@ -5,7 +5,9 @@ La metaweb
 
 En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, disponer de datos que gestionar, y además nos mostrará un primer ejemplo de persistencia en JPA y además un tipo interesante de bean EJB introducido en la versión 6 de Java EE.
 
-Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver JDBC, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc. 
+== Despliegue del datasource integrado en el ciclo de vida de construcción del proyecto
+
+Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un   esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver JDBC, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc. 
 
 La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria para el despliegue en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.
 
@@ -121,6 +123,8 @@ Aprovechamos que estamos tocando el pom.xml para añadir un elemento <plugin> ad
 	</plugin>
 ----
 
+== Despliegue manual del datasource: Una tarea de Sistemas
+
 Hasta aquí el despliegue automatizado con Maven. A continuación veremos un despliegue equivalente pero realizado de forma manual. No apliquéis en el servidor los cambios que se van a explicar ahora porque el despliegue del datasource ya lo hemos implementado en Maven. Si queréis, una vez que tengamos la aplicación funcionando podéis comentar, con comentarios de HTML <!-- &nbsp;...&nbsp; -\->, los fragmentos añadidos al pom.xml y aplicar el desliegue manual tal como os paso a explicar.
 
 La manera en que se añaden nuevas recursos a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html[esta documentación] para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.
@@ -198,6 +202,8 @@ Veamos lo más relevante del contenido XML:
 
 * Elemento <datasource>: Define un origen de datos identificado por un nombre JNDI del tipo _java:jboss/datasources/NOMBRE_DS_. Como nombre del pool podemos usar el que queramos. El elemento <connection-url> nos dice que la base de datos se creará en el disco duro en la ruta _C:\BD\drones\_, vacía, si no existía ya anteriormente. En el elemento <driver> pondremos el nombre del módulo que hemos creado.
 
+== Alternativas para nuestra carga inicial de datos
+
 Bien, entramos en la segunda parte de este post, la carga inicial de datos. Como os comentaba al principio, he decidido implementarla desde la propia aplicación porque así podemos ver un primer ejemplo de persistencia de datos con JPA y además un tipo de bean EJB que permite realizar acciones en el inicio de una aplicación web.
 
 Nuestro objetivo es que los datos existan antes de que la aplicación pueda recibir las primeras peticiones de usuario. Necesitamos por tanto una manera de ejecutar código Java en el despliegue de la misma y para esto tendremos que instanciar un bean en ese momento y colocar el código en un método anotado con _@PostConstruct_ para que se ejecute sin necesidad de una llamada explícita. La carga del bean podemos hacerla de tres maneras, usando tecnologías diferentes: EJB, JSF o bien CDI. Veamos cada caso antes de decidir la más conveniente:
@@ -231,6 +237,8 @@ Nuestro objetivo es que los datos existan antes de que la aplicación pueda reci
 ----
 
 * Usando CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión, la 1.1, incluida en Java EE 7. Es previsible que en el futuro, con el nuevo stack Java EE 8, se extienda la anotación _@Startup_ de EJB a cualquier bean CDI. Si en algún momento necesitamos cargar un bean CDI en una aplicación tras su despliegue en un servidor Java EE 6 ó 7 lo que podemos hacer es implementar nosotros mismos una extensión CDI usando la técnica que se explica en http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html[este enlace].
+
+== Uso del API de JPA desde un singleton EJB para la carga de datos
 
 Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta _negocio_ del proyecto y elegimos la opción _New > Other... > EJB > Session Bean_. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
 
