@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-16T12:05:27.708Z" />
+    <meta property="article:modified_time" content="2015-06-16T17:52:34.075Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-16T12:05:27.708Z",
+    "dateModified": "2015-06-16T17:52:34.075Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -150,11 +150,18 @@
             <span class="post-meta label"><time datetime="2015-06-15">15 Jun 2015</time></span>
 
             <section class="post-content">
-                <div class="paragraph">
+                <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
 <p>En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, disponer de datos que gestionar, y además nos mostrará un primer ejemplo de persistencia en JPA y además un tipo interesante de bean EJB introducido en la versión 6 de Java EE.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_despliegue_del_datasource_integrado_en_el_ciclo_de_vida_de_construcci_n_del_proyecto">Despliegue del datasource integrado en el ciclo de vida de construcción del proyecto</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver JDBC, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc.</p>
+<p>Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un   esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver JDBC, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc.</p>
 </div>
 <div class="paragraph">
 <p>La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria para el despliegue en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.</p>
@@ -299,6 +306,11 @@
 &lt;/plugin&gt;</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_despliegue_manual_del_datasource_una_tarea_de_sistemas">Despliegue manual del datasource: Una tarea de Sistemas</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Hasta aquí el despliegue automatizado con Maven. A continuación veremos un despliegue equivalente pero realizado de forma manual. No apliquéis en el servidor los cambios que se van a explicar ahora porque el despliegue del datasource ya lo hemos implementado en Maven. Si queréis, una vez que tengamos la aplicación funcionando podéis comentar, con comentarios de HTML &lt;!-- &nbsp;&#8230;&#8203;&nbsp; --&gt;, los fragmentos añadidos al pom.xml y aplicar el desliegue manual tal como os paso a explicar.</p>
 </div>
@@ -419,6 +431,11 @@
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_alternativas_para_nuestra_carga_inicial_de_datos">Alternativas para nuestra carga inicial de datos</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Bien, entramos en la segunda parte de este post, la carga inicial de datos. Como os comentaba al principio, he decidido implementarla desde la propia aplicación porque así podemos ver un primer ejemplo de persistencia de datos con JPA y además un tipo de bean EJB que permite realizar acciones en el inicio de una aplicación web.</p>
 </div>
@@ -470,6 +487,11 @@ public class CargaInicialDatos {
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_uso_del_api_de_jpa_desde_un_singleton_ejb_para_la_carga_de_datos">Uso del API de JPA desde un singleton EJB para la carga de datos</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta <em>negocio</em> del proyecto y elegimos la opción <em>New &gt; Other&#8230;&#8203; &gt; EJB &gt; Session Bean</em>. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón <em>Finish</em>:</p>
 </div>
@@ -675,6 +697,8 @@ public class CargaInicialDatos {
 </div>
 <div class="paragraph">
 <p>Y hasta aquí este post dedicado a la capa de datos. En el anterior vimos la parte de mapeo y aquí hemos visto la configuración y una introducción a las operaciones de persistencia a través de una carga inicial de datos. En el proximo post veremos cómo inspeccionar la base de datos Derby que Hibernate nos genera y nos meteremos ya con la capa de negocio. Nos vemos en breve!</p>
+</div>
+</div>
 </div>
                         <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JPA">JPA</a>, <a href="http://www.lametaweb.com/tag/Hibernate"> Hibernate</a>, <a href="http://www.lametaweb.com/tag/Persistencia"> Persistencia</a>, <a href="http://www.lametaweb.com/tag/DataSource"> DataSource</a>, <a href="http://www.lametaweb.com/tag/EntityManager"> EntityManager</a></aside>
             </section>
