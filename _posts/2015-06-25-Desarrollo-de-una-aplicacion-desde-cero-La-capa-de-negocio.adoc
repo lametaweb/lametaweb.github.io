@@ -3,6 +3,16 @@ La metaweb
 :hp-tags: EJB, Derby, ij
 :published_at: 2015-06-25
 
-Como os comenté en el post anterior antes de implementar la capa de negocio vamos a ver brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario durante el desarrollo de una aplicación en dos sentidos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente durante el desarrollo de la capa de datos tendremos que comprobar que las tablas, índices, restricciones, y demás elementos generados en la creación del esquema a partir de la unidad de persistencia son los correctos.
+Como os comenté en el post anterior antes de implementar la capa de negocio vamos a ver brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario durante el desarrollo de una aplicación por dos motivos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente durante el desarrollo de la capa de datos tendremos que comprobar que las tablas, índices, restricciones, y demás elementos generados en la creación del esquema a partir de la unidad de persistencia son los correctos.
 
-La herramienta cliente que Derby proporciona se llama _ij_ y 
+La herramienta cliente que Derby proporciona se llama _ij_ y se encuentra en la carpeta \bin\ del paquete de Derby, que os recuerdo podéis bajar desde http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip[este link]. Si recordáis, cuando montamos el entorno de trabajo desconprimimos el paquete Derby en la ruta _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. _ij_ es una herramienta de tipo comando, que tenemos que ejecutar desde una ventana de comando, o en linux desde un terminal. Para inspeccionar nuestra esquema de datos, que recordemos que se creará en la carpeta _C:\BD\drones\_ cuando en breve despleguemos la aplicación, tendremos que llamar a _ij_ desde esa carpeta. Para que esto sea posible tenemos antes que crear y editar una serie de variables del sistema. Para Windows tendríamos que hacer los siguientes cambios:
+
+.Datos para creación de clases de persistencia
+[cols="1h,5"]
+|===
+|Nombres 
+|Drone, Trabajo, PuntoRuta
+
+|Paquetes
+|paquete idem para las tres: com.lametaweb.jdrone.persistencia
+|===
