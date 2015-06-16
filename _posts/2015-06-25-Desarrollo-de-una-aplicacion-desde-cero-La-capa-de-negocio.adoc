@@ -30,3 +30,40 @@ h|[small]#Valor#
 |[small]#;%DERBY_HOME%\bin#
 |===
 
+En este punto no tendréis aún un esquema de base de datos Derby en la ruta _C:\BD\drones\_ ya que no hemos desplegado todavía la aplicación en el servidor. Os indico ahora como usar la herramienta ij sobre el esquema en mi máquina y vosotros podéis volver a este post cuando tengáis la base de datos generada en vuestro disco duro.
+
+Abrimos una ventana de comando y nos vamos a la carpeta de la base de datos escribiendo `cd C:\BD\drones`. Para invocar el cliente ij simplemente escribimos `ij`, y pulsamos la tecla Enter (&#x21B5;). El cliente mostrará la versión de Derby instalada y a continuación el prompt `ij>`. Para establecer la conexión con la base de datos escribimos el comando:
+
+`connect 'jdbc:derby:c:\BD\drones;';`
+
+Todos los comandos deben acabar con el carácter punto y coma. Después de unos instantes se vuelve a mostrar el prompt. La conexión debería estar ahora establecida. Escribimos a continuación el comando:
+
+`show tables in root;`
+
+para mostrar todas las tablas generadas en nuestro esquema de datos por Hibernate. Root es el nombre del esquema de datos que es el mismo que el nombre del usuario con el que accedemos. Para ver la estructura de una tabla usamos el comando:
+
+`describe root.trabajo;`
+
+que nos muestra las propiedades de cada campo de la tabla. Podemos ver por ejemplo que el tipo de datos del campo descripción es un CLOB, o que sobre el campo numeroderegistro existe la restricción NOT_NULL. Y para ver los datos de una tabla usamos el habitual:
+
+`select * from root.drone;`
+
+Cerramos la sesión con el comando:
+
+disconnect;
+
+Y terminamos la sesión con el cliente ij con:
+
+exit;
+
+Tenéis la sesión de ij completa como referencia en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig068.png[]
+
+Para acabar con esta introducción a ij comentaros que sólo un cliente puede acceder a la vez a la base de datos de modo que debéis tener cuidado en desconectar la sesión de ij, si la teníais abierta, antes de desplegar la aplicación , y viceversa, parar el servidor antes de iniciar una sesión de ij para inspeccionar el esquema de datos.
+
+== La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA
+
+
+
+
