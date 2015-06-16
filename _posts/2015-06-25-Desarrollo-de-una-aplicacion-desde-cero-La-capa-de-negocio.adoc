@@ -1,0 +1,8 @@
+= Desarrollo de una aplicación desde cero: La capa de negocio.
+La metaweb
+:hp-tags: EJB, Derby, ij
+:published_at: 2015-06-25
+
+Como os comenté en el post anterior antes de implementar la capa de negocio vamos a ver brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario durante el desarrollo de una aplicación en dos sentidos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente durante el desarrollo de la capa de datos tendremos que comprobar que las tablas, índices, restricciones, y demás elementos generados en la creación del esquema a partir de la unidad de persistencia son los correctos.
+
+La herramienta cliente que Derby proporciona se llama _ij_ y 
