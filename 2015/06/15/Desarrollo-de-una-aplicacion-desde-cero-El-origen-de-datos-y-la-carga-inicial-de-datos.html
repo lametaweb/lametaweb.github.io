@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-16T10:09:49.204Z" />
+    <meta property="article:modified_time" content="2015-06-16T12:05:27.708Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-16T10:09:49.204Z",
+    "dateModified": "2015-06-16T12:05:27.708Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -659,19 +659,22 @@ public class CargaInicialDatos {
 </ul>
 </div>
 <div class="paragraph">
-<p>Y entonces surge la pregunta, ¿y el método merge, no era el que debería haber usado para persistir la relación entre las entidades Trabajo y Drone? Bueno, en este caso concreto la respuesta es no, aunque no siempre es así, veamos. En nuestro método de carga de datos, el objeto Trabajo, sobre el que actualizo la relación, está en el estado managed, porque fue persistido, y en un objeto managed cualquier modificación en sus atributos es automáticamente llevada a la base de datos en el commit de la transacción asociada. El método merge en cambio se aplica para persistir modificaciones en entidades que leo de la base de datos y mantengo en el controlador por ejemplo durante una sesión de edición de usuario a través del navegador web. Cuando el usuario pulsa el botón Guardar lo que se envía a la capa de negocio es una entidad en el estado detached, o sea con identidad persistente pero fuera del contexto de persistencia, y debo llamar al método merge para meter un nuevo objeto equivalente en el contexto de persistencia, en estado managed, que como en el caso anterior provocará los cambios deseados en la base de datos cuando la transacción finalice.</p>
+<p>Y entonces surge la pregunta, ¿y el método merge, no era el que debería haber usado para persistir la relación entre las entidades Trabajo y Drone? Bueno, en este caso concreto la respuesta es no, aunque no siempre es así, veamos. En nuestro método de carga de datos, el objeto Trabajo, sobre el que actualizo la relación, estará en el estado managed antes de que el método finalice, porque es persistido en algún momento, y en un objeto managed cualquier modificación en sus atributos es automáticamente llevada a la base de datos en el commit de la transacción asociada. El método merge en cambio se aplica para persistir modificaciones en entidades en el estado detached.</p>
 </div>
 <div class="paragraph">
-<p>Es decir que si leo una entidad y la modifico en el mismo método de negocio no usaré merge porque la entidad se lee como managed y los cambios se guardan al final del método de negocio. Pero si en cambio estoy en un caso de uso típico de edición de un item por pantalla tendré que usar el merge ya que la entidad se guarda en la capa de presentación  (en el controlador) en estado detached y cuando el usuario pulsa el botón Guardar lo que entra en el método de negocio es una entidad detached, con los cambios que realizó el usuario, que debe ser devuelta al estado managed con el método merge para que los cambios se persistan como antes al finalizar el metodo de negocio.</p>
+<p>Es decir, que si leo una entidad y la modifico en el mismo método de negocio, no necesitaré llamar al método merge porque la entidad se lee como managed y los cambios se guardan al final del método de negocio, cuando se completa la transacción, para los objetos managed. Pero si en cambio estoy en un caso de uso típico de edición de un item por pantalla tendré que usar el merge ya que la entidad se guarda temporalmente en la capa de presentación  (en el controlador) en estado detached durante la sesión de pantalla, y cuando el usuario pulsa el botón Guardar lo que entra en el método de negocio es una entidad detached, con los cambios que realizó el usuario, que debe ser devuelta al estado managed con el método merge para que los cambios se persistan como antes, al finalizar el metodo de negocio.</p>
+</div>
+<div class="paragraph">
+<p>En <a href="http://openjpa.apache.org/builds/1.2.3/apache-openjpa/docs/jpa_overview_em_lifecycle.html">esta dirección</a> podéis ver el diagrama de estados de una entidad persistente en JPA. Es interesante tenerlo siempre a mano para aclarar las dudas que nos surjan durante la implementación de las reglas de negocio en cualquier proyecto.</p>
 </div>
 <div class="paragraph">
 <p>Como veis hemos sido capaces de implementar las operaciones de persistencia abstrayéndonos totalmente de los detalles de la base de datos. Si logramos entender bien los distintos estados de una entidad y las distintas operaciones de persistencia seremos entonces capaces de desarrollar componentes de negocio para cualquier base de datos.</p>
 </div>
 <div class="paragraph">
-<p>Para afianzar los conceptos de persistencia vistos en este ejemplo y entender otros que en el ejemplo no aparecen podeis leer el contenido de <a href="https://en.wikibooks.org/wiki/Java_Persistence/Persisting">esta dirección</a>.</p>
+<p>Para afianzar los conceptos de persistencia vistos en este ejemplo y entender otros que en el ejemplo no aparecen podeis añadir a uestras lecturas el contenido de <a href="https://en.wikibooks.org/wiki/Java_Persistence/Persisting">esta dirección</a>.</p>
 </div>
 <div class="paragraph">
-<p>Y hasta aquí este post dedicado a la capa de datos. En el anterior vimos la parte de mapeo y aquí la configuración y una introducción a las operaciones de persistencia a través de la carga inicial de datos. En el proximo post veremos rápidamente cómo inspeccionar la base de datos Derby que Hibernate nos genera y nos meteremos ya con la capa de negocio. Nos vemos en breve!</p>
+<p>Y hasta aquí este post dedicado a la capa de datos. En el anterior vimos la parte de mapeo y aquí hemos visto la configuración y una introducción a las operaciones de persistencia a través de una carga inicial de datos. En el proximo post veremos cómo inspeccionar la base de datos Derby que Hibernate nos genera y nos meteremos ya con la capa de negocio. Nos vemos en breve!</p>
 </div>
                         <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JPA">JPA</a>, <a href="http://www.lametaweb.com/tag/Hibernate"> Hibernate</a>, <a href="http://www.lametaweb.com/tag/Persistencia"> Persistencia</a>, <a href="http://www.lametaweb.com/tag/DataSource"> DataSource</a>, <a href="http://www.lametaweb.com/tag/EntityManager"> EntityManager</a></aside>
             </section>
