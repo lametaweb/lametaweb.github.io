@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-15T22:24:28.401Z" />
+    <meta property="article:modified_time" content="2015-06-16T07:53:55.410Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-15T22:24:28.401Z",
+    "dateModified": "2015-06-16T07:53:55.410Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -654,7 +654,7 @@ public class CargaInicialDatos {
 <p>La persistencia la hacemos de la siguiente manera: Persistimos primero por ejemplo el objeto Drone, usando el método <em>persist</em> del entity manager. Esto provoca un cambio de estado en el objeto Drone desde new a managed. El objeto está ahora dentro del contexto de persistencia. No está aún en la base de datos. Y a continuación persistimos el objeto Trabajo. Y finalmente damos valor al lado dueño de la relación. El orden de las operaciones os puede extrañar pero he querido hacerlo así para aclarar los conceptos. Al persistir una entidad ésta pasa a estado managed en el contexto como ya hemos visto, pues bien, todos las asignaciones sobre los atributos de una entidad managed serán persistidas, cuando la transacción se complete. La transacción se completa cuando el método termina de ejecutarse. En este punto el proveedor de persistencia sincroniza el contexto de  persistencia con la base de datos, comprobará que en el contexto existen varias entidades managed que no existen en la base de datos y procederá a darlas de alta. Para aclarar aún más esta cuestión os diré que en el método de carga los métodos persist de drone y trabajo podríamos haberlos colocado justo debajo de línea que crea cada bean.</p>
 </li>
 <li>
-<p>En cuanto a las entidades PuntoRuta, si miramos el diagrama de diseño observamos que existe una relación de composición con Trabajo, y por tanto cuando persistamos un trabajo deberemos persistir también los puntos de ruta asociados. Esto se implementa con el atributo cascade de la anotación @OneToMany <code>@OneToMany (cascade = CascadeType.ALL)</code>. Por tanto tras el método persist sobre Trabajo todos los PuntoRuta pasaron del estado new al estado managed, y al finalizar la transacción de igual manera se persistieron.</p>
+<p>En cuanto a las entidades PuntoRuta, si miramos el diagrama de diseño observamos que existe una relación de composición con Trabajo, y por tanto cuando persistamos un trabajo deberemos persistir también los puntos de ruta asociados. Esto se implementa añadiendo un atributo cascade a la anotación @OneToMany <code>@OneToMany (cascade = CascadeType.ALL)</code>.</p>
 </li>
 <li>
 <p>Y entonces surge la pregunta, ¿y el método merge, no era el que debía usar para hacer un update? Bueno, sí y no. En este caso en que el objeto sobre el que hago el update es managed, porque le he aplicado un persist tras crearlo, o bien en el caso en que lo hubiera leido desde la base de datos con un find donde su estado también sería managed, la operación update se realiza automáticamente con el commit de la transacción. El método merge se usa para realizar un update sobre entidades que leo de la base de datos y mantengo en el controlador por ejemplo durante una sesión de edición de usuario a través del navegador web. Cuando el usuario pulsa el botón Guardar lo que se envía a la capa de negocio es una entidad en el estado detached, o sea con identidad persistente pero fuera del contexto de persistencia, y en este caso es el método merge el que mete de nuevo al objeto en el contexto de persistencia, y como en el primer caso, ahora sí cuando la transacción termina los cambios se hacen efectivos en la base de datos.</p>
