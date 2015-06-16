@@ -10,12 +10,12 @@ Como os comenté en el post anterior antes de implementar la capa de negocio vam
 
 La herramienta cliente que Derby proporciona se llama _ij_ y se encuentra en la carpeta \bin\ del paquete de Derby, que os recuerdo podéis bajar desde http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip[este link]. Si recordáis, cuando montamos el entorno de trabajo desconprimimos el paquete Derby en la ruta _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. _ij_ es una herramienta de tipo comando, que tenemos que ejecutar desde una ventana de comando, o en linux desde un terminal. Para inspeccionar nuestra esquema de datos, que recordemos que se creará en la carpeta _C:\BD\drones\_ cuando en breve despleguemos la aplicación, tendremos que llamar a _ij_ desde esa carpeta. Para que esto sea posible tenemos antes que crear y editar una serie de variables del sistema. Para Windows tendríamos que hacer los siguientes cambios:
 
-.Datos para creación de clases de persistencia
-[cols="1,1,1"]
+.Variables del Sistema para Derby
+[cols="1,1,2"]
 |===
-|Variable 
-|Acción
-|Valor
+h|Variable 
+h|Acción
+h|Valor
 
 |a
 |b
