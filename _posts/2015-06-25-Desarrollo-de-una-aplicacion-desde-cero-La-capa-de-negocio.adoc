@@ -1,0 +1,69 @@
+= Desarrollo de una aplicación desde cero: La capa de negocio.
+La metaweb
+:hp-tags: EJB, Derby, ij
+:published_at: 2015-06-25
+
+Como os comenté en el post anterior antes de implementar la capa de negocio vamos a ver brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario durante el desarrollo de una aplicación por dos motivos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente durante el desarrollo de la capa de datos tendremos que comprobar que las tablas, índices, restricciones, y demás elementos generados en la creación del esquema a partir de la unidad de persistencia son los correctos.
+
+
+== Uso del cliente ij de Derby
+
+La herramienta cliente que Derby proporciona se llama _ij_ y se encuentra en la carpeta \bin\ del paquete de Derby, que os recuerdo podéis bajar desde http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip[este link]. Si recordáis, cuando montamos el entorno de trabajo desconprimimos el paquete Derby en la ruta _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. _ij_ es una herramienta de tipo comando, que tenemos que ejecutar desde una ventana de comando, o en linux desde un terminal. Para inspeccionar nuestra esquema de datos, que recordemos que se creará en la carpeta _C:\BD\drones\_ cuando en breve despleguemos la aplicación, tendremos que llamar a _ij_ desde esa carpeta. Para que esto sea posible tenemos antes que crear y editar una serie de variables del sistema. Para Windows tendríamos que hacer los siguientes cambios:
+
+.Variables del Sistema para Derby
+[cols="1,1,2"]
+|===
+h|[small]#Variable# 
+h|[small]#Acción#
+h|[small]#Valor#
+
+|[small]#CLASSPATH#
+|[small]#Crear/Añadir#
+|[small]#%DERBY_HOME%\lib\derby.jar;%DERBY_HOME%\lib\derbytools.jar;#
+
+|[small]#DERBY_HOME#
+|[small]#Crear#
+|[small]#C:\TALLER\BD\db-derby-10.11.1.1-bin#
+
+|[small]#PATH#
+|[small]#Añadir#
+|[small]#;%DERBY_HOME%\bin#
+|===
+
+En este punto no tendréis aún un esquema de base de datos Derby en la ruta _C:\BD\drones\_ ya que no hemos desplegado todavía la aplicación en el servidor. Os indico ahora como usar la herramienta ij sobre el esquema en mi máquina y vosotros podéis volver a este post cuando tengáis la base de datos generada en vuestro disco duro.
+
+Abrimos una ventana de comando y nos vamos a la carpeta de la base de datos escribiendo `cd C:\BD\drones`. Para invocar el cliente ij simplemente escribimos `ij`, y pulsamos la tecla Enter (&#x21B5;). El cliente mostrará la versión de Derby instalada y a continuación el prompt `ij>`. Para establecer la conexión con la base de datos escribimos el comando:
+
+`connect 'jdbc:derby:c:\BD\drones;';`
+
+Todos los comandos deben acabar con el carácter punto y coma. Después de unos instantes se vuelve a mostrar el prompt. La conexión debería estar ahora establecida. Escribimos a continuación el comando:
+
+`show tables in root;`
+
+para mostrar todas las tablas generadas en nuestro esquema de datos por Hibernate. Root es el nombre del esquema de datos que es el mismo que el nombre del usuario con el que accedemos. Para ver la estructura de una tabla usamos el comando:
+
+`describe root.trabajo;`
+
+que nos muestra las propiedades de cada campo de la tabla. Podemos ver por ejemplo que el tipo de datos del campo descripción es un CLOB, o que sobre el campo numeroderegistro existe la restricción NOT_NULL. Y para ver los datos de una tabla usamos el habitual:
+
+`select * from root.drone;`
+
+Cerramos la sesión con el comando:
+
+disconnect;
+
+Y terminamos la sesión con el cliente ij con:
+
+exit;
+
+Tenéis la sesión de ij completa como referencia en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig068.png[]
+
+Para acabar con esta introducción a ij comentaros que sólo un cliente puede acceder a la vez a la base de datos de modo que debéis tener cuidado en desconectar la sesión de ij, si la teníais abierta, antes de desplegar la aplicación , y viceversa, parar el servidor antes de iniciar una sesión de ij para inspeccionar el esquema de datos.
+
+== La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA
+
+
+
+

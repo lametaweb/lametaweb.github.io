@@ -1,0 +1,399 @@
+= Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.
+La metaweb
+:hp-tags: JPA, Hibernate, Persistencia, DataSource, EntityManager
+:published_at: 2015-06-15
+
+En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, disponer de datos que gestionar, y además nos mostrará un primer ejemplo de persistencia en JPA y además un tipo interesante de bean EJB introducido en la versión 6 de Java EE.
+
+== Despliegue del datasource integrado en el ciclo de vida de construcción del proyecto
+
+Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un   esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver JDBC, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc. 
+
+La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria para el despliegue en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.
+
+Bien, empezamos. Abrimos Eclipse y a continuación el fichero pom.xml del proyecto. Añadimos la dependencia correspondiente al driver JDBC de Derby del que tirará el datasource con un copia pega del siguiente fragmento de XML dentro del elemento _<dependencies>_:
+
+[source,xml,indent=0]
+----
+	<dependency>
+		<groupId>org.apache.derby</groupId>
+		<artifactId>derby</artifactId>
+		<version>10.11.1.1</version>
+		<scope>runtime</scope>
+	</dependency>
+----
+
+Como vemos el scope de la dependencia es _runtime_, ya que no es necesario en tiempo de compilación pero si cuando la aplicación se esté ejecutando en el servidor. Es decir, el proveedor de persistencia lo invocará para llevar a cabo las operaciones contra la base de datos, pero en ningún lugar de nuestro código usaremos ninguna de las clases de las librerías del driver directamente.
+
+Y ahora viene lo interesante, hacemos uso del plugin de Maven para el servidor JBoss para llevar a cabo de forma automatizada las tareas de despliegue que necesitamos, que son, por orden:
+
+* Desinstalar una instalación pevia de la aplicación si existía.
+* Instalar el artefacto correspondiente al driver a nivel de servidor como un despliegue estándar.
+* Instalar el datasource como recurso de servidor si éste no está ya instalado.
+* Finalmente desplegar nuestra aplicación.
+
+Y todo esto haciendo un simple click de ratón. Es un buen ejemplo de como Maven puede ayudarnos a centrarnos en implementar el diseño de nuestra aplicación evitándonos tener que dedicar tiempo a tareas que no son puramente de desarrollo.
+
+Copiamos y pegamos en el fichero pom.xml lo siguiente bajo el elemento _project/build/plugins_. Recordad que podemos formatear el XML con la hotkey Ctrl + Shift + F para que quede más ordenado después de pegar el contenido.
+
+[source,xml,indent=0]
+----
+	<plugin>
+		<groupId>org.jboss.as.plugins</groupId>
+		<artifactId>jboss-as-maven-plugin</artifactId>
+		<version>7.6.Final</version>
+
+		<executions>
+			<execution>
+				<id>undeploy</id>
+				<phase>install</phase>
+				<goals>
+					<goal>undeploy</goal>
+				</goals>
+			</execution>
+			<execution>
+				<id>deploy-driver</id>
+				<phase>install</phase>
+				<configuration>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<name>derby.jar</name>
+				</configuration>
+				<goals>
+					<goal>deploy-artifact</goal>
+				</goals>
+			</execution>
+			<execution>
+				<id>add-datasource</id>
+				<phase>install</phase>
+				<configuration>
+					<address>subsystem=datasources,data-source=DerbyDS</address>
+					<resource>
+						<enableResource>true</enableResource>
+						<properties>
+							<connection-url>jdbc:derby:c:\BD\drones;create=true</connection-url>
+							<driver-class>org.apache.derby.jdbc.EmbeddedDriver</driver-class>
+							<jndi-name>java:jboss/datasources/DerbyDS</jndi-name>
+							<enabled>true</enabled>
+							<enable>true</enable>
+							<pool-name>DerbyDS</pool-name>
+							<user-name>root</user-name>
+							<password>root</password>
+							<driver-name>derby.jar</driver-name>
+							<use-ccm>false</use-ccm>
+							<force>true</force>
+						</properties>
+					</resource>
+				</configuration>
+				<goals>
+					<goal>add-resource</goal>
+				</goals>
+			</execution>
+			<execution>
+				<id>deploy</id>
+				<phase>install</phase>
+				<goals>
+					<goal>deploy</goal>
+				</goals>
+			</execution>
+
+		</executions>
+	</plugin>
+----
+
+En general bajo el elemento <plugins> podemos declarar plugins de Maven para diferentes propósitos:
+
+* Ejecutarlo en nuestro proyecto de forma manual, a través de la linea de comnandos o bien desde Eclipse en la opción _Run > Run Configurations..._.
+* Cambiar la configuración de un plugin del ciclo de vida por defecto.
+* Añadir la ejecución de uno o más goals a alguna fase del ciclo de vida por defecto. Para esto debemos declarar el plugin y añadir un elemento <execution> por cada goal/fase que queramos añadir.
+
+El fragmento que acabamos de añadir es un ejemplo del tercer caso y ejecuta cuatro goals del plugin del servidor JBoss en la fase install del ciclo de vida por defecto. Los goals se ejecutarán en el orden en que aparecen en el fichero pom.xml. Para consultar la documentación y tener una idea de las posibilidades del plugin del servidor JBoss podéis ir a este https://docs.jboss.org/jbossas/7/plugins/maven/latest/index.html[enlace].
+
+Aprovechamos que estamos tocando el pom.xml para añadir un elemento <plugin> adicional que evitará de momento la ejecución de las pruebas unitarias, en la fase Test,  hasta que tengamos alguna prueba implementada. Esto sería un ejemplo del segundo tipo visto en la lista anterior.
+
+[source,xml,indent=0]
+----
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>2.18.1</version>
+		<configuration>
+			<skipTests>true</skipTests>
+		</configuration>
+	</plugin>
+----
+
+== Despliegue manual del datasource: Una tarea de Sistemas
+
+Hasta aquí el despliegue automatizado con Maven. A continuación veremos un despliegue equivalente pero realizado de forma manual. No apliquéis en el servidor los cambios que se van a explicar ahora porque el despliegue del datasource ya lo hemos implementado en Maven. Si queréis, una vez que tengamos la aplicación funcionando podéis comentar, con comentarios de HTML <!-- &nbsp;...&nbsp; -\->, los fragmentos añadidos al pom.xml y aplicar el desliegue manual tal como os paso a explicar.
+
+La manera en que se añaden nuevas recursos a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html[esta documentación] para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.
+
+De hecho, en el despligue que hemos configurado desde Maven, el servidor generará, cuando ejecutemos el ciclo de vida de construcción, un módulo para el driver. En este caso será un módulo dinámico con el nombre _deployment.derby.jar_ asociado al despliegue de la librería derby.jar. En el despliegue manual lo que se genera es un módulo estático, que se carga en el arranque del servidor y que no está asociado al despliegue de una aplicación como en el caso del dinámico.
+
+En resumen hay que hacer dos cosas, pero recordad, no las hagais ahora porque colisionaría con el despliegue de Maven. La primera es añadir un nuevo módulo estático para incluir el driver JDBC de Derby en el servidor, y la otra añadir la configuración del datasource en el fichero de configuración del servidor. Para librerías de uso general compartidas por varias aplicaciones es más conveniente este despliegue manual, que en general se delega en el equipo de administradores de sistemas que crearán para nosotros los módulos estáticos y configuraciones que requiramos.
+
+Los pasos a seguir para la instalación manual son:
+
+* Creación del módulo para la carga del driver derby.jar:
+
+** Descargar el fichero .zip de derby desde http://db.apache.org/derby/releases/release-10.10.1.1.html[esta dirección].
+
+** Extraer el fichero \lib\derby.jar y copiarlo en un lugar temporal, por ejemplo en el Escritorio.
+
+** Ir a la carpeta _C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-6.3\modules\system\layers\base\org\apache\_
+
+** Crear dentro de ella la carpeta _derby\main\_ y copiar ahí el fichero derby.jar.
+
+** Con un editor de textos, por ejemplo Notepad++, crear un fichero con el nombre _module.xml_ en la misma carpeta con el siguiente contenido:
+
+[source,xml,indent=0]
+----
+	<?xml version="1.0" encoding="UTF-8"?>
+	<module xmlns="urn:jboss:module:1.0" name="org.apache.derby">
+		<resources>
+			<resource-root path="derby.jar"/>
+		</resources>
+		<dependencies>
+			<module name="javax.api"/>
+		</dependencies>
+	</module>
+----
+
+* Añadir el datasource:
+
+** Ir a la carpeta _C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-6.3\standalone\configuration\_
+
+** Abrir el fichero _standalone.xml_ con un editor de textos.
+
+** Añadir el siguiente fragmento XML dentro del elemento _<subsystem xmlns="urn:jboss:domain:datasources:1.2"><datasources>_:
+
+[source,xml,indent=0]
+----
+  <datasource jndi-name="java:jboss/datasources/DerbyDS" pool-name="DerbyDS" enabled="true" use-ccm="false">
+      <connection-url>jdbc:derby:c:\BD\drones;create=true</connection-url>
+      <driver>org.apache.derby</driver>
+      <security>
+          <user-name>root</user-name>
+          <password>root</password>
+      </security>
+      <validation>
+          <validate-on-match>false</validate-on-match>
+          <background-validation>false</background-validation>
+      </validation>
+      <statement>
+          <share-prepared-statements>false</share-prepared-statements>
+      </statement>
+  </datasource>
+----
+
+** Añadir también el siguiente fragmento XML dentro del elemento _<subsystem xmlns="urn:jboss:domain:datasources:1.2"><datasources><drivers>_:
+
+[source,xml,indent=0]
+----
+	<driver name="org.apache.derby" module="org.apache.derby">
+		<xa-datasource-class>org.apache.derby.jdbc.EmbeddedXADataSource</xa-datasource-class>
+	</driver>
+----
+
+Veamos lo más relevante del contenido XML:
+
+* Fichero module.xml: Es el fichero de configuración de un módulo en JBoss. Un módulo representa una serie de recursos o bien una serie de dependencias o ambas cosas como en nuestro caso. El nombre del módulo es _org.apache.derby_ y el fichero module.xml debe estar en la carpeta _RUTA_BASE_MODULOS\org\apache\derby\main\_. Observad la correspondencia entre el nombre del módulo y la ruta. Nuestro módulo depende del módulo "javax.api" que representa a su vez múltiples dependencias con paquetes del grupo javax que el driver necesitará para su ejecución.
+
+* Elemento <datasource>: Define un origen de datos identificado por un nombre JNDI del tipo _java:jboss/datasources/NOMBRE_DS_. Como nombre del pool podemos usar el que queramos. El elemento <connection-url> nos dice que la base de datos se creará en el disco duro en la ruta _C:\BD\drones\_, vacía, si no existía ya anteriormente. En el elemento <driver> pondremos el nombre del módulo que hemos creado.
+
+== Alternativas para nuestra carga inicial de datos
+
+Bien, entramos en la segunda parte de este post, la carga inicial de datos. Como os comentaba al principio, he decidido implementarla desde la propia aplicación porque así podemos ver un primer ejemplo de persistencia de datos con JPA y además un tipo de bean EJB que permite realizar acciones en el inicio de una aplicación web.
+
+Nuestro objetivo es que los datos existan antes de que la aplicación pueda recibir las primeras peticiones de usuario. Necesitamos por tanto una manera de ejecutar código Java en el despliegue de la misma y para esto tendremos que instanciar un bean en ese momento y colocar el código en un método anotado con _@PostConstruct_ para que se ejecute sin necesidad de una llamada explícita. La carga del bean podemos hacerla de tres maneras, usando tecnologías diferentes: EJB, JSF o bien CDI. Veamos cada caso antes de decidir la más conveniente:
+
+* Usando EJB: A través de un bean de sesión singleton. Se trata de un bean con estado que se carga una sola vez, la primera vez que se hace referencia al mismo desde la aplicación. La anotación _@Startup_ se usa para obligar a una carga en el arranque de la aplicación. Aquí el estado no nos interesa en cualquier caso. La definición de la clase para el bean sería:
+
+[source,java,indent=0]
+----
+	@Singleton
+	@Startup
+	public class CargaInicialDatos {
+		@PostConstruct
+		public void cargaDeDatos() {
+			// carga inicial
+		}
+	}
+----
+
+* Usando JSF: Esta alternativa, aunque la cito, de entrada no la elegimos ya que pasa por usar un atributo en la anotación _@ManageadBean_, que estará deprecada probablemente en la siguiente versión de JSF, la 2.3. Para los beans de controlador, como ya veremos al llegar a la capa de presentación de la aplicación, en vez de esta anotación tenemos siempre que usar una de entre las que expresan el ámbito del bean, ya sea una anotación CDI o una compatible con CDI, como _@ViewScoped_ o _@FlowScoped_. En este caso la clase del bean de controlador tendría este aspecto:
+
+[source,java,indent=0]
+----
+	@ManagedBean(eager=true)
+	@ApplicationScoped
+	public class CargaInicialDatos {
+		@PostConstruct
+		public void cargaDeDatos() {
+			// carga inicial
+		}
+	}
+----
+
+* Usando CDI: De momento CDI no proporciona una solución concreta para la carga de un bean asociado a un evento de inicio de aplicación, ni siquiera en su última versión, la 1.1, incluida en Java EE 7. Es previsible que en el futuro, con el nuevo stack Java EE 8, se extienda la anotación _@Startup_ de EJB a cualquier bean CDI. Si en algún momento necesitamos cargar un bean CDI en una aplicación tras su despliegue en un servidor Java EE 6 ó 7 lo que podemos hacer es implementar nosotros mismos una extensión CDI usando la técnica que se explica en http://ovaraksin.blogspot.com.es/2013/02/eager-cdi-beans.html[este enlace].
+
+== Uso del API de JPA desde un singleton EJB para la carga de datos
+
+Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta _negocio_ del proyecto y elegimos la opción _New > Other... > EJB > Session Bean_. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig062.png[]
+
+Para este bean singleton usaremos además, como se ve en la figura, otra nueva característica de Java EE 6, la No-interface View, a través de la anotación _@LocalBean_, que evita crear una interfaz local o remota para nuestro bean. Como nuestra aplicación se va a ejecutar en una sola máquina virtual simplificamos nuestro diseño prescindiendo de la interfaz.
+
+Seguimos con la implementación de nuestro bean CargaInicialDatos:
+
+* Añadimos la anotación _@Startup_ a la clase.
+
+* Añadimos el atributo de clase _em_ para inyectar el entity manager:
+
+[source,java,indent=0]
+----
+    @PersistenceContext(unitName = "datosdrones")
+    private EntityManager em;
+----
+    
+* Y finalmente añadimos el método para la carga inicial de datos anotado con _@PostConstruct_, quedándo el código de la clase así:
+
+[source,java]
+----
+package com.lametaweb.jdrone.negocio;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.annotation.PostConstruct;
+import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import com.lametaweb.jdrone.persistencia.Drone;
+import com.lametaweb.jdrone.persistencia.PuntoRuta;
+import com.lametaweb.jdrone.persistencia.Trabajo;
+
+/**
+ * Session Bean implementation class CargaInicialDatos
+ */
+@Singleton
+@Startup
+@LocalBean
+public class CargaInicialDatos {
+
+    /**
+     * Default constructor. 
+     */
+	
+    @PersistenceContext(unitName = "datosdrones")
+    private EntityManager em;
+    
+    public CargaInicialDatos() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    @PostConstruct
+    public void cargaDeDatos(){
+	// Puntos de Ruta
+	PuntoRuta puntoRuta01 = new PuntoRuta();
+	PuntoRuta puntoRuta02 = new PuntoRuta();
+	PuntoRuta puntoRuta03 = new PuntoRuta();
+	PuntoRuta puntoRuta04 = new PuntoRuta();
+	PuntoRuta puntoRuta05 = new PuntoRuta();
+
+	// Datos Puntos de Ruta
+	puntoRuta01.setLatitud(37.367873f);
+	puntoRuta01.setLongitud(-6.003724f);
+	puntoRuta01.setAltitud(100.0f);
+	puntoRuta02.setLatitud(37.374797f);
+	puntoRuta02.setLongitud(-5.996119f);
+	puntoRuta02.setAltitud(200.0f);
+	puntoRuta03.setLatitud(37.372000f);
+	puntoRuta03.setLongitud(-5.992500f);
+	puntoRuta03.setAltitud(300.0f);
+	puntoRuta04.setLatitud(37.367873f);
+	puntoRuta04.setLongitud(-6.003724f);
+	puntoRuta04.setAltitud(100.0f);
+	puntoRuta05.setLatitud(37.367873f);
+	puntoRuta05.setLongitud(-6.003724f);
+	puntoRuta05.setAltitud(0.0f);
+
+	GregorianCalendar gc = new GregorianCalendar();
+	// hora inicio adelantando una hora
+	gc.add(GregorianCalendar.HOUR, -1);
+	Date fechaHoraInicio = gc.getTime();
+	// hora finalización atrasando una hora
+	gc.add(GregorianCalendar.HOUR, 2);
+	Date fechaHoraFinalizacion = gc.getTime();
+		
+	Trabajo trabajo = new Trabajo();
+	trabajo.setNumeroDeRegistro("trabajo");
+	trabajo.setVelocidad(10f);
+	trabajo.setDescripcion("Reconocimiento de zona a baja cota.");
+	trabajo.setFechaHoraInicio(fechaHoraInicio);
+	trabajo.setFechaHoraFinalizacion(fechaHoraFinalizacion);
+		
+	trabajo.getPuntosDeRuta().add(puntoRuta01);
+	trabajo.getPuntosDeRuta().add(puntoRuta02);
+	trabajo.getPuntosDeRuta().add(puntoRuta03);
+	trabajo.getPuntosDeRuta().add(puntoRuta04);
+	trabajo.getPuntosDeRuta().add(puntoRuta05);
+		
+	Drone drone = new Drone();
+	drone.setNumeroDeSerie("FJHCAM01001");
+	drone.setModelo("Observer II");
+	drone.setPesoMaximoDespegue(1500);
+	drone.setAutonomia(25);
+	drone.setNumMotores(6);
+	em.persist(drone);
+	em.persist(trabajo);
+		
+	trabajo.setDroneAsignado(drone);
+    } 
+}
+----
+
+Antes de analizar el código del método será bueno ver una introducción exprés a la persistencia en JPA. 
+
+En JPA el objeto central es el EntityManager. A través de los métodos de este objeto llevaremos a cabo las operaciones de persistencia que necesitemos. Los datos asociados a estas operaciones de persistencia serán jerarquías de las entidades persistentes, Drone, Trabajo y PuntoRuta, y deberemos gestionarlos dentro de una zona de memoria llamada contexto de persistencia. El contexto de persistencia no debe confundirse con la unidad de persistencia, cuya configuración se encuentra en el fichero persistence.xml, y que define un conjunto de entidades persistentes y su almacen de datos. En nuestra aplicación la unidad de persistencia será creada automáticamente y no tenemos que preocuparnos por esto.
+
+Las operaciones de persistencia que más usaremos serán: persist, find, merge y remove, que implementan, a grandes rasgos, las operaciones de alta, consulta,  modificación y baja, respectivamenete, conocidas por sus iniciales en inglés CRUD (Create, Read o Retrieve, Update y Delete). Por otra parte una entidad persistente, como por ejemplo Drone puede existir sólo en cuatro estados: new, managed, detached y removed.
+
+Para persistir información tengo que crear la jerarquía de objetos que queremos dar de alta, dar valor a los atributos y establecer las relaciones entre ellos. Cuando un objeto persistente es creado su estado es new. En este estado el bean aún no está dentro del contexto de persistencia pero al contrario que un objeto común tiene la potencionalidad de entrar en el contexto y en último término persistirse en la base de datos.
+
+El objeto EntityManager es usado desde la capa de negocio, donde se sitúa nuestro bean para la carga inicial de datos CargaInicialDatos y el bean que veremos en el próximo post para la implementación del caso de uso de nuestra aplicación. Como ya sabemos nuestra capa de negocio usa la tecnología EJB. En un bean EJB puedo inyectar directamente un objeto EntityManager que me proporcione acceso a un contexto de persistencia gestionado por el contenedor y tengo además  disponible la tecnología JTA, que proporciona una gestion de las transacciones automática, de modo que dentro de una transacción accederé por inyección siempre al mismo EntityManager, y éste será destruido cuando la transacción finalice. Es decir que usando EJB y JTA, como es el caso de nuestra aplicación, me puedo centrar totalmente en las operaciones de negocio y olvidarme de la gestión de los aspectos técnicos de la persistencia.
+
+Después de esta breve introducción teórica examinemos el código del método para afianzar algunos conceptos. El propósito de una carga inicial de datos es llevar a la base de datos la información del negocio existente antes de la puesta en producción de la aplicación. Para simplificar sólo daremos de alta un drone y un trabajo, con varios puntos de ruta, y estableceremos que el trabajo es realizado por ese drone. Si observáis el código del metodo podéis ver que sólo se manejan objetos de la capa de datos, quedando los detalles de la base de datos ocultos por la tecnología JPA. Veamos un poco más en detalle el código desde el principio. Es conveniente que tengais delante el diagrama de diseño que vimos en el post anterior para entender más facilmente el código:
+
+* En primer lugar se crean y setean los beans PuntoRuta de la ruta para el trabajo. Se define una ruta triangular cerrada siendo el punto inicial y final por tanto el mismo. Podéis verla en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig063.png[]
+
+* A continuación se crea el objeto Trabajo y se inicializan sus atributos. Para el intervalo de comienzo y finalización del trabajo se calcula una hora hacia atrás y una hacia delante respecto del momento en que desplegamos la aplicación. Esto lo hago simplemente para que podamos probar la aplicación facilmente cuando la tengamos desplegada, de tal manera que para obtener el listado de drones realizando trabajos (sólo aparecerá el de la carga inicial) nos bastará con rellenar los campos de fecha y hora con la fecha y hora actuales.
+
+* Los objetos PuntoRuta son añadidos a la colección que implementa la relación uno a mucho entre Trabajo y PuntoRuta.
+
+* Creamos el objeto Drone y seteamos los atributos. En este punto el contexto de persistencia está aún vacío.
+
+* Queremos guardar dos objetos independientes, Trabajo y Drone, entre los que existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona además con N objetos dependientes PuntoRuta. Entendemos independientes en el sentido de que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos que persistir por separado los dos objetos, además de la relación. Para los beans PuntoRuta no ocurre igual como veremos en un momento. 
+
+* En una relación bidireccional existe lo que se entiende por lado dueño de la relación, que es aquel en el que se expresa la relación. En este caso el lado dueño de la relación entre Drone y Trabajo está en la entidad Trabajo ya que a través de la anotación @JoinColumn se expresa alli la relación. Como lo que queremos es persistir la relación bastará con dar valor al lado dueño.
+
+* La persistencia la hacemos de la siguiente manera: Persistimos primero por ejemplo el objeto Drone, usando el método _persist_ del entity manager. Esto provoca un cambio de estado en el objeto Drone desde new a managed. El objeto está ahora dentro del contexto de persistencia. No está aún en la base de datos. Y a continuación persistimos el objeto Trabajo. Y finalmente damos valor al lado dueño de la relación. El orden de las operaciones os puede extrañar pero he querido hacerlo así para aclarar los conceptos. Al persistir una entidad ésta pasa a estado managed en el contexto como ya hemos visto, pues bien, todos las asignaciones sobre los atributos de una entidad managed serán persistidas, cuando la transacción se complete. La transacción se completa cuando el método termina de ejecutarse. En este punto el proveedor de persistencia sincroniza el contexto de  persistencia con la base de datos, comprobará que en el contexto existen varias entidades managed que no existen en la base de datos y procederá a darlas de alta. Para aclarar aún más esta cuestión os diré que en el método de carga los métodos persist de drone y trabajo podríamos haberlos colocado justo debajo de línea que crea cada bean.
+
+* En cuanto a las entidades PuntoRuta, si miramos el diagrama de diseño observamos que existe una relación de composición con Trabajo, y por tanto cuando persistamos un trabajo deberemos persistir también los puntos de ruta asociados. Esto se implementa añadiendo el atributo cascade a la anotación @OneToMany `@OneToMany (cascade = CascadeType.ALL)`. De esta manera cualquier operación de persistencia sobre la entidad en el lado One se replicará para las entidades en el lado Many.
+
+Y entonces surge la pregunta, ¿y el método merge, no era el que debería haber usado para persistir la relación entre las entidades Trabajo y Drone? Bueno, en este caso concreto la respuesta es no, aunque no siempre es así, veamos. En nuestro método de carga de datos, el objeto Trabajo, sobre el que actualizo la relación, estará en el estado managed antes de que el método finalice, porque es persistido en algún momento, y en un objeto managed cualquier modificación en sus atributos es automáticamente llevada a la base de datos en el commit de la transacción asociada. El método merge en cambio se aplica para persistir modificaciones en entidades en el estado detached.
+
+Es decir, que si leo una entidad y la modifico en el mismo método de negocio, no necesitaré llamar al método merge porque la entidad se lee como managed y los cambios se guardan al final del método de negocio, cuando se completa la transacción, para los objetos managed. Pero si en cambio estoy en un caso de uso típico de edición de un item por pantalla tendré que usar el merge ya que la entidad se guarda temporalmente en la capa de presentación  (en el controlador) en estado detached durante la sesión de pantalla, y cuando el usuario pulsa el botón Guardar lo que entra en el método de negocio es una entidad detached, con los cambios que realizó el usuario, que debe ser devuelta al estado managed con el método merge para que los cambios se persistan como antes, al finalizar el metodo de negocio.
+
+En http://openjpa.apache.org/builds/1.2.3/apache-openjpa/docs/jpa_overview_em_lifecycle.html[esta dirección] podéis ver el diagrama de estados de una entidad persistente en JPA. Es interesante tenerlo siempre a mano para aclarar las dudas que nos surjan durante la implementación de las reglas de negocio en cualquier proyecto.
+
+Como veis hemos sido capaces de implementar las operaciones de persistencia abstrayéndonos totalmente de los detalles de la base de datos. Si logramos entender bien los distintos estados de una entidad y las distintas operaciones de persistencia seremos entonces capaces de desarrollar componentes de negocio para cualquier base de datos. 
+
+Para afianzar los conceptos de persistencia vistos en este ejemplo y entender otros que en el ejemplo no aparecen podeis añadir a uestras lecturas el contenido de https://en.wikibooks.org/wiki/Java_Persistence/Persisting[esta dirección].
+
+Y hasta aquí este post dedicado a la capa de datos. En el anterior vimos la parte de mapeo y aquí hemos visto la configuración y una introducción a las operaciones de persistencia a través de una carga inicial de datos. En el proximo post veremos cómo inspeccionar la base de datos Derby que Hibernate nos genera y nos meteremos ya con la capa de negocio. Nos vemos en breve!
