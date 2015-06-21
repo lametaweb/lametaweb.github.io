@@ -50,11 +50,11 @@ que nos muestra las propiedades de cada campo de la tabla. Podemos ver por ejemp
 
 Cerramos la sesión con el comando:
 
-disconnect;
+`disconnect;`
 
 Y terminamos la sesión con el cliente ij con:
 
-exit;
+`exit;`
 
 Tenéis la sesión de ij completa como referencia en la siguiente figura:
 
@@ -63,6 +63,15 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 Para acabar con esta introducción a ij comentaros que sólo un cliente puede acceder a la vez a la base de datos de modo que debéis tener cuidado en desconectar la sesión de ij, si la teníais abierta, antes de desplegar la aplicación , y viceversa, parar el servidor antes de iniciar una sesión de ij para inspeccionar el esquema de datos.
 
 == La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA
+
+Llegamos a la capa de negocio. En esta capa hay que colocar la lógica para implementar cada una de las acciones que nuestra aplicación deba llevar a cabo para cubrir todos los casos de uso definidos en la fase de análisis. En nuestra aplicación la lógica de negocio derivada del único caso de uso consiste en devolver la lista de Drones realizando un trabajo en la fecha y hora suministrada. En general se trata de operaciones que implican operaciones con datos o bien llamadas a servicios externos, de naturaleza transaccional.
+
+Observemos nuestro diagrama de clases de la fase de diseño:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
+
+La clase DroneFacade es nuestra capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación de uso. La relación de uso es más débil que que las de asociación y representa en una relación puntual en el tiempo. 
+
 
 
 
