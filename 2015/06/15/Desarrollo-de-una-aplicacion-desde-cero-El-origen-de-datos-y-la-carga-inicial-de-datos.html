@@ -36,7 +36,7 @@
     <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-06-16T17:52:34.075Z" />
+    <meta property="article:modified_time" content="2015-06-21T22:03:10.617Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-06-16T17:52:34.075Z",
+    "dateModified": "2015-06-21T22:03:10.617Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
     "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
 }
@@ -493,7 +493,7 @@ public class CargaInicialDatos {
 <h2 id="_uso_del_api_de_jpa_desde_un_singleton_ejb_para_la_carga_de_datos">Uso del API de JPA desde un singleton EJB para la carga de datos</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta <em>negocio</em> del proyecto y elegimos la opción <em>New &gt; Other&#8230;&#8203; &gt; EJB &gt; Session Bean</em>. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón <em>Finish</em>:</p>
+<p>Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta <em>negocio</em> del proyecto y elegimos la opción <em>New &gt; Other&#8230;&#8203; &gt; EJB &gt; Session Bean</em> y&#8230;&#8203; sorpresa, Eclipse no nos permite añadir el bean EJB. Esto es debido a que la faceta Dynamic Web Module de nuestro proyecto está fijada a la versión 2.5 y es necesario que la aplicación use la versión 3.1 de Servlets para que sea posible empaquetar un bean EJB en un artefacto empaquetado com war. De modo que nos vamos la propiedades del proyecto, al apartado <em>Proyect Facets</em> y cambiamos la versión de la faceta Dynamic Web Module de 2.5 a 3.1. Aceptamos y volvemos a intentar añadir el bean. Esta vez si aparece la opción. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón <em>Finish</em>:</p>
 </div>
 <div class="imageblock">
 <div class="content">
