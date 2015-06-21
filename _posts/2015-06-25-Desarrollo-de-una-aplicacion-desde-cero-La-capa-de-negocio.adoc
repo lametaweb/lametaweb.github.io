@@ -72,8 +72,22 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia. Es la relación más débil de todo el diagrama y representa una relación de uso, no estructural, entre dos entidades.
 
+Para implementar esta clase usaremos la tecnología EJB, en concreto la versión 3.1, incluída en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, junto con la tecnología JTA, y la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html[esta dirección].
 
+Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna dependencia al fichero de proyecto. Para EJB sólo preciso la dependencia:
 
+[source,xml,indent=0]
+----
+		<dependency>
+			<groupId>org.jboss.spec.javax.ejb</groupId>
+			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+----
+
+que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial, por lo tanto tenemos que tocar el pom.xml.
+
+Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta ´negocio/´ en la carpeta de proyecto ´src/main/java/com/lametaweb/jdrone/´. A continuación pulsamos botón dereho sobre la carpeta _negocio/ _y elegimos la opción _New > Other... _ , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_.
 
 
 
