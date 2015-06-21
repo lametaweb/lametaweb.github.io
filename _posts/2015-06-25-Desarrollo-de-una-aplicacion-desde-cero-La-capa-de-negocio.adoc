@@ -64,13 +64,15 @@ Para acabar con esta introducción a ij comentaros que sólo un cliente puede ac
 
 == La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA
 
-Llegamos a la capa de negocio. En esta capa hay que colocar la lógica para implementar cada una de las acciones que nuestra aplicación deba llevar a cabo para cubrir todos los casos de uso definidos en la fase de análisis. En nuestra aplicación la lógica de negocio derivada del único caso de uso consiste en devolver la lista de Drones realizando un trabajo en la fecha y hora suministrada. En general se trata de operaciones que implican operaciones con datos o bien llamadas a servicios externos, de naturaleza transaccional.
+Llegamos a la capa de negocio, lugar donde tendremos que situar la lógica del conjunto de acciones necesario para cubrir todos los casos de uso definidos en la fase de análisis. En nuestra aplicación se reduce a devolver la lista de Drones realizando un trabajo en la fecha y hora suministrada. En general tendremos operaciones transaccionales, contra depósitos de datos o bien sistemas externos a través de webservices.
 
-Observemos nuestro diagrama de clases de la fase de diseño:
+Observemos nuestro ya conocido diagrama de clases de la fase de diseño:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
-La clase DroneFacade es nuestra capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación de uso. La relación de uso es más débil que que las de asociación y representa en una relación puntual en el tiempo. 
+La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia. Es la relación más débil de todo el diagrama y representa una relación de uso, no estructural, entre dos entidades.
+
+
 
 
 
