@@ -87,8 +87,5 @@ Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna 
 
 que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial, por lo tanto tenemos que tocar el pom.xml.
 
-Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta ´negocio/´ en la carpeta de proyecto ´src/main/java/com/lametaweb/jdrone/´. A continuación pulsamos botón dereho sobre la carpeta _negocio/ _y elegimos la opción _New > Other... _ , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_.
-
-
-
+Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta `negocio/` en la carpeta de proyecto `src/main/java/com/lametaweb/jdrone/`. A continuación pulsamos botón dereho sobre la carpeta _negocio/ _y elegimos la opción _New > Other... _ , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor `DroneFacade`. Antes de pulsar el botón _Aceptar_ puedes ver como por defecto se marca la opción _No-interface View_ que prescinde de la interfaz para el sessión bean. Nosotros dejamos marcada la opción para generar un bean sin interfaz y así simplificar nuestra aplicación.
 
