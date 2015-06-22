@@ -282,5 +282,20 @@ h|Valor
 
 |===
 
+La nueva configuración aparecerá en la solapa _Hibernate Configurations_. Para abrir un editor de consultas pulsamos botón derecho sobre la nueva configuración _jdrone_ y seleccionamos la opción _HQL Editor_:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig077.png[]
+
+Se abre una nueva ventana con el nombre _jdrone_ donde podremos escribir cualquier consulta y visualizar el resultado. Escribamos la consulta de nuestro método de negocio:
+
+[source,jpql,indent=0]
+----
+select d
+from Drone d inner join d.trabajosAsignados t
+where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha 
+order by d.numeroDeSerie
+----
+
+Pulsamos el icono en forma de flecha en el extremo izquierdo de la barra de herramientas image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig079.png[] para ejecutar la consulta. Se muestra una ventana para confirmar la apertura de una session factory, pulsamos _Yes_
 
 
