@@ -199,3 +199,88 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 Nos vamos a esta nueva vista y pulsamos botón derecho sobre la carpeta _Database Connections_ y seleccionamos la opción _New..._. Elegimos el tipo _Derby_ y en el campo Name escribimos `Pruebas JPQL`. Pulsamos el botón _Next_ para ir a la pantalla de propiedades. Configuramos el driver para el datasource pulsando sobre el icono
 image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig073.png[]. Esto nos lleva a la pantalla _New Driver Definition_. En la solapa Name/Type seleccionamos _Derby Embedded JDBC Driver_ con la versión _10.2_. En la solapa _JAR List_ pulso el botón _Add JAR/Zip_ y localizo el fichero derby.jar en el disco duro y lo selecciono. Recuerda que este fichero debe estar en una ruta similar a _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. En la solapa Properties rellenar los valores:
 
+[cols="1,3"]
+|===
+h|Property 
+h|Value
+
+|Connection URL
+|jdbc:derby:c:\BD\drones;create=true
+
+|Database Name
+|drones
+
+|Password
+|root
+
+|UserID
+|root
+|===
+
+Y pulsamos OK. En el apartado Properties en la solapa _General_ actualizamos los siguientes campos:
+
+[cols="1,3"]
+|===
+h|Property 
+h|Value
+
+|Database location
+|c:\BD\drones
+
+|User name
+|root
+
+|Password
+|root
+
+|Save password
+|marcado
+|===
+
+Desmarcamos las dos opciones en la parte inferior de la ventana y pulsamos el botón _Test Connection_ para comprobar que llegamos a la base de datos. Tenemos que asegurarnos antes de que no existe otra máquina virtual accediendo a la base de datos, en nuestro caso bienporque el servidor está arrancado o bien porque habiamos dejado una conexión abierta con el cliente ij. Pulsamos finalmente el botón _Finish_.
+
+La conexión que acabamos de crear para las Hibernate Tools podemos usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más comodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos _Connect_. Navegando por la jerarquía accedemos a los distintos elementos:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig074.png[]
+
+Y para visualizar los datos pulsamos botón derecho y opción _Data > Edit_ sobre cualquiera de las tablas. Los datos se presentan en la solapa _SQL Results_.
+
+Bien, continuamos. Volvemos a pulsar botón derecho sobre el icono de la conexión _Pruebas JPQL_ y seleccionamos la opción _Disconnect_. En la ventana de la solapa _Hibernate Configurations_, en el lado izquierdo de la pantalla, pulsamos  botón derecho y seleccionamos la opción _Add Configuration..._:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig076.png[]
+
+Lo que vamos a hacer es crear una configuración nueva dentro de las Hibernate Tools. Escribimos `jdrone` en el campo _Name_ y los siguientes valores en las solapas:
+
+[cols="2,3"]
+|===
+
+2+h|Solapa Main
+h|Campo 
+h|Valor
+
+|Type
+|JPA (jdk 1.5+)
+
+|Hibernate Version
+|4.0
+
+|Project
+|pulsar _Browser_ y seleccionar _jdrone_
+
+|Database connection
+|Pruebas JPQL
+
+|Persistence unit
+|pulsar _Browser_ y seleccionar _datosdrones_
+
+2+h|Solapa Classpath
+h|Campo 
+h|Valor
+
+|Classpath
+|Si está vacío seleccionar _User Entries_, pulsar el botón _Add Projects..._ y seleccionar nuestro proyecto _jdrone_
+
+|===
+
+
+
