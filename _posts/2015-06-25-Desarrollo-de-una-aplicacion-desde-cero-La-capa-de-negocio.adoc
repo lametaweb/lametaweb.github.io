@@ -188,6 +188,29 @@ Y con esto tendríamos lista la capa de negocio.
 
 A continuación vamos a configurar una utilidad de las muchas que trae el paquete JBoss Tools que nos va a facilitar las cosas cuando necesitemos ampliar la capa de negocio con nuevas consultas, basadas en HQL/JPQL o construidas con el API Criteria. Se trata de las Hibernate Tools. Una vez configurada ejecutaremos una consulta JPQL directamente en Eclipse.
 
+Para que el mapeo ORM sea efectivo en las Hibernate Tools las clases deben aparecer de forma explícita en el archivo persistence.xml de definición de la unidad de persistencia. Así que borramos la línea
+
+`<exclude-unlisted-classes>false</exclude-unlisted-classes>`
+
+y dejamos el contenido del fichero así:
+
+[source,xml,indent=0]
+----
+  <?xml version="1.0" encoding="UTF-8"?>
+  <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+      <persistence-unit name="datosdrones" transaction-type="JTA">
+          <jta-data-source>java:jboss/datasources/DerbyDS</jta-data-source>
+          <class>com.lametaweb.jdrone.persistencia.Drone</class>
+          <class>com.lametaweb.jdrone.persistencia.PuntoRuta</class>
+          <class>com.lametaweb.jdrone.persistencia.Trabajo</class>
+          <properties>
+              <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" />
+              <property name="hibernate.hbm2ddl.auto" value="create" />
+          </properties>
+      </persistence-unit>
+  </persistence>
+----
+
 Antes de nada vamos a crear una conexión en Eclipse a Derby, que será la que use las Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú Window > Open Perspective > Other... y elegimos Hibernate:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig071.png[]
@@ -295,7 +318,7 @@ from Drone d inner join d.trabajosAsignados t
 where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha 
 order by d.numeroDeSerie
 ----
-
+Para asignar un valor al parámetro _fecha_ nos vamos a la vista _Query Parameters_ a la derecha y hacemos click sobre el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png[]. Automaticamente se asigna el nombre _fecha_ y el tipo _string_, que cambiamos por el tipo _timestamp_
 Pulsamos el icono en forma de flecha en el extremo izquierdo de la barra de herramientas image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig079.png[] para ejecutar la consulta. Se muestra una ventana para confirmar la apertura de una session factory, pulsamos _Yes_
 
 
