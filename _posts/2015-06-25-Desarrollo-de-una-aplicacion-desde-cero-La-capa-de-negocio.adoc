@@ -211,7 +211,7 @@ y dejamos el contenido del fichero así:
   </persistence>
 ----
 
-Antes de nada vamos a crear una conexión en Eclipse a Derby, que será la que use las Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú Window > Open Perspective > Other... y elegimos Hibernate:
+Lo primero es crear una conexión en Eclipse a Derby, que será la que use las Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú Window > Open Perspective > Other... y elegimos Hibernate:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig071.png[]
 
