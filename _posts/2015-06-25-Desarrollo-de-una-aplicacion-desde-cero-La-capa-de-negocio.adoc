@@ -318,7 +318,22 @@ from Drone d inner join d.trabajosAsignados t
 where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha 
 order by d.numeroDeSerie
 ----
-Para asignar un valor al parámetro _fecha_ nos vamos a la vista _Query Parameters_ a la derecha y hacemos click sobre el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png[]. Automaticamente se asigna el nombre _fecha_ y el tipo _string_, que cambiamos por el tipo _timestamp_
-Pulsamos el icono en forma de flecha en el extremo izquierdo de la barra de herramientas image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig079.png[] para ejecutar la consulta. Se muestra una ventana para confirmar la apertura de una session factory, pulsamos _Yes_
+Para asignar un valor al parámetro _fecha_ nos vamos a la vista _Query Parameters_ a la derecha y hacemos click sobre el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png[]. Automaticamente se asigna el nombre _fecha_ y el tipo _string_. En el campo _Value_ introducimos una información de fecha y hora análoga a ésta:
+
+`2015-06-16 20:36:49`
+
+y que se corresponda aproximadamente con la hora en que la aplicación fue desplegada para que la consulta saque resultados. Pulsamos el icono en forma de flecha en el extremo izquierdo de la barra de herramientas image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig079.png[] para ejecutar la consulta. Se muestra una ventana para confirmar la apertura de una session factory, pulsamos _Yes_ y la consulta JPQL se ejecuta y muestra el único registro de nuestra carga inicial de datos.
+
+En la siguiente figura se muestra la perspectiva _Hibernate_. Para visualizar los atributos de los beans resultado de la consulta basta con seleccionar alguno de los beans. Los datos son mostrados en la parte inferior izquierda del IDE en la solapa _Properties_ en forma de lista vertical de parejas Propiedad/Valor. En esta lista podremos además navegar hacia los objetos relacionados.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig082.png[]
+
+En la figura se puede observar como hemos navegado desde el objeto Drone hacia el objeto Trabajo relacionado a través del atributo _trabajosAsignados_. Es interesante señalar que, a pesar de que al ejecutar la consulta el objeto Trabajo relacionado no es leído desde la base de datos, ya que las relaciones uno a muchos en JPA son anotadas por defecto como fetchType.EAGER, sí que accederemos al objeto Trabajo al solicitarlo pulsando el elemento de la lista correspondiente a la relación.
+
+Respecto del editor de consultas HQL señalar que como la base de datos Derby sólo puede ser accedida por una única máquina virtual a la vez es importante parar el servidor antes de usarlo y cerrar la Configuración Hibernate en la solapa _Hibernate Configurations_ cuando hayamos terminado de usar el editor tal como muestra la figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig083.png[]
+
+
 
 
