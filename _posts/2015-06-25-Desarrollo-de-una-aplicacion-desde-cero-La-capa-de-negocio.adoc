@@ -334,6 +334,6 @@ Respecto del editor de consultas HQL señalar que como la base de datos Derby s�
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig083.png[]
 
+WARNING: Durante la elaboración del contenido de este post sin embargo eventualmente al cerrar la configuración Hibernate la base de datos no se desbloqueaba de manera automática. En este caso la solución pasa por cerrar y abrir Eclipse.
 
-
-
+Bien, pues hasta aquí llegamos con la capa de negocio. En el próximo post completaremos finalmente nuestra aplicación con la implementación de la capa de presentación, basada en el framework MVC JSF. Hasta entonces!
