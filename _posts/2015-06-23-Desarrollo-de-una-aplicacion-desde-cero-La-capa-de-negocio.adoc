@@ -118,6 +118,7 @@ public class DroneFacade {
         // TODO Auto-generated constructor stub
     }
     
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<Drone> obtenEstadoDronesPorFecha(Date fecha){
     	String consulta = "select d " +
     		"from Drone d inner join d.trabajosAsignados t " +
@@ -137,7 +138,7 @@ Al tratarse de un bean EJB podemos inyectar el entity manager directamente en el
 
 El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.
 
-
+Al tratarse de una consulta podemos prescindir del comportamiento transaccional, simplemente anotando el método.
 
 Una consulta pueden montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como vemos se ha optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción a JPQL.
 
