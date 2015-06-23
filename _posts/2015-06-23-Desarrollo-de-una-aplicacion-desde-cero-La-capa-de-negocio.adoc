@@ -3,7 +3,7 @@ La metaweb
 :hp-tags: ij, EJB, JPA, Derby, Hibernate Tools, Datasource Explorer
 :published_at: 2015-06-23
 
-Como os comenté en el post anterior antes de implementar la capa de negocio vamos a ver brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario durante el desarrollo de una aplicación por dos motivos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente durante el desarrollo de la capa de datos tendremos que comprobar que las tablas, índices, restricciones, y demás elementos generados en la creación del esquema a partir de la unidad de persistencia son los correctos.
+Como os conté en el post anterior, antes de implementar la capa de negocio, vamos a ver brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario durante el desarrollo de una aplicación por dos motivos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente durante el desarrollo de la capa de datos tendremos que comprobar que las tablas, índices, restricciones, y demás elementos generados en la creación del esquema a partir de la unidad de persistencia son los correctos.
 
 
 == Uso del cliente de línea de comandos ij de Derby 
