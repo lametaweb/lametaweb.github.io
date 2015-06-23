@@ -186,6 +186,8 @@ Como siempre, usamos la hotkey Crtl + O para traernos las nuevas importaciones. 
 
 Y con esto tendríamos lista la capa de negocio.
 
+== Un editor de consultas JPA en nuestro IDE
+
 A continuación vamos a configurar una utilidad de las muchas que trae el paquete JBoss Tools que nos va a facilitar las cosas cuando necesitemos ampliar la capa de negocio con nuevas consultas, basadas en HQL/JPQL o construidas con el API Criteria. Se trata de las Hibernate Tools. Una vez configurada ejecutaremos una consulta JPQL directamente en Eclipse.
 
 Para que el mapeo ORM sea efectivo en las Hibernate Tools las clases deben aparecer de forma explícita en el archivo persistence.xml de definición de la unidad de persistencia. Así que borramos la línea
