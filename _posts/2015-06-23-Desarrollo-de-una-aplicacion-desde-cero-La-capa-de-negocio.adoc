@@ -59,19 +59,19 @@ Os muestro la sesión de _ij_ completa en la siguiente figura:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig068.png[]
 
-Para acabar con esta introducción a _ij_ comentaros que simultaneamete no pueden acceder a la base de datos más de una máquina virtual, de modo que debéis tener el cuidado de desconectar la sesión de _ij_, si la teníais abierta, antes de desplegar la aplicación, y reciprocamente, parar el servidor antes de iniciar una sesión de _ij_.
+Para acabar con esta introducción a _ij_ comentaros que Derby restringe el número de máquinas virtuales a una a menos que usemos el Derby Network Server, de modo que debéis tener el cuidado de desconectar la sesión de _ij_, si la teníais abierta, antes de desplegar la aplicación, y reciprocamente, parar el servidor antes de iniciar una sesión de _ij_.
 
 == La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA
 
-Llegamos a la capa de negocio, lugar donde tendremos que situar la lógica del conjunto de acciones necesario para cubrir todos los casos de uso definidos en la fase de análisis. En nuestra aplicación se reduce a devolver la lista de Drones realizando un trabajo en la fecha y hora suministrada. En general tendremos operaciones transaccionales, contra depósitos de datos o bien sistemas externos a través de webservices.
+Llegamos a la capa de negocio, espacio donde tendremos que situar la lógica del conjunto de acciones necesarias para cubrir todos los casos de uso definidos en la fase de análisis. En general estas acciones serán transaccionales, contra depósitos de datos, sistemas externos a través de webservices, o una mezcla de ambos. En nuestra aplicación se reduce a devolver la lista de drones realizando un trabajo en una fecha y hora suministrada y al tratarse de una simple consulta podemos prescindir de transacciones y así ahorrar recursos.
 
 Observemos nuestro ya conocido diagrama de clases de la fase de diseño:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
-La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia. Es la relación más débil de todo el diagrama y representa una relación de uso, no estructural, entre dos entidades.
+La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia, no estructural. Es la relación más débil del diagrama.
 
-Para implementar esta clase usaremos la tecnología EJB, en concreto la versión 3.1, incluída en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, junto con la tecnología JTA, y la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html[esta dirección].
+Usaremos la tecnología EJB, en concreto la versión 3.1, incluída en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, que en nuestro caso de momento no usaremos, apoyándose en JTA, y realizar la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html[esta dirección].
 
 Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna dependencia al fichero de proyecto. Para EJB sólo preciso la dependencia:
 
@@ -84,11 +84,11 @@ Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna 
 		</dependency>
 ----
 
-que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial, por lo tanto tenemos que tocar el pom.xml.
+que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial de datos. Por lo tanto tenemos que tocar el pom.xml.
 
-Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta `negocio/` en la carpeta de proyecto `src/main/java/com/lametaweb/jdrone/`. A continuación pulsamos botón dereho sobre la carpeta _negocio/ _y elegimos la opción _New > Other... _ , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor `DroneFacade`. Antes de pulsar el botón _Aceptar_ puedes ver como por defecto se marca la opción _No-interface View_ que prescinde de la interfaz para el sessión bean. Nosotros dejamos marcada la opción para generar un bean sin interfaz y así simplificar la aplicación.
+Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta `negocio/` dentro de la carpeta de proyecto `src/main/java/com/lametaweb/jdrone/`. A continuación pulsamos botón dereho sobre la carpeta _negocio/_ y elegimos la opción _New > Other..._ , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor `DroneFacade`. Antes de pulsar el botón _Aceptar_ podéis ver como por defecto se marca la opción _No-interface View_ que  hará que se cree un bean sin interfaz. Dejamos marcada la opción para simplificar la aplicación.
 
-Una vez creado correctamente nuestro bean sin estado y sin interfaz tenemos que implementar el método de negocio indicado en el diagrama de clases. A continuación se muestra el código fuente de la clase:
+Una vez creado el bean sin estado y sin interfaz añadimos el método de negocio indicado en el diagrama, quedando la clase así:
 
 [source,java,indent=0]
 ----
@@ -133,11 +133,13 @@ public class DroneFacade {
 }
 ----
 
-Al tratarse de un bean EJB podemos inyectar el entity manager en el atributo _em_ de la clase.
+Al tratarse de un bean EJB podemos inyectar el entity manager directamente en el atributo _em_.
 
-El método de negocio recibe un parámetro tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelva ese mismo objeto ya actualizado, después de llevar a cabo dicha actualización en su estado.
+El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.
 
-Las consultas de datos pueden montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como vemos se ha optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción a JPQL.
+
+
+Una consulta pueden montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como vemos se ha optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción a JPQL.
 
 [source,jpql,indent=0]
 ----
