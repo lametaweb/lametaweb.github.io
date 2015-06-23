@@ -6,7 +6,7 @@ La metaweb
 Como os comenté en el post anterior antes de implementar la capa de negocio vamos a ver brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario durante el desarrollo de una aplicación por dos motivos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente durante el desarrollo de la capa de datos tendremos que comprobar que las tablas, índices, restricciones, y demás elementos generados en la creación del esquema a partir de la unidad de persistencia son los correctos.
 
 
-== Uso del cliente ij de Derby
+== Uso del cliente de línea de comandos ij de Derby
 
 La herramienta cliente que Derby proporciona se llama _ij_ y se encuentra en la carpeta \bin\ del paquete de Derby, que os recuerdo podéis bajar desde http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip[este link]. Si recordáis, cuando montamos el entorno de trabajo desconprimimos el paquete Derby en la ruta _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. _ij_ es una herramienta de tipo comando, que tenemos que ejecutar desde una ventana de comando, o en linux desde un terminal. Para inspeccionar nuestra esquema de datos, que recordemos que se creará en la carpeta _C:\BD\drones\_ cuando en breve despleguemos la aplicación, tendremos que llamar a _ij_ desde esa carpeta. Para que esto sea posible tenemos antes que crear y editar una serie de variables del sistema. Para Windows tendríamos que hacer los siguientes cambios:
 
@@ -64,15 +64,261 @@ Para acabar con esta introducción a ij comentaros que sólo un cliente puede ac
 
 == La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA
 
-Llegamos a la capa de negocio. En esta capa hay que colocar la lógica para implementar cada una de las acciones que nuestra aplicación deba llevar a cabo para cubrir todos los casos de uso definidos en la fase de análisis. En nuestra aplicación la lógica de negocio derivada del único caso de uso consiste en devolver la lista de Drones realizando un trabajo en la fecha y hora suministrada. En general se trata de operaciones que implican operaciones con datos o bien llamadas a servicios externos, de naturaleza transaccional.
+Llegamos a la capa de negocio, lugar donde tendremos que situar la lógica del conjunto de acciones necesario para cubrir todos los casos de uso definidos en la fase de análisis. En nuestra aplicación se reduce a devolver la lista de Drones realizando un trabajo en la fecha y hora suministrada. En general tendremos operaciones transaccionales, contra depósitos de datos o bien sistemas externos a través de webservices.
 
-Observemos nuestro diagrama de clases de la fase de diseño:
+Observemos nuestro ya conocido diagrama de clases de la fase de diseño:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
-La clase DroneFacade es nuestra capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación de uso. La relación de uso es más débil que que las de asociación y representa en una relación puntual en el tiempo. 
+La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia. Es la relación más débil de todo el diagrama y representa una relación de uso, no estructural, entre dos entidades.
 
+Para implementar esta clase usaremos la tecnología EJB, en concreto la versión 3.1, incluída en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, junto con la tecnología JTA, y la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html[esta dirección].
 
+Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna dependencia al fichero de proyecto. Para EJB sólo preciso la dependencia:
 
+[source,xml,indent=0]
+----
+		<dependency>
+			<groupId>org.jboss.spec.javax.ejb</groupId>
+			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+----
+
+que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial, por lo tanto tenemos que tocar el pom.xml.
+
+Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta `negocio/` en la carpeta de proyecto `src/main/java/com/lametaweb/jdrone/`. A continuación pulsamos botón dereho sobre la carpeta _negocio/ _y elegimos la opción _New > Other... _ , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor `DroneFacade`. Antes de pulsar el botón _Aceptar_ puedes ver como por defecto se marca la opción _No-interface View_ que prescinde de la interfaz para el sessión bean. Nosotros dejamos marcada la opción para generar un bean sin interfaz y así simplificar la aplicación.
+
+Una vez creado correctamente nuestro bean sin estado y sin interfaz tenemos que implementar el método de negocio indicado en el diagrama de clases. A continuación se muestra el código fuente de la clase:
+
+[source,java,indent=0]
+----
+package com.lametaweb.jdrone.negocio;
+import java.util.Date;
+import java.util.List;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import com.lametaweb.jdrone.persistencia.Drone;
+
+/**
+ * Session Bean implementation class DroneFacade
+ */
+@Stateless
+@LocalBean
+public class DroneFacade { 
+	
+	@PersistenceContext(unitName = "datosdrones")
+    private EntityManager em;
+
+    /**
+     * Default constructor. 
+     */
+    public DroneFacade() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    public List<Drone> obtenEstadoDronesPorFecha(Date fecha){
+    	String consulta = "select d " +
+    		"from Drone d inner join d.trabajosAsignados t " +
+    		"where t.fechaHoraInicio < :fecha " +
+			"and t.fechaHoraFinalizacion > :fecha " + 
+    		"order by d.numeroDeSerie";
+
+    	return em.createQuery(consulta, Drone.class).
+    	setParameter("fecha", fecha).
+    	getResultList();
+    	
+    }
+}
+----
+
+Al tratarse de un bean EJB podemos inyectar el entity manager en el atributo _em_ de la clase.
+
+El método de negocio recibe un parámetro tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelva ese mismo objeto ya actualizado, después de llevar a cabo dicha actualización en su estado.
+
+Las consultas de datos pueden montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como vemos se ha optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción a JPQL.
+
+[source,jpql,indent=0]
+----
+select d
+from Drone d inner join d.trabajosAsignados t
+where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha 
+order by d.numeroDeSerie
+----
+
+En la primera línea se filtran los atributos o entidades que la consulta devuelve. Al indicar el alias _d_ en _select d_ estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate es posible prescindir de esta parte de la consulta. Si lo hacemos no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la parte _from_. Es decir que devolvería una lista de array de objetos `List<Object[]>` donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.
+
+En la segunda línea como se ha comentado se determinan las entidades que intervienen en la consulta. En este caso el conjunto de datos consiste en un inner join entre Drone y Trabajo. El join se hace indicando el campo de la entidad padre que da acceso a las entidades hijas relacionadas _d.trabajosAsignados_.
+
+La tercera línea hace el filtrado de los registros, de manera similar a lo que existe en el SQL de toda la vida. Podemos ver cómo se ha definido el parámetro nombrado _:fecha_ para inyectar el valor dentro de la consulta.
+
+Por último definimos un orden para el conjunto de elementos devueltos. En nuestro caso como lo que devolvemos son "disponibilidades de drones" tiene sentido que el orden lo definamos sobre el campo que identifica al drone, de modo que el usuario lo pueda localizar con facilidad.
+
+Las definiciones de las consultas de una aplicación podemos agruparlas, en general la clase Entity relacionada, de manera que podemos reutilizar la misma consulta en varios puntos y mantener de forma más eficiente la aplicación. Para esto tenemos que convertir nuestra consulta en una NamedQuery. Vamos a ello. En primer lugar abrimos la clase Drone y añadimos la siguiente anotación justo debajo de la anotación _@Entity_:
+
+[source,java,indent=0]
+----
+@NamedQueries({
+    @NamedQuery(name="Drone.estadoDronesPorFecha",
+                query="select d " +
+    			"from Drone d inner join d.trabajosAsignados t " +
+    			"where t.fechaHoraInicio < :fecha " +
+    			"and t.fechaHoraFinalizacion > :fecha " + 
+    			"order by d.numeroDeSerie"
+				)
+}) 
+----
+
+Como siempre, usamos la hotkey Crtl + O para traernos las nuevas importaciones. Y añadimos a la clase de negocio el método siguiente, que es equivalente al _obtenEstadoDronesPorFecha_ pero usando una NamedQuery:
+
+[source,java,indent=0]
+----
+    public List<Drone> obtenEstadoDronesPorFechaNamed(Date fecha){
+
+    	return em.createNamedQuery("Drone.estadoDronesPorFecha", Drone.class).
+    	setParameter("fecha", fecha).
+    	getResultList();
+    	
+    }
+----
+
+Y con esto tendríamos lista la capa de negocio.
+
+A continuación vamos a configurar una utilidad de las muchas que trae el paquete JBoss Tools que nos va a facilitar las cosas cuando necesitemos ampliar la capa de negocio con nuevas consultas, basadas en HQL/JPQL o construidas con el API Criteria. Se trata de las Hibernate Tools. Una vez configurada ejecutaremos una consulta JPQL directamente en Eclipse.
+
+Para que el mapeo ORM sea efectivo en las Hibernate Tools las clases deben aparecer de forma explícita en el archivo persistence.xml de definición de la unidad de persistencia. Así que borramos la línea
+
+`<exclude-unlisted-classes>false</exclude-unlisted-classes>`
+
+y dejamos el contenido del fichero así:
+
+[source,xml,indent=0]
+----
+  <?xml version="1.0" encoding="UTF-8"?>
+  <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+      <persistence-unit name="datosdrones" transaction-type="JTA">
+          <jta-data-source>java:jboss/datasources/DerbyDS</jta-data-source>
+          <class>com.lametaweb.jdrone.persistencia.Drone</class>
+          <class>com.lametaweb.jdrone.persistencia.PuntoRuta</class>
+          <class>com.lametaweb.jdrone.persistencia.Trabajo</class>
+          <properties>
+              <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" />
+              <property name="hibernate.hbm2ddl.auto" value="create" />
+          </properties>
+      </persistence-unit>
+  </persistence>
+----
+
+Lo primero es crear una conexión en Eclipse a Derby, que será la que use las Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú Window > Open Perspective > Other... y elegimos Hibernate:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig071.png[]
+
+A continuación abrimos la vista Data Source Explorer en la opción _Window > Show View > Other..._  filtramos por la cadena "data" y seleccionamos _Data Source Explorer_:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig072.png[]
+
+Nos vamos a esta nueva vista y pulsamos botón derecho sobre la carpeta _Database Connections_ y seleccionamos la opción _New..._. Elegimos el tipo _Derby_ y en el campo Name escribimos `Pruebas JPQL`. Pulsamos el botón _Next_ para ir a la pantalla de propiedades. Configuramos el driver para el datasource pulsando sobre el icono
+image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig073.png[]. Esto nos lleva a la pantalla _New Driver Definition_. En la solapa Name/Type seleccionamos _Derby Embedded JDBC Driver_ con la versión _10.2_. En la solapa _JAR List_ pulso el botón _Add JAR/Zip_ y localizo el fichero derby.jar en el disco duro y lo selecciono. Recuerda que este fichero debe estar en una ruta similar a _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. En la solapa Properties rellenar los valores:
+
+[cols="1,3"]
+|===
+h|Property 
+h|Value
+
+|Connection URL
+|jdbc:derby:c:\BD\drones;create=true
+
+|Database Name
+|drones
+
+|Password
+|root
+
+|UserID
+|root
+|===
+
+Y pulsamos OK. En el apartado Properties en la solapa _General_ actualizamos los siguientes campos:
+
+[cols="1,3"]
+|===
+h|Property 
+h|Value
+
+|Database location
+|c:\BD\drones
+
+|User name
+|root
+
+|Password
+|root
+
+|Save password
+|marcado
+|===
+
+Desmarcamos las dos opciones en la parte inferior de la ventana y pulsamos el botón _Test Connection_ para comprobar que llegamos a la base de datos. Tenemos que asegurarnos antes de que no existe otra máquina virtual accediendo a la base de datos, en nuestro caso bienporque el servidor está arrancado o bien porque habiamos dejado una conexión abierta con el cliente ij. Pulsamos finalmente el botón _Finish_.
+
+La conexión que acabamos de crear para las Hibernate Tools podemos usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más comodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos _Connect_. Navegando por la jerarquía accedemos a los distintos elementos:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig074.png[]
+
+Y para visualizar los datos pulsamos botón derecho y opción _Data > Edit_ sobre cualquiera de las tablas. Los datos se presentan en la solapa _SQL Results_.
+
+Bien, continuamos. Volvemos a pulsar botón derecho sobre el icono de la conexión _Pruebas JPQL_ y seleccionamos la opción _Disconnect_. En la ventana de la solapa _Hibernate Configurations_, en el lado izquierdo de la pantalla, pulsamos  botón derecho y seleccionamos la opción _Add Configuration..._:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig076.png[]
+
+Lo que vamos a hacer es crear una configuración nueva dentro de las Hibernate Tools. Escribimos `jdrone` en el campo _Name_ y los siguientes valores en las solapas:
+
+[cols="2,3"]
+|===
+
+2+h|Solapa Main
+h|Campo 
+h|Valor
+
+|Type
+|JPA (jdk 1.5+)
+
+|Hibernate Version
+|4.0
+
+|Project
+|pulsar _Browser_ y seleccionar _jdrone_
+
+|Database connection
+|Pruebas JPQL
+
+|Persistence unit
+|pulsar _Browser_ y seleccionar _datosdrones_
+
+2+h|Solapa Classpath
+h|Campo 
+h|Valor
+
+|Classpath
+|Si está vacío seleccionar _User Entries_, pulsar el botón _Add Projects..._ y seleccionar nuestro proyecto _jdrone_
+
+|===
+
+La nueva configuración aparecerá en la solapa _Hibernate Configurations_. Para abrir un editor de consultas pulsamos botón derecho sobre la nueva configuración _jdrone_ y seleccionamos la opción _HQL Editor_:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig077.png[]
+
+Se abre una nueva ventana con el nombre _jdrone_ donde podremos escribir cualquier consulta y visualizar el resultado. Escribamos la consulta de nuestro método de negocio:
+
+[source,jpql,indent=0]
+----
+select d
+from Drone d inner join d.trabajosAsignados t
+where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha 
+order by d.numeroDeSerie
+----
+Para asignar un valor al parámetro _fecha_ nos vamos a la vista _Query Parameters_ a la derecha y hacemos click sobre el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png[]. Automaticamente se asigna el nombre _fecha_ y el tipo _string_, que cambiamos por el tipo _timestamp_
+Pulsamos el icono en forma de flecha en el extremo izquierdo de la barra de herramientas image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig079.png[] para ejecutar la consulta. Se muestra una ventana para confirmar la apertura de una session factory, pulsamos _Yes_
 
 

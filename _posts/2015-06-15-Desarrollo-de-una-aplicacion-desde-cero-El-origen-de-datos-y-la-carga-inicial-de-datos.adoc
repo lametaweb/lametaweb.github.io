@@ -240,7 +240,7 @@ Nuestro objetivo es que los datos existan antes de que la aplicación pueda reci
 
 == Uso del API de JPA desde un singleton EJB para la carga de datos
 
-Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta _negocio_ del proyecto y elegimos la opción _New > Other... > EJB > Session Bean_. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
+Bien, como vemos, técnica y conceptualmente, en nuestro caso, lo más acertado es usar un bean EJB singleton. Vamos a ello. Abrimos a Eclipse, hacemos click en botón derecho sobre la carpeta _negocio_ del proyecto y elegimos la opción _New > Other... > EJB > Session Bean_ y... sorpresa, Eclipse no nos permite añadir el bean EJB. Esto es debido a que la faceta Dynamic Web Module de nuestro proyecto está fijada a la versión 2.5 y es necesario que la aplicación use la versión 3.1 de Servlets para que sea posible empaquetar un bean EJB en un artefacto empaquetado com war. De modo que nos vamos la propiedades del proyecto, al apartado _Proyect Facets_ y cambiamos la versión de la faceta Dynamic Web Module de 2.5 a 3.1. Aceptamos y volvemos a intentar añadir el bean. Esta vez si aparece la opción. En la pantalla de configuración del bean introducimos los valores que se indican en la figura y pulsamos el botón _Finish_:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig062.png[]
 
