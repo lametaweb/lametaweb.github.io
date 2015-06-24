@@ -219,8 +219,8 @@ A continuación abrimos la vista Data Source Explorer en la opción _Window > Sh
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig072.png[]
 
-Nos vamos a esta nueva vista y pulsamos botón derecho sobre la carpeta _Database Connections_ y seleccionamos la opción _New..._. Elegimos el tipo _Derby_ y en el campo Name escribimos `Pruebas JPQL`. Pulsamos el botón _Next_ para ir a la pantalla de propiedades. Configuramos el driver para el datasource pulsando sobre el icono
-image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig073.png[]. Esto nos lleva a la pantalla _New Driver Definition_. En la solapa Name/Type seleccionamos _Derby Embedded JDBC Driver_ con la versión _10.2_. En la solapa _JAR List_ pulso el botón _Add JAR/Zip_ y localizo el fichero derby.jar en el disco duro y lo selecciono. Recuerda que este fichero debe estar en una ruta similar a _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. En la solapa Properties rellenar los valores:
+Nos vamos a esta vista, pulsamos botón derecho sobre la carpeta _Database Connections_ y seleccionamos la opción _New..._. Elegimos el tipo _Derby_ y en el campo _Name_ escribimos `Pruebas JPQL`. Pulsamos el botón _Next_ para ir a la pantalla de propiedades. Configuramos el driver para el datasource pulsando sobre el icono
+image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig073.png[]. Esto nos lleva a la pantalla _New Driver Definition_. En la solapa _Name/Type_ seleccionamos _Derby Embedded JDBC Driver_ con la versión _10.2_. En la solapa _JAR List_ pulso el botón _Add JAR/Zip_, localizo el fichero _derby.jar_ en el disco duro y lo selecciono. Recuerda que este fichero debe estar en una ruta similar a _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. En la solapa _Properties_ rellenáis estos campos:
 
 [cols="1,3"]
 |===
@@ -240,7 +240,7 @@ h|Value
 |root
 |===
 
-Y pulsamos OK. En el apartado Properties en la solapa _General_ actualizamos los siguientes campos:
+Y pulsamos _OK_. En el apartado _Properties_ en la solapa _General_ actualizamos los siguientes campos:
 
 [cols="1,3"]
 |===
@@ -260,9 +260,9 @@ h|Value
 |marcado
 |===
 
-Desmarcamos las dos opciones en la parte inferior de la ventana y pulsamos el botón _Test Connection_ para comprobar que llegamos a la base de datos. Tenemos que asegurarnos antes de que no existe otra máquina virtual accediendo a la base de datos, en nuestro caso bienporque el servidor está arrancado o bien porque habiamos dejado una conexión abierta con el cliente ij. Pulsamos finalmente el botón _Finish_.
+Desmarcamos las dos opciones en la parte inferior de la ventana y pulsamos el botón _Test Connection_ para comprobar que llegamos a la base de datos. Recordad que de momento no tenéis creada la base de datos y obtendréis un mensaje de error. Antes de probar la conexión además tenemos que asegurarnos de que no exista otra máquina virtual accediendo a la base de datos, en nuestro caso bien porque el servidor esté arrancado o bien porque hayamos dejado una conexión abierta con el cliente ij. Para terminar pulsamos _Finish_.
 
-La conexión que acabamos de crear para las Hibernate Tools podemos usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más comodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos _Connect_. Navegando por la jerarquía accedemos a los distintos elementos:
+La conexión que acabamos de crear para las Hibernate Tools podemos sin embargo usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más comodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos _Connect_. Navegando por la jerarquía accedemos a los distintos elementos:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig074.png[]
 
@@ -272,7 +272,7 @@ Bien, continuamos. Volvemos a pulsar botón derecho sobre el icono de la conexi�
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig076.png[]
 
-Lo que vamos a hacer es crear una configuración nueva dentro de las Hibernate Tools. Escribimos `jdrone` en el campo _Name_ y los siguientes valores en las solapas:
+Lo que vamos a hacer es crear una configuración nueva dentro de las Hibernate Tools. Escribimos `jdrone` en el campo _Name_ y los siguientes valores:
 
 [cols="2,3"]
 |===
@@ -330,7 +330,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 En la figura se puede observar como hemos navegado desde el objeto Drone hacia el objeto Trabajo relacionado a través del atributo _trabajosAsignados_. Es interesante señalar que, a pesar de que al ejecutar la consulta el objeto Trabajo relacionado no es leído desde la base de datos, ya que las relaciones uno a muchos en JPA son anotadas por defecto como fetchType.EAGER, sí que accederemos al objeto Trabajo al solicitarlo pulsando el elemento de la lista correspondiente a la relación.
 
-Respecto del editor de consultas HQL señalar que como la base de datos Derby sólo puede ser accedida por una única máquina virtual a la vez es importante parar el servidor antes de usarlo y cerrar la Configuración Hibernate en la solapa _Hibernate Configurations_ cuando hayamos terminado de usar el editor tal como muestra la figura:
+Respecto del editor de consultas HQL recordad que como la base de datos Derby sólo puede ser accedida por una única máquina virtual a la vez es importante parar el servidor antes de usarlo y cerrar la Configuración Hibernate en la solapa _Hibernate Configurations_ cuando hayamos terminado de usar el editor tal como muestra la figura:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig083.png[]
 
