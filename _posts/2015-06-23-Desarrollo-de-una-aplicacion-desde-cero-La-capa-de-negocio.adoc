@@ -138,9 +138,9 @@ Al tratarse de un bean EJB podemos inyectar el entity manager directamente en el
 
 El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.
 
-Al tratarse de una consulta podemos prescindir del comportamiento transaccional, simplemente anotando el método.
+Al tratarse de una consulta podemos prescindir del comportamiento transaccional, añadiendo una simple anotación al método.
 
-Una consulta pueden montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como vemos se ha optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción a JPQL.
+Una consulta puede montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como véis he optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y por tanto no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción.
 
 [source,jpql,indent=0]
 ----
@@ -150,15 +150,15 @@ where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha
 order by d.numeroDeSerie
 ----
 
-En la primera línea se filtran los atributos o entidades que la consulta devuelve. Al indicar el alias _d_ en _select d_ estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate es posible prescindir de esta parte de la consulta. Si lo hacemos no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la parte _from_. Es decir que devolvería una lista de array de objetos `List<Object[]>` donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.
+En la primera línea defino los atributos o entidades que quiero que la consulta devuelva. Al indicar el alias _d_ en _select d_ estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate a diferencia de JPA es posible prescindir de esta parte de la consulta. Si lo hacemos así no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la claúsula _from_. Nuestra consulta devolvería entonces una lista de array de objetos List<Object[]> donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.
 
-En la segunda línea como se ha comentado se determinan las entidades que intervienen en la consulta. En este caso el conjunto de datos consiste en un inner join entre Drone y Trabajo. El join se hace indicando el campo de la entidad padre que da acceso a las entidades hijas relacionadas _d.trabajosAsignados_.
+En la segunda línea como se ha comentado se determinan las entidades que intervienen en la consulta. En este caso el conjunto de datos consiste en un inner join entre Drone y Trabajo. El join, a diferencia de lo que ocurre en SQL, se hace indicando el campo de la entidad padre que da acceso a las entidades hijas relacionadas: _d.trabajosAsignados_. 
 
-La tercera línea hace el filtrado de los registros, de manera similar a lo que existe en el SQL de toda la vida. Podemos ver cómo se ha definido el parámetro nombrado _:fecha_ para inyectar el valor dentro de la consulta.
+La tercera línea establece el filtrado de los elementos a devolver, de manera similar a lo que hago en SQL con los registros. Podemos ver cómo se ha definido el parámetro nombrado _:fecha_ para inyectar su valor dentro de la consulta.
 
 Por último definimos un orden para el conjunto de elementos devueltos. En nuestro caso como lo que devolvemos son "disponibilidades de drones" tiene sentido que el orden lo definamos sobre el campo que identifica al drone, de modo que el usuario lo pueda localizar con facilidad.
 
-Las definiciones de las consultas de una aplicación podemos agruparlas, en general la clase Entity relacionada, de manera que podemos reutilizar la misma consulta en varios puntos y mantener de forma más eficiente la aplicación. Para esto tenemos que convertir nuestra consulta en una NamedQuery. Vamos a ello. En primer lugar abrimos la clase Drone y añadimos la siguiente anotación justo debajo de la anotación _@Entity_:
+Cuando en una aplicación tenemos un número elevado de consultas podemos agruparlas en cada uno de los beans de entidad dependiendo de la relación semántica entre la consulta y el bean. De esta manera podremos reutilizar la misma consulta en varios puntos de la aplicación y mantenerlas de forma más eficiente. Para esto usamos la anotación @NamedQuery. Hagamos este cambio en nuestra aplicación. Abrimos la clase Drone y añadimos la siguiente anotación justo debajo de la anotación _@Entity_:
 
 [source,java,indent=0]
 ----
@@ -173,7 +173,7 @@ Las definiciones de las consultas de una aplicación podemos agruparlas, en gene
 }) 
 ----
 
-Como siempre, usamos la hotkey Crtl + O para traernos las nuevas importaciones. Y añadimos a la clase de negocio el método siguiente, que es equivalente al _obtenEstadoDronesPorFecha_ pero usando una NamedQuery:
+Como de costumbre usamos la hotkey Crtl + O para traernos las nuevas importaciones. Y añadimos a la clase de negocio el método siguiente, que es equivalente al _obtenEstadoDronesPorFecha_ pero usando una NamedQuery:
 
 [source,java,indent=0]
 ----
@@ -190,13 +190,9 @@ Y con esto tendríamos lista la capa de negocio.
 
 == Un editor de consultas JPA en nuestro IDE
 
-A continuación vamos a configurar una utilidad de las muchas que trae el paquete JBoss Tools que nos va a facilitar las cosas cuando necesitemos ampliar la capa de negocio con nuevas consultas, basadas en HQL/JPQL o construidas con el API Criteria. Se trata de las Hibernate Tools. Una vez configurada ejecutaremos una consulta JPQL directamente en Eclipse.
+A continuación vamos a configurar una utilidad, de las muchas que trae el paquete JBoss Tools, que nos va a facilitar bastante las cosas cuando necesitemos incluir nuevas consultas en la capa de negocio, usando HQL/JPQL o el API Criteria. Se trata de las Hibernate Tools.
 
-Para que el mapeo ORM sea efectivo en las Hibernate Tools las clases deben aparecer de forma explícita en el archivo persistence.xml de definición de la unidad de persistencia. Así que borramos la línea
-
-`<exclude-unlisted-classes>false</exclude-unlisted-classes>`
-
-y dejamos el contenido del fichero así:
+Para que en nuestra aplicación el mapeo de entidades que hace Hibernate Tools sea correcto éstas deben aparecer de forma explícita en el archivo persistence.xml de definición de la unidad de persistencia. Así que abrimos el fichero y eliminamos la línea `<exclude-unlisted-classes>false</exclude-unlisted-classes>` sustituyendo, con un copia pega, el contenido del fichero por el siguiente:
 
 [source,xml,indent=0]
 ----
@@ -215,7 +211,7 @@ y dejamos el contenido del fichero así:
   </persistence>
 ----
 
-Lo primero es crear una conexión en Eclipse a Derby, que será la que use las Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú Window > Open Perspective > Other... y elegimos Hibernate:
+Lo primero que heremos será crear una conexión a Derby, que será la que use Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú _Window > Open Perspective > Other..._ y elegimos _Hibernate_:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig071.png[]
 
