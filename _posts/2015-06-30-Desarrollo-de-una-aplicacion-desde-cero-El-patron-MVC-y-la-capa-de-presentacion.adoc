@@ -6,3 +6,4 @@ La metaweb
 Hola de nuevo. En este post completaremos el desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación. 
 Antes de empezar a añadir elementos considero importante mostraros el concepto del patrón Modelo-Vista-Controlador ya que
 su comprensión nos va a ayudar a entender la función de cada elemento dentro de esta capa.
+
