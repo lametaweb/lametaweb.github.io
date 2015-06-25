@@ -57,7 +57,7 @@ Y terminamos la sesión _ij_ con:
 
 Os muestro la sesión de _ij_ completa en la siguiente figura:
 
-image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig068.png[100,100]
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig068.png[]
 
 
 Para acabar con esta introducción a _ij_ comentaros que Derby restringe el número de máquinas virtuales a una a menos que usemos el Derby Network Server, de modo que debéis tener el cuidado de desconectar la sesión de _ij_, si la teníais abierta, antes de desplegar la aplicación, y reciprocamente, parar el servidor antes de iniciar una sesión de _ij_.
