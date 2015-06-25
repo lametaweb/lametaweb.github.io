@@ -11,7 +11,7 @@ Consiste en una solución probada al problema que plantea la separación de la p
 
 Aunque la anterior definición está clara, no lo está tanto como este patrón encaja en una aplicación web Java empresarial basada en la tecnología Java EE como la que en este post vamos a concluir. Y tampoco como cada parte M, V y C se sitúa dentro de la arquitectura de capas de nuestra aplicación.
 
-Las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación.
+Las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación.
 
 Veamos una definición para cada parte M, V, y C y la correspondencia con cada uno de los elementos de la aplicación:
 
@@ -23,16 +23,29 @@ Veamos una definición para cada parte M, V, y C y la correspondencia con cada u
 
 En resumen, el Modelo se implementa en los backed beans y en JSF es una representación o punto de acceso al *modelo* de la aplicación.
 
-* Vista: 
+* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos del usuario implementados con la tecnología JSF y usando el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
+	** Páginas xml facelets.
+    ** Ficheros de recursos.
+    ** Clases representando conversores y validadores.
+    ** Los métodos de evento en los backed bean.
+    ** Otros métodos y atributos en los backed beans relacionados con la vista.
+    ** Elementos que extienden la Vista: Renderers y componentes propios.
+
+* Controlador: Es algo que no tenemos que implementar ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información en la misma.
+
+En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
+
+
+Lo anterior explica la estructura o aspecto estático de JSF. Sin embargo para implementar la capa de presentación es necesario entender como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador y acaba con la renderización en el navegador del cliente de una página facelet.
+
+Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo. ¿Cuándo se dispara uno u otro? Bien el JSF distinguimos dos tipos de peticiones:
+
+* Initial request:
+
+
+* Postback request:
 
 
 
+Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda.
 
-
-
-
-
-
-
-
-correspondencia MVC y capas
