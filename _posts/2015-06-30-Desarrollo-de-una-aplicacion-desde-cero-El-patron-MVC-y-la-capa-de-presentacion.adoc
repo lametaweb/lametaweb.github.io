@@ -15,20 +15,19 @@ Las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de prese
 
 Veamos una definición para cada parte M, V, y C y la correspondencia con cada uno de los elementos de la aplicación:
 
-* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases backed bean. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
+* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
 
-** Parte de datos del *modelo*: Son los beans de entidad JPA de la capa de persistencia. En el Modelo se representan como atributos de los backed beans con el mismo tipo que los entity beans JPA.
+** Parte de datos del *modelo*: Son los beans de entidad JPA de la capa de persistencia. En el Modelo se representan como atributos de los managed beans con el mismo tipo que los entity beans JPA.
 
-** Parte de comportamiento del *modelo*: Son los beans de sesión EJB de la capa de negocio/DAO/servicio. En el Modelo se representan dentro de los métodos de evento de los backed beans, como llamadas a los métodos de estos beans de sesión.
+** Parte de comportamiento del *modelo*: Son los beans de sesión EJB de la capa de negocio/DAO/servicio. En el Modelo se representan dentro de los métodos de evento de los managed beans, como llamadas a los métodos de estos beans de sesión.
 
-En resumen, el Modelo se implementa en los backed beans y en JSF es una representación o punto de acceso al *modelo* de la aplicación.
+En resumen, el Modelo se implementa en los managed beans y en JSF es una representación o punto de acceso al *modelo* de la aplicación.
 
 * Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos del usuario implementados con la tecnología JSF y usando el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
 	** Páginas xml facelets.
     ** Ficheros de recursos.
     ** Clases representando conversores y validadores.
-    ** Los métodos de evento en los backed bean.
-    ** Otros métodos y atributos en los backed beans relacionados con la vista.
+    ** Propiedades de la Vista y métodos listener en las clases managed-bean.
     ** Elementos que extienden la Vista: Renderers y componentes propios.
 
 * Controlador: Es algo que no tenemos que implementar ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información en la misma.
@@ -36,16 +35,15 @@ En resumen, el Modelo se implementa en los backed beans y en JSF es una represen
 En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
 
 
-Lo anterior explica la estructura o aspecto estático de JSF. Sin embargo para implementar la capa de presentación es necesario entender como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador y acaba con la renderización en el navegador del cliente de una página facelet.
+Lo anterior explica grosso modo la estructura o aspecto estático de JSF. Sin embargo para entender la capa de presentación es necesario estudiar como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador (request) y acaba en la renderización en el navegador del usuario de una página HTML (response).
 
-Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo. ¿Cuándo se dispara uno u otro? Bien el JSF distinguimos dos tipos de peticiones:
+Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien el JSF distinguimos dos tipos de requests:
 
-* Initial request:
+* Initial request: Es la petición GET que inicialmente hacemos hacia una página Facelet, en general conteniendo un formulario, para mostrar dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
 
+* Postback request: Es la petición que se realiza después de una initial request en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.
 
-* Postback request:
+Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
-
-
-Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda.
+. 
 
