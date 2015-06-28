@@ -59,6 +59,10 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 
 
+TODO: Dibujar diagrama capas MVC aplicación.
+
+
+
 
 seguir el ciclo de vida en la aplicación
 
