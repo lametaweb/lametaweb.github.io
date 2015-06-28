@@ -34,6 +34,7 @@ En resumen, el Modelo se implementa en los managed beans y en JSF es una represe
 
 En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
 
+== MVC en marcha, el ciclo de vida de JSF
 
 Lo anterior explica grosso modo la estructura o aspecto estático de JSF. Sin embargo para entender la capa de presentación es necesario estudiar como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador (request) y acaba en la renderización en el navegador del usuario de una página HTML (response).
 
@@ -57,13 +58,24 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 . Render Response: Si es un Initial Request se toma la View vacía recién creada en la fase Restore View y se puebla el árbol de componentes de usuario atendiendo al contenido de la página xhtml correspondiente, para a continuación a partir de la View generar la página html que se devuelve en la response hacia el navegador. La View creada se cachea de manera que cuando llegue la Postback Request se tenga disponible. Si se trata de una Postback Request y existieron errores entonces se muestra la página original (la del formulario) de modo que se renderiza la View con el árbol de componentes cacheada junto con los errores  si en la página existen la etiquetas h:message (asociada a un componente) o h:messages (asociada a la página). Si en cambio no existen errores entonces lo que ocurre depende del valor devuelto por el método de acción (navegación programática), veamos:
 
+
 * Si se devuelve el valor null no se tiene renderización y el navegador seguirá mostrando la misma página.
 
 * Si se devuelve la cadena vacía se vuelve a renderizar la página del formulario.
 
 * Si se devuelve la página del formulario ocurre como en el caso anterior.
 
-* Si 
+* Si se devuelve el nombre de una página facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.
+
+* Si al igual que en el caso anteriorse devuelve el nombre de una página facelet, pero sin añadir la cadena, se crea y puebla una nueva View para la página en cuestión. Se trata de un forward que es algo considerado en general como una mala práctica en JSF.
+
+Estas son las seis fases que se ejecutan en cada patición desde un formulario en una página de JSF. Estas fases implementan de forma transparente para el desarrollador un framework web orientado a eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX, acelerando el desarrollo de la capa web o de presentación.
+
+Con esta exposición de los elementos básicos de JSF desde el punto de vista estático y dinámico he querido daros un background que os permita tomar una base sólida para poder implementar sobre JSF cualquier funcionalidad. Además de lo expuesto JSF aporta muchos otros elementos, que poco a poco iréis conociendo, y que aceleran aún más el desarrollo de una aplicación web empresarial. Como ejemplos podríamos citar por ejemplo los ámbitos para guardar el estado de la interfaz en caso de uso multipantalla, tales como el conversation scope, el Flash, o el más avanzado Flow, las capacidades de localización, la creación de clases Converter, Validator o Listener propias, o la implementación de componentes de usuario a medida. Se me ocurre como ejemplo un componente "reloj analógico" que nos mostrara la hora en una determinada localización.
+
+Cuando tengamos nuestra aplicación terminada, al final de este post, afianzaremos lo aprendido sobre el ciclo de vida viendo como se ejecutan cada una de las fases en la petición Initial y en la correspondiente Postback.
+
+Empecemos entonces a añadir los elemntos a la capa web de nuestra aplicación.
 
 
 
