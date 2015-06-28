@@ -34,6 +34,8 @@ En resumen, el Modelo se implementa en los managed beans y en JSF es una represe
 
 En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig084.png[]
+
 == MVC en marcha, el ciclo de vida de JSF
 
 Lo anterior explica grosso modo la estructura o aspecto estático de JSF. Sin embargo para entender la capa de presentación es necesario estudiar como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador (request) y acaba en la renderización en el navegador del usuario de una página HTML (response).
