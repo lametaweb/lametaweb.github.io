@@ -34,6 +34,7 @@ En resumen, el Modelo se implementa en los managed beans y en JSF es una represe
 
 En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
 
+.Diagrama de capas para una aplicación Java EE básica
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig084.png[]
 
 El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el *modelo* de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como la usabilidad o la UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente de bases de datos, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la
