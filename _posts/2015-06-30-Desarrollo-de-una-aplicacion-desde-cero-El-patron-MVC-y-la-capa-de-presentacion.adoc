@@ -26,8 +26,8 @@ En resumen, el Modelo se implementa en los managed beans y en JSF es una represe
 * Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos del usuario implementados con la tecnología JSF y usando el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
 	** Páginas xml facelets.
     ** Ficheros de recursos.
-    ** Clases representando conversores y validadores.
-    ** Propiedades de la Vista y métodos listener en las clases managed-bean.
+    ** Clases representando conversores, validadores y listeners.
+    ** Propiedades de la Vista en las clases managed bean.
     ** Elementos que extienden la Vista: Renderers y componentes propios.
 
 * Controlador: Es algo que no tenemos que implementar ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información en la misma.
@@ -35,6 +35,9 @@ En resumen, el Modelo se implementa en los managed beans y en JSF es una represe
 En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig084.png[]
+
+El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el *modelo* de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como la usabilidad o la UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente de bases de datos, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la
+página y cuyos expertises serían Javascript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.
 
 == MVC en marcha, el ciclo de vida de JSF
 
@@ -77,11 +80,13 @@ Con esta exposición de los elementos básicos de JSF desde el punto de vista es
 
 Cuando tengamos nuestra aplicación terminada, al final de este post, afianzaremos lo aprendido sobre el ciclo de vida viendo como se ejecutan cada una de las fases en la petición Initial y en la correspondiente Postback.
 
-Empecemos entonces a añadir los elemntos a la capa web de nuestra aplicación.
+== Montaje de la capa web
+
+Empezemos a añadir los elementos a la capa web de nuestra aplicación. 
 
 
 
-TODO: Dibujar diagrama capas MVC aplicación.
+
 
 
 
