@@ -53,9 +53,17 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 . Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto para luego renderizarlos en la fase Render Response.
 
-. Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición Initial Request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio y se determina la respuesta del ciclo.
+. Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición Initial Request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio desde los métodos de acción y se determina la respuesta del ciclo.
 
-. Render Response: 
+. Render Response: Si es un Initial Request se toma la View vacía recién creada en la fase Restore View y se puebla el árbol de componentes de usuario atendiendo al contenido de la página xhtml correspondiente, para a continuación a partir de la View generar la página html que se devuelve en la response hacia el navegador. La View creada se cachea de manera que cuando llegue la Postback Request se tenga disponible. Si se trata de una Postback Request y existieron errores entonces se muestra la página original (la del formulario) de modo que se renderiza la View con el árbol de componentes cacheada junto con los errores  si en la página existen la etiquetas h:message (asociada a un componente) o h:messages (asociada a la página). Si en cambio no existen errores entonces lo que ocurre depende del valor devuelto por el método de acción (navegación programática), veamos:
+
+* Si se devuelve el valor null no se tiene renderización y el navegador seguirá mostrando la misma página.
+
+* Si se devuelve la cadena vacía se vuelve a renderizar la página del formulario.
+
+* Si se devuelve la página del formulario ocurre como en el caso anterior.
+
+* Si 
 
 
 
