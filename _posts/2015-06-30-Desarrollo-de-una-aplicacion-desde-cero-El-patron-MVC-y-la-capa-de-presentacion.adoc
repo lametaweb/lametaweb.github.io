@@ -82,7 +82,9 @@ Cuando tengamos nuestra aplicación terminada, al final de este post, afianzarem
 
 == Montaje de la capa web
 
-Empezemos a añadir los elementos a la capa web de nuestra aplicación. 
+Empezemos a añadir los elementos a la capa web de nuestra aplicación. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita. Las tecnologías implicadas son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto, copiad dentro del elemento _<dependencies>_ esto:
+
+
 
 
 
