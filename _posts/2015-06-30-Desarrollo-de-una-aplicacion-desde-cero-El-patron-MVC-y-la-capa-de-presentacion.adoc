@@ -45,5 +45,20 @@ Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone
 
 Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
-. 
+. Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto FacesContext. La View es un contenedor para una representación en el lado del servidor de un arbol de componentes que mapea el arbol de componentes DOM del lado del cliente. El FacesContext es el contexto de servidor que contiene todos los elementos para la gestión del ciclo de vida. En la initial request a continuación se salta a la última fase Render Response. En una Postback Request la View ya existe y simplemente se restaura en el contexto.
+
+. Apply Request Values: En esta fase sabemos que estamos en una PostBack Request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones, las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la fase 4 Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.
+
+. Process Validations: Para los componentes sin immediate = true se ejecutan las validaciones y conversiones sobre el valor del componente (el introducido por el usuario en el navegador). Los errores de validación o conversión son añadidos al contexto para luego renderizarlos en la fase Render Response.
+
+. Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto para luego renderizarlos en la fase Render Response.
+
+. Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición Initial Request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio y se determina la respuesta del ciclo.
+
+. Render Response: 
+
+
+
+
+seguir el ciclo de vida en la aplicación
 
