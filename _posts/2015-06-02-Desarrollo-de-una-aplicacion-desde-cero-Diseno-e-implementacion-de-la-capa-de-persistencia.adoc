@@ -1,6 +1,6 @@
 = Desarrollo de una aplicación desde cero: Diseño e implementación de la capa de persistencia.
 La metaweb
-:hp-tags: JPA, Hibernate, persistencia, diagrama de clases, diseño
+:hp-tags: JPA, Hibernate, persistencia, diagrama de clases, diseño, Maven
 :published_at: 2015-06-02
 
 Una vez creado el proyecto iniciamos la implementación de la aplicación. Lo haremos desde la capa de persistencia hacia arriba hasta la capa de presentación, que es el modo habitual para los desarrollos Java EE por capas.

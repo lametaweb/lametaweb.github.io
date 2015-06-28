@@ -1,0 +1,88 @@
+= Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.
+La metaweb
+:hp-tags: JSF, Java Server Faces, MVC, Facelets, Maven
+:published_at: 2015-06-30
+
+Hola de nuevo. En este post completaremos el desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación. Pero antes de empezar a añadir elementos, considero importante mostraros el concepto del patrón Modelo-Vista-Controlador ya que su comprensión nos va a ayudar a entender la función de cada elemento dentro de esta capa.
+
+== El patrón MVC
+
+Consiste en una solución probada al problema que plantea la separación de la presentación o vista y el modelo en la arquitectura de una aplicación. Esta separación se logra introduciendo un tercer componente, el controlador.
+
+Aunque la anterior definición está clara, no lo está tanto como este patrón encaja en una aplicación web Java empresarial basada en la tecnología Java EE como la que en este post vamos a concluir. Y tampoco como cada parte M, V y C se sitúa dentro de la arquitectura de capas de nuestra aplicación.
+
+Las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación.
+
+Veamos una definición para cada parte M, V, y C y la correspondencia con cada uno de los elementos de la aplicación:
+
+* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
+
+** Parte de datos del *modelo*: Son los beans de entidad JPA de la capa de persistencia. En el Modelo se representan como atributos de los managed beans con el mismo tipo que los entity beans JPA.
+
+** Parte de comportamiento del *modelo*: Son los beans de sesión EJB de la capa de negocio/DAO/servicio. En el Modelo se representan dentro de los métodos de evento de los managed beans, como llamadas a los métodos de estos beans de sesión.
+
+En resumen, el Modelo se implementa en los managed beans y en JSF es una representación o punto de acceso al *modelo* de la aplicación.
+
+* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos del usuario implementados con la tecnología JSF y usando el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
+	** Páginas xml facelets.
+    ** Ficheros de recursos.
+    ** Clases representando conversores y validadores.
+    ** Propiedades de la Vista y métodos listener en las clases managed-bean.
+    ** Elementos que extienden la Vista: Renderers y componentes propios.
+
+* Controlador: Es algo que no tenemos que implementar ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información en la misma.
+
+En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
+
+== MVC en marcha, el ciclo de vida de JSF
+
+Lo anterior explica grosso modo la estructura o aspecto estático de JSF. Sin embargo para entender la capa de presentación es necesario estudiar como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador (request) y acaba en la renderización en el navegador del usuario de una página HTML (response).
+
+Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien el JSF distinguimos dos tipos de requests:
+
+* Initial request: Es la petición GET que inicialmente hacemos hacia una página Facelet, en general conteniendo un formulario, para mostrar dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
+
+* Postback request: Es la petición que se realiza después de una initial request en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.
+
+Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
+
+. Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto FacesContext. La View es un contenedor para una representación en el lado del servidor de un arbol de componentes que mapea el arbol de componentes DOM del lado del cliente. El FacesContext es el contexto de servidor que contiene todos los elementos para la gestión del ciclo de vida. En la initial request a continuación se salta a la última fase Render Response. En una Postback Request la View ya existe y simplemente se restaura en el contexto.
+
+. Apply Request Values: En esta fase sabemos que estamos en una PostBack Request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones, las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la fase 4 Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.
+
+. Process Validations: Para los componentes sin immediate = true se ejecutan las validaciones y conversiones sobre el valor del componente (el introducido por el usuario en el navegador). Los errores de validación o conversión son añadidos al contexto para luego renderizarlos en la fase Render Response.
+
+. Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto para luego renderizarlos en la fase Render Response.
+
+. Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición Initial Request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio desde los métodos de acción y se determina la respuesta del ciclo.
+
+. Render Response: Si es un Initial Request se toma la View vacía recién creada en la fase Restore View y se puebla el árbol de componentes de usuario atendiendo al contenido de la página xhtml correspondiente, para a continuación a partir de la View generar la página html que se devuelve en la response hacia el navegador. La View creada se cachea de manera que cuando llegue la Postback Request se tenga disponible. Si se trata de una Postback Request y existieron errores entonces se muestra la página original (la del formulario) de modo que se renderiza la View con el árbol de componentes cacheada junto con los errores  si en la página existen la etiquetas h:message (asociada a un componente) o h:messages (asociada a la página). Si en cambio no existen errores entonces lo que ocurre depende del valor devuelto por el método de acción (navegación programática), veamos:
+
+
+* Si se devuelve el valor null no se tiene renderización y el navegador seguirá mostrando la misma página.
+
+* Si se devuelve la cadena vacía se vuelve a renderizar la página del formulario.
+
+* Si se devuelve la página del formulario ocurre como en el caso anterior.
+
+* Si se devuelve el nombre de una página facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.
+
+* Si al igual que en el caso anteriorse devuelve el nombre de una página facelet, pero sin añadir la cadena, se crea y puebla una nueva View para la página en cuestión. Se trata de un forward que es algo considerado en general como una mala práctica en JSF.
+
+Estas son las seis fases que se ejecutan en cada patición desde un formulario en una página de JSF. Estas fases implementan de forma transparente para el desarrollador un framework web orientado a eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX, acelerando el desarrollo de la capa web o de presentación.
+
+Con esta exposición de los elementos básicos de JSF desde el punto de vista estático y dinámico he querido daros un background que os permita tomar una base sólida para poder implementar sobre JSF cualquier funcionalidad. Además de lo expuesto JSF aporta muchos otros elementos, que poco a poco iréis conociendo, y que aceleran aún más el desarrollo de una aplicación web empresarial. Como ejemplos podríamos citar los ámbitos para guardar el estado de la interfaz en caso de uso multipantalla, tales como el conversation scope, el Flash, o el más avanzado Flow, las capacidades de localización, la creación de clases Converter, Validator o Listener propias, el soporte para AJAX, o la implementación de componentes de usuario a medida. Se me ocurre como ejemplo un componente "reloj analógico" que nos mostrara la hora en una determinada localización.
+
+Cuando tengamos nuestra aplicación terminada, al final de este post, afianzaremos lo aprendido sobre el ciclo de vida viendo como se ejecutan cada una de las fases en la petición Initial y en la correspondiente Postback.
+
+Empecemos entonces a añadir los elemntos a la capa web de nuestra aplicación.
+
+
+
+TODO: Dibujar diagrama capas MVC aplicación.
+
+
+
+
+seguir el ciclo de vida en la aplicación
+

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Desarrollo de una aplicación desde cero: La capa de negocio.</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//www.lametaweb.com/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/asciidoctor.css?v=1.0.0" />
+
+    <link rel="canonical" href="http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html" />
+    
+    <meta property="og:site_name" content="La metaweb" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Desarrollo de una aplicación desde cero: La capa de negocio." />
+    <meta property="og:description" content="Como os comenté en el post anterior, antes de implementar la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos. Por..." />
+    <meta property="og:url" content="http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html" />
+    <meta property="article:published_time" content="2015-06-22T22:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-06-25T10:42:27.014Z" />
+    <meta property="article:tag" content="ij" />
+    <meta property="article:tag" content="EJB" />
+    <meta property="article:tag" content="JPA" />
+    <meta property="article:tag" content="Derby" />
+    <meta property="article:tag" content="Hibernate Tools" />
+    <meta property="article:tag" content="Datasource Explorer" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Desarrollo de una aplicación desde cero: La capa de negocio." />
+    <meta name="twitter:description" content="Como os comenté en el post anterior, antes de implementar la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos. Por..." />
+    <meta name="twitter:url" content="http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "La metaweb",
+    "author": {
+        "@type": "Person",
+        "name": "La metaweb",
+        "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": ""
+    },
+    "headline": "Desarrollo de una aplicación desde cero: La capa de negocio.",
+    "url": "http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html",
+    "datePublished": "2015-06-22T22:00:00.000Z",
+    "dateModified": "2015-06-25T10:42:27.014Z",
+    "keywords": "ij,  EJB,  JPA,  Derby,  Hibernate Tools,  Datasource Explorer",
+    "description": "Como os comenté en el post anterior, antes de implementar la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos. Por..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="La metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-ij tag-EJB tag-JPA tag-Derby tag-Hibernate-Tools tag-Datasource-Explorer">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar style="background: none">
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="http://www.lametaweb.com">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area bgimage" style="background-image: url(https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/red20vertical.jpg)">
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+                <li><a class="fi-torso" href="http://www.lametaweb.com/about"></a></li>
+                <li><a class="fi-mail" href="http://www.lametaweb.com/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="La metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">La metaweb</h1>
+            <hr>
+            <p class="blog-description">Blog sobre desarrollo web en el estándar Java EE, con algún off topic para desconectar ;-)</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-ij tag-EJB tag-JPA tag-Derby tag-Hibernate-Tools tag-Datasource-Explorer">
+
+
+            <h1 class="post-title">Desarrollo de una aplicación desde cero: La capa de negocio.</h1>
+
+            <span class="post-meta label"><time datetime="2015-06-23">23 Jun 2015</time></span>
+
+            <section class="post-content">
+                <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Como os comenté en el post anterior, antes de implementar la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente tendremos que comprobar si las tablas, índices, restricciones, y demás elementos generados por Hibernate son los esperados.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_uso_del_cliente_de_l_nea_de_comandos_ij_de_derby">Uso del cliente de línea de comandos ij de Derby</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La herramienta cliente que Derby proporciona se llama <em>ij</em> y se encuentra en la carpeta <em>\bin\</em> del paquete de Derby, que os recuerdo podéis bajar desde <a href="http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip">este link</a>, y que, si recordáis, cuando montamos el entorno de trabajo descomprimimos en la ruta <em>C:\TALLER\BD\db-derby-10.11.1.1-bin\</em>. <em>ij</em> es una herramienta de tipo línea de comando, y que por tanto tenemos que ejecutar desde una ventana de comando en Windows, o en Linux desde un terminal. Para inspeccionar nuestro esquema de datos en la ruta <em>C:\BD\drones\</em> (ver elemento &lt;connection-url&gt; de la configuración del datasource en el fichero pom.xml) que será creado en breve cuando despleguemos nuestra aplicación, tendremos que llamar a <em>ij</em> desde esa carpeta. Para usar <em>ij</em> más comodamente creamos/editamos estas variables del sistema:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Variables de sistema para Derby</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Variable</span></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Acción</span></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Valor</span></p></th>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">CLASSPATH</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Crear/Añadir</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">%DERBY_HOME%\lib\derby.jar;%DERBY_HOME%\lib\derbytools.jar;</span></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">DERBY_HOME</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Crear</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">C:\TALLER\BD\db-derby-10.11.1.1-bin</span></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">PATH</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Añadir</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">;%DERBY_HOME%\bin</span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Como aún no hemos desplegado la aplicación no tenemos aún nada en la ruta <em>C:\BD\drones\</em>. Os indico ahora de todos modos como usar <em>ij</em> para ir cerrando las cuentiones relacionadas con la capa de datos. Podéis volver a este post cuando tengáis la base de datos tras un primer despliegue.</p>
+</div>
+<div class="paragraph">
+<p>Abrimos una ventana de comando y nos vamos a la carpeta de la base de datos escribiendo <code>cd C:\BD\drones</code>. Para invocar el cliente ij simplemente escribimos <code>ij</code>, y pulsamos la tecla Enter (&#x21B5;). El cliente mostrará la versión de Derby instalada y a continuación el prompt <em>ij&gt;</em>. Para establecer la conexión con la base de datos escribimos el comando:</p>
+</div>
+<div class="paragraph">
+<p><code>connect 'jdbc:derby:c:\BD\drones;';</code></p>
+</div>
+<div class="paragraph">
+<p>Todos los comandos deben acabar con el carácter punto y coma. Después de unos instantes se vuelve a mostrar el prompt. La conexión debería estar ahora establecida. Escribimos a continuación el comando:</p>
+</div>
+<div class="paragraph">
+<p><code>show tables in root;</code></p>
+</div>
+<div class="paragraph">
+<p>para mostrar las tablas generadas por Hibernate en nuestro esquema de datos junto a otras tablas de sistema. El nombre de nuestro esquema de datos es el nombre del usuario con el que accedemos a los datos, es decir ROOT (ver elemento &lt;user-name&gt; de la configuración del datasource en el fichero pom.xml). Para ver la estructura de una tabla usamos el comando:</p>
+</div>
+<div class="paragraph">
+<p><code>describe root.trabajo;</code></p>
+</div>
+<div class="paragraph">
+<p>que nos muestra las propiedades de cada campo de la tabla. Podemos ver por ejemplo que el tipo de datos del campo <em>descripción</em> es un CLOB, o que sobre el campo <em>numeroderegistro</em> existe la restricción NOT_NULL. Y para ver los datos de una tabla usamos el habitual:</p>
+</div>
+<div class="paragraph">
+<p><code>select * from root.drone;</code></p>
+</div>
+<div class="paragraph">
+<p>Cerramos la sesión con el comando:</p>
+</div>
+<div class="paragraph">
+<p><code>disconnect;</code></p>
+</div>
+<div class="paragraph">
+<p>Y terminamos la sesión <em>ij</em> con:</p>
+</div>
+<div class="paragraph">
+<p><code>exit;</code></p>
+</div>
+<div class="paragraph">
+<p>Os muestro la sesión de <em>ij</em> completa en la siguiente figura:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig068.png" alt="post003 fig068.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Para acabar con esta introducción a <em>ij</em> comentaros que Derby restringe el número de máquinas virtuales a una a menos que usemos el Derby Network Server, de modo que debéis tener el cuidado de desconectar la sesión de <em>ij</em>, si la teníais abierta, antes de desplegar la aplicación, y reciprocamente, parar el servidor antes de iniciar una sesión de <em>ij</em>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_la_capa_de_negocio_confluencia_de_tres_tecnolog_as_ejb_jpa_y_jta">La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Llegamos a la capa de negocio, espacio donde tendremos que situar la lógica del conjunto de acciones necesarias para cubrir todos los casos de uso definidos en la fase de análisis. En general estas acciones serán transaccionales, contra depósitos de datos, sistemas externos a través de webservices, o una mezcla de ambos. En nuestra aplicación se reduce a devolver la lista de drones realizando un trabajo en una fecha y hora suministrada y al tratarse de una simple consulta podemos prescindir de transacciones y así ahorrar recursos.</p>
+</div>
+<div class="paragraph">
+<p>Observemos nuestro ya conocido diagrama de clases de la fase de diseño:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png" alt="post003 fig045.png">
+</div>
+</div>
+<div class="paragraph">
+<p>La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia, no estructural. Es la relación más débil del diagrama.</p>
+</div>
+<div class="paragraph">
+<p>Usaremos la tecnología EJB, en concreto la versión 3.1, incluída en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, que en nuestro caso de momento no usaremos, apoyándose en JTA, y realizar la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html">esta dirección</a>.</p>
+</div>
+<div class="paragraph">
+<p>Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna dependencia al fichero de proyecto. Para EJB sólo preciso la dependencia:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.jboss.spec.javax.ejb&lt;/groupId&gt;
+    &lt;artifactId&gt;jboss-ejb-api_3.1_spec&lt;/artifactId&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial de datos. Por lo tanto tenemos que tocar el pom.xml.</p>
+</div>
+<div class="paragraph">
+<p>Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta <code>negocio/</code> dentro de la carpeta de proyecto <code>src/main/java/com/lametaweb/jdrone/</code>. A continuación pulsamos botón dereho sobre la carpeta <em>negocio/</em> y elegimos la opción <em>New &gt; Other&#8230;&#8203;</em> , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción <em>Session Bean (EJB 3.x)</em>. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor <code>DroneFacade</code>. Antes de pulsar el botón <em>Aceptar</em> podéis ver como por defecto se marca la opción <em>No-interface View</em> que  hará que se cree un bean sin interfaz. Dejamos marcada la opción para simplificar la aplicación.</p>
+</div>
+<div class="paragraph">
+<p>Una vez creado el bean sin estado y sin interfaz añadimos el método de negocio indicado en el diagrama, quedando la clase así:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.lametaweb.jdrone.negocio;
+import java.util.Date;
+import java.util.List;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import com.lametaweb.jdrone.persistencia.Drone;
+
+/**
+ * Session Bean implementation class DroneFacade
+ */
+@Stateless
+@LocalBean
+public class DroneFacade {
+
+	@PersistenceContext(unitName = "datosdrones")
+    private EntityManager em;
+
+    /**
+     * Default constructor.
+     */
+    public DroneFacade() {
+        // TODO Auto-generated constructor stub
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List&lt;Drone&gt; obtenEstadoDronesPorFecha(Date fecha){
+    	String consulta = "select d " +
+    		"from Drone d inner join d.trabajosAsignados t " +
+    		"where t.fechaHoraInicio &lt; :fecha " +
+			"and t.fechaHoraFinalizacion &gt; :fecha " +
+    		"order by d.numeroDeSerie";
+
+    	return em.createQuery(consulta, Drone.class).
+    	setParameter("fecha", fecha).
+    	getResultList();
+
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Al tratarse de un bean EJB podemos inyectar el entity manager directamente en el atributo <em>em</em>.</p>
+</div>
+<div class="paragraph">
+<p>El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.</p>
+</div>
+<div class="paragraph">
+<p>Al tratarse de una consulta podemos prescindir del comportamiento transaccional, añadiendo una simple anotación al método.</p>
+</div>
+<div class="paragraph">
+<p>Una consulta puede montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como véis he optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y por tanto no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-jpql" data-lang="jpql">select d
+from Drone d inner join d.trabajosAsignados t
+where t.fechaHoraInicio &lt; :fecha and t.fechaHoraFinalizacion &gt; :fecha
+order by d.numeroDeSerie</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En la primera línea defino los atributos o entidades que quiero que la consulta devuelva. Al indicar el alias <em>d</em> en <em>select d</em> estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate a diferencia de JPA es posible prescindir de esta parte de la consulta. Si lo hacemos así no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la claúsula <em>from</em>. Nuestra consulta devolvería entonces una lista de array de objetos List&lt;Object[]&gt; donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.</p>
+</div>
+<div class="paragraph">
+<p>En la segunda línea como se ha comentado se determinan las entidades que intervienen en la consulta. En este caso el conjunto de datos consiste en un inner join entre Drone y Trabajo. El join, a diferencia de lo que ocurre en SQL, se hace indicando el campo de la entidad padre que da acceso a las entidades hijas relacionadas: <em>d.trabajosAsignados</em>.</p>
+</div>
+<div class="paragraph">
+<p>La tercera línea establece el filtrado de los elementos a devolver, de manera similar a lo que hago en SQL con los registros. Podemos ver cómo se ha definido el parámetro nombrado <em>:fecha</em> para inyectar su valor dentro de la consulta.</p>
+</div>
+<div class="paragraph">
+<p>Por último definimos un orden para el conjunto de elementos devueltos. En nuestro caso como lo que devolvemos son "disponibilidades de drones" tiene sentido que el orden lo definamos sobre el campo que identifica al drone, de modo que el usuario lo pueda localizar con facilidad.</p>
+</div>
+<div class="paragraph">
+<p>Cuando en una aplicación tenemos un número elevado de consultas podemos agruparlas en cada uno de los beans de entidad dependiendo de la relación semántica entre la consulta y el bean. De esta manera podremos reutilizar la misma consulta en varios puntos de la aplicación y mantenerlas de forma más eficiente. Para esto usamos la anotación @NamedQuery. Hagamos este cambio en nuestra aplicación. Abrimos la clase Drone y añadimos la siguiente anotación justo debajo de la anotación <em>@Entity</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@NamedQueries({
+    @NamedQuery(name="Drone.estadoDronesPorFecha",
+                query="select d " +
+    			"from Drone d inner join d.trabajosAsignados t " +
+    			"where t.fechaHoraInicio &lt; :fecha " +
+    			"and t.fechaHoraFinalizacion &gt; :fecha " +
+    			"order by d.numeroDeSerie"
+				)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Como de costumbre usamos la hotkey Crtl + O para traernos las nuevas importaciones. Y añadimos a la clase de negocio el método siguiente, que es equivalente al <em>obtenEstadoDronesPorFecha</em> pero usando una NamedQuery:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public List&lt;Drone&gt; obtenEstadoDronesPorFechaNamed(Date fecha){
+
+    return em.createNamedQuery("Drone.estadoDronesPorFecha", Drone.class).
+    setParameter("fecha", fecha).
+    getResultList();
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Y con esto tendríamos lista la capa de negocio.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_un_editor_de_consultas_jpa_en_nuestro_ide">Un editor de consultas JPA en nuestro IDE</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A continuación vamos a configurar una utilidad, de las muchas que trae el paquete JBoss Tools, que nos va a facilitar bastante las cosas cuando necesitemos incluir nuevas consultas en la capa de negocio, usando HQL/JPQL o el API Criteria. Se trata de las Hibernate Tools.</p>
+</div>
+<div class="paragraph">
+<p>Para que en nuestra aplicación el mapeo de entidades que hace Hibernate Tools sea correcto éstas deben aparecer de forma explícita en el archivo persistence.xml de definición de la unidad de persistencia. Así que abrimos el fichero y eliminamos la línea <code>&lt;exclude-unlisted-classes&gt;false&lt;/exclude-unlisted-classes&gt;</code> sustituyendo, con un copia pega, el contenido del fichero por el siguiente:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0"&gt;
+    &lt;persistence-unit name="datosdrones" transaction-type="JTA"&gt;
+        &lt;jta-data-source&gt;java:jboss/datasources/DerbyDS&lt;/jta-data-source&gt;
+        &lt;class&gt;com.lametaweb.jdrone.persistencia.Drone&lt;/class&gt;
+        &lt;class&gt;com.lametaweb.jdrone.persistencia.PuntoRuta&lt;/class&gt;
+        &lt;class&gt;com.lametaweb.jdrone.persistencia.Trabajo&lt;/class&gt;
+        &lt;properties&gt;
+            &lt;property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" /&gt;
+            &lt;property name="hibernate.hbm2ddl.auto" value="create" /&gt;
+        &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lo primero que heremos será crear una conexión a Derby, que será la que use Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú <em>Window &gt; Open Perspective &gt; Other&#8230;&#8203;</em> y elegimos <em>Hibernate</em>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig071.png" alt="post003 fig071.png">
+</div>
+</div>
+<div class="paragraph">
+<p>A continuación abrimos la vista Data Source Explorer en la opción <em>Window &gt; Show View &gt; Other&#8230;&#8203;</em>  filtramos por la cadena "data" y seleccionamos <em>Data Source Explorer</em>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig072.png" alt="post003 fig072.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Nos vamos a esta vista, pulsamos botón derecho sobre la carpeta <em>Database Connections</em> y seleccionamos la opción <em>New&#8230;&#8203;</em>. Elegimos el tipo <em>Derby</em> y en el campo <em>Name</em> escribimos <code>Pruebas JPQL</code>. Pulsamos el botón <em>Next</em> para ir a la pantalla de propiedades. Configuramos el driver para el datasource pulsando sobre el icono
+<span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig073.png" alt="post003-fig073.png"></span>. Esto nos lleva a la pantalla <em>New Driver Definition</em>. En la solapa <em>Name/Type</em> seleccionamos <em>Derby Embedded JDBC Driver</em> con la versión <em>10.2</em>. En la solapa <em>JAR List</em> pulso el botón <em>Add JAR/Zip</em>, localizo el fichero <em>derby.jar</em> en el disco duro y lo selecciono. Recuerda que este fichero debe estar en una ruta similar a <em>C:\TALLER\BD\db-derby-10.11.1.1-bin\</em>. En la solapa <em>Properties</em> rellenáis estos campos:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Property</p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Value</p></th>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Connection URL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jdbc:derby:c:\BD\drones;create=true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">drones</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">root</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UserID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">root</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Y pulsamos <em>OK</em>. En el apartado <em>Properties</em> en la solapa <em>General</em> actualizamos los siguientes campos:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Property</p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Value</p></th>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database location</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c:\BD\drones</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">root</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">root</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Save password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">marcado</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Desmarcamos las dos opciones en la parte inferior de la ventana y pulsamos el botón <em>Test Connection</em> para comprobar que llegamos a la base de datos. Recordad que de momento no tenéis creada la base de datos y obtendréis un mensaje de error. Antes de probar la conexión además tenemos que asegurarnos de que no exista otra máquina virtual accediendo a la base de datos, en nuestro caso bien porque el servidor esté arrancado o bien porque hayamos dejado una conexión abierta con el cliente ij. Para terminar pulsamos <em>Finish</em>.</p>
+</div>
+<div class="paragraph">
+<p>La conexión que acabamos de crear para las Hibernate Tools podemos sin embargo usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más comodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos <em>Connect</em>. Navegando por la jerarquía accedemos a los distintos elementos:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig074.png" alt="post003 fig074.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Y para visualizar los datos pulsamos botón derecho y opción <em>Data &gt; Edit</em> sobre cualquiera de las tablas. Los datos se presentan en la solapa <em>SQL Results</em>.</p>
+</div>
+<div class="paragraph">
+<p>Bien, continuamos. Volvemos a pulsar botón derecho sobre el icono de la conexión <em>Pruebas JPQL</em> y seleccionamos la opción <em>Disconnect</em>. En la ventana de la solapa <em>Hibernate Configurations</em>, en el lado izquierdo de la pantalla, pulsamos  botón derecho y seleccionamos la opción <em>Add Configuration&#8230;&#8203;</em>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig076.png" alt="post003 fig076.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Lo que vamos a hacer es crear una configuración nueva dentro de las Hibernate Tools. Escribimos <code>jdrone</code> en el campo <em>Name</em> y los siguientes valores:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top" colspan="2"><p class="tableblock">Solapa Main</p></th>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Campo</p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Valor</p></th>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JPA (jdk 1.5+)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hibernate Version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Project</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pulsar <em>Browser</em> y seleccionar <em>jdrone</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database connection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pruebas JPQL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Persistence unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pulsar <em>Browser</em> y seleccionar <em>datosdrones</em></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top" colspan="2"><p class="tableblock">Solapa Classpath</p></th>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Campo</p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Valor</p></th>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Classpath</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Si está vacío seleccionar <em>User Entries</em>, pulsar el botón <em>Add Projects&#8230;&#8203;</em> y seleccionar nuestro proyecto <em>jdrone</em></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>La nueva configuración aparecerá en la solapa <em>Hibernate Configurations</em>. Para abrir un editor de consultas pulsamos botón derecho sobre la nueva configuración <em>jdrone</em> y seleccionamos la opción <em>HQL Editor</em>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig077.png" alt="post003 fig077.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Se abre una nueva ventana con el nombre <em>jdrone</em> donde podremos escribir cualquier consulta y visualizar el resultado. Escribamos la consulta de nuestro método de negocio:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-jpql" data-lang="jpql">select d
+from Drone d inner join d.trabajosAsignados t
+where t.fechaHoraInicio &lt; :fecha and t.fechaHoraFinalizacion &gt; :fecha
+order by d.numeroDeSerie</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para asignar un valor al parámetro <em>fecha</em> nos vamos a la vista <em>Query Parameters</em> a la derecha y hacemos click sobre el icono <span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png" alt="post003-fig081.png"></span>. Automaticamente se asigna el nombre <em>fecha</em> y el tipo <em>string</em>. En el campo <em>Value</em> introducimos una información de fecha y hora análoga a ésta:</p>
+</div>
+<div class="paragraph">
+<p><code>2015-06-16 20:36:49</code></p>
+</div>
+<div class="paragraph">
+<p>y que se corresponda aproximadamente con la hora en que la aplicación fue desplegada para que la consulta saque resultados. Pulsamos el icono en forma de flecha en el extremo izquierdo de la barra de herramientas <span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig079.png" alt="post003-fig079.png"></span> para ejecutar la consulta. Se muestra una ventana para confirmar la apertura de una session factory, pulsamos <em>Yes</em> y la consulta JPQL se ejecuta y muestra el único registro de nuestra carga inicial de datos.</p>
+</div>
+<div class="paragraph">
+<p>En la siguiente figura se muestra la perspectiva <em>Hibernate</em>. Para visualizar los atributos de los beans resultado de la consulta basta con seleccionar alguno de los beans. Los datos son mostrados en la parte inferior izquierda del IDE en la solapa <em>Properties</em> en forma de lista vertical de parejas Propiedad/Valor. En esta lista podremos además navegar hacia los objetos relacionados.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig082.png" alt="post003 fig082.png">
+</div>
+</div>
+<div class="paragraph">
+<p>En la figura se puede observar como hemos navegado desde el objeto Drone hacia el objeto Trabajo relacionado a través del atributo <em>trabajosAsignados</em>. Es interesante señalar que, a pesar de que al ejecutar la consulta el objeto Trabajo relacionado no es leído desde la base de datos, ya que las relaciones uno a muchos en JPA son anotadas por defecto como fetchType.EAGER, sí que accederemos al objeto Trabajo al solicitarlo pulsando el elemento de la lista correspondiente a la relación.</p>
+</div>
+<div class="paragraph">
+<p>Respecto del editor de consultas HQL recordad que como la base de datos Derby sólo puede ser accedida por una única máquina virtual a la vez es importante parar el servidor antes de usarlo y cerrar la Configuración Hibernate en la solapa <em>Hibernate Configurations</em> cuando hayamos terminado de usar el editor tal como muestra la figura:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig083.png" alt="post003 fig083.png">
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Durante la elaboración del contenido de este post sin embargo eventualmente al cerrar la configuración Hibernate la base de datos no se desbloqueaba de manera automática. En este caso la solución pasa por cerrar y abrir Eclipse.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Bien, pues hasta aquí llegamos con la capa de negocio. En el próximo post completaremos finalmente nuestra aplicación con la implementación de la capa de presentación, basada en el framework MVC JSF. Hasta entonces!</p>
+</div>
+</div>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/ij">ij</a>, <a href="http://www.lametaweb.com/tag/EJB"> EJB</a>, <a href="http://www.lametaweb.com/tag/JPA"> JPA</a>, <a href="http://www.lametaweb.com/tag/Derby"> Derby</a>, <a href="http://www.lametaweb.com/tag/Hibernate-Tools"> Hibernate Tools</a>, <a href="http://www.lametaweb.com/tag/Datasource-Explorer"> Datasource Explorer</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Desarrollo%20de%20una%20aplicaci%C3%B3n%20desde%20cero%3A%20La%20capa%20de%20negocio.&amp;url=http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>La metaweb</h4>
+                        <img src="https://avatars.githubusercontent.com/u/11819148?v=3">
+                        
+                        
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'lametaweb'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-62743682-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
