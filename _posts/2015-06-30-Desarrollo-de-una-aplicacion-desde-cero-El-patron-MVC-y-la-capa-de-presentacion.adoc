@@ -83,7 +83,9 @@ Cuando tengamos nuestra aplicación terminada, al final de este post, afianzarem
 
 == Montaje de la capa web
 
-Empezemos a añadir los elementos a la capa web de nuestra aplicación. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita. Las tecnologías implicadas son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto, copiad dentro del elemento _<dependencies>_ esto:
+Empezamos a añadir los elementos a la capa web de nuestra aplicación. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita, aunque inicialmente para probar el despliegue de la aplicación sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!". 
+
+Las tecnologías implicadas son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto, copiad dentro del elemento _<dependencies>_ esto:
 
 [source,xml,indent=0]
 ----
@@ -258,5 +260,5 @@ En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salid
 
 Llegamos al esperado momento. Para comprobar que la aplicación y los recursos de que depende se han desplegado correctamente en el servidor navegamos a la aplicación desde nuestro browser escribiendo la URL `http://localhost:8080/jdrone`. Y si todo ha ido bien se mostrará el mensaje "Hola mundo!" en pantalla.
 
-En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Estamos pronto de vuelta!
+En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Nos vemos pronto a la vuelta!
 
