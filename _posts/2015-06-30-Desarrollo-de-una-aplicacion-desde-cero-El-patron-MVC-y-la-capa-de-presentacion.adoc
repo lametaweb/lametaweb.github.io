@@ -7,7 +7,7 @@ Bienvenidos a otro post de la serie _Desarrollo de una aplicación desde cero_. 
 
 == El patrón Modelo-Vista-Controlador
 
-En síntesis es una solución efectiva al problema de arquitectura de la aplicación que plantea la separación de la parte de la presentación o de la vista y la parte de los datos o del modelo. En el modelo MVC esta separación se logra introduciendo un tercer componente, el Controlador.
+En síntesis es una solución efectiva al problema de arquitectura de la aplicación que plantea la separación de la parte de la presentación o de la vista y la parte de los datos o del modelo. En el patrón MVC esta separación se consigue introduciendo un tercer componente, el Controlador.
 
 Aunque la anterior definición está clara, no lo está tanto como este patrón encaja en una aplicación web Java empresarial basada en la tecnología Java EE como la que en este post vamos a concluir. Y tampoco como cada parte M, V y C se sitúa dentro de la arquitectura de capas de nuestra aplicación.
 
