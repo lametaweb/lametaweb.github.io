@@ -159,13 +159,37 @@ A continuación añadimos el fichero de configuración de JSF. Creamos un nuevo 
 </faces-config>
 ----
 
-Como véis es un documento xml que sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo _version_. Se trata de la versión 2.1 que corresponde a Java EE 6. Esta es la versión que viene con el servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.6, ya que trae características nuevas interesantes. Para esto tendríamos simplemente que añadir un nuevo módulo al servidor del mismo modo que añadimos el driver de Derby ya que lo que se exige es que Servlet 3.0 o superior esté presente. 
+Como véis es un documento xml que en nuetro caso sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo _version_. Se trata de la versión 2.1 que corresponde a Java EE 6. Esta es la versión que viene con el servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.11, ya que trae características nuevas interesantes. Para esto tendríamos  que añadir la configuración necesaria al servidor de modo similar a cuando añadimos el driver de Derby aunque en este caso es algo más complejo podéis ampliar información https://developer.jboss.org/wiki/DesignOfAS7Multi-JSFFeature[aquí] y https://developer.jboss.org/message/914507[aquí].
+
+La ausencia de contenido es una consecuencia por un lado de la simplicidad de nuestra aplicación y por otro del uso del principio COC, Convention Over Configuration, que implementa el framework JSF y que consiste en establecer siempre que sea posible valores y comportamientos por defecto. Por ejemplo para las reglas de validación se acuerda que pueden establecerse de modo programático simplemente haciendo referencia al nombre del fichero de la página destino.
+
+Para finalizar creamos otro nuevo fichero xml de nombre `beans.xml` y pegamos lo siguiente como contenido:
+
+[source,xml,indent=0]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://jboss.org/schema/cdi/beans_1_0.xsd">
+ 
+</beans>
+----
+
+También en este caso sólo precisamos el elemento raiz. La versión de CDI podemos verla reflejada en el nombre del esquema del documento xml. La presencia de este fichero es necesaria ya que es el modo de indicarle al servidor que nuestro módulo war va a utilizar beans CDI.
+
+En este punto sólo nos queda completar la capa web añadiendo la página JSF y la clase managed bean correspondiente. Sin embargo antes vamos a comprobar que la aplicación no contiene errores y es capaz de desplegarse en el servidor. Lo que haremos es añadir una página JSF sin funcionalidad, que presente conocido el mensaje "Hola mundo!".
+
+Antes de crear la página añadimos a nuestro proyecto la faceta JSF. Eclipse reconocerá los ficheros xhtml y será capaz de asistirnos mientras escribimos el código.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig080.png[]
+
+Hacemos botón derecho sobre el proyecto y la opción _Properties > Project Facets_. Marcamos el check _JavaServer Faces_ y cambiamos la versión a la _2.1_. Pulsamos el link que aparece abajo a la izquierda en la misma ventana con la leyenda _Futher configuration required..._. Se abrirá una nueva ventana donde cambiamos el valor del combo a _Disable Library Configuration_ como se indica la figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig085.png[]
 
 
 
 
 
-hablar de la carpeta web-inf
 
 
 
