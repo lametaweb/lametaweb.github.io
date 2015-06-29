@@ -99,6 +99,8 @@ Empezemos a añadir los elementos a la capa web de nuestra aplicación. En resum
 	</dependency>
 ----
 
+Copiamos y pegamos el contenido y Ctrl + S para guardar. Pulsamos Alt + F5 para actualizar el proyecto y tener así disponibles las librerías.
+
 Veamos los ficheros de configuración, son tres:
 
 * web.xml: Fichero de configuración de aplicación web, más conocido como descriptor de despliegue.
@@ -107,15 +109,54 @@ Veamos los ficheros de configuración, son tres:
 
 Nos vamos a Eclipse y creamos una carpeta de nombre `WEB-INF` dentro de la carpeta de proyecto _jdrone/src/main/webapp_. Y dentro de la nueva carpeta creamos el fichero `web.xml`. El contenido del fichero será el siguiente:
 
+[source,xml,indent=0]
+----
+  <?xml version="1.0" encoding="UTF-8"?>
+  <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+      <servlet>
+          <servlet-name>Faces Servlet</servlet-name>
+          <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+          <load-on-startup>1</load-on-startup>
+      </servlet>
+      <servlet-mapping>
+          <servlet-name>Faces Servlet</servlet-name>
+          <url-pattern>/faces/*</url-pattern>
+      </servlet-mapping>
+      <servlet-mapping>
+          <servlet-name>Faces Servlet</servlet-name>
+          <url-pattern>*.xhtml</url-pattern>
+      </servlet-mapping>
+      <session-config>
+          <session-timeout>30</session-timeout>
+      </session-config>
+      <welcome-file-list>
+          <welcome-file>index.html</welcome-file>
+      </welcome-file-list>
+  </web-app>
+----
+
+La carpeta WEB-INF contiene los elementos no públicos de nuestra capa web. Aquí meteremos los ficheros de configuración, plantillas y fragmentos de facelets cuando los tengamos o librerías de terceros propias de la aplicación (en la carpeta lib) cuando las necesitemos.
+
+Veamos el significado de cada elemento del descriptor de despliegue:
+
+* web_app: Es el nodo raiz. Aquí se definen los espacios de nombres y el esquema que determina la estructura del fichero. El atributo _version_ fija la versión de la tecnología Servlets que usaremos. Para Java EE 6 la versión que corresponde es la 3.1.
+
+* servlet: Declara las clases Sevlets de nuestra aplicación. Al tratarse de una aplicación JSF el único Servlet es el que implementa el Controlador. El elemento  _load-on_startup_ indica que el objeto de la clase se carguará en la memoria Heap de la JVM en el inicio de la aplicación.
+
+* servlet-mapping: Establece las correspondencias entre patrones de la ruta URL y los servlets. En nuestro caso se traduce en que las peticiones de rutas que contengan la cadena "/faces/" detrás del contexto de la aplicación o que acaben en la cadena ".xhtml" serán atendidas por el Controlador de JSF.
+
+* session-config: Engloba las propiedades de configuración de la sesión http en el servidor. Aquí definimos en tiempo máximo que el usuario puede dejar de interactuar con la aplicación antes de que su sesión sea descartada.
+
+* welcome-file-list: Define una lista de nombres de ficheros que se añadirán al final de la URL cuanto ésta no especifique ninguno. En concreto cuando llamemos a nuestra aplicación con la ruta http://localhost:8080/jdrone/ ésta será interpretada como http://localhost:8080/jdrone/index.xhtml y se mostrará la página JSF.
+
+A continuación añadimos 
 
 
 
 
 
 
-
-
-
+hablar de la carpeta web-inf
 
 
 
