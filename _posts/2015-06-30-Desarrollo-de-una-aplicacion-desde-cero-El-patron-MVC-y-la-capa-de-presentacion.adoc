@@ -9,7 +9,7 @@ Bienvenidos a otro post de la serie _Desarrollo de una aplicación desde cero_. 
 
 En síntesis es una solución efectiva al problema de arquitectura de la aplicación que plantea la separación de la parte de la presentación o de la vista y la parte de los datos o del modelo. En el patrón MVC esta separación se consigue introduciendo un tercer componente, el Controlador.
 
-Aunque la anterior definición está clara, no lo está tanto como este patrón encaja en una aplicación web Java empresarial basada en la tecnología Java EE como la que en este post vamos a concluir. Y tampoco como cada parte M, V y C se sitúa dentro de la arquitectura de capas de nuestra aplicación.
+Aunque la definición es clara, no lo es tanto como el patrón encaja en una aplicación web empresarial basada en la tecnología Java EE como la nuestra. Y tampoco cómo cada parte M, V y C se sitúa dentro de una arquitectura por capas típica.
 
 Las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación.
 
