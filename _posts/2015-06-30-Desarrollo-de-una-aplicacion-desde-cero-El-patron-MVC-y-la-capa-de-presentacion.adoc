@@ -1,13 +1,13 @@
 = Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.
 La metaweb
-:hp-tags: JSF, Java Server Faces, MVC, Facelets, Maven
+:hp-tags: JSF, JavaServer Faces, MVC, Facelets, Maven
 :published_at: 2015-06-30
 
-Hola de nuevo. En este post completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente para no inflar demasiado este post nuestra interfaz simplemente mostrará el mensaje "Hola mundo!". Pero antes de empezar a añadir elementos, considero importante mostraros el concepto del patrón Modelo-Vista-Controlador ya que su comprensión nos va a ayudar a entender la función de cada elemento dentro de esta capa.
+Bienvenidos a otro post de la serie _Desarrollo de una aplicación desde cero_. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para no inflar demasiado el post, nuestra interfaz simplemente mostrará el mensaje "Hola mundo!". Pero antes de empezar a añadir elementos, considero importante mostraros un par de conceptos centrales en JSF: Por un lado el patrón Modelo-Vista-Controlador y por otro el ciclo de vida petición-respuesta.
 
-== El patrón MVC
+== El patrón Modelo-Vista-Controlador
 
-Consiste en una solución probada al problema que plantea la separación de la presentación o vista y el modelo en la arquitectura de una aplicación. Esta separación se logra introduciendo un tercer componente, el controlador.
+En síntesis es una solución efectiva al problema de arquitectura de la aplicación que plantea la separación de la parte de la presentación o de la vista y la parte de los datos o del modelo. En el modelo MVC esta separación se logra introduciendo un tercer componente, el Controlador.
 
 Aunque la anterior definición está clara, no lo está tanto como este patrón encaja en una aplicación web Java empresarial basada en la tecnología Java EE como la que en este post vamos a concluir. Y tampoco como cada parte M, V y C se sitúa dentro de la arquitectura de capas de nuestra aplicación.
 
