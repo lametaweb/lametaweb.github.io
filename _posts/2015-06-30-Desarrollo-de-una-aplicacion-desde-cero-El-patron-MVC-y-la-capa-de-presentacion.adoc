@@ -192,17 +192,39 @@ Creamos la página "Hola mundo!" pulsando botón derecho sobre la carpeta _webap
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig090.png[]
 
-La página es creada y Eclipse nos la mostrará en el editor por defecto lista para que empecemos a componerla. De momento pulsamos sobre la lengüeta _Source_ para tener acceso a un código xhtml como éste:
+La página es creada y Eclipse nos la mostrará en el editor por defecto lista para que empecemos a componerla. Pulsamos sobre la lengüeta _Source_ para tener acceso al código xhtml, y vemos:
 
 [source,xml,indent=0]
 ----
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"> 
 
+<h:head></h:head> 
+<body> 
+
+</body> 
+</html>
 ----
 
+Es la estructura básica de una página JSF, que en resumen es una página HTML que respeta el formato XML y donde aparecen una serie de etiquetas adicionales correspondientes a distintas librerías JSF de etiquetas. Veamos el documento línea a línea:
 
+* La entrada DOCTYPE es siempre la primera línea en una página HTML y por tanto también en una página JSF. En este caso se acompaña de la referencia al DTD que contiene las reglas para los documentos HTML 4.01. Para una página HTML 5 se simplifica a <!DOCTYPE html> ya que no hay validación contra un DTD.
 
+. La segunda línea se corresponde con el elemento raiz de una página HTML y representa el documento completo. En este elemento se declaran los espacios de nombres que vayamos a usar dentro de la página. Los espacios de nombres dentro de un fichero XML tienen la mision de evitar posibles conflictos de nombres anteponiendo al nombre de la etiqueta un prefijo seguido por el carácter dos puntos. Por ejemplo los elementos del core de JSF van precedidos por la cadena _f:_.
 
+. Dentro del elemento html aparecen como es usual los dos elementos cabecera y cuerpo. Ahora simplemente escribiremos la cadena `Hola mundo!` dentro del elemento body. Pulsamos Ctrl + S para guardar los cambios.
 
+Antes de ejecutar el ciclo de vida de construcción de nuestro proyecto abrimos el fichero pom.xml y añadimos la línea:
+
+`<finalName>${project.artifactId}</finalName>`
+
+dentro del elemento _<build>_. De esta manera el nombre del artefacto
+war que se genera y despliega en el servidor sea el id del artefacto, en nuestro caso "jdrone". Esto es conveniente ya que por defecto
+el nombre del contexto de nuestra aplicación web es tomado del nombre del war y en caso de no incluir esta información la ruta URL de nuestra
+aplicación no se simplificaría.
 
 
 seguir el ciclo de vida en la aplicación
