@@ -256,7 +256,7 @@ En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salid
 	** package: Se generera el archivo war en la carpeta target. Si abrimos la carpeta desde windows, en mi caso en la carpeta _C:\TALLER\workspace\jdrone\target\_ podremos ver el artefacto war generado.
 	** install: Copia el artefacto jdrone.war en el repositorio local en la ruta _C:\Users\Javier\.m2\repository\com\lametaweb\javaee\jdrone\0.0.1-SNAPSHOT\jdrone-0.0.1-SNAPSHOT.war_, esto es útil cuando se trata de librerías ya que permite que el artefacto sea usado como dependencia en cualquier otro proyecto. El nombre nos está diciendo que se trata de la primera versión y que es una snapshot es decir una versión de desarrollo que no está destinada a producción como ocurre en el caso de una release.
 
-
+Llegamos al esperado momento. Para comprobar que la aplicación y los recursos de que depende se han desplegado correctamente en el servidor navegamos a la aplicación desde nuestro browser escribiendo la URL `http://localhost:8080/jdrone`. Y si todo ha ido bien se mostrará el mensaje "Hola mundo!" en pantalla.
 
 
 seguir el ciclo de vida en la aplicación
