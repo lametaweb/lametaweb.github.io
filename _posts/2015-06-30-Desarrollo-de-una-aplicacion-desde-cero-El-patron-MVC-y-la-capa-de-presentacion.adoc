@@ -190,6 +190,14 @@ Pulsamos _OK_ en esa pantalla y de nuevo en la pantalla de propiedades del proye
 
 Creamos la página "Hola mundo!" pulsando botón derecho sobre la carpeta _webapp_ y la opción _New > Other... > JBoss Tools Web > XHTML Page_. Pulsamos _Next_ y escribimos como nombre de la página `index.xhtml`. Pulso _Next_ y elijo la plantilla _Blank JSF Page_. Y pulsamos _Finish_.
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig090.png[]
+
+La página es creada y Eclipse nos la mostrará en el editor por defecto lista para que empecemos a componerla. De momento pulsamos sobre la lengüeta _Source_ para tener acceso a un código xhtml como éste:
+
+[source,xml,indent=0]
+----
+
+----
 
 
 
