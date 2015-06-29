@@ -85,6 +85,31 @@ Cuando tengamos nuestra aplicación terminada, al final de este post, afianzarem
 
 Empezemos a añadir los elementos a la capa web de nuestra aplicación. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita. Las tecnologías implicadas son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto, copiad dentro del elemento _<dependencies>_ esto:
 
+[source,xml,indent=0]
+----
+	<dependency>
+		<groupId>org.jboss.spec.javax.faces</groupId>
+		<artifactId>jboss-jsf-api_2.1_spec</artifactId>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>javax.enterprise</groupId>
+		<artifactId>cdi-api</artifactId>
+		<scope>provided</scope>
+	</dependency>
+----
+
+Veamos los ficheros de configuración, son tres:
+
+* web.xml: Fichero de configuración de aplicación web, más conocido como descriptor de despliegue.
+* faces-config.xml: Fichero de configuración de JSF.
+* beans.xml: Fichero del contexto CDI.
+
+Nos vamos a Eclipse y creamos una carpeta de nombre `WEB-INF` dentro de la carpeta de proyecto _jdrone/src/main/webapp_. Y dentro de la nueva carpeta creamos el fichero `web.xml`. El contenido del fichero será el siguiente:
+
+
+
+
 
 
 
