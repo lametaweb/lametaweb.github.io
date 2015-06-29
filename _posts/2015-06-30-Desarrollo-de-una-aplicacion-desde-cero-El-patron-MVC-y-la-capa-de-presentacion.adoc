@@ -186,6 +186,10 @@ Hacemos botón derecho sobre el proyecto y la opción _Properties > Project Face
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig085.png[]
 
+Pulsamos _OK_ en esa pantalla y de nuevo en la pantalla de propiedades del proyecto. Tras unos segundos los cambios se harán efectivos en nuestro proyecto.
+
+Creamos la página "Hola mundo!" pulsando botón derecho sobre la carpeta _webapp_ y la opción _New > Other... > JBoss Tools Web > XHTML Page_. Pulsamos _Next_ y escribimos como nombre de la página `index.xhtml`. Pulso _Next_ y elijo la plantilla _Blank JSF Page_. Y pulsamos _Finish_.
+
 
 
 
