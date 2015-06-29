@@ -9,11 +9,11 @@ Bienvenidos a otro post de la serie _Desarrollo de una aplicación desde cero_. 
 
 En síntesis es una solución efectiva al problema de arquitectura de la aplicación que plantea la separación de la parte de la presentación o de la vista y la parte de los datos o del modelo. En el patrón MVC esta separación se consigue introduciendo un tercer componente, el Controlador.
 
-Aunque la definición es clara, no lo es tanto como el patrón encaja en una aplicación web empresarial basada en la tecnología Java EE como la nuestra. Y tampoco cómo cada parte M, V y C se sitúa dentro de una arquitectura por capas típica.
+Pero veamos como el patrón encaja en una aplicación web empresarial basada en la tecnología Java EE como la nuestra y cómo cada parte M, V y C se sitúa dentro de una arquitectura por capas típica.
 
-Las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación.
+En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación. Aunque considerando M como una representación del modelo completo, que reside en las capas de negocio y persistencia.
 
-Veamos una definición para cada parte M, V, y C y la correspondencia con cada uno de los elementos de la aplicación:
+La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la aplicación es la siguiente:
 
 * Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
 
