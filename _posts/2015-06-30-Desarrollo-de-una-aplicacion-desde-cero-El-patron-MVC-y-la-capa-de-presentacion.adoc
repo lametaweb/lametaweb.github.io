@@ -145,12 +145,21 @@ Veamos el significado de cada elemento del descriptor de despliegue:
 
 * servlet-mapping: Establece las correspondencias entre patrones de la ruta URL y los servlets. En nuestro caso se traduce en que las peticiones de rutas que contengan la cadena "/faces/" detrás del contexto de la aplicación o que acaben en la cadena ".xhtml" serán atendidas por el Controlador de JSF.
 
-* session-config: Engloba las propiedades de configuración de la sesión http en el servidor. Aquí definimos en tiempo máximo que el usuario puede dejar de interactuar con la aplicación antes de que su sesión sea descartada.
+* session-config: Engloba las propiedades de configuración de la sesión http en el servidor. Aquí definimos en tiempo máximo en minutos que el usuario puede dejar de interactuar con la aplicación antes de que su sesión sea descartada.
 
 * welcome-file-list: Define una lista de nombres de ficheros que se añadirán al final de la URL cuanto ésta no especifique ninguno. En concreto cuando llamemos a nuestra aplicación con la ruta http://localhost:8080/jdrone/ ésta será interpretada como http://localhost:8080/jdrone/index.xhtml y se mostrará la página JSF.
 
-A continuación añadimos 
+A continuación añadimos el fichero de configuración de JSF. Creamos un nuevo fichero xml en la misma carpeta con el nombre faces-config.xml. El contenido es el siguiente:
 
+[source,xml,indent=0]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd" version="2.1" >
+
+</faces-config>
+----
+
+Como véis es un documento xml que sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo _version_. Se trata de la versión 2.1 que corresponde a Java EE 6. Esta es la versión que viene con el servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.6, ya que trae características nuevas interesantes. Para esto tendríamos simplemente que añadir un nuevo módulo al servidor del mismo modo que añadimos el driver de Derby ya que lo que se exige es que Servlet 3.0 o superior esté presente. 
 
 
 
