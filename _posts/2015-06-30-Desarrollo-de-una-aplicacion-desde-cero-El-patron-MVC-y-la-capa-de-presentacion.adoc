@@ -222,9 +222,9 @@ Antes de ejecutar el ciclo de vida de construcción de nuestro proyecto abrimos 
 `<finalName>${project.artifactId}</finalName>`
 
 dentro del elemento _<build>_. De esta manera el nombre del artefacto
-war que se genera y despliega en el servidor sea el id del artefacto, en nuestro caso "jdrone". Esto es conveniente ya que por defecto
-el nombre del contexto de nuestra aplicación web es tomado del nombre del war y en caso de no incluir esta información la ruta URL de nuestra
-aplicación no se simplificaría.
+war que se generará en la fase package será el definido en el elemento  _<artifactId>_ de nuestro proyecto, es decir "jdrone", y no el que se generaría por defecto, que incluye el tipo y versión, más engorroso. Por defecto el nombre del contexto de nuestra aplicación web es tomado del nombre del artefacto war y es conveniente simplificarlo para que la URL de la aplicación quede como una cadena sencilla.
+
+
 
 
 seguir el ciclo de vida en la aplicación
