@@ -84,9 +84,9 @@ Cuando tengamos nuestra aplicación terminada, en el próximo post, afianzaremos
 
 == Montaje de la capa web
 
-Abrimos Eclipse para empezar a añadir los elementos a la capa web de nuestra aplicación. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita, aunque inicialmente para probar el despliegue de la aplicación sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!". 
+Abrimos Eclipse para empezar a añadir los elementos a la capa web. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita.  Inicialmente sin embargo, para probar el despliegue de la aplicación, sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!". 
 
-Las tecnologías implicadas son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto, copiad dentro del elemento _<dependencies>_ esto:
+Las tecnologías implicadas en esta capa son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto. Copiamos dentro del elemento _<dependencies>_ esto:
 
 [source,xml,indent=0]
 ----
@@ -102,13 +102,13 @@ Las tecnologías implicadas son JSF y CDI así que lo primero que hacemos es añ
 	</dependency>
 ----
 
-Copiamos y pegamos el contenido y Ctrl + S para guardar. Pulsamos Alt + F5 para actualizar el proyecto y tener así disponibles las librerías.
+Y guardamos con Ctrl + S. Pulsamos Alt + F5 para actualizar el proyecto y tener así disponibles las librerías.
 
-Veamos los ficheros de configuración, son tres:
+Vamos con los ficheros de configuración, son tres:
 
-* web.xml: Fichero de configuración de aplicación web, más conocido como descriptor de despliegue.
+* web.xml: Fichero de configuración de la aplicación web, más conocido como descriptor de despliegue.
 * faces-config.xml: Fichero de configuración de JSF.
-* beans.xml: Fichero del contexto CDI.
+* beans.xml: Fichero de configuración del contexto CDI.
 
 Nos vamos a Eclipse y creamos una carpeta de nombre `WEB-INF` dentro de la carpeta de proyecto _jdrone/src/main/webapp_. Y dentro de la nueva carpeta creamos el fichero `web.xml`. El contenido del fichero será el siguiente:
 
@@ -138,21 +138,21 @@ Nos vamos a Eclipse y creamos una carpeta de nombre `WEB-INF` dentro de la carpe
   </web-app>
 ----
 
-La carpeta WEB-INF contiene los elementos no públicos de nuestra capa web. Aquí meteremos los ficheros de configuración, plantillas y fragmentos de facelets cuando los tengamos o librerías de terceros propias de la aplicación (en la carpeta lib) cuando las necesitemos.
+La carpeta _WEB-INF_ contiene los elementos no públicos de nuestra capa web. Aquí meteremos los ficheros de configuración, plantillas y fragmentos de facelets cuando los tengamos, o librerías de terceros propias de la aplicación (en la carpeta lib) cuando las necesitemos.
 
 Veamos el significado de cada elemento del descriptor de despliegue:
 
-* web_app: Es el nodo raiz. Aquí se definen los espacios de nombres y el esquema que determina la estructura del fichero. El atributo _version_ fija la versión de la tecnología Servlets que usaremos. Para Java EE 6 la versión que corresponde es la 3.1.
+* web_app: Es el nodo raiz. Aquí se definen los espacios de nombres y el esquema XML que determina las reglas de validez para el documento. El atributo _version_ fija la versión de la tecnología Servlets que usaremos. Para Java EE 6 la versión que corresponde es la 3.1.
 
-* servlet: Declara las clases Sevlets de nuestra aplicación. Al tratarse de una aplicación JSF el único Servlet es el que implementa el Controlador. El elemento  _load-on_startup_ indica que el objeto de la clase se carguará en la memoria Heap de la JVM en el inicio de la aplicación.
+* servlet: Declara los Sevlets de nuestra aplicación. Al tratarse de una aplicación JSF simple el único Servlet es el que implementa el Controlador. El elemento  _load-on_startup_ indica que el objeto de la clase se carguará en la memoria Heap de la JVM en el inicio de la aplicación.
 
-* servlet-mapping: Establece las correspondencias entre patrones de la ruta URL y los servlets. En nuestro caso se traduce en que las peticiones de rutas que contengan la cadena "/faces/" detrás del contexto de la aplicación o que acaben en la cadena ".xhtml" serán atendidas por el Controlador de JSF.
+* servlet-mapping: Establece las correspondencias entre patrones de rutas URL de la aplicación y los servlets. En nuestro caso se traduce en que las peticiones de rutas que contengan la cadena "/faces/" detrás del contexto de la aplicación o que acaben en la cadena ".xhtml" serán atendidas por el Controlador de JSF.
 
-* session-config: Engloba las propiedades de configuración de la sesión http en el servidor. Aquí definimos en tiempo máximo en minutos que el usuario puede dejar de interactuar con la aplicación antes de que su sesión sea descartada.
+* session-config: Engloba las propiedades de configuración de la sesión http en el servidor. Aquí definimos el tiempo máximo en minutos que el usuario puede dejar de interactuar con la aplicación antes de que su sesión sea descartada.
 
-* welcome-file-list: Define una lista de nombres de ficheros que se añadirán al final de la URL cuanto ésta no especifique ninguno. En concreto cuando llamemos a nuestra aplicación con la ruta http://localhost:8080/jdrone/ ésta será interpretada como http://localhost:8080/jdrone/index.xhtml y se mostrará la página JSF.
+* welcome-file-list: Define una lista de posibles nombres de páginas que se añadirán al final de la URL cuanto en ésta no especifique ninguna. En concreto cuando llamemos a nuestra aplicación en la ruta _http://localhost:8080/jdrone/_ ésta será interpretada como _http://localhost:8080/jdrone/index.xhtml_ y se mostrará esa página JSF.
 
-A continuación añadimos el fichero de configuración de JSF. Creamos un nuevo fichero xml en la misma carpeta con el nombre faces-config.xml. El contenido es el siguiente:
+Bien, a continuación añadimos el fichero de configuración de JSF. Creamos un nuevo fichero xml en la misma carpeta con el nombre `faces-config.xml`. El contenido es el siguiente:
 
 [source,xml,indent=0]
 ----
@@ -162,11 +162,11 @@ A continuación añadimos el fichero de configuración de JSF. Creamos un nuevo 
 </faces-config>
 ----
 
-Como véis es un documento xml que en nuetro caso sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo _version_. Se trata de la versión 2.1 que corresponde a Java EE 6. Esta es la versión que viene con el servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.11, ya que trae características nuevas interesantes. Para esto tendríamos  que añadir la configuración necesaria al servidor de modo similar a cuando añadimos el driver de Derby aunque en este caso es algo más complejo podéis ampliar información https://developer.jboss.org/wiki/DesignOfAS7Multi-JSFFeature[aquí] y https://developer.jboss.org/message/914507[aquí].
+Como véis es un documento XML que en nuestro caso sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo _version_. Se trata de la versión 2.1, que corresponde a Java EE 6. Esta es la versión que viene con nuestro servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.11, ya que trae características nuevas interesantes. Para esto tendríamos  que añadir la configuración necesaria al servidor de modo similar a cuando añadimos el driver de Derby aunque en este caso es algo más complejo. Podéis ampliar información https://developer.jboss.org/wiki/DesignOfAS7Multi-JSFFeature[aquí] y https://developer.jboss.org/message/914507[aquí].
 
-La ausencia de contenido es una consecuencia por un lado de la simplicidad de nuestra aplicación y por otro del uso del principio COC, Convention Over Configuration, que implementa el framework JSF y que consiste en establecer siempre que sea posible valores y comportamientos por defecto. Por ejemplo para las reglas de validación se acuerda que pueden establecerse de modo programático simplemente haciendo referencia al nombre del fichero de la página destino.
+La ausencia de contenido en este fichero es una consecuencia, por un lado de la simplicidad de nuestra aplicación, y por otro del uso del principio COC, Convention Over Configuration, que implementa el framework JSF y que consiste en establecer siempre que sea posible valores y comportamientos por defecto. Por ejemplo para las reglas de validación se acuerda que pueden establecerse de modo programático simplemente haciendo referencia al nombre del fichero de la página destino. Además como ya sabéis el uso de anotaciones ha quitado peso, afortunadamente, a los ficheros de configuración.
 
-Para finalizar creamos otro nuevo fichero xml de nombre `beans.xml` y pegamos lo siguiente como contenido:
+Creamos otro nuevo fichero XML `beans.xml` y pegamos lo siguiente como contenido:
 
 [source,xml,indent=0]
 ----
@@ -177,11 +177,11 @@ Para finalizar creamos otro nuevo fichero xml de nombre `beans.xml` y pegamos lo
 </beans>
 ----
 
-También en este caso sólo precisamos el elemento raiz. La versión de CDI podemos verla reflejada en el nombre del esquema del documento xml. La presencia de este fichero es necesaria ya que es el modo de indicarle al servidor que nuestro módulo war va a utilizar beans CDI.
+También en este caso sólo precisamos el elemento raiz. La versión de CDI podemos verla reflejada en el nombre del esquema del documento XML. Aunque el documento no tiene contenido su presencia en el proyecto es necesaria ya que es el modo de indicarle al servidor que nuestro módulo war va a tener un contexto CDI.
 
-En este punto sólo nos queda completar la capa web añadiendo la página JSF y la clase managed bean correspondiente. Sin embargo antes vamos a comprobar que la aplicación no contiene errores y es capaz de desplegarse en el servidor. Lo que haremos es añadir una página JSF sin funcionalidad, que presente conocido el mensaje "Hola mundo!".
+En este punto sólo nos queda completar la capa web añadiendo la página JSF y la clase managed bean correspondiente. Sin embargo, como ya os he comentado, antes vamos a comprobar que la aplicación no contiene errores y es capaz de desplegarse en el servidor. Lo que haremos es añadir una página JSF sin funcionalidad, que presente el conocido mensaje "Hola mundo!".
 
-Antes de crear la página añadimos a nuestro proyecto la faceta JSF. Eclipse reconocerá los ficheros xhtml y será capaz de asistirnos mientras escribimos el código.
+Antes de crear la página añadimos a nuestro proyecto la faceta JSF. Eclipse reconocerá así los ficheros con la extensión xhtml y será capaz de asistirnos mientras escribimos el código.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig080.png[]
 
@@ -189,13 +189,13 @@ Hacemos botón derecho sobre el proyecto y la opción _Properties > Project Face
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig085.png[]
 
-Pulsamos _OK_ en esa pantalla y de nuevo en la pantalla de propiedades del proyecto. Tras unos segundos los cambios se harán efectivos en nuestro proyecto.
+Esto lo hacemos porque Maven ya resuelve las dependencias necesarias. Pulsamos _OK_ en esa pantalla y de nuevo en la pantalla de propiedades del proyecto. Tras unos segundos los cambios se harán efectivos en nuestro proyecto.
 
 Creamos la página "Hola mundo!" pulsando botón derecho sobre la carpeta _webapp_ y la opción _New > Other... > JBoss Tools Web > XHTML Page_. Pulsamos _Next_ y escribimos como nombre de la página `index.xhtml`. Pulso _Next_ y elijo la plantilla _Blank JSF Page_. Y pulsamos _Finish_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig090.png[]
 
-La página es creada y Eclipse nos la mostrará en el editor por defecto lista para que empecemos a componerla. Pulsamos sobre la lengüeta _Source_ para tener acceso al código xhtml, y vemos:
+La página es creada y Eclipse nos la mostrará en el editor por defecto, lista para que empecemos a componerla. Pulsamos sobre la lengüeta _Source_ para tener acceso al código xhtml:
 
 [source,xml,indent=0]
 ----
@@ -216,7 +216,7 @@ Es la estructura básica de una página JSF, que en resumen es una página HTML 
 
 * La entrada DOCTYPE es siempre la primera línea en una página HTML y por tanto también en una página JSF. En este caso se acompaña de la referencia al DTD que contiene las reglas para los documentos HTML 4.01. Para una página HTML 5 se simplifica a <!DOCTYPE html> ya que no hay validación contra un DTD.
 
-. La segunda línea se corresponde con el elemento raiz de una página HTML y representa el documento completo. En este elemento se declaran los espacios de nombres que vayamos a usar dentro de la página. Los espacios de nombres dentro de un fichero XML tienen la mision de evitar posibles conflictos de nombres anteponiendo al nombre de la etiqueta un prefijo seguido por el carácter dos puntos. Por ejemplo los elementos del core de JSF van precedidos por la cadena _f:_.
+. La segunda línea se corresponde con el elemento raiz de una página HTML y representa el documento completo. En este elemento se declaran los espacios de nombres que vayamos a usar dentro de la página. Los espacios de nombres dentro de un fichero XML tienen la misión de evitar posibles conflictos de nombres anteponiendo al nombre de la etiqueta un prefijo seguido por el carácter dos puntos. Por ejemplo los elementos del core de JSF van precedidos por la cadena _f:_.
 
 . Dentro del elemento html aparecen como es usual los dos elementos cabecera y cuerpo. Ahora simplemente escribiremos la cadena `Hola mundo!` dentro del elemento body. Pulsamos Ctrl + S para guardar los cambios.
 
@@ -225,7 +225,9 @@ Antes de ejecutar el ciclo de vida de construcción de nuestro proyecto abrimos 
 `<finalName>${project.artifactId}</finalName>`
 
 dentro del elemento _<build>_. De esta manera el nombre del artefacto
-war que se generará en la fase package será el definido en el elemento  _<artifactId>_ de nuestro proyecto, es decir "jdrone", y no el que se generaría por defecto, que incluye el tipo y versión, más engorroso. Por defecto el nombre del contexto de nuestra aplicación web es tomado del nombre del artefacto war y es conveniente simplificarlo para que la URL de la aplicación quede como una cadena sencilla.
+war que se generará en la fase package será el definido en el elemento  _<artifactId>_ de nuestro proyecto, es decir "jdrone", y no el que se generaría por defecto, que incluye el tipo y versión, más engorroso. Por defecto el nombre del contexto de nuestra aplicación web es tomado del nombre del artefacto war y es conveniente simplificarlo para que la URL de la aplicación quede como una cadena sencilla:
+
+++++http://localhost:8080/*jdrone*
 
 Vamos allá. En primer lugar vamos a ejecutar el ciclo clean. Pulsamos botón derecho en proyecto y la opción _Run As > Maven clean_. A continuación arrancamos el servidor, pulsando el símbolo de play como se muestra en la figura o a través del botón derecho sobre el icono del servidor.
 
