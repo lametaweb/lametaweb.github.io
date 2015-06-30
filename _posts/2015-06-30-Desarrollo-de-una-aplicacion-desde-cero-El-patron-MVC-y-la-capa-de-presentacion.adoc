@@ -233,9 +233,9 @@ Vamos allá. En primer lugar vamos a ejecutar el ciclo clean. Pulsamos botón de
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig100.png[]
 
-Tras unos pocos segundos el servidor debe arrancar sin errores en la ventana con la solapa _Console_. Para terminar ejecutamos el ciclo de vida completo con botón derecho en proyecto y la opción _Run As > Maven install_. Después de otro periodo corto de tiempo la aplicación debe desplegarse en el servidor, y si no existen errores de tipografía no deberíamos obtener ningún error en la ventana _Console_.
+Tras unos pocos segundos el servidor debe arrancar sin mostrar errores en la ventana con la solapa _Console_. Para terminar ejecutamos el ciclo de vida completo con botón derecho en proyecto y la opción _Run As > Maven install_. Después de otro periodo corto de tiempo la aplicación debe desplegarse en el servidor, y si no existen problemas de tipografía no deberíamos obtener ningún error en la ventana _Console_.
 
-Para no tener que ejecutar los dos ciclos de Maven de forma separada vamos a crear una configuración de ejecución personalizada que ejecute las dos fases una detrás de la otra. Para ello hago botón derecho en proyecto y _Run As > Run Configurations..._:
+Para no tener que ejecutar los dos ciclos de Maven de forma separada vamos a crear una configuración de ejecución personalizada que los ejecute de una vez. Para ello hago botón derecho en proyecto y _Run As > Run Configurations..._:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig110.png[]
 
@@ -243,7 +243,7 @@ Se muestra una ventana donde selecciono a la derecha _Maven Build_ y pulso el ic
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig115.png[]
 
-En la ventana que aparece a continuación escribo el nombre del perfil de ejecución, por ejemplo `clean install`, establezco el directorio base y en el campo _Goals_ escribo en orden las dos fases que quiero ejecutar `clean install`.
+En la ventana que aparece a continuación escribo el nombre del perfil de ejecución, por ejemplo `clean install`, establezco el directorio base y en el campo _Goals_ escribo en orden lo que quiero ejecutar `clean install`.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig120.png[]
 
@@ -252,7 +252,7 @@ pero en vez de con _ clean install_ esta vez escribimos `clean build`. Miro la p
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig125.png[]
 
-En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salida correspondientes a la ejecución de cada una de las fases primero del ciclo de vida de contrucción clean y a continuación del ciclo de vida por defecto hasta la fase especificada install. Veamos las acciones más relevantes que ocurren en este proceso:
+En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salida correspondientes a la ejecución de cada una de las fases primero del ciclo de vida clean y a continuación del ciclo de vida por defecto hasta la fase especificada install. Veamos las acciones más relevantes que ocurren en este proceso:
 
 * En el ciclo clean todos los elementos generados por Maven se eliminan. Esto es necesario para que las modificaciones realizadas en nuestra aplicación se hagan efectivas en el artefacto war generado.
 * En el ciclo por defecto se ejecutan hasta 23 fases en orden. Veamos de forma resumida por fases los aspectos interesantes aplicables a nuestro caso:
