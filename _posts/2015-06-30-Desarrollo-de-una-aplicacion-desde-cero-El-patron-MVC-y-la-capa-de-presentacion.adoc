@@ -254,8 +254,8 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salida correspondientes a la ejecución de cada una de las fases primero del ciclo de vida clean y a continuación del ciclo de vida por defecto hasta la fase especificada install. Veamos las acciones más relevantes que ocurren en este proceso:
 
-* En el ciclo clean todos los elementos generados por Maven se eliminan. Esto es necesario para que las modificaciones realizadas en nuestra aplicación se hagan efectivas en el artefacto war generado.
-* En el ciclo por defecto se ejecutan hasta 23 fases en orden. Veamos de forma resumida por fases los aspectos interesantes aplicables a nuestro caso:
+* En el ciclo clean todos los elementos generados en la carpeta target por Maven se eliminan. Esto es necesario para asegurar que las modificaciones realizadas en nuestra aplicación se hagan efectivas en el artefacto war generado.
+* En el ciclo por defecto se ejecutan hasta 23 fases en orden. Veamos lo más relevante:
 	** compile: las clases son compiladas.
 	** test: Ejecuta los tests unitarios. Esto no queremos que se haga de momento y lo anulamos configurando el plugin maven-surefire-plugin en el fichero pom.xml en la sección build, que configura las acciones ejecutadas en cada fase del ciclo de construcción.
 	** package: Se generera el archivo war en la carpeta target. Si abrimos la carpeta desde windows, en mi caso en la carpeta _C:\TALLER\workspace\jdrone\target\_ podremos ver el artefacto war generado.
@@ -263,5 +263,5 @@ En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salid
 
 Llegamos al esperado momento. Para comprobar que la aplicación y los recursos de que depende se han desplegado correctamente en el servidor navegamos a la aplicación desde nuestro browser escribiendo la URL `http://localhost:8080/jdrone`. Y si todo ha ido bien se mostrará el mensaje "Hola mundo!" en pantalla.
 
-En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Nos vemos pronto a la vuelta!
+En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Hasta muy pronto!
 
