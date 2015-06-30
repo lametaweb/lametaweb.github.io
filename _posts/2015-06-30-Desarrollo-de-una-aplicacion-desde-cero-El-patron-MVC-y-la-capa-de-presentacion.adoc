@@ -7,11 +7,11 @@ Bienvenidos a otro post de la serie _Desarrollo de una aplicación desde cero_. 
 
 == El patrón Modelo-Vista-Controlador
 
-En síntesis es una solución efectiva al problema de arquitectura de la aplicación que plantea la separación de la parte de la presentación o de la vista y la parte de los datos o del modelo. En el patrón MVC esta separación se consigue introduciendo un tercer componente, el Controlador.
+En síntesis este patrón es una solución efectiva al problema de arquitectura  que plantea la necesidad de separar la parte de la presentación o vista y la parte de los datos o modelo. En el patrón MVC esta separación se consigue introduciendo un tercer componente, el Controlador.
 
 Pero veamos como el patrón encaja en una aplicación web empresarial basada en la tecnología Java EE como la nuestra y cómo cada parte M, V y C se sitúa dentro de una arquitectura por capas típica.
 
-En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación. Aunque considerando M como una representación del modelo completo, que reside en las capas de negocio y persistencia.
+En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación. Aunque si consideramos a M como la representación del modelo completo, entonces esta parte estará situada en las capas de negocio y persistencia.
 
 La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la aplicación es la siguiente:
 
@@ -21,38 +21,37 @@ La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la 
 
 ** Parte de comportamiento del *modelo*: Son los beans de sesión EJB de la capa de negocio/DAO/servicio. En el Modelo se representan dentro de los métodos de evento de los managed beans, como llamadas a los métodos de estos beans de sesión.
 
-En resumen, el Modelo se implementa en los managed beans y en JSF es una representación o punto de acceso al *modelo* de la aplicación.
+En resumen, el Modelo se implementa en los managed beans y es una representación o punto de acceso al *modelo* de la aplicación.
 
-* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos del usuario implementados con la tecnología JSF y usando el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
+* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
 	** Páginas xml facelets.
     ** Ficheros de recursos.
     ** Clases representando conversores, validadores y listeners.
     ** Propiedades de la Vista en las clases managed bean.
     ** Elementos que extienden la Vista: Renderers y componentes propios.
 
-* Controlador: Es algo que no tenemos que implementar ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información en la misma.
+* Controlador: Es algo que no tendremos que implementar nosotros ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información adecuada en la misma.
 
 En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
 
 .Diagrama de capas para una aplicación Java EE básica
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig084.png[]
 
-El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el *modelo* de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como la usabilidad o la UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente de bases de datos, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la
-página y cuyos expertises serían Javascript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.
+El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el *modelo* de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como usabilidad o UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente y tunning de bases de datos, conocimientos adicionales en Oracle Forms para migraciones, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la página y cuyos expertises serían Javascript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.
 
-== MVC en marcha, el ciclo de vida de JSF
+== MVC en marcha, el ciclo de vida de JavaServer Faces
 
-Lo anterior explica grosso modo la estructura o aspecto estático de JSF. Sin embargo para entender la capa de presentación es necesario estudiar como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador (request) y acaba en la renderización en el navegador del usuario de una página HTML (response).
+Lo anterior nos da una idea de la estructura o aspecto estático. Sin embargo para entender la filosofía de JSF es necesario estudiar como las partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP de usuario hacia el Controlador (request) y finaliza en la renderización en el navegador de ese usuario de una página HTML (response).
 
-Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien el JSF distinguimos dos tipos de requests:
+Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien, en JSF distinguimos dos tipos de requests:
 
-* Initial request: Es la petición GET que inicialmente hacemos hacia una página Facelet, en general conteniendo un formulario, para mostrar dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
+* Initial request: Es la petición GET que inicialmente hacemos hacia una página facelet, en general conteniendo un formulario, para mostrar como la respuesta dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
 
-* Postback request: Es la petición que se realiza después de una initial request en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.
+* Postback request: Es la petición que se realiza después de una initial request, en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.
 
 Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
-. Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto FacesContext. La View es un contenedor para una representación en el lado del servidor de un arbol de componentes que mapea el arbol de componentes DOM del lado del cliente. El FacesContext es el contexto de servidor que contiene todos los elementos para la gestión del ciclo de vida. En la initial request a continuación se salta a la última fase Render Response. En una Postback Request la View ya existe y simplemente se restaura en el contexto.
+. Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto FacesContext. La View es un objeto que contiene una representación en el lado del servidor del árbol de componentes DOM del lado del cliente/navegador. El objeto FacesContext representa el contexto de servidor que contiene todos los elementos para la gestión del ciclo de vida. Después de la creación de la View se salta a la última fase Render Response. En cambio, en una Postback Request la View ya existe (de la Initial request que la precedió) y simplemente se restaura en el contexto con la View ya montada.
 
 . Apply Request Values: En esta fase sabemos que estamos en una PostBack Request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones, las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la fase 4 Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.
 
