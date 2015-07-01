@@ -1,19 +1,19 @@
 = Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.
 La metaweb
-:hp-tags: JSF, Java Server Faces, MVC, Facelets, Maven
+:hp-tags: JSF, JavaServer Faces, MVC, Facelets, Maven
 :published_at: 2015-06-30
 
-Hola de nuevo. En este post completaremos el desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación. Pero antes de empezar a añadir elementos, considero importante mostraros el concepto del patrón Modelo-Vista-Controlador ya que su comprensión nos va a ayudar a entender la función de cada elemento dentro de esta capa.
+Bienvenidos a otro post de la serie _Desarrollo de una aplicación desde cero_. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para no inflar demasiado el post, nuestra interfaz simplemente mostrará el mensaje "Hola mundo!". Pero antes de empezar a añadir elementos, considero importante mostraros un par de conceptos centrales en JSF: Por un lado el patrón Modelo-Vista-Controlador y por otro el ciclo de vida petición-respuesta.
 
-== El patrón MVC
+== El patrón Modelo-Vista-Controlador
 
-Consiste en una solución probada al problema que plantea la separación de la presentación o vista y el modelo en la arquitectura de una aplicación. Esta separación se logra introduciendo un tercer componente, el controlador.
+En síntesis este patrón es una solución efectiva al problema de arquitectura  que plantea la necesidad de separar la parte de la presentación o vista y la parte de los datos o modelo. En el patrón MVC esta separación se consigue introduciendo un tercer componente, el Controlador.
 
-Aunque la anterior definición está clara, no lo está tanto como este patrón encaja en una aplicación web Java empresarial basada en la tecnología Java EE como la que en este post vamos a concluir. Y tampoco como cada parte M, V y C se sitúa dentro de la arquitectura de capas de nuestra aplicación.
+Pero veamos como el patrón encaja en una aplicación web empresarial basada en la tecnología Java EE como la nuestra y cómo cada parte M, V y C se sitúa dentro de una arquitectura por capas típica.
 
-Las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación.
+En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación. Aunque si consideramos a M como la representación del modelo completo, entonces esta parte estará situada en las capas de negocio y persistencia.
 
-Veamos una definición para cada parte M, V, y C y la correspondencia con cada uno de los elementos de la aplicación:
+La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la aplicación es la siguiente:
 
 * Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
 
@@ -21,42 +21,47 @@ Veamos una definición para cada parte M, V, y C y la correspondencia con cada u
 
 ** Parte de comportamiento del *modelo*: Son los beans de sesión EJB de la capa de negocio/DAO/servicio. En el Modelo se representan dentro de los métodos de evento de los managed beans, como llamadas a los métodos de estos beans de sesión.
 
-En resumen, el Modelo se implementa en los managed beans y en JSF es una representación o punto de acceso al *modelo* de la aplicación.
+En resumen, el Modelo se implementa en los managed beans y es una representación o punto de acceso al *modelo* de la aplicación.
 
-* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos del usuario implementados con la tecnología JSF y usando el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
+* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
 	** Páginas xml facelets.
     ** Ficheros de recursos.
-    ** Clases representando conversores y validadores.
-    ** Propiedades de la Vista y métodos listener en las clases managed-bean.
+    ** Clases representando conversores, validadores y listeners.
+    ** Propiedades de la Vista en las clases managed bean.
     ** Elementos que extienden la Vista: Renderers y componentes propios.
 
-* Controlador: Es algo que no tenemos que implementar ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información en la misma.
+* Controlador: Es algo que no tendremos que implementar nosotros ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información adecuada en la misma.
 
 En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:
 
-== MVC en marcha, el ciclo de vida de JSF
+.Diagrama de capas para una aplicación Java EE básica
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig084.png[]
 
-Lo anterior explica grosso modo la estructura o aspecto estático de JSF. Sin embargo para entender la capa de presentación es necesario estudiar como estas partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP hacia el Controlador (request) y acaba en la renderización en el navegador del usuario de una página HTML (response).
+El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el *modelo* de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como usabilidad o UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente y tunning de bases de datos, conocimientos adicionales en Oracle Forms para migraciones, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la página y cuyos expertises serían Javascript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.
 
-Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien el JSF distinguimos dos tipos de requests:
+== MVC en marcha, el ciclo de vida de JavaServer Faces
 
-* Initial request: Es la petición GET que inicialmente hacemos hacia una página Facelet, en general conteniendo un formulario, para mostrar dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
+Lo anterior nos da una idea de la estructura o aspecto estático. Sin embargo para entender la filosofía de JSF es necesario estudiar como las partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP de usuario hacia el Controlador (request) y finaliza en la renderización en el navegador de ese usuario de una página HTML (response).
 
-* Postback request: Es la petición que se realiza después de una initial request en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.
+Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien, en JSF distinguimos dos tipos de requests:
+
+* Initial request: Es la petición GET que inicialmente hacemos hacia una página facelet, en general conteniendo un formulario, para mostrar como la respuesta dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
+
+* Postback request: Es la petición que se realiza después de una initial request, en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.
 
 Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
-. Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto FacesContext. La View es un contenedor para una representación en el lado del servidor de un arbol de componentes que mapea el arbol de componentes DOM del lado del cliente. El FacesContext es el contexto de servidor que contiene todos los elementos para la gestión del ciclo de vida. En la initial request a continuación se salta a la última fase Render Response. En una Postback Request la View ya existe y simplemente se restaura en el contexto.
+. Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto, FacesContext. La View es un objeto que contiene una representación en el lado del servidor del árbol de componentes DOM del lado del cliente/navegador. El objeto FacesContext representa el contexto de servidor que contiene todos los elementos para la gestión de la petición. Después de la creación de la View se salta a la última fase Render Response. En cambio, en una postback request la View ya existe (de la initial request que la precedió o de otra postback) y simplemente se restaura en el contexto con la View ya montada.
 
-. Apply Request Values: En esta fase sabemos que estamos en una PostBack Request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones, las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la fase 4 Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.
+. Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones y las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la cuarta fase, Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.
 
-. Process Validations: Para los componentes sin immediate = true se ejecutan las validaciones y conversiones sobre el valor del componente (el introducido por el usuario en el navegador). Los errores de validación o conversión son añadidos al contexto para luego renderizarlos en la fase Render Response.
+. Process Validations: Para los componentes sin immediate = true se ejecutan las validaciones y conversiones sobre el valor del componente (el introducido por el usuario en el navegador). Si existen errores de validación o conversión son añadidos al contexto y se salta directamente a la fase Render Response.
 
-. Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto para luego renderizarlos en la fase Render Response.
+. Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto y se salta directamente a la fase Render Response.
 
-. Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición Initial Request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio desde los métodos de acción y se determina la respuesta del ciclo.
+. Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario (submit) entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición initial request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio desde el método de acción y se determina la respuesta del ciclo.
 
-. Render Response: Si es un Initial Request se toma la View vacía recién creada en la fase Restore View y se puebla el árbol de componentes de usuario atendiendo al contenido de la página xhtml correspondiente, para a continuación a partir de la View generar la página html que se devuelve en la response hacia el navegador. La View creada se cachea de manera que cuando llegue la Postback Request se tenga disponible. Si se trata de una Postback Request y existieron errores entonces se muestra la página original (la del formulario) de modo que se renderiza la View con el árbol de componentes cacheada junto con los errores  si en la página existen la etiquetas h:message (asociada a un componente) o h:messages (asociada a la página). Si en cambio no existen errores entonces lo que ocurre depende del valor devuelto por el método de acción (navegación programática), veamos:
+. Render Response: Si es un initial request se toma la View vacía recién creada en la fase Restore View y se puebla el árbol de componentes de usuario atendiendo al contenido de la página xhtml correspondiente, para a continuación a partir de la View generar la página html que se devuelve en la response hacia el navegador. La View creada se cachea de manera que cuando llegue la postback request ésta se tenga disponible. Si se trata de una postback request y existieron errores entonces se muestra la página original (la del formulario) de modo que se renderiza la View con el árbol de componentes cacheada junto con los errores si en la página existen la etiquetas h:message (asociada a un componente) o h:messages (asociada a la página). Si en cambio no existen errores entonces lo que ocurre depende del valor devuelto por el método de acción (navegación programática), en la fase Invoke Application, veamos:
 
 
 * Si se devuelve el valor null no se tiene renderización y el navegador seguirá mostrando la misma página.
@@ -67,22 +72,196 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 * Si se devuelve el nombre de una página facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.
 
-* Si al igual que en el caso anteriorse devuelve el nombre de una página facelet, pero sin añadir la cadena, se crea y puebla una nueva View para la página en cuestión. Se trata de un forward que es algo considerado en general como una mala práctica en JSF.
+* Si al igual que en el caso anterior se devuelve el nombre de una página, pero sin añadir la cadena "?faces-redirect=true", se crea y puebla una nueva View para la página en cuestión. Esto sería un Forward, que es algo considerado en general como una mala práctica en JSF2.
 
-Estas son las seis fases que se ejecutan en cada patición desde un formulario en una página de JSF. Estas fases implementan de forma transparente para el desarrollador un framework web orientado a eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX, acelerando el desarrollo de la capa web o de presentación.
+Adicionalmente, en todas las fases excepto en la primera y en la última, puedo emitir un FacesContext.responseComplete() si quiero que la respuesta sea gestionada por un tercero, por ejemplo un servicio web. Puedo especificar ese tercero redirigiendo hacia él con un FacesContext.redirect(String URL), que a su vez emite el FacesContext.responseComplete(). El efecto es que el ciclo JSF se corta al finalizar la fase y se salta a la redirección.
 
-Con esta exposición de los elementos básicos de JSF desde el punto de vista estático y dinámico he querido daros un background que os permita tomar una base sólida para poder implementar sobre JSF cualquier funcionalidad. Además de lo expuesto JSF aporta muchos otros elementos, que poco a poco iréis conociendo, y que aceleran aún más el desarrollo de una aplicación web empresarial. Como ejemplos podríamos citar los ámbitos para guardar el estado de la interfaz en caso de uso multipantalla, tales como el conversation scope, el Flash, o el más avanzado Flow, las capacidades de localización, la creación de clases Converter, Validator o Listener propias, el soporte para AJAX, o la implementación de componentes de usuario a medida. Se me ocurre como ejemplo un componente "reloj analógico" que nos mostrara la hora en una determinada localización.
+Observando las fases del ciclo de vida nos damos cuenta de que JSF nos está proporcionando un framework web orientado a eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX. Esto supone un avance respecto a otros frameworks como Struts o Spring MVC y nos asegura un desarrollo más eficiente.
 
-Cuando tengamos nuestra aplicación terminada, al final de este post, afianzaremos lo aprendido sobre el ciclo de vida viendo como se ejecutan cada una de las fases en la petición Initial y en la correspondiente Postback.
+Con esta exposición de los elementos básicos de JSF desde el punto de vista estático y dinámico he querido daros un background que os permita tomar una base sólida para poder implementar sobre JSF cualquier funcionalidad. Además de lo expuesto, JSF aporta muchas otras características, que poco a poco iréis conociendo, y que aceleran aún más el desarrollo de una aplicación web empresarial. Como ejemplos podríamos citar: La capacidad de guardar el estado más allá de una request (conversation, Flash, Flow), las capacidades multiidioma, la creación de clases Converter, Validator o Listener propias, el soporte para AJAX, o la implementación de componentes de interfaz a medida. Con respecto a esto último se me ocurre como ejemplo un componente <mio:canvasRuta> que nos mostrara de forma visual la ruta de un trabajo de un drone.
 
-Empecemos entonces a añadir los elemntos a la capa web de nuestra aplicación.
+Cuando tengamos nuestra aplicación terminada, en el próximo post, afianzaremos lo aprendido sobre el ciclo de vida viendo como se ejecutan cada una de las fases de los dos ciclos: initial request y la correspondiente postback request.
 
+== Montaje de la capa web
 
+Abrimos Eclipse para empezar a añadir los elementos a la capa web. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita.  Inicialmente sin embargo, para probar el despliegue de la aplicación, sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!". 
 
-TODO: Dibujar diagrama capas MVC aplicación.
+Las tecnologías implicadas en esta capa son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto. Copiamos dentro del elemento _<dependencies>_ esto:
 
+[source,xml,indent=0]
+----
+	<dependency>
+		<groupId>org.jboss.spec.javax.faces</groupId>
+		<artifactId>jboss-jsf-api_2.1_spec</artifactId>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>javax.enterprise</groupId>
+		<artifactId>cdi-api</artifactId>
+		<scope>provided</scope>
+	</dependency>
+----
 
+Y guardamos con Ctrl + S. Pulsamos Alt + F5 para actualizar el proyecto y tener así disponibles las librerías.
 
+Vamos con los ficheros de configuración, son tres:
 
-seguir el ciclo de vida en la aplicación
+* web.xml: Fichero de configuración de la aplicación web, más conocido como descriptor de despliegue.
+* faces-config.xml: Fichero de configuración de JSF.
+* beans.xml: Fichero de configuración del contexto CDI.
+
+Nos vamos a Eclipse y creamos una carpeta de nombre `WEB-INF` dentro de la carpeta de proyecto _jdrone/src/main/webapp_. Y dentro de la nueva carpeta creamos el fichero `web.xml`. El contenido del fichero será el siguiente:
+
+[source,xml,indent=0]
+----
+  <?xml version="1.0" encoding="UTF-8"?>
+  <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+      <servlet>
+          <servlet-name>Faces Servlet</servlet-name>
+          <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+          <load-on-startup>1</load-on-startup>
+      </servlet>
+      <servlet-mapping>
+          <servlet-name>Faces Servlet</servlet-name>
+          <url-pattern>/faces/*</url-pattern>
+      </servlet-mapping>
+      <servlet-mapping>
+          <servlet-name>Faces Servlet</servlet-name>
+          <url-pattern>*.xhtml</url-pattern>
+      </servlet-mapping>
+      <session-config>
+          <session-timeout>30</session-timeout>
+      </session-config>
+      <welcome-file-list>
+          <welcome-file>index.html</welcome-file>
+      </welcome-file-list>
+  </web-app>
+----
+
+La carpeta _WEB-INF_ contiene los elementos no públicos de nuestra capa web. Aquí meteremos los ficheros de configuración, plantillas y fragmentos de facelets cuando los tengamos, o librerías de terceros propias de la aplicación (en la carpeta lib) cuando las necesitemos.
+
+Veamos el significado de cada elemento del descriptor de despliegue:
+
+* web_app: Es el nodo raiz. Aquí se definen los espacios de nombres y el esquema XML que determina las reglas de validez para el documento. El atributo _version_ fija la versión de la tecnología Servlets que usaremos. Para Java EE 6 la versión que corresponde es la 3.1.
+
+* servlet: Declara los Sevlets de nuestra aplicación. Al tratarse de una aplicación JSF simple el único Servlet es el que implementa el Controlador. El elemento  _load-on_startup_ indica que el objeto de la clase se carguará en la memoria Heap de la JVM en el inicio de la aplicación.
+
+* servlet-mapping: Establece las correspondencias entre patrones de rutas URL de la aplicación y los servlets. En nuestro caso se traduce en que las peticiones de rutas que contengan la cadena "/faces/" detrás del contexto de la aplicación o que acaben en la cadena ".xhtml" serán atendidas por el Controlador de JSF.
+
+* session-config: Engloba las propiedades de configuración de la sesión http en el servidor. Aquí definimos el tiempo máximo en minutos que el usuario puede dejar de interactuar con la aplicación antes de que su sesión sea descartada.
+
+* welcome-file-list: Define una lista de posibles nombres de páginas que se añadirán al final de la URL cuanto en ésta no especifique ninguna. En concreto cuando llamemos a nuestra aplicación en la ruta _http://localhost:8080/jdrone/_ ésta será interpretada como _http://localhost:8080/jdrone/index.xhtml_ y se mostrará esa página JSF.
+
+Bien, a continuación añadimos el fichero de configuración de JSF. Creamos un nuevo fichero xml en la misma carpeta con el nombre `faces-config.xml`. El contenido es el siguiente:
+
+[source,xml,indent=0]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd" version="2.1" >
+
+</faces-config>
+----
+
+Como véis es un documento XML que en nuestro caso sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo _version_. Se trata de la versión 2.1, que corresponde a Java EE 6. Esta es la versión que viene con nuestro servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.11, ya que trae características nuevas interesantes. Para esto tendríamos  que añadir la configuración necesaria al servidor de modo similar a cuando añadimos el driver de Derby aunque en este caso es algo más complejo. Podéis ampliar información https://developer.jboss.org/wiki/DesignOfAS7Multi-JSFFeature[aquí] y https://developer.jboss.org/message/914507[aquí].
+
+La ausencia de contenido en este fichero es una consecuencia, por un lado de la simplicidad de nuestra aplicación, y por otro del uso del principio COC, Convention Over Configuration, que implementa el framework JSF y que consiste en establecer siempre que sea posible valores y comportamientos por defecto. Por ejemplo para las reglas de validación se acuerda que pueden establecerse de modo programático simplemente haciendo referencia al nombre del fichero de la página destino. Además como ya sabéis el uso de anotaciones ha quitado peso, afortunadamente, a los ficheros de configuración.
+
+Creamos otro nuevo fichero XML `beans.xml` y pegamos lo siguiente como contenido:
+
+[source,xml,indent=0]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://jboss.org/schema/cdi/beans_1_0.xsd">
+ 
+</beans>
+----
+
+También en este caso sólo precisamos el elemento raiz. La versión de CDI podemos verla reflejada en el nombre del esquema del documento XML. Aunque el documento no tiene contenido su presencia en el proyecto es necesaria ya que es el modo de indicarle al servidor que nuestro módulo war va a tener un contexto CDI.
+
+En este punto sólo nos queda completar la capa web añadiendo la página JSF y la clase managed bean correspondiente. Sin embargo, como ya os he comentado, antes vamos a comprobar que la aplicación no contiene errores y es capaz de desplegarse en el servidor. Lo que haremos es añadir una página JSF sin funcionalidad, que presente el conocido mensaje "Hola mundo!".
+
+Antes de crear la página añadimos a nuestro proyecto la faceta JSF. Eclipse reconocerá así los ficheros con la extensión xhtml y será capaz de asistirnos mientras escribimos el código.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig080.png[]
+
+Hacemos botón derecho sobre el proyecto y la opción _Properties > Project Facets_. Marcamos el check _JavaServer Faces_ y cambiamos la versión a la _2.1_. Pulsamos el link que aparece abajo a la izquierda en la misma ventana con la leyenda _Futher configuration required..._. Se abrirá una nueva ventana donde cambiamos el valor del combo a _Disable Library Configuration_ como se indica la figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig085.png[]
+
+Esto lo hacemos porque Maven ya resuelve las dependencias necesarias. Pulsamos _OK_ en esa pantalla y de nuevo en la pantalla de propiedades del proyecto. Tras unos segundos los cambios se harán efectivos en nuestro proyecto.
+
+Creamos la página "Hola mundo!" pulsando botón derecho sobre la carpeta _webapp_ y la opción _New > Other... > JBoss Tools Web > XHTML Page_. Pulsamos _Next_ y escribimos como nombre de la página `index.xhtml`. Pulso _Next_ y elijo la plantilla _Blank JSF Page_. Y pulsamos _Finish_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig090.png[]
+
+La página es creada y Eclipse nos la mostrará en el editor por defecto, lista para que empecemos a componerla. Pulsamos sobre la lengüeta _Source_ para tener acceso al código xhtml:
+
+[source,xml,indent=0]
+----
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"> 
+
+<h:head></h:head> 
+<body> 
+
+</body> 
+</html>
+----
+
+Es la estructura básica de una página JSF, que en resumen es una página HTML que respeta el formato XML y donde aparecen una serie de etiquetas adicionales correspondientes a distintas librerías JSF de etiquetas. Veamos el documento línea a línea:
+
+* La entrada DOCTYPE es siempre la primera línea en una página HTML y por tanto también en una página JSF. En este caso se acompaña de la referencia al DTD que contiene las reglas para los documentos HTML 4.01. Para una página HTML 5 se simplifica a <!DOCTYPE html> ya que no hay validación contra un DTD.
+
+. La segunda línea se corresponde con el elemento raiz de una página HTML y representa el documento completo. En este elemento se declaran los espacios de nombres que vayamos a usar dentro de la página. Los espacios de nombres dentro de un fichero XML tienen la misión de evitar posibles conflictos de nombres anteponiendo al nombre de la etiqueta un prefijo seguido por el carácter dos puntos. Por ejemplo los elementos del core de JSF van precedidos por la cadena _f:_.
+
+. Dentro del elemento html aparecen como es usual los dos elementos cabecera y cuerpo. Ahora simplemente escribiremos la cadena `Hola mundo!` dentro del elemento body. Pulsamos Ctrl + S para guardar los cambios.
+
+Antes de ejecutar el ciclo de vida de construcción de nuestro proyecto abrimos el fichero pom.xml y añadimos la línea:
+
+`<finalName>${project.artifactId}</finalName>`
+
+dentro del elemento _<build>_. De esta manera el nombre del artefacto
+war que se generará en la fase package será el definido en el elemento  _<artifactId>_ de nuestro proyecto, es decir "jdrone", y no el que se generaría por defecto, que incluye el tipo y versión, más engorroso. Por defecto el nombre del contexto de nuestra aplicación web es tomado del nombre del artefacto war y es conveniente simplificarlo para que la URL de la aplicación quede como una cadena sencilla:
+
+++++http://localhost:8080/*jdrone*
+
+Vamos allá. En primer lugar vamos a ejecutar el ciclo clean. Pulsamos botón derecho en proyecto y la opción _Run As > Maven clean_. A continuación arrancamos el servidor, pulsando el símbolo de play como se muestra en la figura o a través del botón derecho sobre el icono del servidor.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig100.png[]
+
+Tras unos pocos segundos el servidor debe arrancar sin mostrar errores en la ventana con la solapa _Console_. Para terminar ejecutamos el ciclo de vida completo con botón derecho en proyecto y la opción _Run As > Maven install_. Después de otro periodo corto de tiempo la aplicación debe desplegarse en el servidor, y si no existen problemas de tipografía no deberíamos obtener ningún error en la ventana _Console_.
+
+Para no tener que ejecutar los dos ciclos de Maven de forma separada vamos a crear una configuración de ejecución personalizada que los ejecute de una vez. Para ello hago botón derecho en proyecto y _Run As > Run Configurations..._:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig110.png[]
+
+Se muestra una ventana donde selecciono a la derecha _Maven Build_ y pulso el icono _New_ arriba a la izquierda para crear el nuevo perfil de ejecución.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig115.png[]
+
+En la ventana que aparece a continuación escribo el nombre del perfil de ejecución, por ejemplo `clean install`, establezco el directorio base y en el campo _Goals_ escribo en orden lo que quiero ejecutar `clean install`.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig120.png[]
+
+Pulso el botón _Apply_ y a continuación _Close_ para guardar la nueva configuración de ejecución. Añadimos de paso otro perfil igual que el anterior 
+pero en vez de con _ clean install_ esta vez escribimos `clean build`. Miro la pestaña _Servers_ para asegurarme de que el servidor está arrancado. Pulso botón derecho sobre proyecto y _Run As > Maven build_ para que se muestre otro menú con las configuraciones personalizadas de arranque y selecciono mi configuracion _clean install_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig125.png[]
+
+En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salida correspondientes a la ejecución de cada una de las fases primero del ciclo de vida clean y a continuación del ciclo de vida por defecto hasta la fase especificada install. Veamos las acciones más relevantes que ocurren en este proceso:
+
+* En el ciclo clean todos los elementos generados en la carpeta target por Maven se eliminan. Esto es necesario para asegurar que las modificaciones realizadas en nuestra aplicación se hagan efectivas en el artefacto war generado.
+* En el ciclo por defecto se ejecutan hasta 23 fases en orden. Veamos lo más relevante:
+	** compile: las clases son compiladas.
+	** test: Ejecuta los tests unitarios. Esto no queremos que se haga de momento y lo anulamos configurando el plugin maven-surefire-plugin en el fichero pom.xml en la sección build, que configura las acciones ejecutadas en cada fase del ciclo de construcción.
+	** package: Se generera el archivo war en la carpeta target. Si abrimos la carpeta desde windows, en mi caso en la carpeta _C:\TALLER\workspace\jdrone\target\_ podremos ver el artefacto war generado.
+	** install: Copia el artefacto jdrone.war en el repositorio local en la ruta _C:\Users\Javier\.m2\repository\com\lametaweb\javaee\jdrone\0.0.1-SNAPSHOT\jdrone-0.0.1-SNAPSHOT.war_, esto es útil cuando se trata de librerías ya que permite que el artefacto sea usado como dependencia en cualquier otro proyecto. El nombre nos está diciendo que se trata de la primera versión y que es una snapshot es decir una versión de desarrollo que no está destinada a producción como ocurre en el caso de una release.
+
+Llegamos al esperado momento. Para comprobar que la aplicación y los recursos de que depende se han desplegado correctamente en el servidor navegamos a la aplicación desde nuestro browser escribiendo la URL `http://localhost:8080/jdrone`. Y si todo ha ido bien se mostrará el mensaje "Hola mundo!" en pantalla.
+
+En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Hasta muy pronto!
 

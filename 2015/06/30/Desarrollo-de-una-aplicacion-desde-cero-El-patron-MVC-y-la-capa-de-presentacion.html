@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//www.lametaweb.com/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/asciidoctor.css?v=1.0.0" />
+
+    <link rel="canonical" href="http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html" />
+    
+    <meta property="og:site_name" content="La metaweb" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación." />
+    <meta property="og:description" content="Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..." />
+    <meta property="og:url" content="http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html" />
+    <meta property="article:published_time" content="2015-06-29T22:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-06-30T22:33:28.097Z" />
+    <meta property="article:tag" content="JSF" />
+    <meta property="article:tag" content="JavaServer Faces" />
+    <meta property="article:tag" content="MVC" />
+    <meta property="article:tag" content="Facelets" />
+    <meta property="article:tag" content="Maven" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación." />
+    <meta name="twitter:description" content="Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..." />
+    <meta name="twitter:url" content="http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "La metaweb",
+    "author": {
+        "@type": "Person",
+        "name": "La metaweb",
+        "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": ""
+    },
+    "headline": "Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.",
+    "url": "http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html",
+    "datePublished": "2015-06-29T22:00:00.000Z",
+    "dateModified": "2015-06-30T22:33:28.097Z",
+    "keywords": "JSF,  JavaServer Faces,  MVC,  Facelets,  Maven",
+    "description": "Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="La metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelets tag-Maven">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar style="background: none">
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="http://www.lametaweb.com">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area bgimage" style="background-image: url(https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/red20vertical.jpg)">
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+                <li><a class="fi-torso" href="http://www.lametaweb.com/about"></a></li>
+                <li><a class="fi-mail" href="http://www.lametaweb.com/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="La metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">La metaweb</h1>
+            <hr>
+            <p class="blog-description">Blog sobre desarrollo web en el estándar Java EE, con algún off topic para desconectar ;-)</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelets tag-Maven">
+
+
+            <h1 class="post-title">Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.</h1>
+
+            <span class="post-meta label"><time datetime="2015-06-30">30 Jun 2015</time></span>
+
+            <section class="post-content">
+                <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Bienvenidos a otro post de la serie <em>Desarrollo de una aplicación desde cero</em>. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para no inflar demasiado el post, nuestra interfaz simplemente mostrará el mensaje "Hola mundo!". Pero antes de empezar a añadir elementos, considero importante mostraros un par de conceptos centrales en JSF: Por un lado el patrón Modelo-Vista-Controlador y por otro el ciclo de vida petición-respuesta.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_el_patr_n_modelo_vista_controlador">El patrón Modelo-Vista-Controlador</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En síntesis este patrón es una solución efectiva al problema de arquitectura  que plantea la necesidad de separar la parte de la presentación o vista y la parte de los datos o modelo. En el patrón MVC esta separación se consigue introduciendo un tercer componente, el Controlador.</p>
+</div>
+<div class="paragraph">
+<p>Pero veamos como el patrón encaja en una aplicación web empresarial basada en la tecnología Java EE como la nuestra y cómo cada parte M, V y C se sitúa dentro de una arquitectura por capas típica.</p>
+</div>
+<div class="paragraph">
+<p>En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en Java EE dentro de la capa de presentación de la aplicación. Aunque si consideramos a M como la representación del modelo completo, entonces esta parte estará situada en las capas de negocio y persistencia.</p>
+</div>
+<div class="paragraph">
+<p>La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la aplicación es la siguiente:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Modelo: Es una representación del <strong>modelo</strong> (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El <strong>modelo</strong> tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Parte de datos del <strong>modelo</strong>: Son los beans de entidad JPA de la capa de persistencia. En el Modelo se representan como atributos de los managed beans con el mismo tipo que los entity beans JPA.</p>
+</li>
+<li>
+<p>Parte de comportamiento del <strong>modelo</strong>: Son los beans de sesión EJB de la capa de negocio/DAO/servicio. En el Modelo se representan dentro de los métodos de evento de los managed beans, como llamadas a los métodos de estos beans de sesión.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>En resumen, el Modelo se implementa en los managed beans y es una representación o punto de acceso al <strong>modelo</strong> de la aplicación.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Páginas xml facelets.</p>
+</li>
+<li>
+<p>Ficheros de recursos.</p>
+</li>
+<li>
+<p>Clases representando conversores, validadores y listeners.</p>
+</li>
+<li>
+<p>Propiedades de la Vista en las clases managed bean.</p>
+</li>
+<li>
+<p>Elementos que extienden la Vista: Renderers y componentes propios.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Controlador: Es algo que no tendremos que implementar nosotros ya que lo proporciona JSF a través de la clase FacesServlet. Gestiona las acciones del usuario sobre la Vista y muestra la información adecuada en la misma.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el Controlador situados en un diagrama de capas:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig084.png" alt="post003 fig084.png">
+</div>
+<div class="title">Figure 1. Diagrama de capas para una aplicación Java EE básica</div>
+</div>
+<div class="paragraph">
+<p>El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el <strong>modelo</strong> de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como usabilidad o UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente y tunning de bases de datos, conocimientos adicionales en Oracle Forms para migraciones, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la página y cuyos expertises serían Javascript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mvc_en_marcha_el_ciclo_de_vida_de_javaserver_faces">MVC en marcha, el ciclo de vida de JavaServer Faces</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lo anterior nos da una idea de la estructura o aspecto estático. Sin embargo para entender la filosofía de JSF es necesario estudiar como las partes se coordinan de forma dinámica entre sí. Es lo que se conoce el ciclo de vida de JSF. Este ciclo, al igual que un ciclo petición-respuesta típico, se dispara con la recepción de una petición HTTP de usuario hacia el Controlador (request) y finaliza en la renderización en el navegador de ese usuario de una página HTML (response).</p>
+</div>
+<div class="paragraph">
+<p>Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien, en JSF distinguimos dos tipos de requests:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Initial request: Es la petición GET que inicialmente hacemos hacia una página facelet, en general conteniendo un formulario, para mostrar como la respuesta dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.</p>
+</li>
+<li>
+<p>Postback request: Es la petición que se realiza después de una initial request, en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto, FacesContext. La View es un objeto que contiene una representación en el lado del servidor del árbol de componentes DOM del lado del cliente/navegador. El objeto FacesContext representa el contexto de servidor que contiene todos los elementos para la gestión de la petición. Después de la creación de la View se salta a la última fase Render Response. En cambio, en una postback request la View ya existe (de la initial request que la precedió o de otra postback) y simplemente se restaura en el contexto con la View ya montada.</p>
+</li>
+<li>
+<p>Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones y las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la cuarta fase, Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.</p>
+</li>
+<li>
+<p>Process Validations: Para los componentes sin immediate = true se ejecutan las validaciones y conversiones sobre el valor del componente (el introducido por el usuario en el navegador). Si existen errores de validación o conversión son añadidos al contexto y se salta directamente a la fase Render Response.</p>
+</li>
+<li>
+<p>Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto y se salta directamente a la fase Render Response.</p>
+</li>
+<li>
+<p>Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario (submit) entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición initial request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio desde el método de acción y se determina la respuesta del ciclo.</p>
+</li>
+<li>
+<p>Render Response: Si es un initial request se toma la View vacía recién creada en la fase Restore View y se puebla el árbol de componentes de usuario atendiendo al contenido de la página xhtml correspondiente, para a continuación a partir de la View generar la página html que se devuelve en la response hacia el navegador. La View creada se cachea de manera que cuando llegue la postback request ésta se tenga disponible. Si se trata de una postback request y existieron errores entonces se muestra la página original (la del formulario) de modo que se renderiza la View con el árbol de componentes cacheada junto con los errores si en la página existen la etiquetas h:message (asociada a un componente) o h:messages (asociada a la página). Si en cambio no existen errores entonces lo que ocurre depende del valor devuelto por el método de acción (navegación programática), en la fase Invoke Application, veamos:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Si se devuelve el valor null no se tiene renderización y el navegador seguirá mostrando la misma página.</p>
+</li>
+<li>
+<p>Si se devuelve la cadena vacía se vuelve a renderizar la página del formulario.</p>
+</li>
+<li>
+<p>Si se devuelve la página del formulario ocurre como en el caso anterior.</p>
+</li>
+<li>
+<p>Si se devuelve el nombre de una página facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.</p>
+</li>
+<li>
+<p>Si al igual que en el caso anterior se devuelve el nombre de una página, pero sin añadir la cadena "?faces-redirect=true", se crea y puebla una nueva View para la página en cuestión. Esto sería un Forward, que es algo considerado en general como una mala práctica en JSF2.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Adicionalmente, en todas las fases excepto en la primera y en la última, puedo emitir un FacesContext.responseComplete() si quiero que la respuesta sea gestionada por un tercero, por ejemplo un servicio web. Puedo especificar ese tercero redirigiendo hacia él con un FacesContext.redirect(String URL), que a su vez emite el FacesContext.responseComplete(). El efecto es que el ciclo JSF se corta al finalizar la fase y se salta a la redirección.</p>
+</div>
+<div class="paragraph">
+<p>Observando las fases del ciclo de vida nos damos cuenta de que JSF nos está proporcionando un framework web orientado a eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX. Esto supone un avance respecto a otros frameworks como Struts o Spring MVC y nos asegura un desarrollo más eficiente.</p>
+</div>
+<div class="paragraph">
+<p>Con esta exposición de los elementos básicos de JSF desde el punto de vista estático y dinámico he querido daros un background que os permita tomar una base sólida para poder implementar sobre JSF cualquier funcionalidad. Además de lo expuesto, JSF aporta muchas otras características, que poco a poco iréis conociendo, y que aceleran aún más el desarrollo de una aplicación web empresarial. Como ejemplos podríamos citar: La capacidad de guardar el estado más allá de una request (conversation, Flash, Flow), las capacidades multiidioma, la creación de clases Converter, Validator o Listener propias, el soporte para AJAX, o la implementación de componentes de interfaz a medida. Con respecto a esto último se me ocurre como ejemplo un componente &lt;mio:canvasRuta&gt; que nos mostrara de forma visual la ruta de un trabajo de un drone.</p>
+</div>
+<div class="paragraph">
+<p>Cuando tengamos nuestra aplicación terminada, en el próximo post, afianzaremos lo aprendido sobre el ciclo de vida viendo como se ejecutan cada una de las fases de los dos ciclos: initial request y la correspondiente postback request.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_montaje_de_la_capa_web">Montaje de la capa web</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Abrimos Eclipse para empezar a añadir los elementos a la capa web. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita.  Inicialmente sin embargo, para probar el despliegue de la aplicación, sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!".</p>
+</div>
+<div class="paragraph">
+<p>Las tecnologías implicadas en esta capa son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto. Copiamos dentro del elemento <em>&lt;dependencies&gt;</em> esto:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.jboss.spec.javax.faces&lt;/groupId&gt;
+    &lt;artifactId&gt;jboss-jsf-api_2.1_spec&lt;/artifactId&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.enterprise&lt;/groupId&gt;
+    &lt;artifactId&gt;cdi-api&lt;/artifactId&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Y guardamos con Ctrl + S. Pulsamos Alt + F5 para actualizar el proyecto y tener así disponibles las librerías.</p>
+</div>
+<div class="paragraph">
+<p>Vamos con los ficheros de configuración, son tres:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>web.xml: Fichero de configuración de la aplicación web, más conocido como descriptor de despliegue.</p>
+</li>
+<li>
+<p>faces-config.xml: Fichero de configuración de JSF.</p>
+</li>
+<li>
+<p>beans.xml: Fichero de configuración del contexto CDI.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Nos vamos a Eclipse y creamos una carpeta de nombre <code>WEB-INF</code> dentro de la carpeta de proyecto <em>jdrone/src/main/webapp</em>. Y dentro de la nueva carpeta creamos el fichero <code>web.xml</code>. El contenido del fichero será el siguiente:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;javax.faces.webapp.FacesServlet&lt;/servlet-class&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/faces/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.xhtml&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La carpeta <em>WEB-INF</em> contiene los elementos no públicos de nuestra capa web. Aquí meteremos los ficheros de configuración, plantillas y fragmentos de facelets cuando los tengamos, o librerías de terceros propias de la aplicación (en la carpeta lib) cuando las necesitemos.</p>
+</div>
+<div class="paragraph">
+<p>Veamos el significado de cada elemento del descriptor de despliegue:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>web_app: Es el nodo raiz. Aquí se definen los espacios de nombres y el esquema XML que determina las reglas de validez para el documento. El atributo <em>version</em> fija la versión de la tecnología Servlets que usaremos. Para Java EE 6 la versión que corresponde es la 3.1.</p>
+</li>
+<li>
+<p>servlet: Declara los Sevlets de nuestra aplicación. Al tratarse de una aplicación JSF simple el único Servlet es el que implementa el Controlador. El elemento  <em>load-on_startup</em> indica que el objeto de la clase se carguará en la memoria Heap de la JVM en el inicio de la aplicación.</p>
+</li>
+<li>
+<p>servlet-mapping: Establece las correspondencias entre patrones de rutas URL de la aplicación y los servlets. En nuestro caso se traduce en que las peticiones de rutas que contengan la cadena "/faces/" detrás del contexto de la aplicación o que acaben en la cadena ".xhtml" serán atendidas por el Controlador de JSF.</p>
+</li>
+<li>
+<p>session-config: Engloba las propiedades de configuración de la sesión http en el servidor. Aquí definimos el tiempo máximo en minutos que el usuario puede dejar de interactuar con la aplicación antes de que su sesión sea descartada.</p>
+</li>
+<li>
+<p>welcome-file-list: Define una lista de posibles nombres de páginas que se añadirán al final de la URL cuanto en ésta no especifique ninguna. En concreto cuando llamemos a nuestra aplicación en la ruta <em><a href="http://localhost:8080/jdrone/" class="bare">http://localhost:8080/jdrone/</a></em> ésta será interpretada como <em><a href="http://localhost:8080/jdrone/index.xhtml" class="bare">http://localhost:8080/jdrone/index.xhtml</a></em> y se mostrará esa página JSF.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Bien, a continuación añadimos el fichero de configuración de JSF. Creamos un nuevo fichero xml en la misma carpeta con el nombre <code>faces-config.xml</code>. El contenido es el siguiente:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd" version="2.1" &gt;
+
+&lt;/faces-config&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Como véis es un documento XML que en nuestro caso sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo <em>version</em>. Se trata de la versión 2.1, que corresponde a Java EE 6. Esta es la versión que viene con nuestro servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.11, ya que trae características nuevas interesantes. Para esto tendríamos  que añadir la configuración necesaria al servidor de modo similar a cuando añadimos el driver de Derby aunque en este caso es algo más complejo. Podéis ampliar información <a href="https://developer.jboss.org/wiki/DesignOfAS7Multi-JSFFeature">aquí</a> y <a href="https://developer.jboss.org/message/914507">aquí</a>.</p>
+</div>
+<div class="paragraph">
+<p>La ausencia de contenido en este fichero es una consecuencia, por un lado de la simplicidad de nuestra aplicación, y por otro del uso del principio COC, Convention Over Configuration, que implementa el framework JSF y que consiste en establecer siempre que sea posible valores y comportamientos por defecto. Por ejemplo para las reglas de validación se acuerda que pueden establecerse de modo programático simplemente haciendo referencia al nombre del fichero de la página destino. Además como ya sabéis el uso de anotaciones ha quitado peso, afortunadamente, a los ficheros de configuración.</p>
+</div>
+<div class="paragraph">
+<p>Creamos otro nuevo fichero XML <code>beans.xml</code> y pegamos lo siguiente como contenido:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://jboss.org/schema/cdi/beans_1_0.xsd"&gt;
+
+&lt;/beans&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>También en este caso sólo precisamos el elemento raiz. La versión de CDI podemos verla reflejada en el nombre del esquema del documento XML. Aunque el documento no tiene contenido su presencia en el proyecto es necesaria ya que es el modo de indicarle al servidor que nuestro módulo war va a tener un contexto CDI.</p>
+</div>
+<div class="paragraph">
+<p>En este punto sólo nos queda completar la capa web añadiendo la página JSF y la clase managed bean correspondiente. Sin embargo, como ya os he comentado, antes vamos a comprobar que la aplicación no contiene errores y es capaz de desplegarse en el servidor. Lo que haremos es añadir una página JSF sin funcionalidad, que presente el conocido mensaje "Hola mundo!".</p>
+</div>
+<div class="paragraph">
+<p>Antes de crear la página añadimos a nuestro proyecto la faceta JSF. Eclipse reconocerá así los ficheros con la extensión xhtml y será capaz de asistirnos mientras escribimos el código.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig080.png" alt="post003 fig080.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Hacemos botón derecho sobre el proyecto y la opción <em>Properties &gt; Project Facets</em>. Marcamos el check <em>JavaServer Faces</em> y cambiamos la versión a la <em>2.1</em>. Pulsamos el link que aparece abajo a la izquierda en la misma ventana con la leyenda <em>Futher configuration required&#8230;&#8203;</em>. Se abrirá una nueva ventana donde cambiamos el valor del combo a <em>Disable Library Configuration</em> como se indica la figura:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig085.png" alt="post003 fig085.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Esto lo hacemos porque Maven ya resuelve las dependencias necesarias. Pulsamos <em>OK</em> en esa pantalla y de nuevo en la pantalla de propiedades del proyecto. Tras unos segundos los cambios se harán efectivos en nuestro proyecto.</p>
+</div>
+<div class="paragraph">
+<p>Creamos la página "Hola mundo!" pulsando botón derecho sobre la carpeta <em>webapp</em> y la opción <em>New &gt; Other&#8230;&#8203; &gt; JBoss Tools Web &gt; XHTML Page</em>. Pulsamos <em>Next</em> y escribimos como nombre de la página <code>index.xhtml</code>. Pulso <em>Next</em> y elijo la plantilla <em>Blank JSF Page</em>. Y pulsamos <em>Finish</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig090.png" alt="post003 fig090.png">
+</div>
+</div>
+<div class="paragraph">
+<p>La página es creada y Eclipse nos la mostrará en el editor por defecto, lista para que empecemos a componerla. Pulsamos sobre la lengüeta <em>Source</em> para tener acceso al código xhtml:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"&gt;
+
+&lt;h:head&gt;&lt;/h:head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Es la estructura básica de una página JSF, que en resumen es una página HTML que respeta el formato XML y donde aparecen una serie de etiquetas adicionales correspondientes a distintas librerías JSF de etiquetas. Veamos el documento línea a línea:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La entrada DOCTYPE es siempre la primera línea en una página HTML y por tanto también en una página JSF. En este caso se acompaña de la referencia al DTD que contiene las reglas para los documentos HTML 4.01. Para una página HTML 5 se simplifica a &lt;!DOCTYPE html&gt; ya que no hay validación contra un DTD.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>La segunda línea se corresponde con el elemento raiz de una página HTML y representa el documento completo. En este elemento se declaran los espacios de nombres que vayamos a usar dentro de la página. Los espacios de nombres dentro de un fichero XML tienen la misión de evitar posibles conflictos de nombres anteponiendo al nombre de la etiqueta un prefijo seguido por el carácter dos puntos. Por ejemplo los elementos del core de JSF van precedidos por la cadena <em>f:</em>.</p>
+</li>
+<li>
+<p>Dentro del elemento html aparecen como es usual los dos elementos cabecera y cuerpo. Ahora simplemente escribiremos la cadena <code>Hola mundo!</code> dentro del elemento body. Pulsamos Ctrl + S para guardar los cambios.</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Antes de ejecutar el ciclo de vida de construcción de nuestro proyecto abrimos el fichero pom.xml y añadimos la línea:</p>
+</div>
+<div class="paragraph">
+<p><code>&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>dentro del elemento <em>&lt;build&gt;</em>. De esta manera el nombre del artefacto
+war que se generará en la fase package será el definido en el elemento  <em>&lt;artifactId&gt;</em> de nuestro proyecto, es decir "jdrone", y no el que se generaría por defecto, que incluye el tipo y versión, más engorroso. Por defecto el nombre del contexto de nuestra aplicación web es tomado del nombre del artefacto war y es conveniente simplificarlo para que la URL de la aplicación quede como una cadena sencilla:</p>
+</div>
+<div class="paragraph">
+<p>http://localhost:8080/<strong>jdrone</strong></p>
+</div>
+<div class="paragraph">
+<p>Vamos allá. En primer lugar vamos a ejecutar el ciclo clean. Pulsamos botón derecho en proyecto y la opción <em>Run As &gt; Maven clean</em>. A continuación arrancamos el servidor, pulsando el símbolo de play como se muestra en la figura o a través del botón derecho sobre el icono del servidor.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig100.png" alt="post003 fig100.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Tras unos pocos segundos el servidor debe arrancar sin mostrar errores en la ventana con la solapa <em>Console</em>. Para terminar ejecutamos el ciclo de vida completo con botón derecho en proyecto y la opción <em>Run As &gt; Maven install</em>. Después de otro periodo corto de tiempo la aplicación debe desplegarse en el servidor, y si no existen problemas de tipografía no deberíamos obtener ningún error en la ventana <em>Console</em>.</p>
+</div>
+<div class="paragraph">
+<p>Para no tener que ejecutar los dos ciclos de Maven de forma separada vamos a crear una configuración de ejecución personalizada que los ejecute de una vez. Para ello hago botón derecho en proyecto y <em>Run As &gt; Run Configurations&#8230;&#8203;</em>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig110.png" alt="post003 fig110.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Se muestra una ventana donde selecciono a la derecha <em>Maven Build</em> y pulso el icono <em>New</em> arriba a la izquierda para crear el nuevo perfil de ejecución.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig115.png" alt="post003 fig115.png">
+</div>
+</div>
+<div class="paragraph">
+<p>En la ventana que aparece a continuación escribo el nombre del perfil de ejecución, por ejemplo <code>clean install</code>, establezco el directorio base y en el campo <em>Goals</em> escribo en orden lo que quiero ejecutar <code>clean install</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig120.png" alt="post003 fig120.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Pulso el botón <em>Apply</em> y a continuación <em>Close</em> para guardar la nueva configuración de ejecución. Añadimos de paso otro perfil igual que el anterior
+pero en vez de con _ clean install_ esta vez escribimos <code>clean build</code>. Miro la pestaña <em>Servers</em> para asegurarme de que el servidor está arrancado. Pulso botón derecho sobre proyecto y <em>Run As &gt; Maven build</em> para que se muestre otro menú con las configuraciones personalizadas de arranque y selecciono mi configuracion <em>clean install</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig125.png" alt="post003 fig125.png">
+</div>
+</div>
+<div class="paragraph">
+<p>En la pestaña <em>Console</em> se irán generando de nuevo todos los mensajes de salida correspondientes a la ejecución de cada una de las fases primero del ciclo de vida clean y a continuación del ciclo de vida por defecto hasta la fase especificada install. Veamos las acciones más relevantes que ocurren en este proceso:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>En el ciclo clean todos los elementos generados en la carpeta target por Maven se eliminan. Esto es necesario para asegurar que las modificaciones realizadas en nuestra aplicación se hagan efectivas en el artefacto war generado.</p>
+</li>
+<li>
+<p>En el ciclo por defecto se ejecutan hasta 23 fases en orden. Veamos lo más relevante:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>compile: las clases son compiladas.</p>
+</li>
+<li>
+<p>test: Ejecuta los tests unitarios. Esto no queremos que se haga de momento y lo anulamos configurando el plugin maven-surefire-plugin en el fichero pom.xml en la sección build, que configura las acciones ejecutadas en cada fase del ciclo de construcción.</p>
+</li>
+<li>
+<p>package: Se generera el archivo war en la carpeta target. Si abrimos la carpeta desde windows, en mi caso en la carpeta <em>C:\TALLER\workspace\jdrone\target\</em> podremos ver el artefacto war generado.</p>
+</li>
+<li>
+<p>install: Copia el artefacto jdrone.war en el repositorio local en la ruta <em>C:\Users\Javier\.m2\repository\com\lametaweb\javaee\jdrone\0.0.1-SNAPSHOT\jdrone-0.0.1-SNAPSHOT.war</em>, esto es útil cuando se trata de librerías ya que permite que el artefacto sea usado como dependencia en cualquier otro proyecto. El nombre nos está diciendo que se trata de la primera versión y que es una snapshot es decir una versión de desarrollo que no está destinada a producción como ocurre en el caso de una release.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Llegamos al esperado momento. Para comprobar que la aplicación y los recursos de que depende se han desplegado correctamente en el servidor navegamos a la aplicación desde nuestro browser escribiendo la URL <code><a href="http://localhost:8080/jdrone" class="bare">http://localhost:8080/jdrone</a></code>. Y si todo ha ido bien se mostrará el mensaje "Hola mundo!" en pantalla.</p>
+</div>
+<div class="paragraph">
+<p>En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Hasta muy pronto!</p>
+</div>
+</div>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JSF">JSF</a>, <a href="http://www.lametaweb.com/tag/JavaServer-Faces"> JavaServer Faces</a>, <a href="http://www.lametaweb.com/tag/MVC"> MVC</a>, <a href="http://www.lametaweb.com/tag/Facelets"> Facelets</a>, <a href="http://www.lametaweb.com/tag/Maven"> Maven</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Desarrollo%20de%20una%20aplicaci%C3%B3n%20desde%20cero%3A%20El%20patr%C3%B3n%20MVC%20y%20la%20capa%20de%20presentaci%C3%B3n.&amp;url=http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>La metaweb</h4>
+                        <img src="https://avatars.githubusercontent.com/u/11819148?v=3">
+                        
+                        
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'lametaweb'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-62743682-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
