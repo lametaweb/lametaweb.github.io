@@ -25,7 +25,7 @@ En resumen, el Modelo se implementa en los managed beans y es una representació
 
 * Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
 	** Páginas xml facelets.
-    ** Ficheros de recursos.
+    ** Ficheros de recursos para soporte multiidioma, etc.
     ** Clases representando conversores, validadores y listeners.
     ** Propiedades de la Vista en las clases managed bean.
     ** Elementos que extienden la Vista: Renderers y componentes propios.
