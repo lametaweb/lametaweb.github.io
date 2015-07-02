@@ -15,7 +15,7 @@ En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en J
 
 La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la aplicación es la siguiente:
 
-* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
+* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean, también conocidos como backing beans. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
 
 ** Parte de datos del *modelo*: Son los beans de entidad JPA de la capa de persistencia. En el Modelo se representan como atributos de los managed beans con el mismo tipo que los entity beans JPA.
 
