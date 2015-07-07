@@ -520,4 +520,6 @@ Desde esta dirección podéis:
 con el botón _Clone in Desktop_ de vuestro Fork, del repositorio a vuestro disco duro (tenéis que tener Git instalado en vuestra
 máquina).
 
+image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig180.png[] 
+
 Hasta el próximo Post!
