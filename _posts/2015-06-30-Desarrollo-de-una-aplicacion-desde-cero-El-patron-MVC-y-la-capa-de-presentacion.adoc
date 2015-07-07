@@ -15,7 +15,7 @@ En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en J
 
 La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la aplicación es la siguiente:
 
-* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
+* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean, también conocidos como backing beans. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
 
 ** Parte de datos del *modelo*: Son los beans de entidad JPA de la capa de persistencia. En el Modelo se representan como atributos de los managed beans con el mismo tipo que los entity beans JPA.
 
@@ -25,7 +25,7 @@ En resumen, el Modelo se implementa en los managed beans y es una representació
 
 * Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
 	** Páginas xml facelets.
-    ** Ficheros de recursos.
+    ** Ficheros de recursos para soporte multiidioma, etc.
     ** Clases representando conversores, validadores y listeners.
     ** Propiedades de la Vista en las clases managed bean.
     ** Elementos que extienden la Vista: Renderers y componentes propios.
@@ -53,11 +53,21 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 . Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto, FacesContext. La View es un objeto que contiene una representación en el lado del servidor del árbol de componentes DOM del lado del cliente/navegador. El objeto FacesContext representa el contexto de servidor que contiene todos los elementos para la gestión de la petición. Después de la creación de la View se salta a la última fase Render Response. En cambio, en una postback request la View ya existe (de la initial request que la precedió o de otra postback) y simplemente se restaura en el contexto con la View ya montada.
 
-. Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones y las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la cuarta fase, Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.
+. Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View.  Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response. Si existen componentes con el atributo immediate igual a true para ellos se adelantan a esta fase todas las fases excepto la última Render Response: Las conversiones y las validaciones, actualización del Modelo y la ejecución de eventos asociados. El uso del atributo immediate = true tiene distintas implicaciones típicas por lo tanto, dependiendo del componente o componentes con esta característica:
+
+* En un fomulario con un componente de acción no immediate:
+
+	** En componentes de entrada, por ejemplo un inputText, las validaciones del conjunto de componentes immediate = true se realizan antes que las del resto. Si alguna o algunas fallan no se evaluan los componentes no immediate ya que se saltará a la fase Render Response. Es decir que puedo asignar inmmediate = true para priorizar validaciones en un formulario.
+    
+* En un fomulario con un componente de acción immediate = true:
+    
+    ** Si todos los componentes de entrada del formulario son no immediate entonces el método de acción del commandButton se adelanta a las fases de validación y en adelante de todos los componentes de entrada y como después del método de acción se pasa a la fase Render Response el efecto es que no se ejecuta ninguna fase para ningún componente de entrada. En la práctica esto se usa para botones de formulario tipo Atrás o Cancelar.
+    
+    ** Si algunos de los componentes de entrada son immediate = true entonces éstos también adelantan sus fases a la fase Apply Request Values, como el componente de comando. De esta manera los componentes de entrada no immediate son puenteados. Una aplicación práctica sería un link del tipo "¿Olvisate tu contraseña?" donde el componente de entrada Password sería no immediate y el commandLink immediate = true.
 
 . Process Validations: Para los componentes sin immediate = true se ejecutan las validaciones y conversiones sobre el valor del componente (el introducido por el usuario en el navegador). Si existen errores de validación o conversión son añadidos al contexto y se salta directamente a la fase Render Response.
 
-. Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto y se salta directamente a la fase Render Response.
+. Update Model: La View es recorrida y para los componentes sin immediate = true los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto y se salta directamente a la fase Render Response.
 
 . Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario (submit) entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición initial request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio desde el método de acción y se determina la respuesta del ciclo.
 
@@ -76,7 +86,7 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 Adicionalmente, en todas las fases excepto en la primera y en la última, puedo emitir un FacesContext.responseComplete() si quiero que la respuesta sea gestionada por un tercero, por ejemplo un servicio web. Puedo especificar ese tercero redirigiendo hacia él con un FacesContext.redirect(String URL), que a su vez emite el FacesContext.responseComplete(). El efecto es que el ciclo JSF se corta al finalizar la fase y se salta a la redirección.
 
-Observando las fases del ciclo de vida nos damos cuenta de que JSF nos está proporcionando un framework web orientado a eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX. Esto supone un avance respecto a otros frameworks como Struts o Spring MVC y nos asegura un desarrollo más eficiente.
+Observando las fases del ciclo de vida nos damos cuenta de que JSF nos está proporcionando un framework web orientado a componentes y dirigido por eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX. Esto supone un avance respecto a otros frameworks como Struts o Spring MVC y nos asegura un desarrollo más eficiente.
 
 Con esta exposición de los elementos básicos de JSF desde el punto de vista estático y dinámico he querido daros un background que os permita tomar una base sólida para poder implementar sobre JSF cualquier funcionalidad. Además de lo expuesto, JSF aporta muchas otras características, que poco a poco iréis conociendo, y que aceleran aún más el desarrollo de una aplicación web empresarial. Como ejemplos podríamos citar: La capacidad de guardar el estado más allá de una request (conversation, Flash, Flow), las capacidades multiidioma, la creación de clases Converter, Validator o Listener propias, el soporte para AJAX, o la implementación de componentes de interfaz a medida. Con respecto a esto último se me ocurre como ejemplo un componente <mio:canvasRuta> que nos mostrara de forma visual la ruta de un trabajo de un drone.
 

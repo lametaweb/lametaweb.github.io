@@ -36,7 +36,7 @@
     <meta property="og:description" content="Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html" />
     <meta property="article:published_time" content="2015-06-29T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-07-01T11:35:13.981Z" />
+    <meta property="article:modified_time" content="2015-07-03T19:25:40.322Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="MVC" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.",
     "url": "http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html",
     "datePublished": "2015-06-29T22:00:00.000Z",
-    "dateModified": "2015-07-01T11:35:13.981Z",
+    "dateModified": "2015-07-03T19:25:40.322Z",
     "keywords": "JSF,  JavaServer Faces,  MVC,  Facelets,  Maven",
     "description": "Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..."
 }
@@ -175,7 +175,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Modelo: Es una representación del <strong>modelo</strong> (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean. El <strong>modelo</strong> tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:</p>
+<p>Modelo: Es una representación del <strong>modelo</strong> (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean, también conocidos como backing beans. El <strong>modelo</strong> tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -202,7 +202,7 @@
 <p>Páginas xml facelets.</p>
 </li>
 <li>
-<p>Ficheros de recursos.</p>
+<p>Ficheros de recursos para soporte multiidioma, etc.</p>
 </li>
 <li>
 <p>Clases representando conversores, validadores y listeners.</p>
@@ -263,13 +263,40 @@
 <p>Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto, FacesContext. La View es un objeto que contiene una representación en el lado del servidor del árbol de componentes DOM del lado del cliente/navegador. El objeto FacesContext representa el contexto de servidor que contiene todos los elementos para la gestión de la petición. Después de la creación de la View se salta a la última fase Render Response. En cambio, en una postback request la View ya existe (de la initial request que la precedió o de otra postback) y simplemente se restaura en el contexto con la View ya montada.</p>
 </li>
 <li>
-<p>Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View. Para los componentes con el atributo immediate a true se adelantan a este momento las conversiones y las validaciones (que normalmente se llevan a cabo en la fase siguiente Process Validations) y la ejecución de eventos asociados (que normalmente se ejecutan antes de la cuarta fase, Invoque application). Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response.</p>
+<p>Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View.  Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response. Si existen componentes con el atributo immediate igual a true para ellos se adelantan a esta fase todas las fases excepto la última Render Response: Las conversiones y las validaciones, actualización del Modelo y la ejecución de eventos asociados. El uso del atributo immediate = true tiene distintas implicaciones típicas por lo tanto, dependiendo del componente o componentes con esta característica:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>En un fomulario con un componente de acción no immediate:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>En componentes de entrada, por ejemplo un inputText, las validaciones del conjunto de componentes immediate = true se realizan antes que las del resto. Si alguna o algunas fallan no se evaluan los componentes no immediate ya que se saltará a la fase Render Response. Es decir que puedo asignar inmmediate = true para priorizar validaciones en un formulario.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>En un fomulario con un componente de acción immediate = true:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Si todos los componentes de entrada del formulario son no immediate entonces el método de acción del commandButton se adelanta a las fases de validación y en adelante de todos los componentes de entrada y como después del método de acción se pasa a la fase Render Response el efecto es que no se ejecuta ninguna fase para ningún componente de entrada. En la práctica esto se usa para botones de formulario tipo Atrás o Cancelar.</p>
+</li>
+<li>
+<p>Si algunos de los componentes de entrada son immediate = true entonces éstos también adelantan sus fases a la fase Apply Request Values, como el componente de comando. De esta manera los componentes de entrada no immediate son puenteados. Una aplicación práctica sería un link del tipo "¿Olvisate tu contraseña?" donde el componente de entrada Password sería no immediate y el commandLink immediate = true.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Process Validations: Para los componentes sin immediate = true se ejecutan las validaciones y conversiones sobre el valor del componente (el introducido por el usuario en el navegador). Si existen errores de validación o conversión son añadidos al contexto y se salta directamente a la fase Render Response.</p>
 </li>
 <li>
-<p>Update Model: La View es recorrida y los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto y se salta directamente a la fase Render Response.</p>
+<p>Update Model: La View es recorrida y para los componentes sin immediate = true los valores, ya convertidos y validados, de los componentes enlazados con atributos del managed bean (Modelo de MVC) son asignados a dichos atributos. Si el tipo de dato del atributo no permite la asignación se generan errores que son añadidos al contexto y se salta directamente a la fase Render Response.</p>
 </li>
 <li>
 <p>Invoke Application: Se ejecutan los eventos definidos en los componentes que no tengan un atributo immdiate = true. Si se ha definido un método de acción en el botón del formulario (submit) entonces este método del managed bean se ejecuta. Si se ha definido una página diferente a la solicitada (la del formulario) como respuesta, entonces se tiene en cuenta para la fase final Render Response. En general siempre que naveguemos a una nueva página se debe hacer con una nueva petición initial request usando el patrón Post-Redirect-Get. En resumen, en esta fase se realizan las llamadas a la lógica de negocio desde el método de acción y se determina la respuesta del ciclo.</p>
@@ -302,7 +329,7 @@
 <p>Adicionalmente, en todas las fases excepto en la primera y en la última, puedo emitir un FacesContext.responseComplete() si quiero que la respuesta sea gestionada por un tercero, por ejemplo un servicio web. Puedo especificar ese tercero redirigiendo hacia él con un FacesContext.redirect(String URL), que a su vez emite el FacesContext.responseComplete(). El efecto es que el ciclo JSF se corta al finalizar la fase y se salta a la redirección.</p>
 </div>
 <div class="paragraph">
-<p>Observando las fases del ciclo de vida nos damos cuenta de que JSF nos está proporcionando un framework web orientado a eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX. Esto supone un avance respecto a otros frameworks como Struts o Spring MVC y nos asegura un desarrollo más eficiente.</p>
+<p>Observando las fases del ciclo de vida nos damos cuenta de que JSF nos está proporcionando un framework web orientado a componentes y dirigido por eventos, al estilo del de los frameworks de aplicaciones de escritorio como Swing o el más reciente JavaFX. Esto supone un avance respecto a otros frameworks como Struts o Spring MVC y nos asegura un desarrollo más eficiente.</p>
 </div>
 <div class="paragraph">
 <p>Con esta exposición de los elementos básicos de JSF desde el punto de vista estático y dinámico he querido daros un background que os permita tomar una base sólida para poder implementar sobre JSF cualquier funcionalidad. Además de lo expuesto, JSF aporta muchas otras características, que poco a poco iréis conociendo, y que aceleran aún más el desarrollo de una aplicación web empresarial. Como ejemplos podríamos citar: La capacidad de guardar el estado más allá de una request (conversation, Flash, Flow), las capacidades multiidioma, la creación de clases Converter, Validator o Listener propias, el soporte para AJAX, o la implementación de componentes de interfaz a medida. Con respecto a esto último se me ocurre como ejemplo un componente &lt;mio:canvasRuta&gt; que nos mostrara de forma visual la ruta de un trabajo de un drone.</p>
