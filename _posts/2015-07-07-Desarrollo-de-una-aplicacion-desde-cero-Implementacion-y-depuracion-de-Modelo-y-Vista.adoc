@@ -14,7 +14,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Veamos el porqué de estos valores:
 
-* Name: DisponibilidadBean. Es el nombre de la clase que se genera. Tenemos que elegirlo de manera que explique el caso de uso que soporta. En este caso lo que se muestra al usuario es la disponibilidad de los drones en una fecha. La segunda parte del nombre indica que se trata de un bean gestionado por CDI.
+* Name: DisponibilidadBean. Es el nombre de la clase que se genera. Tenemos que elegirlo de manera que explique el caso de uso que soporta. En este caso lo que se muestra al usuario es la disponibilidad de los drones en una fecha. La segunda parte del nombre indica que se trata de un bean gestionado por CDI. En Java EE la clase managed o backing bean representa el Modelo del patrón MVC.
 * Interfaces: La anotación @Named incluye el bean en el contexto EL de JSF lo que me va a permitir acceder a sus atributos y metodos usando el lenguaje unificado de expresiones EL, en general desde una página facelet o, en ocasiones, desde código java donde no disponga de una referencia al bean. En EL el nombre por defecto para el bean se toma del nombre de la clase en minúscula. En nuestro caso tendremos _disponibilidadBean_.
 * Scope: @RequestScoped: Define el tiempo de vida y la visibilidad del bean. En este caso el bean está disponible sólo para los objetos que existan en la thread creada para gestionar la request donde se crea el bean. 
 
@@ -22,10 +22,9 @@ NOTE: Una pega de la versión 2.1 de JSF, y al mismo tiempo una buena razón par
 
 A continuación añadimos al bean cada uno de los elementos necesarios para conseguir una capa web funcional:
 
-* Los atributos para guardar el estado de la información exclusiva de la Vista: En nuestro los parámetros de la consulta, que no tienen una correspondencia en el modelo de la aplicación.
-* Un método que contiene las llamadas al modelo de la aplicación que devuelven a los datos para actualizar el Modelo de la capa de presentación. Este método será llamado por un evento definido en la Vista como veremos ahora.
-* El Modelo donde guardar la información generada por el método anterior.	
-
+* Los atributos para guardar el estado exclusivo de la Vista: En nuestro caso los parámetros de la consulta, que no tienen una correspondencia en el modelo de la aplicación, pero que son parte del Modelo de MVC.
+* Un método que se trae la información del modelo hacia el Modelo de MVC dependiendo del valor de los parámetros anteriores. Este método será llamado por un evento definido en la Vista como veremos más adelante cuando creemos la Vista.
+* El atributo que guarda la información devuelta por el método anterior.
 
 Siguiendo el orden de la lista anterior añadimos primero a nuestro bean los tres atributos siguientes:
 
@@ -36,32 +35,27 @@ Siguiendo el orden de la lista anterior añadimos primero a nuestro bean los tre
 	private int minutos;
 ----
 
-Hacemos botón derecho sobre al editor dentro del código de la clase, seleccionamos _Source > Generate Getters and Setters _ y marcamos
-los tres atributos para crear autometicamente los métodos getter y setter. Pulsamos Ctrl + O para importar la clase Date, tener cuidado
-de elegir la clase _java.util.Date_.
+Hacemos botón derecho sobre al editor dentro del código de la clase, seleccionamos _Source > Generate Getters and Setters _ y marcamos los tres atributos para crear automáticamente los métodos getter y setter. Pulsamos Ctrl + O para importar la clase Date, tener cuidado de elegir la clase _java.util.Date_.
 
-Estos valores conforman los parámetros que el usuario introduce por pantalla para realizar la consulta. Estos parámetros se
-definen atendiendo a la usabilidad de la interfaz y son distintos de los parámetros que recibe el método de
-negocio. Tendremos que implementar por tanto como veremos ahora un código que transforme los valores de los primeros a los segundos.
+Estos atributos se enlazan con los valores que el usuario introduce por pantalla para la consulta y deben definirse atendiendo a la usabilidad de la interfaz, siendo en general distintos de los parámetros que finalmente recibe el método de la capa de Negocio/Servicio. Esto exige un código que transforme unos valores en otros como veremos ahora.
 
-A continuación añadimos el Modelo para esta página. Como el caso de uso consiste en una simple consulta el Modelo se reduce a:
+A continuación añadimos el atributo que almacena los datos del modelo.
 
 [source,java,indent=0]
 ----
 private List<Drone> drones;
 ----
 
-Del mismo modo pulsamos Ctrl + O para traernos las importaciones y generamos sólo el método getter en este caso ya que se trata de
-una colección inmutable.
+Del mismo modo pulsamos Ctrl + O para traernos las importaciones y generamos sólo el método getter en este caso ya que se trata de datos de sólo lectura.
 
-Por último añadimos el método de evento. Inyectamos la clase de negocio añadiendo:
+Por último añadimos el método del Modelo. Inyectamos el bean EJB de negocio en nuestro bean añadiendo:
 [source,java,indent=0]
 ----
 	@Inject
 	private DroneFacade droneFacade; 
 ----
 
-Y el método:
+Y añadimos el método:
 
 [source,java,indent=0]
 ----
