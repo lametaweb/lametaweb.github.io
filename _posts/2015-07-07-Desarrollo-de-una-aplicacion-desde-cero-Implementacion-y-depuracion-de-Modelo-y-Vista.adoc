@@ -60,19 +60,20 @@ Y añadimos el método:
 [source,java,indent=0]
 ----
 	public void listaEstadoDronesPorFecha(){
-
-		Date fechaAjustada = this.fecha!=null?new Date(this.fecha.getTime() + 
-				this.horas * 60 * 60 * 1000 +
-				this.minutos * 60 * 1000):null;
 		
-		this.drones =  droneFacade.obtenEstadoDronesPorFechaNamed(fechaAjustada);
-	}
+		if(!FacesContext.getCurrentInstance().isPostback()) return;
+			
+		Date fechaAjustada = new Date(this.fecha.getTime() + 
+				this.horas * 60 * 60 * 1000 +
+				this.minutos * 60 * 1000);
+		
+		this.drones =  droneFacade.obtenEstadoDronesPorFecha(fechaAjustada);
+	}	
 ----
 
-En el método primero tenemos el código de adaptación de los parámetros de usuario y luego la llamada al negocio. Un poco más adelante
-en el post veremos en detalle su implementación cuando expliquemos el ciclo de vida de JSF sobre nuestra aplicación.
+La primera línea de código evita que cuando se entra en la página se produzca un error en la siguiente línea de código al ser nulos los valores de los valores de los parámetros. La segunda línea de código realiza la transformación de los parámetros de la Vista a los parámetros aceptados por la capa de Servicio. La tercera línea realiza la actualización del Modelo. Un poco más adelante en el post volveremos a la implementación del método cuando veamos el ciclo de vida de JSF en la aplicación.
 
-Y con esto tenemos el bean implementado. La clase completa quedaría así:
+Y con esto tenemos el backing bean implementado. La clase completa quedaría así:
 
 [source,java,indent=0]
 ----
@@ -82,6 +83,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -106,12 +108,14 @@ public class DisponibilidadBean {
 	}
 	
 	public void listaEstadoDronesPorFecha(){
-
-		Date fechaAjustada = this.fecha!=null?new Date(this.fecha.getTime() + 
-				this.horas * 60 * 60 * 1000 +
-				this.minutos * 60 * 1000):null;
 		
-		this.drones =  droneFacade.obtenEstadoDronesPorFechaNamed(fechaAjustada);
+		if(!FacesContext.getCurrentInstance().isPostback()) return;
+			
+		Date fechaAjustada = new Date(this.fecha.getTime() + 
+				this.horas * 60 * 60 * 1000 +
+				this.minutos * 60 * 1000);
+		
+		this.drones =  droneFacade.obtenEstadoDronesPorFecha(fechaAjustada);
 	}	
 
 	public Date getFecha() {
@@ -144,59 +148,42 @@ public class DisponibilidadBean {
 }
 ----
 
-
-
-Vamos con la página facelet. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos: 
+Vamos pues con la página facelet. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos: 
 
 . Elementos que deben aparecer: 
 	. Inmutables (por ejemplos leyendas de campos)
 	. De datos: de salida, de entrada, o de entrada/salida.
 	. De acción.
-. Disposición y orden de entrada (tab) de los elementos.
 . Definición de las restricciones para los valores de los elementos de entrada.
+. Formato en que se muestran los tipos no básicos en los campos de entrada/salida o de salida.
 
-Otros aspectos menos básicos pero no menos necesarios en una aplicación real serían:
+Otros aspectos no menos necesarios en una aplicación real son:
 
 . Soporte multiidioma, dependiendo del sistema o a petición del usuario.
-. Creación de plantillas para normalizar la maquetación de la páginas.
+. Creación de plantillas para normalizar la maquetación de las páginas.
 . Implementación de un sistema de menús.
+. Disposición y orden de entrada (tab order) de los elementos.
 . Mecanismos de paginación.
 . Estudio de la usabilidad y de la UX.
-. Implementación de las normas de la W3C de accesibilidad.
-. Adición de características de interfaz adaptativa (responsive).
+. Implementación de las normas de la W3C sobre accesibilidad.
+. Adición de características para interfaz adaptativa (responsive design).
 . Seguridad contra ataques desde la interfaz.
-. Creación de nuevos componentes JSF a medida cuando se requiera. Para el componente se aplican a su vez estas normas.
+. Creación de nuevos componentes JSF a medida (custom components) cuando se requiera. Para estos componente se aplican a su vez estas mismas normas.
 
-Nosotros ahora sólo consideraremos la primera lista. Antes de empezar a implementar la página lo ideal es dibujar un boceto que
-teniendo en cuenta cada punto. Lo podemos hacer con un editor estándar, eso sí, que sea vectorial. Por ejemplo
-hablando en términos de editores open source, no uséis Gimp, usad en cambio, Inkscape. Existe también software orientado a este
-tipo de tareas. El más famoso es Balsamiq. Realmente con papel, lápiz y goma se puede hacer aquí un buen trabajo. Sin embargo si
-necesitamos generar documentación o buscamos disponer de una demos interactiva para el cliente tendremos que usar este tipo de herramientas.
+Nosotros ahora sólo consideraremos la primera lista. Antes de empezar a implementar la página lo ideal es dibujar un boceto con un editor estándar, eso sí, que sea vectorial, o con un software especializado. Hablando en términos de editores open source no uséis Gimp, usad en cambio Inkscape. Entre los editores especializados el más conocido es Balsamiq. Realmente con papel, lápiz y goma se puede hacer aquí un buen trabajo. Sin embargo si necesitamos generar documentación o buscamos disponer de una demo interactiva para el cliente tendremos que recurrir a una herramienta especializa.
 
-Nosotros aquí usaremos Inkscape. Primero diferencio las áreas de la pantalla y luego dispongo los distintos elementos. Necesitamos un area
-para el título de la página, otra para los campos de entrada, una adicional para los elementos de acción (en general botones) y finalmente
-el area que muestra la información solicitada. En la siguiente figura se muestran dibujadas con Inkscape:
+Aquí usaremos Inkscape. Primero diferencio las áreas de la pantalla y luego dispongo los distintos elementos. Necesitamos un área para el título de la página, otra para los campos de entrada, una adicional para los elementos de acción y finalmente el área que muestra la información solicitada. En la siguiente figura se muestran dispuestas sobre la página:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig135.png[]
 
+En cuanto a los elementos, por áreas tengo que añadir:
 
-En cuanto a los elementos, por areas tengo que añadir:
-
-. Cabecera: Etiqueta para el título de la página.
-. Parámetros de entrada: El usuario debe introducir una fecha y un momento. Elijo añadir tres componentes de texto. Uno para la fecha, 
-otro para las horas y otro para los minutos. Aunque se
-podría haber resuelto con componentes de terceros especiales para fechas, como el componente Calendar de Primerfaces. en esta área
-indicamos también al usuario el formato en que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.
-. Botonera: En nuestro caso nos basta con un botón de solicitud de listado.
-. Salida tabulada: Aquí hay que definir los campos que se muestran. En nuestro caso la información de salida es una lista de drones y
-por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales
-que aporten información sobre lo que se solicita. En nuestro caso preguntamos por los drones realizando un trabajo en una fecha y hora y
-al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para que el usuario
-pueda ver qué drone se queda antes libre. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno
-de los componentes para listas de Primefaces, o Richfaces.
+* Cabecera: Etiqueta para el título de la página.
+* Parámetros de entrada: El usuario debe introducir una fecha y un momento. Decido disponer tres componentes de texto. Uno para la fecha, otro para las horas y otro para los minutos. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de Primerfaces (añadir Primefaces, y al servidor, al proyecto es muy sencillo). En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.
+* Botonera: En nuestro caso nos basta con un botón de solicitud de listado.
+* Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de Primefaces, o Richfaces.
 
 La siguiente figura muestra el boceto o mockup final de nuestra página:
-
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig137.png[]
 	
@@ -499,6 +486,22 @@ Desde esta dirección podéis:
 con el botón _Clone in Desktop_ de vuestro Fork, del repositorio a vuestro disco duro (tenéis que tener Git instalado en vuestra
 máquina).
 
-image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig180.png[] 
+image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig180.png[]
+
+Para acceder al control de versiones Git desde Eclipse en un proyecto ya versionado, por ejemplo
+el proyecto jdrone en vuestra máquina resultado de hacer primero un fork en vuestra cuenta de 
+GitHUb desde el repositorio original en la cuenta de lametaweb y a continuación hacer un clone del 
+
+fork a vuestra máquina, seguir los siguientes pasos:
+
+. Pulsar botón derecho sobre el proyecto en eclipse, en la vista Project Explorer.
+. Seleccionar _Team > Share proyect..._.
+. Elegir _Git_ y pulsar _Next_.
+. En la ventana siguiente aparecerá vuestro repositorio local. Pulsad _Finish_
+. En el explorador los iconos de los elementos del proyecto mostrarán un símbolo amarillo
+abajo a la derecha.
+. Si pulsamos de nuevo botón derecho sobre el proyecto y la opción _Team_ esta vez aparecerán
+las opciones correspondientes a las acciones que podemos realizar sobre nuestro repositorio o
+sobre el repositorio remoto en GitHub.
 
 Hasta el próximo Post!
