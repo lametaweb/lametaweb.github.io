@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista.</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//www.lametaweb.com/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/asciidoctor.css?v=1.0.0" />
+
+    <link rel="canonical" href="http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html" />
+    
+    <meta property="og:site_name" content="La metaweb" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista." />
+    <meta property="og:description" content="Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la..." />
+    <meta property="og:url" content="http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html" />
+    <meta property="article:published_time" content="2015-07-06T22:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-07-11T11:41:14.385Z" />
+    <meta property="article:tag" content="JSF" />
+    <meta property="article:tag" content="JavaServer Faces" />
+    <meta property="article:tag" content="MVC" />
+    <meta property="article:tag" content="Facelet" />
+    <meta property="article:tag" content="managed bean" />
+    <meta property="article:tag" content="backing bean" />
+    <meta property="article:tag" content="CDI" />
+    <meta property="article:tag" content="Depuración" />
+    <meta property="article:tag" content="Debugging" />
+    <meta property="article:tag" content="Git" />
+    <meta property="article:tag" content="GitHub" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista." />
+    <meta name="twitter:description" content="Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la..." />
+    <meta name="twitter:url" content="http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "La metaweb",
+    "author": {
+        "@type": "Person",
+        "name": "La metaweb",
+        "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": ""
+    },
+    "headline": "Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista.",
+    "url": "http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html",
+    "datePublished": "2015-07-06T22:00:00.000Z",
+    "dateModified": "2015-07-11T11:41:14.385Z",
+    "keywords": "JSF,  JavaServer Faces,  MVC,  Facelet,  managed bean,  backing bean,  CDI,  Depuración,  Debugging,  Git,  GitHub",
+    "description": "Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="La metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelet tag-managed-bean tag-backing-bean tag-CDI tag-Depuracion tag-Debugging tag-Git tag-GitHub">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar style="background: none">
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="http://www.lametaweb.com">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area bgimage" style="background-image: url(https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/fblog.png)">
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+                <li><a class="fi-torso" href="http://www.lametaweb.com/about"></a></li>
+                <li><a class="fi-mail" href="http://www.lametaweb.com/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="La metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">La metaweb</h1>
+            <hr>
+            <p class="blog-description">Ensayos no destructivos en el ecosistema Java EE, y algún off topic para desconectar ;-)</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelet tag-managed-bean tag-backing-bean tag-CDI tag-Depuracion tag-Debugging tag-Git tag-GitHub">
+
+
+            <h1 class="post-title">Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista.</h1>
+
+            <span class="post-meta label"><time datetime="2015-07-07">07 Jul 2015</time></span>
+
+            <section class="post-content">
+                <div class="paragraph">
+<p>Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la confianza necesaria y como base sobre la que ensayar soluciones a cualquier requisito de cliente que podamos imaginar.</p>
+</div>
+<div class="paragraph">
+<p>En el post anterior conseguimos ya una aplicación funcional, sin embargo la capa de presentación se limitaba a un simple "Hola mundo!". Ahora toca resolver el caso de uso planteado inicialmente. Tendremos que añadir tan solo un par de ficheros: Una clase managed bean y una página facelet.</p>
+</div>
+<div class="paragraph">
+<p>Empecemos por la clase. Creamos una carpeta de nombre <code>vista</code> dentro de la carpeta <em>jdrone/src/main/java/com/lametaweb/jdrone/</em> . Pulsamos
+botón derecho sobre la nueva carpeta y <em>New &gt; Other&#8230;&#8203; &gt; CDI (Context and Dependency Inyection) &gt; Bean</em>, para crear un bean CDI. Y en la ventana introducimos los valores indicados en la siguiente figura:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig130.png" alt="post003 fig130.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Veamos el porqué de estos valores:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Name: DisponibilidadBean. Es el nombre de la clase que se genera. Tenemos que elegirlo de manera que explique el caso de uso que soporta. En este caso lo que se muestra al usuario es la disponibilidad de los drones en una fecha. La segunda parte del nombre indica que se trata de un bean gestionado por CDI. En Java EE la clase managed o backing bean representa el Modelo del patrón MVC.</p>
+</li>
+<li>
+<p>Interfaces: La anotación @Named incluye el bean en el contexto EL de JSF lo que me va a permitir acceder a sus atributos y metodos usando el lenguaje unificado de expresiones EL, en general desde una página facelet o, en ocasiones, desde código java donde no disponga de una referencia al bean. En EL el nombre por defecto para el bean se toma del nombre de la clase en minúscula. En nuestro caso tendremos <em>disponibilidadBean</em>.</p>
+</li>
+<li>
+<p>Scope: @RequestScoped: Define el tiempo de vida y la visibilidad del bean. En este caso el bean está disponible sólo para los objetos que existan en la thread creada para gestionar la request donde se crea el bean.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Una pega de la versión 2.1 de JSF, y al mismo tiempo una buena razón para actualizar en el servidor a la versión 2.2, es que el scope @ViewScoped, muy usado con formularios AJAX y en casos de uso que implican una o dos pantallas, no está integrado con el contexto CDI. Esto deriva en problemas como no poder inyectar beans CDI en un managed bean view scoped.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A continuación añadimos al bean cada uno de los elementos necesarios para conseguir una capa web funcional:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Los atributos para guardar el estado exclusivo de la Vista: En nuestro caso los parámetros de la consulta, que no tienen una correspondencia en el modelo de la aplicación, pero que son parte del Modelo de MVC.</p>
+</li>
+<li>
+<p>Un método que se trae la información del modelo hacia el Modelo de MVC dependiendo del valor de los parámetros anteriores. Este método será llamado por un evento definido en la Vista como veremos más adelante cuando creemos la Vista.</p>
+</li>
+<li>
+<p>El atributo que guarda la información devuelta por el método anterior.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Siguiendo el orden de la lista anterior añadimos primero a nuestro bean los dos atributos siguientes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">private Date fecha;
+private Date hora;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hacemos botón derecho sobre al editor dentro del código de la clase, seleccionamos <em>Source &gt; Generate Getters and Setters _ y marcamos los dos atributos para crear automáticamente los métodos getter y setter. Pulsamos Ctrl + O para importar la clase Date, tener cuidado de elegir la clase _java.util.Date</em>.</p>
+</div>
+<div class="paragraph">
+<p>Estos atributos se enlazan con los valores que el usuario introduce por pantalla para la consulta y deben definirse atendiendo a la usabilidad de la interfaz, siendo en general distintos de los parámetros que finalmente recibe el método de la capa de Negocio/Servicio. Esto exige un código que transforme unos valores en otros como veremos ahora.</p>
+</div>
+<div class="paragraph">
+<p>A continuación añadimos el atributo que almacena los datos del modelo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">private List&lt;Drone&gt; drones;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Del mismo modo pulsamos Ctrl + O para traernos las importaciones y generamos sólo el método getter en este caso ya que se trata de datos de sólo lectura.</p>
+</div>
+<div class="paragraph">
+<p>Por último añadimos el método del Modelo. Inyectamos el bean EJB de negocio en nuestro bean añadiendo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+private DroneFacade droneFacade;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Y añadimos el método:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public void listaEstadoDronesPorFecha(){
+
+    if(!FacesContext.getCurrentInstance().isPostback()) return;
+
+    TimeZone timeZone = new SimpleTimeZone(0,"GMT+02");
+    Calendar calendar = new GregorianCalendar(timeZone);
+    calendar.setTime(hora);
+    int horas = calendar.get(Calendar.HOUR_OF_DAY);
+    int minutos = calendar.get(Calendar.MINUTE);
+
+    calendar.setTime(this.fecha);
+    calendar.add(Calendar.HOUR, horas-2);
+    calendar.add(Calendar.MINUTE, minutos);
+
+    Date fechaAjustada = calendar.getTime();
+
+    this.drones =  droneFacade.obtenEstadoDronesPorFechaNamed(fechaAjustada);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La primera línea de código evita que cuando se entra en la página se produzca un error en la siguiente línea de código al ser nulos los valores de los valores de los parámetros. La segunda y siguientes líneas de código realiza la transformación de los parámetros de la Vista a los parámetros aceptados por la capa de Servicio. La última línea realiza la actualización del Modelo. Un poco más adelante en el post volveremos a la implementación del método cuando veamos el ciclo de vida de JSF en la aplicación.</p>
+</div>
+<div class="paragraph">
+<p>Y con esto tenemos el backing bean implementado. La clase completa quedaría así:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.lametaweb.jdrone.vista;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
+
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import com.lametaweb.jdrone.negocio.DroneFacade;
+import com.lametaweb.jdrone.persistencia.Drone;
+
+@Named
+@RequestScoped
+public class DisponibilidadBean {
+
+	private Date fecha;
+	private Date hora;
+
+	@Inject
+	private DroneFacade droneFacade;
+
+	private List&lt;Drone&gt; drones;
+
+	public DisponibilidadBean() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void listaEstadoDronesPorFecha(){
+
+		if(!FacesContext.getCurrentInstance().isPostback()) return;
+
+		TimeZone timeZone = new SimpleTimeZone(0,"GMT+02");
+		Calendar calendar = new GregorianCalendar(timeZone);
+		calendar.setTime(hora);
+		int horas = calendar.get(Calendar.HOUR_OF_DAY);
+		int minutos = calendar.get(Calendar.MINUTE);
+
+		calendar.setTime(this.fecha);
+		calendar.add(Calendar.HOUR, horas-2);
+		calendar.add(Calendar.MINUTE, minutos);
+
+		Date fechaAjustada = calendar.getTime();
+
+		this.drones =  droneFacade.obtenEstadoDronesPorFechaNamed(fechaAjustada);
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public Date getHora() {
+		return hora;
+	}
+
+	public void setHora(Date hora) {
+		this.hora = hora;
+	}
+
+	public List&lt;Drone&gt; getDrones() {
+		return drones;
+	}
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vamos pues con la página facelet. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Elementos que deben aparecer:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Inmutables (por ejemplos leyendas de campos)</p>
+</li>
+<li>
+<p>De datos: de salida, de entrada, o de entrada/salida.</p>
+</li>
+<li>
+<p>De acción.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Definición de las restricciones para los valores de los elementos de entrada.</p>
+</li>
+<li>
+<p>Formato en que se muestran los tipos no básicos en los campos de entrada/salida o de salida.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Otros aspectos no menos necesarios en una aplicación real son:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Soporte multiidioma, dependiendo del sistema o a petición del usuario.</p>
+</li>
+<li>
+<p>Creación de plantillas para normalizar la maquetación de las páginas.</p>
+</li>
+<li>
+<p>Implementación de un sistema de menús.</p>
+</li>
+<li>
+<p>Disposición y orden de entrada (tab order) de los elementos.</p>
+</li>
+<li>
+<p>Mecanismos de paginación.</p>
+</li>
+<li>
+<p>Estudio de la usabilidad y de la UX.</p>
+</li>
+<li>
+<p>Implementación de las normas de la W3C sobre accesibilidad.</p>
+</li>
+<li>
+<p>Adición de características para interfaz adaptativa (responsive design).</p>
+</li>
+<li>
+<p>Seguridad contra ataques desde la interfaz.</p>
+</li>
+<li>
+<p>Creación de nuevos componentes JSF a medida (custom components) cuando se requiera. Para estos componente se aplican a su vez estas mismas normas.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Nosotros ahora sólo consideraremos la primera lista. Antes de empezar a implementar la página lo ideal es dibujar un boceto con un editor estándar, eso sí, que sea vectorial, o con un software especializado. Hablando en términos de editores open source no uséis Gimp, usad en cambio Inkscape. Entre los editores especializados el más conocido es Balsamiq. Realmente con papel, lápiz y goma se puede hacer aquí un buen trabajo. Sin embargo si necesitamos generar documentación o buscamos disponer de una demo interactiva para el cliente tendremos que recurrir a una herramienta especializa.</p>
+</div>
+<div class="paragraph">
+<p>Aquí usaremos Inkscape. Primero diferencio las áreas de la pantalla y luego dispongo los distintos elementos. Necesitamos un área para el título de la página, otra para los campos de entrada, una adicional para los elementos de acción y finalmente el área que muestra la información solicitada. En la siguiente figura se muestran dispuestas sobre la página:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig135.png" alt="post003 fig135.png">
+</div>
+</div>
+<div class="paragraph">
+<p>En cuanto a los elementos, por áreas tengo que añadir:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cabecera: Etiqueta para el título de la página.</p>
+</li>
+<li>
+<p>Parámetros de entrada: El usuario debe introducir una fecha y una hora. Decido disponer dos componentes de texto. Uno para la fecha y otro para la hora. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de Primerfaces (añadir Primefaces, y al servidor, al proyecto es muy sencillo). En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.</p>
+</li>
+<li>
+<p>Botonera: En nuestro caso nos basta con un botón de solicitud de listado.</p>
+</li>
+<li>
+<p>Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de Primefaces, o Richfaces.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>La siguiente figura muestra el boceto o mockup final de nuestra página:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig137.png" alt="post003 fig137.png">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Recordad que a la hora de escribir el código de una página o de un bean es de gran ayuda usar el asistente que nos proporciona Eclipse a través de la hot key Ctrl + Espacio.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Con el diseño ya claro añado la página al proyecto. Pulso botón derecho sobre la carpeta <em>webapp</em> del proyecto y selecciono <em>New &gt; Other&#8230;&#8203;</em>, y en la ventana que se muestra escribo <code>xhtml</code> en el campo del filtro. Selecciono <em>XHTML Page</em> y pulso <em>Next</em>. Introduzco como nombre <code>index.xhtml</code> y pulso de nuevo <em>Next</em>. Desmarco el check <em>Use XHTML Template</em> porque copiaremos todo el contenido directamente en la página. Y pulso <em>Fisnish</em>. La página será creada y el editor de las JBoss Tools para páginas XHTML se abrirá mostrando un contenido vacío. Copiamos el contenido que se muestra y pulsamos Ctrl + S para guardar:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"&gt;
+&lt;f:view&gt;
+&lt;h:head&gt;
+    &lt;h:outputStylesheet library="css" name="estilo.css" /&gt;
+&lt;/h:head&gt;
+
+&lt;f:metadata&gt;
+    &lt;f:event
+        listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+        type="preRenderView" /&gt;
+&lt;/f:metadata&gt;
+
+&lt;h:body&gt;
+
+    ¡Hola mundo!
+    &lt;br /&gt;
+    &lt;h:form&gt;
+        &lt;h:outputText
+            value="Consulta de drones realizando trabajos en una fecha" /&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;h:messages /&gt;
+        &lt;br /&gt;
+        &lt;h:outputText
+            value="Introduce la fecha y la hora en el formato indicado:" /&gt;
+        &lt;br /&gt;
+        &lt;h:outputLabel value="Fecha (dd-mm-aaaa)" for="fecha" /&gt;&amp;nbsp;
+        &lt;h:inputText id="fecha" value="#{disponibilidadBean.fecha}"
+            required="true"&gt;
+            &lt;f:convertDateTime pattern="dd-MM-yyyy" /&gt;
+        &lt;/h:inputText&gt;
+        &lt;br /&gt;
+        &lt;h:outputLabel value="Hora (0-23:0-59)" for="hora" /&gt;&amp;nbsp;
+        &lt;h:inputText id="hora" value="#{disponibilidadBean.hora}"
+            required="true"&gt;
+            &lt;f:convertDateTime pattern="HH:mm" /&gt;
+        &lt;/h:inputText&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;h:commandButton value="Consultar" /&gt;
+    &lt;/h:form&gt;
+    &lt;br /&gt;
+    &lt;h:dataTable value="#{disponibilidadBean.drones}" var="drone"
+        styleClass="tabla-general" headerClass="tabla-general-cabecera"
+        rowClasses="tabla-general-impar,tabla-general-par"&gt;
+
+        &lt;h:column&gt;
+            &lt;!-- column header --&gt;
+            &lt;f:facet name="header"&gt;Número de Serie&lt;/f:facet&gt;
+            &lt;!-- row record --&gt;
+                    #{drone.numeroDeSerie}
+                &lt;/h:column&gt;
+        &lt;h:column&gt;
+            &lt;f:facet name="header"&gt;Modelo&lt;/f:facet&gt;
+                    #{drone.modelo}
+                &lt;/h:column&gt;
+        &lt;h:column&gt;
+            &lt;f:facet name="header"&gt;Autonomía&lt;/f:facet&gt;
+                    #{drone.autonomia}
+                &lt;/h:column&gt;
+        &lt;h:column&gt;
+            &lt;f:facet name="header"&gt;Número de Motores&lt;/f:facet&gt;
+                    #{drone.numMotores}
+                &lt;/h:column&gt;
+        &lt;h:column&gt;
+            &lt;f:facet name="header"&gt;Peso Máximo Despegue&lt;/f:facet&gt;
+                    #{drone.pesoMaximoDespegue}
+                &lt;/h:column&gt;
+
+    &lt;/h:dataTable&gt;
+
+&lt;/h:body&gt;
+&lt;/f:view&gt;
+&lt;/html&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Antes de pasar a explicar cada elemento de la página y ver como participa en el ciclo de vida de JSF añadamos una hoja de estilos muy sencilla al proyecto para dar algo de estilo a la página. Creo la carpeta <code>resources</code> dentro de la carpeta
+<em>webapp</em>, y dentro de <em>resources</em> creo otra con el nombre <code>css</code>. Sobre esta última pulso botón derecho y la opción <em>New &gt; Other&#8230;&#8203; &gt; Web &gt; CSS File</em>. Le doy el nombre <code>estilo.css</code>, y pulso <em>Finish</em>. Copio y pego lo siguiente en el fichero:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-css" data-lang="css">.tabla-general{
+	border-collapse:collapse;
+	background-color: #b9ccff;
+}
+
+.tabla-general-cabecera{
+	text-align:center;
+	background:none repeat scroll 0 0 #eb5256;
+	border-bottom:1px solid #db2226;
+	padding:16px;
+}
+
+.tabla-general-impar{
+	text-align:center;
+	background:none repeat scroll 0 0 #b9ccff;
+	border-top:1px solid #800040;
+}
+
+.tabla-general-par{
+	text-align:center;
+	background:none repeat scroll 0 0 #70b5cb;
+	border-top:1px solid #800040;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Una página JSF o facelet es un documento XML y al mismo tiempo un documento HTML. Contiene etiquetas HTML para definir la maquetación de la página y la semántica de cada elemento, y etiquetas JSF para definir los componentes y los aspectos dinámicos a nivel de página y de componente. Además como en cualquier página HTML podemos tener el código javascript y las hojas de estilo que precisemos, para soportar elementos dinámicos y estilos personalizados respectivamente. Es muy común añadir por ejemplo frameworks como jQuery, para la manipulación de la interfaz, o Bootstrap, para añadir capacidades de interfaz adaptativa.</p>
+</div>
+<div class="paragraph">
+<p>Veamos cada elemento de nuestra página:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La primera línea indica que se trata de un documento XML. Las JSPs ya son historia.</p>
+</li>
+<li>
+<p>La segunda línea indica que se trata también de un documento HTML. En este caso HTML 4. Si necesitamos usar HTML 5 escribimos solamente &lt;!DOCTYPE html&gt; ya que HTML 5 no se valida contra un DTD. JSF está mejorando la integración con HTML 5 en cada versión. Es otro motivo para instalar en nuestro proyecto y en nuestro servidor la última versión disponible.</p>
+</li>
+<li>
+<p>La tercera línea es la raiz en todo documento HTML, donde se declaran los espacios de nombres de XHTML y de las librerías de etiquetas de JSF que precisemos. En esta página sólo usamos la librerías Html y Core de JSF. La primera se usa para referirnos a los componentes y la segunda a elementos no renderizables como Validators, Converters o Listners, propios o predefinidos, elementos de binding de datos, etc. En 	<a href="http://docs.oracle.com/javaee/6/javaserverfaces/2.1/docs/vdldocs/facelets/">esta dirección</a> podéis ver las distintas librerías y sus componentes con sus atributos.</p>
+</li>
+<li>
+<p>La cuarta es el nodo raiz del árbol de elementos JSF. Podemos no ponerlo si no necesitamos especificar ninguno de sus atributos. Por ejemplo en una aplicación multiidioma uso el atributo locale para fijar el idioma en que muestro la pantalla.</p>
+</li>
+<li>
+<p>A continuación vienen los elementos hijos del elemento view. Head y body son ya conocidos, se corresponden con las etiquetas análogas en HTML. El elemento metadata contiene información sobre la propia página y su comportamiento durante el ciclo de vida JSF. Veamos el contenido dentro de cada uno de estos elementos:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Dentro del elemento head hemos definido una hoja de estilos CSS para dar estilo a la tabla que muestra los datos.</p>
+</li>
+<li>
+<p>Dentro de metadata asociamos un evento de tipo preRenderView al componente view, es decir, a la página, y se especifica el método listener asociado, cuyo cometido es actualizar el Modelo con el resultado de la consulta JPA una vez que los atributos correspondientes del backing bean han sido validados y actualizados y antes de la renderización de la página, para que así los datos se muestren al usuario en pantalla correctamente.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Y llegamos al cuerpo de la página. Aquí se sitúan los elementos con los que el usuario va a interatuar. Los vemos en orden:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>El componente form representa un formulario HTML con method igual a POST y action igual a la URL de la misma página que contiene el form.</p>
+</li>
+<li>
+<p>&lt;h:outputText&#8230;&#8203;&gt; muestra una cadena de texto. JSF lo renderiza como una elemento &lt;span&gt; de HTML.</p>
+</li>
+<li>
+<p>&lt;h:messages&#8230;&#8203;&gt; muestra los mensajes de error que se registren en las conversiones y validaciones sobre los campos del formulario implícitas o definidas en el formulario.</p>
+</li>
+<li>
+<p>&lt;h:outputLabel&#8230;&#8203;&gt; se renderiza como un elemento &lt;label&gt; de HTML. Representa una leyenda para un componente del formulario al que se asocia.</p>
+</li>
+<li>
+<p>&lt;h:inputText&#8230;&#8203;&gt; es un componente de entrada-salida de texto. Para los campos fecha configuro converters predefinidos ya que necesito especificar el formato de entrada-salida. En todos los casos el componente se enlaza con el backing bean a través del atributo value.</p>
+</li>
+<li>
+<p>El componente &lt;h:commandButton&#8230;&#8203;&gt; Representa el botón de submit del formulario HTML. En general va acompañado de un atributo action que indica el método del managed bean que se ejecutará en la fase Invoke Application (si no se registran errores) despues de hacer click sobre él. Esto lo veremos dentro de un momento cuando analicemos el comportamiento dinámico de la página.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Una buena lectura sobre componentes de la librería HTML la tenéis en el tutorial oficial de JSF
+<a href="http://docs.oracle.com/cd/E19798-01/821-1841/6nmq2cor0/index.html">aquí</a>. Además con una simple búsqueda en Google podéis encontrar ejemplos interesantes. Buena parte de estas búsquedas probablemente os lleven a la página  <a href="http://stackoverflow.com/">Stackoverflow</a> cuando traten de JSF o a  <a href="https://developer.mozilla.org/en-US/">MDN</a> cuando se refieran a tecnologías de front-end como HTML5 o CSS3.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Finalmente el área de salida de datos la definimos con un componente &lt;h:dataTable&#8230;&#8203;&gt; que renderiza una tabla HTML. El atributo <em>value</em> enlaza con el Modelo, formado por una colección de Entities de la capa de persistencia que actúan aquí como DTOs, fuera de un contexto de persistencia.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Para completar nuestra visión de la capa web veamos la sucesión de acontecimientos que tienen lugar desde el momento en que la aplicación es despliega en el servidor:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Despliegue de la aplicación:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Como ya vimos en su momento lo primero que se ejecuta es la carga de datos implementada en un método @PostConstruct del bean CDI anotado como @Singleton y @Startup.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Initial request:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Abro un navegador y escribo la URL de la aplicación <code><a href="http://localhost:8080/jdrone" class="bare">http://localhost:8080/jdrone</a></code> y pulso la tecla Enter.</p>
+</li>
+<li>
+<p>Se genera una petición a una carpeta y se aplica la transformación de la URL según el elemento <em>&lt;welcome-file&gt;</em> del descriptor de despliegue <em>web.xml</em> resultando la request <a href="http://localhost:8080/jdrone/index.xhtml" class="bare">http://localhost:8080/jdrone/index.xhtml</a>.</p>
+</li>
+<li>
+<p>El segundo elemento &lt;servlet-mapping&gt; del mismo fichero indica que la petición es gestionada por el Controlador de JSF, javax.faces.webapp.FacesServlet, que inicia la orquestación de un ciclo de vida corto para esta Initial Request:</p>
+</li>
+<li>
+<p>Fase RestoreView: Se crea una View vacía y se asocia a la View el listener para el evento <em>preRenderView</em> definido bajo el elemento <em>&lt;f:metadata&gt;</em>.</p>
+</li>
+<li>
+<p>Fase Render Response: Antes de renderizar la View el evento se dispara, se carga una instancia del managed bean en el contexto CDI y se llama al método <em>listaEstadoDronesPorFecha()</em>, que se ejecuta y actualiza el Modelo, en este caso el atributo <em>drones</em>. Como se trata de una Initial Request la condición a la entrada del método devuelve false de modo que el código de adaptación de los parámetros de la consulta no se ejecuta, evitando un error en tiempo de ejecución. Esta fase se completa con el parseo de la página index.xhtml, generándose el arbol de componentes sobre la View. En el parseo del componente
+<em>&lt;h:dataTable&gt;</em> el atributo <em>value</em> tendrá un valor nulo. El Controlador genera la respuesta a la petición y la envía al navegador, que renderiza la página HTML donde los parámetros aparecen vacios y la tabla no muestra datos.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig140.png" alt="post003 fig140.png">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Postback request:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>El usuario rellena los parámetros de entrada del formulario con una fecha y hora similar a la del momento del despliegue para que la consulta devuelva resultados.</p>
+</li>
+<li>
+<p>El usuario pulsa el botón <em>Consultar</em>. Se inicia una Postback Request. Es importante tener claro que una Postback siempre se realiza hacia la misma página del formulario. Veamos cada fase:</p>
+</li>
+<li>
+<p>Restore View: La View de la Initial Request es recuperada del contexto FacesContext.</p>
+</li>
+<li>
+<p>Apply Request Values: Los valores escritos por el usuario en el formulario y enviados como parámetros de la petición POST, llamados usualmente valores locales, son asignados a los componentes de la View. Si se producen errores de tipado se registran.</p>
+</li>
+<li>
+<p>Process Validations: Se ejecutan la conversión de la fechas en objetos Date atendiendo a el formato especificado. Si hay errores se registran, se corta el ciclo y se salta a la fase Render Response para mostrarlos al usuario.</p>
+</li>
+<li>
+<p>Invoke Application: Si hemos llegado aquí es que no hay errores en los valores del formulario. El componente de acción, o sea, el botón del formulario no tiene ningún atributo actionListener o action y en esta fase por tanto ninguna lógica es ejecutada.</p>
+</li>
+<li>
+<p>Render Response: Si no existieron errores se renderiza la págna original como respuesta ya que la petición Postback es hacia la propia página. Si se registraron errores se renderiza la página original junto con los mensajes de
+error en el punto indicado por la etiqueta <em>&lt;h:messages /&gt;</em>. La respuesta se envía al navegador que ahora sí muestra una tabla con el drone de la base de datos.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig150.png" alt="post003 fig150.png">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Cuando necesitemos comprobar el orden de ejecución de algún elemento de código en un ciclo petición-respuesta, o verificar el valor de alguna variable del managed bean, haremos uso del depurador (debugger) de Eclipse. Para entrar en el modo debug hay que iniciar el servidor el modo debug. La ejecución se parará en los puntos que hayamos definido haciendo doble click a la izquierda del número de línea. Para avanzar al siguiente punto de ruptura pulsamos F8 y a la siguiente línea F6. Es interesante el icono <span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig175.png" alt="post003-fig175.png"></span> que deshabilita/habilita todos los puntos de interrupción de forma simultanea.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Una posible dificultad que puede aparecer al depurar la aplicación por primera vez es que Eclipse muestre el siguiente mensaje cuando el flujo de ejecución llegue al punto de ruptura:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig152.png" alt="post003 fig152.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Para solucionarlo y así poder depurar la aplicación normalmente, tenemos que hacer lo siguiente:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Pulsamos <em>OK</em>. A continuación nos muestra el típico mensaje para cambiar a la perspectiva de Debug, respondemos <em>Yes</em> o <em>No</em> a nuestra elección.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig153.png" alt="post003 fig153.png">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>En la view de Eclipse donde debería aparecer el código de nuestra clase con el punto de interrupción se muestra en cambio
+el siguiente contenido:</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig155.png" alt="post003 fig155.png">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Para acceder correctamente a nuestros puntos de interrupción pulsamos el botón que se muestra, con la leyenda <em>Edit Source Lookup Path</em>, y en la ventana que aparece pulsamos el botón <em>Add&#8230;&#8203;</em>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig160.png" alt="post003 fig160.png">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Seleccionamos en la siguiente ventana <em>Java Project</em>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig165.png" alt="post003 fig165.png">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Seleccionamos nuestro proyecto, jdrone y finalmente el botón <em>OK</em>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig170.png" alt="post003 fig170.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Podemos dar aquí por concluido el desarrollo de la versión inicial de nuestra aplicación jdrone. Como hebréis podido comprobar un proyecto Java EE no es más que un árbol de carpetas y una serie de ficheros que siguen unas reglas definidas por Maven y por el estándar Java EE. Además, Eclipse generará una
+serie de ficheros propios, mantenidos de forma automática, de los que no deberemos en general preocuparnos y que no forman parte del contenido la aplicación.</p>
+</div>
+<div class="paragraph">
+<p>Tenéis disponible el proyecto Maven completo en GitHub en la dirección:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/lametaweb/jdrone" class="bare">https://github.com/lametaweb/jdrone</a></p>
+</div>
+<div class="paragraph">
+<p>Desde esta dirección podéis:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Bajar el proyecto sin versionar con el botón <em>Download ZIP</em>.</p>
+</li>
+<li>
+<p>Si tenéis una cuenta en GitHub (muy recomendable) hacer un Fork del repositorio a vuestra cuenta, con el botón <em>Fork</em>, y a continuación hacer un clone, con el botón <em>Clone in Desktop</em> de vuestro Fork, del repositorio a vuestro disco duro (tenéis que tener Git instalado en vuestra
+máquina).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig180.png" alt="post003-fig180.png"></span></p>
+</div>
+<div class="paragraph">
+<p>Para gestionar el versionado Git desde Eclipse en un proyecto ya versionado, por ejemplo el proyecto jdrone en vuestra máquina resultado de hacer primero un fork en vuestra cuenta de GitHUb desde el repositorio original en la cuenta de lametaweb y a continuación hacer un clone del fork a vuestra máquina, seguir los  pasos que se indican:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Pulsar botón derecho sobre el proyecto en eclipse, en la vista <em>Project Explorer</em>.</p>
+</li>
+<li>
+<p>Seleccionar <em>Team &gt; Share proyect&#8230;&#8203;</em>.</p>
+</li>
+<li>
+<p>Elegir <em>Git</em> y pulsar <em>Next</em>.</p>
+</li>
+<li>
+<p>En la ventana siguiente aparecerá vuestro repositorio local. Pulsad <em>Finish</em></p>
+</li>
+<li>
+<p>En el explorador los iconos de los elementos del proyecto mostrarán un símbolo amarillo abajo a la derecha.</p>
+</li>
+<li>
+<p>Si pulsamos de nuevo botón derecho sobre el proyecto y la opción <em>Team</em> esta vez aparecerán las opciones correspondientes a las distintas acciones que podemos realizar sobre nuestro repositorio o sobre el repositorio remoto en GitHub.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Hasta el próximo Post!</p>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JSF">JSF</a>, <a href="http://www.lametaweb.com/tag/JavaServer-Faces"> JavaServer Faces</a>, <a href="http://www.lametaweb.com/tag/MVC"> MVC</a>, <a href="http://www.lametaweb.com/tag/Facelet"> Facelet</a>, <a href="http://www.lametaweb.com/tag/managed-bean"> managed bean</a>, <a href="http://www.lametaweb.com/tag/backing-bean"> backing bean</a>, <a href="http://www.lametaweb.com/tag/CDI"> CDI</a>, <a href="http://www.lametaweb.com/tag/Depuracion"> Depuración</a>, <a href="http://www.lametaweb.com/tag/Debugging"> Debugging</a>, <a href="http://www.lametaweb.com/tag/Git"> Git</a>, <a href="http://www.lametaweb.com/tag/GitHub"> GitHub</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Desarrollo%20de%20una%20aplicaci%C3%B3n%20desde%20cero%3A%20Implementaci%C3%B3n%20y%20depuraci%C3%B3n%20de%20Modelo%20y%20Vista.&amp;url=http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>La metaweb</h4>
+                        <img src="https://avatars.githubusercontent.com/u/11819148?v=3">
+                        
+                        
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'lametaweb'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-62743682-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
