@@ -179,7 +179,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 En cuanto a los elementos, por áreas tengo que añadir:
 
 * Cabecera: Etiqueta para el título de la página.
-* Parámetros de entrada: El usuario debe introducir una fecha y un momento. Decido disponer tres componentes de texto. Uno para la fecha, otro para las horas y otro para los minutos. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de Primerfaces (añadir Primefaces, y al servidor, al proyecto es muy sencillo). En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.
+* Parámetros de entrada: El usuario debe introducir una fecha y una hora. Decido disponer dos componentes de texto. Uno para la fecha y otro para la hora. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de Primerfaces (añadir Primefaces, y al servidor, al proyecto es muy sencillo). En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.
 * Botonera: En nuestro caso nos basta con un botón de solicitud de listado.
 * Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de Primefaces, o Richfaces.
 
@@ -227,21 +227,13 @@ Con el diseño ya claro añado la página al proyecto. Pulso botón derecho sobr
 			<h:outputLabel value="Fecha (dd-mm-aaaa)" for="fecha" />&nbsp;
 			<h:inputText id="fecha" value="#{disponibilidadBean.fecha}"
 				required="true">
-				<f:convertDateTime pattern="dd-MM-yyyy" timeZone="GMT+02" />
+				<f:convertDateTime pattern="dd-MM-yyyy" />
 			</h:inputText>
 			<br />
-			<h:outputLabel value="Hora (0-24)" for="horas" />&nbsp;
-			<h:inputText id="horas" value="#{disponibilidadBean.horas}"
+			<h:outputLabel value="Hora (0-23:0-59)" for="hora" />&nbsp;
+			<h:inputText id="hora" value="#{disponibilidadBean.hora}"
 				required="true">
-				<f:validateLength maximum="2" />
-				<f:validateLongRange minimum="0" maximum="24" />
-			</h:inputText>
-			<br />
-			<h:outputLabel value="Minutos (0-60)" for="minutos" />&nbsp;
-			<h:inputText id="minutos" value="#{disponibilidadBean.minutos}"
-				required="true">
-				<f:validateLength maximum="2" />
-				<f:validateLongRange minimum="0" maximum="60" />
+				<f:convertDateTime pattern="HH:mm" />
 			</h:inputText>
 			<br />
 			<br />
@@ -328,7 +320,7 @@ Veamos cada elemento de nuestra página:
 ** <h:outputText...> muestra una cadena de texto. JSF lo renderiza como una elemento <span> de HTML.
 ** <h:messages...> muestra los mensajes de error que se registren en las conversiones y validaciones sobre los campos del formulario implícitas o definidas en el formulario.
 ** <h:outputLabel...> se renderiza como un elemento <label> de HTML. Representa una leyenda para un componente del formulario al que se asocia.
-** <h:inputText...> es un componente de entrada-salida de texto. Para el campo fecha configuro un converter predefinido ya que necesito especificar el formato de entrada-salida y la localización de la hora. Para los dos campos numéricos, como no necesito ningún formato especial no uso un converter NumberConverter. En cambio sí configuramos dos validators predefinidos para limitar el número de cifras y el rango del valor introducido. En todos los casos el componente se enlaza con el backing bean a través del atributo value.
+** <h:inputText...> es un componente de entrada-salida de texto. Para los campos fecha configuro converters predefinidos ya que necesito especificar el formato de entrada-salida. En todos los casos el componente se enlaza con el backing bean a través del atributo value.
 
 	. El componente <h:commandButton...> Representa el
 		botón de submit del formulario HTML. En general va acompañado de un atributo action que indica el método del managed bean que se
