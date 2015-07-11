@@ -26,16 +26,15 @@ A continuación añadimos al bean cada uno de los elementos necesarios para cons
 * Un método que se trae la información del modelo hacia el Modelo de MVC dependiendo del valor de los parámetros anteriores. Este método será llamado por un evento definido en la Vista como veremos más adelante cuando creemos la Vista.
 * El atributo que guarda la información devuelta por el método anterior.
 
-Siguiendo el orden de la lista anterior añadimos primero a nuestro bean los tres atributos siguientes:
+Siguiendo el orden de la lista anterior añadimos primero a nuestro bean los dos atributos siguientes:
 
 [source,java,indent=0]
 ----
 	private Date fecha;
-	private int horas;
-	private int minutos;
+	private Date hora;
 ----
 
-Hacemos botón derecho sobre al editor dentro del código de la clase, seleccionamos _Source > Generate Getters and Setters _ y marcamos los tres atributos para crear automáticamente los métodos getter y setter. Pulsamos Ctrl + O para importar la clase Date, tener cuidado de elegir la clase _java.util.Date_.
+Hacemos botón derecho sobre al editor dentro del código de la clase, seleccionamos _Source > Generate Getters and Setters _ y marcamos los dos atributos para crear automáticamente los métodos getter y setter. Pulsamos Ctrl + O para importar la clase Date, tener cuidado de elegir la clase _java.util.Date_.
 
 Estos atributos se enlazan con los valores que el usuario introduce por pantalla para la consulta y deben definirse atendiendo a la usabilidad de la interfaz, siendo en general distintos de los parámetros que finalmente recibe el método de la capa de Negocio/Servicio. Esto exige un código que transforme unos valores en otros como veremos ahora.
 
@@ -62,16 +61,24 @@ Y añadimos el método:
 	public void listaEstadoDronesPorFecha(){
 		
 		if(!FacesContext.getCurrentInstance().isPostback()) return;
-			
-		Date fechaAjustada = new Date(this.fecha.getTime() + 
-				this.horas * 60 * 60 * 1000 +
-				this.minutos * 60 * 1000);
 		
-		this.drones =  droneFacade.obtenEstadoDronesPorFecha(fechaAjustada);
+		TimeZone timeZone = new SimpleTimeZone(0,"GMT+02");
+		Calendar calendar = new GregorianCalendar(timeZone);
+		calendar.setTime(hora);
+		int horas = calendar.get(Calendar.HOUR_OF_DAY);
+		int minutos = calendar.get(Calendar.MINUTE);
+		
+		calendar.setTime(this.fecha);
+		calendar.add(Calendar.HOUR, horas-2);
+		calendar.add(Calendar.MINUTE, minutos);
+	
+		Date fechaAjustada = calendar.getTime();
+		
+		this.drones =  droneFacade.obtenEstadoDronesPorFechaNamed(fechaAjustada);
 	}	
 ----
 
-La primera línea de código evita que cuando se entra en la página se produzca un error en la siguiente línea de código al ser nulos los valores de los valores de los parámetros. La segunda línea de código realiza la transformación de los parámetros de la Vista a los parámetros aceptados por la capa de Servicio. La tercera línea realiza la actualización del Modelo. Un poco más adelante en el post volveremos a la implementación del método cuando veamos el ciclo de vida de JSF en la aplicación.
+La primera línea de código evita que cuando se entra en la página se produzca un error en la siguiente línea de código al ser nulos los valores de los valores de los parámetros. La segunda y siguientes líneas de código realiza la transformación de los parámetros de la Vista a los parámetros aceptados por la capa de Servicio. La última línea realiza la actualización del Modelo. Un poco más adelante en el post volveremos a la implementación del método cuando veamos el ciclo de vida de JSF en la aplicación.
 
 Y con esto tenemos el backing bean implementado. La clase completa quedaría así:
 
@@ -79,8 +86,12 @@ Y con esto tenemos el backing bean implementado. La clase completa quedaría as�
 ----
 package com.lametaweb.jdrone.vista;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -95,8 +106,7 @@ import com.lametaweb.jdrone.persistencia.Drone;
 public class DisponibilidadBean {
 
 	private Date fecha;
-	private int horas;
-	private int minutos;
+	private Date hora;
 	
 	@Inject
 	private DroneFacade droneFacade;
@@ -110,12 +120,20 @@ public class DisponibilidadBean {
 	public void listaEstadoDronesPorFecha(){
 		
 		if(!FacesContext.getCurrentInstance().isPostback()) return;
-			
-		Date fechaAjustada = new Date(this.fecha.getTime() + 
-				this.horas * 60 * 60 * 1000 +
-				this.minutos * 60 * 1000);
 		
-		this.drones =  droneFacade.obtenEstadoDronesPorFecha(fechaAjustada);
+		TimeZone timeZone = new SimpleTimeZone(0,"GMT+02");
+		Calendar calendar = new GregorianCalendar(timeZone);
+		calendar.setTime(hora);
+		int horas = calendar.get(Calendar.HOUR_OF_DAY);
+		int minutos = calendar.get(Calendar.MINUTE);
+		
+		calendar.setTime(this.fecha);
+		calendar.add(Calendar.HOUR, horas-2);
+		calendar.add(Calendar.MINUTE, minutos);
+	
+		Date fechaAjustada = calendar.getTime();
+		
+		this.drones =  droneFacade.obtenEstadoDronesPorFechaNamed(fechaAjustada);
 	}	
 
 	public Date getFecha() {
@@ -126,20 +144,12 @@ public class DisponibilidadBean {
 		this.fecha = fecha;
 	}
 
-	public int getHoras() {
-		return horas;
+	public Date getHora() {
+		return hora;
 	}
 
-	public void setHoras(int horas) {
-		this.horas = horas;
-	}
-
-	public int getMinutos() {
-		return minutos;
-	}
-
-	public void setMinutos(int minutos) {
-		this.minutos = minutos;
+	public void setHora(Date hora) {
+		this.hora = hora;
 	}
 
 	public List<Drone> getDrones() {
@@ -322,119 +332,70 @@ Veamos cada elemento de nuestra página:
 ** <h:outputLabel...> se renderiza como un elemento <label> de HTML. Representa una leyenda para un componente del formulario al que se asocia.
 ** <h:inputText...> es un componente de entrada-salida de texto. Para los campos fecha configuro converters predefinidos ya que necesito especificar el formato de entrada-salida. En todos los casos el componente se enlaza con el backing bean a través del atributo value.
 
-	. El componente <h:commandButton...> Representa el
-		botón de submit del formulario HTML. En general va acompañado de un atributo action que indica el método del managed bean que se
-		ejecutará en la fase Invoke Application (si no se registran errores) despues de hacer click sobre él. 
-		Esto lo veremos ahora cuando analicemos en un momento el comportamiento dinámico de la página.
+** El componente <h:commandButton...> Representa el botón de submit del formulario HTML. En general va acompañado de un atributo action que indica el método del managed bean que se ejecutará en la fase Invoke Application (si no se registran errores) despues de hacer click sobre él. Esto lo veremos dentro de un momento cuando analicemos el comportamiento dinámico de la página.
 	
-	NOTE: Una buena lectura sobre componentes de la librería HTML es el tutorial oficial de JSF
-http://docs.oracle.com/cd/E19798-01/821-1841/6nmq2cor0/index.html[aquí].
-		Además con una simple búsqueda en Google podéis encontrar ejemplos interesantes. 
-		Buena parte de estas búsquedas probablemente os lleven a la
-		página  http://stackoverflow.com/[Stackoverflow] cuando traten de JSF o a  https://developer.mozilla.org/en-US/[MDN] cuando se refieran
-		a tecnologías de front-end como HTML5 o CSS3.
+NOTE: Una buena lectura sobre componentes de la librería HTML la tenéis en el tutorial oficial de JSF
+http://docs.oracle.com/cd/E19798-01/821-1841/6nmq2cor0/index.html[aquí]. Además con una simple búsqueda en Google podéis encontrar ejemplos interesantes. Buena parte de estas búsquedas probablemente os lleven a la página  http://stackoverflow.com/[Stackoverflow] cuando traten de JSF o a  https://developer.mozilla.org/en-US/[MDN] cuando se refieran a tecnologías de front-end como HTML5 o CSS3.
 	
-	. Finalmente el área de salida de datos la definimos con un componente <h:dataTable...> 
-	que renderiza una tabla HTML. Se conecta con el Modelo de nuevo
-		a través del atributo value que en este caso enlaza el componente con una colección de Entities de la capa de persistencia actuando aquí
-		como DTOs, y por tanto fuera de un contexto de persistencia, ubicada en el managed bean como parte del Modelo.
+** Finalmente el área de salida de datos la definimos con un componente <h:dataTable...> que renderiza una tabla HTML. El atributo _value_ enlaza con el Modelo, formado por una colección de Entities de la capa de persistencia que actúan aquí como DTOs, fuera de un contexto de persistencia.
 
+Para completar nuestra visión de la capa web veamos la sucesión de acontecimientos que tienen lugar desde el momento en que la aplicación es despliega en el servidor:
 
-		
-		
-		
-. Para completar nuestra visión de la capa web veamos la sucesión de acontecimientos
-que se tiene lugar desde el momento en que la aplicación es despliega en el servidor:
-
-. Despliegue de la aplicación:
-	. Como ya vimos en su momento lo primero que se ejecuta es la carga de datos implementada en un método @PostConstruct
-	del bean CDI anotado con @Singleton y @Startup.
-. Initial request:
-	. Abro un navegador y escribo la URL de la aplicación http://localhost:8080/jdrone y pulso Enter.
-	. Se genera una petición a una carpeta y se aplica la transformación de la URL según el elemento _<welcome-file>_ del
-		descriptor de despliegue _web.xml_ resultando la request http://localhost:8080/jdrone/index.xhtml.
-	. Según el segundo elemento <servlet-mapping> del mismo fichero web.xml la petición es gestionada por el Controlador de JSF
-	javax.faces.webapp.FacesServlet que inicia la orquestación de  un ciclo de vida corto para esta Initial Request.
-	. Fase RestoreView: Se crea una View vacía y se asocia a la View el listener para el evento 
-	_preRenderView_ definido bajo el elemento <f:metadata>.
-	. Fase Render Response: Antes de la renderizar la View el evento se dispara, se carga una instancia del
-		managed bean en el contexto CDI y se llama al método listaEstadoDronesPorFecha(), que se ejecuta y actualiza el Modelo, en este
-		caso el atributo _drones_. Como no se han proporcionado valores a los parámetros de entrada la consulta no devuelve resultados.
-	Esta fase se completa con el parseo de la página index.xhtml, generándose el arbol de componentes sobre la View. En el parseo del componente
-	<h:dataTable> se evalúa su atributo _value_ con valor _#{disponibilidadControlador.drones}_ y se tira por tanto del atributo del Modelo para
-	llevar a cabo la renderización de los datos de la consulta sobre el componente tabla. Aparece vacío porque los parámetros no se informaron.
-	. El Controlador genera la respuesta a la petición y la envía al navegador, que renderiza la página HTML donde los parámetros aparecen
-		vacios y la tabla no muestra datos.
+* Despliegue de la aplicación:
+	** Como ya vimos en su momento lo primero que se ejecuta es la carga de datos implementada en un método @PostConstruct del bean CDI anotado como @Singleton y @Startup.
+* Initial request:
+	** Abro un navegador y escribo la URL de la aplicación `http://localhost:8080/jdrone` y pulso la tecla Enter.
+	** Se genera una petición a una carpeta y se aplica la transformación de la URL según el elemento _<welcome-file>_ del descriptor de despliegue _web.xml_ resultando la request http://localhost:8080/jdrone/index.xhtml.
+	** El segundo elemento <servlet-mapping> del mismo fichero indica que la petición es gestionada por el Controlador de JSF, javax.faces.webapp.FacesServlet, que inicia la orquestación de un ciclo de vida corto para esta Initial Request:
+	** Fase RestoreView: Se crea una View vacía y se asocia a la View el listener para el evento _preRenderView_ definido bajo el elemento _<f:metadata>_.
+	** Fase Render Response: Antes de renderizar la View el evento se dispara, se carga una instancia del managed bean en el contexto CDI y se llama al método _listaEstadoDronesPorFecha()_, que se ejecuta y actualiza el Modelo, en este caso el atributo _drones_. Como se trata de una Initial Request la condición a la entrada del método devuelve false de modo que el código de adaptación de los parámetros de la consulta no se ejecuta, evitando un error en tiempo de ejecución. Esta fase se completa con el parseo de la página index.xhtml, generándose el arbol de componentes sobre la View. En el parseo del componente
+_<h:dataTable>_ el atributo _value_ tendrá un valor nulo. El Controlador genera la respuesta a la petición y la envía al navegador, que renderiza la página HTML donde los parámetros aparecen vacios y la tabla no muestra datos.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig140.png[]
 	
-. Postback request:
-	. El usuario rellena los parámetros de entrada del formulario con una fecha y hora similar a la del momento del despliegue para que la
-	consulta devuelva resultados.
-	. El usuario pulsa el botón _Consultar_. Se inicia una Postback Request. Es importante tener claro que una Postback siempre se realiza hacia
-	la misma página del formulario. Veamos cada fase.
-	. Restore View: La View de la Initial Request es recuperada del contexto FacesContext.
-	. Apply Request Values: Los valores escritos por el usuario en el formulario y enviados como parámetros de la petición POST, llamados
-	usualmente valores locales, son asignados a los componentes de la View. Si se producen errores de tipo se registran.
-	. Process Validations: Se ejecutan la conversión de la fecha en un objeto Date y se valida que los campos hora y minutos cumplan las
-	condiciones impuestas. Si hay errores se registran, se corta el ciclo y se salta a la fase Render Response para mostrarlos al usuario.
-	. Invoke Application: Si hemos llegado aquí es que no hay errores en los valores del formulario. El componente de acción, o sea, el botón
-	del formulario no tiene ningún atributo actionListener o action y en esta fase por tanto ninguna lógica es ejecutada.
-	. Render Response: Si no existieron errores se renderiza la págna original como respuesta ya que la petición postback es hacia la propia
-	página. Si se registraron errores se renderiza la página original junto con los mensajes de 
-	error en el punto indicado por la etiqueta <h:messages />.
-	La respuesta se envía al navegador que ahora sí muestra una tabla con el drone de la base de datos.
+* Postback request:
+	** El usuario rellena los parámetros de entrada del formulario con una fecha y hora similar a la del momento del despliegue para que la consulta devuelva resultados.
+	** El usuario pulsa el botón _Consultar_. Se inicia una Postback Request. Es importante tener claro que una Postback siempre se realiza hacia la misma página del formulario. Veamos cada fase:
+	** Restore View: La View de la Initial Request es recuperada del contexto FacesContext.
+	** Apply Request Values: Los valores escritos por el usuario en el formulario y enviados como parámetros de la petición POST, llamados usualmente valores locales, son asignados a los componentes de la View. Si se producen errores de tipado se registran.
+	** Process Validations: Se ejecutan la conversión de la fechas en objetos Date atendiendo a el formato especificado. Si hay errores se registran, se corta el ciclo y se salta a la fase Render Response para mostrarlos al usuario.
+	** Invoke Application: Si hemos llegado aquí es que no hay errores en los valores del formulario. El componente de acción, o sea, el botón del formulario no tiene ningún atributo actionListener o action y en esta fase por tanto ninguna lógica es ejecutada.
+	** Render Response: Si no existieron errores se renderiza la págna original como respuesta ya que la petición Postback es hacia la propia página. Si se registraron errores se renderiza la página original junto con los mensajes de 
+error en el punto indicado por la etiqueta _<h:messages />_. La respuesta se envía al navegador que ahora sí muestra una tabla con el drone de la base de datos.
 	
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig150.png[]	
 
-. Cuando necesitemos comprobar el orden de ejecución de algún elemento de código en un ciclo petición-respuesta, o
-verificar el valor de alguna variable del managed bean, haremos uso del depurador (debugger) de Eclipse. 
-Para entrar en el modo debug hay que iniciar el servidor el modo debug. La ejecución se parará en los puntos que
-hayamos definido haciendo doble click a la izquierda del número de línea. Para avanzar al siguiente punto de ruptura
-pulsamos F8 y a la siguiente línea F6. Es interesante el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig175.png[] 
-que deshabilita/habilita todos los
-puntos de interrupción de forma simultanea.
+. Cuando necesitemos comprobar el orden de ejecución de algún elemento de código en un ciclo petición-respuesta, o verificar el valor de alguna variable del managed bean, haremos uso del depurador (debugger) de Eclipse. Para entrar en el modo debug hay que iniciar el servidor el modo debug. La ejecución se parará en los puntos que hayamos definido haciendo doble click a la izquierda del número de línea. Para avanzar al siguiente punto de ruptura pulsamos F8 y a la siguiente línea F6. Es interesante el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig175.png[] que deshabilita/habilita todos los puntos de interrupción de forma simultanea.
 
-
-Una
-posible dificultad que puede aparecer al depurar la aplicación por primera vez es que Eclipse nos muestre el siguiente mensaje cuando
-el flujo de ejecución llegue al punto de ruptura:
+Una posible dificultad que puede aparecer al depurar la aplicación por primera vez es que Eclipse muestre el siguiente mensaje cuando el flujo de ejecución llegue al punto de ruptura:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig152.png[]
 
 Para solucionarlo y así poder depurar la aplicación normalmente, tenemos que hacer lo siguiente:
 
-. Pulsamos OK
-
-. A continuación nos muestra el típico mensaje para cambiar a la perspectiva de Debug, respondemos Yes o No a nuestra elección.
+* Pulsamos _OK_. A continuación nos muestra el típico mensaje para cambiar a la perspectiva de Debug, respondemos _Yes_ o _No_ a nuestra elección.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig153.png[]
 
-Y en la view de Eclipse donde debería aparecer el código de nuestra clase con el punto de interrupción se muestra en cambio
+* En la view de Eclipse donde debería aparecer el código de nuestra clase con el punto de interrupción se muestra en cambio
 el siguiente contenido:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig155.png[]
 
-Para acceder correctamente a nuestros puntos de interrupción pulsamos el botón que se muestra, con la leyenda _Edit Source Lookup Path_,
-y en la ventana que aparece pulsamos el botón Add...
+* Para acceder correctamente a nuestros puntos de interrupción pulsamos el botón que se muestra, con la leyenda _Edit Source Lookup Path_, y en la ventana que aparece pulsamos el botón _Add..._.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig160.png[]
 
-Seleccionamos en la siguiente ventana _Java Project_.
+* Seleccionamos en la siguiente ventana _Java Project_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig165.png[]
 
-Y seleccionamos nuestro proyecto, jdrone y finalmente el botón OK.
+* Seleccionamos nuestro proyecto, jdrone y finalmente el botón _OK_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig170.png[]
 
-
-
-Podemos dar aquí por concluido el desarrollo de la versión inicial de nuestra aplicación jdrone. Como hebréis podido
-comprobar un proyecto Java EE no es más que un árbol de carpetas y una serie de ficheros que
-siguen unas reglas definidas por Maven y por el estándar Java EE. Además, Eclipse generará una
-serie de ficheros propios, mantenidos de forma automática, de los que no deberemos en general preocuparnos y que no forman parte
-del contenido la aplicación.
+Podemos dar aquí por concluido el desarrollo de la versión inicial de nuestra aplicación jdrone. Como hebréis podido comprobar un proyecto Java EE no es más que un árbol de carpetas y una serie de ficheros que siguen unas reglas definidas por Maven y por el estándar Java EE. Además, Eclipse generará una
+serie de ficheros propios, mantenidos de forma automática, de los que no deberemos en general preocuparnos y que no forman parte del contenido la aplicación.
 
 Tenéis disponible el proyecto Maven completo en GitHub en la dirección:
 
@@ -442,28 +403,19 @@ https://github.com/lametaweb/jdrone
 
 Desde esta dirección podéis:
 
-. Bajar el proyecto sin versionar con el botón _Download ZIP_.
-. Si tenéis una cuenta en GitHub (muy recomendable) hacer un Fork del repositorio a vuestra cuenta, con el botón Fork,
- y a continuación hacer un clone,
-con el botón _Clone in Desktop_ de vuestro Fork, del repositorio a vuestro disco duro (tenéis que tener Git instalado en vuestra
+* Bajar el proyecto sin versionar con el botón _Download ZIP_.
+* Si tenéis una cuenta en GitHub (muy recomendable) hacer un Fork del repositorio a vuestra cuenta, con el botón _Fork_, y a continuación hacer un clone, con el botón _Clone in Desktop_ de vuestro Fork, del repositorio a vuestro disco duro (tenéis que tener Git instalado en vuestra
 máquina).
 
 image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig180.png[]
 
-Para acceder al control de versiones Git desde Eclipse en un proyecto ya versionado, por ejemplo
-el proyecto jdrone en vuestra máquina resultado de hacer primero un fork en vuestra cuenta de 
-GitHUb desde el repositorio original en la cuenta de lametaweb y a continuación hacer un clone del 
+Para gestionar el versionado Git desde Eclipse en un proyecto ya versionado, por ejemplo el proyecto jdrone en vuestra máquina resultado de hacer primero un fork en vuestra cuenta de GitHUb desde el repositorio original en la cuenta de lametaweb y a continuación hacer un clone del fork a vuestra máquina, seguir los  pasos que se indican:
 
-fork a vuestra máquina, seguir los siguientes pasos:
-
-. Pulsar botón derecho sobre el proyecto en eclipse, en la vista Project Explorer.
+. Pulsar botón derecho sobre el proyecto en eclipse, en la vista _Project Explorer_.
 . Seleccionar _Team > Share proyect..._.
 . Elegir _Git_ y pulsar _Next_.
 . En la ventana siguiente aparecerá vuestro repositorio local. Pulsad _Finish_
-. En el explorador los iconos de los elementos del proyecto mostrarán un símbolo amarillo
-abajo a la derecha.
-. Si pulsamos de nuevo botón derecho sobre el proyecto y la opción _Team_ esta vez aparecerán
-las opciones correspondientes a las acciones que podemos realizar sobre nuestro repositorio o
-sobre el repositorio remoto en GitHub.
+. En el explorador los iconos de los elementos del proyecto mostrarán un símbolo amarillo abajo a la derecha.
+. Si pulsamos de nuevo botón derecho sobre el proyecto y la opción _Team_ esta vez aparecerán las opciones correspondientes a las distintas acciones que podemos realizar sobre nuestro repositorio o sobre el repositorio remoto en GitHub.
 
 Hasta el próximo Post!
