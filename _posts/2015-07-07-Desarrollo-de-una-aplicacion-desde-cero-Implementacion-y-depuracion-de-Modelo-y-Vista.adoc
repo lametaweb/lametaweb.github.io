@@ -363,7 +363,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 	** Render Response: Si no existieron errores se renderiza la págna original como respuesta ya que la petición Postback es hacia la propia página. Si se registraron errores se renderiza la página original junto con los mensajes de 
 error en el punto indicado por la etiqueta _<h:messages />_. La respuesta se envía al navegador que ahora sí muestra una tabla con el drone de la base de datos.
 	
-image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig150.png[]	
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig150.png[]
 
 . Cuando necesitemos comprobar el orden de ejecución de algún elemento de código en un ciclo petición-respuesta, o verificar el valor de alguna variable del managed bean, haremos uso del depurador (debugger) de Eclipse. Para entrar en el modo debug hay que iniciar el servidor el modo debug. La ejecución se parará en los puntos que hayamos definido haciendo doble click a la izquierda del número de línea. Para avanzar al siguiente punto de ruptura pulsamos F8 y a la siguiente línea F6. Es interesante el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig175.png[] que deshabilita/habilita todos los puntos de interrupción de forma simultanea.
 
