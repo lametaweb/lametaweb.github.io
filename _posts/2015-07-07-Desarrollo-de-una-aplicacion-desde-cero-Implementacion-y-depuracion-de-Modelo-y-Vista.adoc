@@ -1,0 +1,477 @@
+= Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista.
+La metaweb
+:hp-tags: JSF, JavaServer Faces, MVC, Facelet, managed bean, backing bean, CDI, Depuración, Debugging, Git, GitHub
+:published_at: 2015-07-07
+
+Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la confianza necesaria y como base sobre la que ensayar soluciones a cualquier requisito de cliente que podamos imaginar.
+
+En el post anterior conseguimos ya una aplicación funcional, sin embargo la capa de presentación se limitaba a un simple "Hola mundo!". Ahora toca resolver el caso de uso planteado inicialmente. Tendremos que añadir tan solo un par de ficheros: Una clase managed bean y una página facelet.
+
+Empecemos por la clase. Creamos una carpeta de nombre `vista` dentro de la carpeta _jdrone/src/main/java/com/lametaweb/jdrone/_ . Pulsamos 
+botón derecho sobre la nueva carpeta y _New > Other... > CDI (Context and Dependency Inyection) > Bean_, para crear un bean CDI. Y en la ventana introducimos los valores indicados en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig130.png[]
+
+Veamos el porqué de estos valores:
+
+* Name: DisponibilidadBean. Es el nombre de la clase que se genera. Tenemos que elegirlo de manera que explique el caso de uso que soporta. En este caso lo que se muestra al usuario es la disponibilidad de los drones en una fecha. La segunda parte del nombre indica que se trata de un bean gestionado por CDI. En Java EE la clase managed o backing bean representa el Modelo del patrón MVC.
+* Interfaces: La anotación @Named incluye el bean en el contexto EL de JSF lo que me va a permitir acceder a sus atributos y metodos usando el lenguaje unificado de expresiones EL, en general desde una página facelet o, en ocasiones, desde código java donde no disponga de una referencia al bean. En EL el nombre por defecto para el bean se toma del nombre de la clase en minúscula. En nuestro caso tendremos _disponibilidadBean_.
+* Scope: @RequestScoped: Define el tiempo de vida y la visibilidad del bean. En este caso el bean está disponible sólo para los objetos que existan en la thread creada para gestionar la request donde se crea el bean. 
+
+NOTE: Una pega de la versión 2.1 de JSF, y al mismo tiempo una buena razón para actualizar en el servidor a la versión 2.2, es que el scope @ViewScoped, muy usado con formularios AJAX y en casos de uso que implican una o dos pantallas, no está integrado con el contexto CDI. Esto deriva en problemas como no poder inyectar beans CDI en un managed bean view scoped.
+
+A continuación añadimos al bean cada uno de los elementos necesarios para conseguir una capa web funcional:
+
+* Los atributos para guardar el estado exclusivo de la Vista: En nuestro caso los parámetros de la consulta, que no tienen una correspondencia en el modelo de la aplicación, pero que son parte del Modelo de MVC.
+* Un método que se trae la información del modelo hacia el Modelo de MVC dependiendo del valor de los parámetros anteriores. Este método será llamado por un evento definido en la Vista como veremos más adelante cuando creemos la Vista.
+* El atributo que guarda la información devuelta por el método anterior.
+
+Siguiendo el orden de la lista anterior añadimos primero a nuestro bean los tres atributos siguientes:
+
+[source,java,indent=0]
+----
+	private Date fecha;
+	private int horas;
+	private int minutos;
+----
+
+Hacemos botón derecho sobre al editor dentro del código de la clase, seleccionamos _Source > Generate Getters and Setters _ y marcamos los tres atributos para crear automáticamente los métodos getter y setter. Pulsamos Ctrl + O para importar la clase Date, tener cuidado de elegir la clase _java.util.Date_.
+
+Estos atributos se enlazan con los valores que el usuario introduce por pantalla para la consulta y deben definirse atendiendo a la usabilidad de la interfaz, siendo en general distintos de los parámetros que finalmente recibe el método de la capa de Negocio/Servicio. Esto exige un código que transforme unos valores en otros como veremos ahora.
+
+A continuación añadimos el atributo que almacena los datos del modelo.
+
+[source,java,indent=0]
+----
+private List<Drone> drones;
+----
+
+Del mismo modo pulsamos Ctrl + O para traernos las importaciones y generamos sólo el método getter en este caso ya que se trata de datos de sólo lectura.
+
+Por último añadimos el método del Modelo. Inyectamos el bean EJB de negocio en nuestro bean añadiendo:
+[source,java,indent=0]
+----
+	@Inject
+	private DroneFacade droneFacade; 
+----
+
+Y añadimos el método:
+
+[source,java,indent=0]
+----
+	public void listaEstadoDronesPorFecha(){
+		
+		if(!FacesContext.getCurrentInstance().isPostback()) return;
+			
+		Date fechaAjustada = new Date(this.fecha.getTime() + 
+				this.horas * 60 * 60 * 1000 +
+				this.minutos * 60 * 1000);
+		
+		this.drones =  droneFacade.obtenEstadoDronesPorFecha(fechaAjustada);
+	}	
+----
+
+La primera línea de código evita que cuando se entra en la página se produzca un error en la siguiente línea de código al ser nulos los valores de los valores de los parámetros. La segunda línea de código realiza la transformación de los parámetros de la Vista a los parámetros aceptados por la capa de Servicio. La tercera línea realiza la actualización del Modelo. Un poco más adelante en el post volveremos a la implementación del método cuando veamos el ciclo de vida de JSF en la aplicación.
+
+Y con esto tenemos el backing bean implementado. La clase completa quedaría así:
+
+[source,java,indent=0]
+----
+package com.lametaweb.jdrone.vista;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import com.lametaweb.jdrone.negocio.DroneFacade;
+import com.lametaweb.jdrone.persistencia.Drone;
+
+@Named
+@RequestScoped
+public class DisponibilidadBean {
+
+	private Date fecha;
+	private int horas;
+	private int minutos;
+	
+	@Inject
+	private DroneFacade droneFacade;
+	
+	private List<Drone> drones;	
+	
+	public DisponibilidadBean() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void listaEstadoDronesPorFecha(){
+		
+		if(!FacesContext.getCurrentInstance().isPostback()) return;
+			
+		Date fechaAjustada = new Date(this.fecha.getTime() + 
+				this.horas * 60 * 60 * 1000 +
+				this.minutos * 60 * 1000);
+		
+		this.drones =  droneFacade.obtenEstadoDronesPorFecha(fechaAjustada);
+	}	
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public int getHoras() {
+		return horas;
+	}
+
+	public void setHoras(int horas) {
+		this.horas = horas;
+	}
+
+	public int getMinutos() {
+		return minutos;
+	}
+
+	public void setMinutos(int minutos) {
+		this.minutos = minutos;
+	}
+
+	public List<Drone> getDrones() {
+		return drones;
+	}
+}
+----
+
+Vamos pues con la página facelet. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos: 
+
+* Elementos que deben aparecer: 
+	** Inmutables (por ejemplos leyendas de campos)
+	** De datos: de salida, de entrada, o de entrada/salida.
+	** De acción.
+* Definición de las restricciones para los valores de los elementos de entrada.
+* Formato en que se muestran los tipos no básicos en los campos de entrada/salida o de salida.
+
+Otros aspectos no menos necesarios en una aplicación real son:
+
+* Soporte multiidioma, dependiendo del sistema o a petición del usuario.
+* Creación de plantillas para normalizar la maquetación de las páginas.
+* Implementación de un sistema de menús.
+* Disposición y orden de entrada (tab order) de los elementos.
+* Mecanismos de paginación.
+* Estudio de la usabilidad y de la UX.
+* Implementación de las normas de la W3C sobre accesibilidad.
+* Adición de características para interfaz adaptativa (responsive design).
+* Seguridad contra ataques desde la interfaz.
+* Creación de nuevos componentes JSF a medida (custom components) cuando se requiera. Para estos componente se aplican a su vez estas mismas normas.
+
+Nosotros ahora sólo consideraremos la primera lista. Antes de empezar a implementar la página lo ideal es dibujar un boceto con un editor estándar, eso sí, que sea vectorial, o con un software especializado. Hablando en términos de editores open source no uséis Gimp, usad en cambio Inkscape. Entre los editores especializados el más conocido es Balsamiq. Realmente con papel, lápiz y goma se puede hacer aquí un buen trabajo. Sin embargo si necesitamos generar documentación o buscamos disponer de una demo interactiva para el cliente tendremos que recurrir a una herramienta especializa.
+
+Aquí usaremos Inkscape. Primero diferencio las áreas de la pantalla y luego dispongo los distintos elementos. Necesitamos un área para el título de la página, otra para los campos de entrada, una adicional para los elementos de acción y finalmente el área que muestra la información solicitada. En la siguiente figura se muestran dispuestas sobre la página:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig135.png[]
+
+En cuanto a los elementos, por áreas tengo que añadir:
+
+* Cabecera: Etiqueta para el título de la página.
+* Parámetros de entrada: El usuario debe introducir una fecha y un momento. Decido disponer tres componentes de texto. Uno para la fecha, otro para las horas y otro para los minutos. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de Primerfaces (añadir Primefaces, y al servidor, al proyecto es muy sencillo). En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.
+* Botonera: En nuestro caso nos basta con un botón de solicitud de listado.
+* Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de Primefaces, o Richfaces.
+
+La siguiente figura muestra el boceto o mockup final de nuestra página:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig137.png[]
+	
+NOTE: Recordad que a la hora de escribir el código de una página o de un bean es de gran ayuda usar el asistente que nos proporciona Eclipse a través de la hot key Ctrl + Espacio.
+	
+Con el diseño ya claro añado la página al proyecto. Pulso botón derecho sobre la carpeta _webapp_ del proyecto y selecciono _New > Other..._, y en la ventana que se muestra escribo `xhtml` en el campo del filtro. Selecciono _XHTML Page_ y pulso _Next_. Introduzco como nombre `index.xhtml` y pulso de nuevo _Next_. Desmarco el check _Use XHTML Template_ porque copiaremos todo el contenido directamente en la página. Y pulso _Fisnish_. La página será creada y el editor de las JBoss Tools para páginas XHTML se abrirá mostrando un contenido vacío. Copiamos el contenido que se muestra y pulsamos Ctrl + S para guardar:
+ 
+ 
+[source,xhtml,indent=0]
+----
+	<?xml version='1.0' encoding='UTF-8' ?>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core">
+	<f:view>
+	<h:head>
+		<h:outputStylesheet library="css" name="estilo.css" />
+	</h:head>
+
+	<f:metadata>
+		<f:event
+			listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+			type="preRenderView" />
+	</f:metadata>
+
+	<h:body> 
+
+		¡Hola mundo!
+		<br />
+		<h:form>
+			<h:outputText
+				value="Consulta de drones realizando trabajos en una fecha" />
+			<br />
+			<br />
+			<h:messages />
+			<br />
+			<h:outputText
+				value="Introduce la fecha y la hora en el formato indicado:" />
+			<br />
+			<h:outputLabel value="Fecha (dd-mm-aaaa)" for="fecha" />&nbsp;
+			<h:inputText id="fecha" value="#{disponibilidadBean.fecha}"
+				required="true">
+				<f:convertDateTime pattern="dd-MM-yyyy" timeZone="GMT+02" />
+			</h:inputText>
+			<br />
+			<h:outputLabel value="Hora (0-24)" for="horas" />&nbsp;
+			<h:inputText id="horas" value="#{disponibilidadBean.horas}"
+				required="true">
+				<f:validateLength maximum="2" />
+				<f:validateLongRange minimum="0" maximum="24" />
+			</h:inputText>
+			<br />
+			<h:outputLabel value="Minutos (0-60)" for="minutos" />&nbsp;
+			<h:inputText id="minutos" value="#{disponibilidadBean.minutos}"
+				required="true">
+				<f:validateLength maximum="2" />
+				<f:validateLongRange minimum="0" maximum="60" />
+			</h:inputText>
+			<br />
+			<br />
+			<h:commandButton value="Consultar" />
+		</h:form>
+		<br />
+		<h:dataTable value="#{disponibilidadBean.drones}" var="drone"
+			styleClass="tabla-general" headerClass="tabla-general-cabecera"
+			rowClasses="tabla-general-impar,tabla-general-par">
+
+			<h:column>
+				<!-- column header -->
+				<f:facet name="header">Número de Serie</f:facet>
+				<!-- row record -->
+						#{drone.numeroDeSerie}
+					</h:column>
+			<h:column>
+				<f:facet name="header">Modelo</f:facet>
+						#{drone.modelo}
+					</h:column>
+			<h:column>
+				<f:facet name="header">Autonomía</f:facet>
+						#{drone.autonomia}
+					</h:column>
+			<h:column>
+				<f:facet name="header">Número de Motores</f:facet>
+						#{drone.numMotores}
+					</h:column>
+			<h:column>
+				<f:facet name="header">Peso Máximo Despegue</f:facet>
+						#{drone.pesoMaximoDespegue}
+					</h:column>
+
+		</h:dataTable>
+
+	</h:body>
+	</f:view>
+	</html>
+----
+ 
+Antes de pasar a explicar cada elemento de la página y ver como participa en el ciclo de vida de JSF añadamos una hoja de estilos muy sencilla al proyecto para dar algo de estilo a la página. Creo la carpeta `resources` dentro de la carpeta
+_webapp_, y dentro de _resources_ creo otra con el nombre `css`. Sobre esta última pulso botón derecho y la opción _New > Other... > Web > CSS File_. Le doy el nombre `estilo.css`, y pulso _Finish_. Copio y pego lo siguiente en el fichero:
+
+[source,css,indent=0]
+----
+.tabla-general{   
+	border-collapse:collapse;
+	background-color: #b9ccff;
+}
+ 
+.tabla-general-cabecera{
+	text-align:center;
+	background:none repeat scroll 0 0 #eb5256;
+	border-bottom:1px solid #db2226;
+	padding:16px;
+}
+ 
+.tabla-general-impar{
+	text-align:center;
+	background:none repeat scroll 0 0 #b9ccff;
+	border-top:1px solid #800040;
+}
+ 
+.tabla-general-par{
+	text-align:center;
+	background:none repeat scroll 0 0 #70b5cb;
+	border-top:1px solid #800040;
+}
+----
+
+Una página JSF o facelet es un documento XML y al mismo tiempo un documento HTML. Contiene etiquetas HTML para definir la maquetación de la página y la semántica de cada elemento, y etiquetas JSF para definir los componentes y los aspectos dinámicos a nivel de página y de componente. Además como en cualquier página HTML podemos tener el código javascript y las hojas de estilo que precisemos, para soportar elementos dinámicos y estilos personalizados respectivamente. Es muy común añadir por ejemplo frameworks como jQuery, para la manipulación de la interfaz, o Bootstrap, para añadir capacidades de interfaz adaptativa.
+
+Veamos cada elemento de nuestra página:
+
+* La primera línea indica que se trata de un documento XML. Las JSPs ya son historia.
+* La segunda línea indica que se trata también de un documento HTML. En este caso HTML 4. Si necesitamos usar HTML 5 escribimos solamente <!DOCTYPE html> ya que HTML 5 no se valida contra un DTD. JSF está mejorando la integración con HTML 5 en cada versión. Es otro motivo para instalar en nuestro proyecto y en nuestro servidor la última versión disponible.
+* La tercera línea es la raiz en todo documento HTML, donde se declaran los espacios de nombres de XHTML y de las librerías de etiquetas de JSF que precisemos. En esta página sólo usamos la librerías Html y Core de JSF. La primera se usa para referirnos a los componentes y la segunda a elementos no renderizables como Validators, Converters o Listners, propios o predefinidos, elementos de binding de datos, etc. En 	http://docs.oracle.com/javaee/6/javaserverfaces/2.1/docs/vdldocs/facelets/[esta dirección] podéis ver las distintas librerías y sus componentes con sus atributos.
+* La cuarta es el nodo raiz del árbol de elementos JSF. Podemos no ponerlo si no necesitamos especificar ninguno de sus atributos. Por ejemplo en una aplicación multiidioma uso el atributo locale para fijar el idioma en que muestro la pantalla.
+* A continuación vienen los elementos hijos del elemento view. Head y body son ya conocidos, se corresponden con las etiquetas análogas en HTML. El elemento metadata contiene información sobre la propia página y su comportamiento durante el ciclo de vida JSF. Veamos el contenido dentro de cada uno de estos elementos:
+** Dentro del elemento head hemos definido una hoja de estilos CSS para dar estilo a la tabla que muestra los datos.
+** Dentro de metadata asociamos un evento de tipo preRenderView al componente view, es decir, a la página, y se especifica el método listener asociado, cuyo cometido es actualizar el Modelo con el resultado de la consulta JPA una vez que los atributos correspondientes del backing bean han sido validados y actualizados y antes de la renderización de la página, para que así los datos se muestren al usuario en pantalla correctamente.
+* Y llegamos al cuerpo de la página. Aquí se sitúan los elementos con los que el usuario va a interatuar. Los vemos en orden:
+** El componente form representa un formulario HTML con method igual a POST y action igual a la URL de la misma página que contiene el form.
+** <h:outputText...> muestra una cadena de texto. JSF lo renderiza como una elemento <span> de HTML.
+** <h:messages...> muestra los mensajes de error que se registren en las conversiones y validaciones sobre los campos del formulario implícitas o definidas en el formulario.
+** <h:outputLabel...> se renderiza como un elemento <label> de HTML. Representa una leyenda para un componente del formulario al que se asocia.
+** <h:inputText...> es un componente de entrada-salida de texto. Para el campo fecha configuro un converter predefinido ya que necesito especificar el formato de entrada-salida y la localización de la hora. Para los dos campos numéricos, como no necesito ningún formato especial no uso un converter NumberConverter. En cambio sí configuramos dos validators predefinidos para limitar el número de cifras y el rango del valor introducido. En todos los casos el componente se enlaza con el backing bean a través del atributo value.
+
+	. El componente <h:commandButton...> Representa el
+		botón de submit del formulario HTML. En general va acompañado de un atributo action que indica el método del managed bean que se
+		ejecutará en la fase Invoke Application (si no se registran errores) despues de hacer click sobre él. 
+		Esto lo veremos ahora cuando analicemos en un momento el comportamiento dinámico de la página.
+	
+	NOTE: Una buena lectura sobre componentes de la librería HTML es el tutorial oficial de JSF
+http://docs.oracle.com/cd/E19798-01/821-1841/6nmq2cor0/index.html[aquí].
+		Además con una simple búsqueda en Google podéis encontrar ejemplos interesantes. 
+		Buena parte de estas búsquedas probablemente os lleven a la
+		página  http://stackoverflow.com/[Stackoverflow] cuando traten de JSF o a  https://developer.mozilla.org/en-US/[MDN] cuando se refieran
+		a tecnologías de front-end como HTML5 o CSS3.
+	
+	. Finalmente el área de salida de datos la definimos con un componente <h:dataTable...> 
+	que renderiza una tabla HTML. Se conecta con el Modelo de nuevo
+		a través del atributo value que en este caso enlaza el componente con una colección de Entities de la capa de persistencia actuando aquí
+		como DTOs, y por tanto fuera de un contexto de persistencia, ubicada en el managed bean como parte del Modelo.
+
+
+		
+		
+		
+. Para completar nuestra visión de la capa web veamos la sucesión de acontecimientos
+que se tiene lugar desde el momento en que la aplicación es despliega en el servidor:
+
+. Despliegue de la aplicación:
+	. Como ya vimos en su momento lo primero que se ejecuta es la carga de datos implementada en un método @PostConstruct
+	del bean CDI anotado con @Singleton y @Startup.
+. Initial request:
+	. Abro un navegador y escribo la URL de la aplicación http://localhost:8080/jdrone y pulso Enter.
+	. Se genera una petición a una carpeta y se aplica la transformación de la URL según el elemento _<welcome-file>_ del
+		descriptor de despliegue _web.xml_ resultando la request http://localhost:8080/jdrone/index.xhtml.
+	. Según el segundo elemento <servlet-mapping> del mismo fichero web.xml la petición es gestionada por el Controlador de JSF
+	javax.faces.webapp.FacesServlet que inicia la orquestación de  un ciclo de vida corto para esta Initial Request.
+	. Fase RestoreView: Se crea una View vacía y se asocia a la View el listener para el evento 
+	_preRenderView_ definido bajo el elemento <f:metadata>.
+	. Fase Render Response: Antes de la renderizar la View el evento se dispara, se carga una instancia del
+		managed bean en el contexto CDI y se llama al método listaEstadoDronesPorFecha(), que se ejecuta y actualiza el Modelo, en este
+		caso el atributo _drones_. Como no se han proporcionado valores a los parámetros de entrada la consulta no devuelve resultados.
+	Esta fase se completa con el parseo de la página index.xhtml, generándose el arbol de componentes sobre la View. En el parseo del componente
+	<h:dataTable> se evalúa su atributo _value_ con valor _#{disponibilidadControlador.drones}_ y se tira por tanto del atributo del Modelo para
+	llevar a cabo la renderización de los datos de la consulta sobre el componente tabla. Aparece vacío porque los parámetros no se informaron.
+	. El Controlador genera la respuesta a la petición y la envía al navegador, que renderiza la página HTML donde los parámetros aparecen
+		vacios y la tabla no muestra datos.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig140.png[]
+	
+. Postback request:
+	. El usuario rellena los parámetros de entrada del formulario con una fecha y hora similar a la del momento del despliegue para que la
+	consulta devuelva resultados.
+	. El usuario pulsa el botón _Consultar_. Se inicia una Postback Request. Es importante tener claro que una Postback siempre se realiza hacia
+	la misma página del formulario. Veamos cada fase.
+	. Restore View: La View de la Initial Request es recuperada del contexto FacesContext.
+	. Apply Request Values: Los valores escritos por el usuario en el formulario y enviados como parámetros de la petición POST, llamados
+	usualmente valores locales, son asignados a los componentes de la View. Si se producen errores de tipo se registran.
+	. Process Validations: Se ejecutan la conversión de la fecha en un objeto Date y se valida que los campos hora y minutos cumplan las
+	condiciones impuestas. Si hay errores se registran, se corta el ciclo y se salta a la fase Render Response para mostrarlos al usuario.
+	. Invoke Application: Si hemos llegado aquí es que no hay errores en los valores del formulario. El componente de acción, o sea, el botón
+	del formulario no tiene ningún atributo actionListener o action y en esta fase por tanto ninguna lógica es ejecutada.
+	. Render Response: Si no existieron errores se renderiza la págna original como respuesta ya que la petición postback es hacia la propia
+	página. Si se registraron errores se renderiza la página original junto con los mensajes de 
+	error en el punto indicado por la etiqueta <h:messages />.
+	La respuesta se envía al navegador que ahora sí muestra una tabla con el drone de la base de datos.
+	
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig150.png[]	
+
+. Cuando necesitemos comprobar el orden de ejecución de algún elemento de código en un ciclo petición-respuesta, o
+verificar el valor de alguna variable del managed bean, haremos uso del depurador (debugger) de Eclipse. 
+Para entrar en el modo debug hay que iniciar el servidor el modo debug. La ejecución se parará en los puntos que
+hayamos definido haciendo doble click a la izquierda del número de línea. Para avanzar al siguiente punto de ruptura
+pulsamos F8 y a la siguiente línea F6. Es interesante el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig175.png[] 
+que deshabilita/habilita todos los
+puntos de interrupción de forma simultanea.
+
+
+Una
+posible dificultad que puede aparecer al depurar la aplicación por primera vez es que Eclipse nos muestre el siguiente mensaje cuando
+el flujo de ejecución llegue al punto de ruptura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig152.png[]
+
+Para solucionarlo y así poder depurar la aplicación normalmente, tenemos que hacer lo siguiente:
+
+. Pulsamos OK
+
+. A continuación nos muestra el típico mensaje para cambiar a la perspectiva de Debug, respondemos Yes o No a nuestra elección.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig153.png[]
+
+Y en la view de Eclipse donde debería aparecer el código de nuestra clase con el punto de interrupción se muestra en cambio
+el siguiente contenido:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig155.png[]
+
+Para acceder correctamente a nuestros puntos de interrupción pulsamos el botón que se muestra, con la leyenda _Edit Source Lookup Path_,
+y en la ventana que aparece pulsamos el botón Add...
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig160.png[]
+
+Seleccionamos en la siguiente ventana _Java Project_.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig165.png[]
+
+Y seleccionamos nuestro proyecto, jdrone y finalmente el botón OK.
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig170.png[]
+
+
+
+Podemos dar aquí por concluido el desarrollo de la versión inicial de nuestra aplicación jdrone. Como hebréis podido
+comprobar un proyecto Java EE no es más que un árbol de carpetas y una serie de ficheros que
+siguen unas reglas definidas por Maven y por el estándar Java EE. Además, Eclipse generará una
+serie de ficheros propios, mantenidos de forma automática, de los que no deberemos en general preocuparnos y que no forman parte
+del contenido la aplicación.
+
+Tenéis disponible el proyecto Maven completo en GitHub en la dirección:
+
+https://github.com/lametaweb/jdrone
+
+Desde esta dirección podéis:
+
+. Bajar el proyecto sin versionar con el botón _Download ZIP_.
+. Si tenéis una cuenta en GitHub (muy recomendable) hacer un Fork del repositorio a vuestra cuenta, con el botón Fork,
+ y a continuación hacer un clone,
+con el botón _Clone in Desktop_ de vuestro Fork, del repositorio a vuestro disco duro (tenéis que tener Git instalado en vuestra
+máquina).
+
+image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig180.png[]
+
+Para acceder al control de versiones Git desde Eclipse en un proyecto ya versionado, por ejemplo
+el proyecto jdrone en vuestra máquina resultado de hacer primero un fork en vuestra cuenta de 
+GitHUb desde el repositorio original en la cuenta de lametaweb y a continuación hacer un clone del 
+
+fork a vuestra máquina, seguir los siguientes pasos:
+
+. Pulsar botón derecho sobre el proyecto en eclipse, en la vista Project Explorer.
+. Seleccionar _Team > Share proyect..._.
+. Elegir _Git_ y pulsar _Next_.
+. En la ventana siguiente aparecerá vuestro repositorio local. Pulsad _Finish_
+. En el explorador los iconos de los elementos del proyecto mostrarán un símbolo amarillo
+abajo a la derecha.
+. Si pulsamos de nuevo botón derecho sobre el proyecto y la opción _Team_ esta vez aparecerán
+las opciones correspondientes a las acciones que podemos realizar sobre nuestro repositorio o
+sobre el repositorio remoto en GitHub.
+
+Hasta el próximo Post!
