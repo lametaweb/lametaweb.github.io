@@ -1,0 +1,10 @@
+= Implementación de pantalla para introducción de Trabajos (CRUD).
+La metaweb
+:hp-tags: JSF, JavaServer Faces, CRUD, EJB, Hibernate, backing bean, Git, GitHub
+:published_at: 2015-07-23
+
+En este post os resumo los aspectos más relevantes de la implementación del caso de uso de introducción de Trabajos de Drones creado a partir de la solicitud de dicha funcionalidad por parte de nuestro cliente imaginario TAS. La release de la que se parte es la 1.0.1, y a la que llegaremos será la 1.1.x. Así que usad la primera para intertar implementar la pantalla por vuestra cuenta y la segunda para ver la impleme tación terminada.
+
+Yo aquí os haré una serie de comentarios sobre la release 1.1.x, señalando los detalles de implementación interesantes. Pero primero una breve introducción sobré qué es un mantenimiento de una entidad del modelo de dominio. En inglés se conoce como CRUD: Create, Read/Retrieve, Update, Delete, y se refiere al conjunto de elementos de diseño y programa necesarios para implementar el típico mantenimiento de una entidad. El caso más sencillo se da cuando la entidad es una entidad "hoja" en nuestro diagrama de clases. Si la entidad tiene una o más relaciones con otras entidades tendremos, en ocasiones, que mantenerlas también en el CRUD. Recordemos nuestro sencillo diagrama de clases.
+
+
