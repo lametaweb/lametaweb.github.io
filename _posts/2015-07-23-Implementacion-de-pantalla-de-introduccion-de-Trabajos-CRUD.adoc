@@ -18,12 +18,19 @@ La lista de requisitos extraida de la entrevista con el cliente es la siguiente:
 .Lista de requisitos del mantenimiento de trabajos
 [width="90%"]
 |===
-|numeroDeSerie
-|modelo
-|autonomia
-|numMotores
-|pesoMaximoDespegue
+|[small]*Pantalla de listado de trabajos*
+|[small]#Inicialmente se presentará un listado de trabajos en pantalla.#
+|[small]#El listado se debe ordenar por todos sus campos y se presentará paginado.#
+|[small]#Sobre el listado dispondremos de comandos para Editar, dar de baja y dar de baja definitiva un trabajo.#
+|[small]#La baja definitiva debe ser confirmada.#
+|[small]*Pantalla de mantenimiento de trabajo*
+|[small]#Todos los campos se validarán presentando mensajes adecuados.#
+|[small]#Se presentará un listado de los drones disponibles según la fecha del trabajo.#
+|[small]#La ruta se introducirá manualmente sobre un grid presentado en pantalla.#
+|[small]#Se verificará la corrección de los datos introducidos en el grid de puntos de ruta.#
 |===
+
+
 
 
 
