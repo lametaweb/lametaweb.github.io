@@ -26,9 +26,10 @@ La lista de requisitos extraida de la entrevista con el cliente es la siguiente:
 |[small]*Pantalla de mantenimiento de trabajo*
 |[small]#Todos los campos se validarán presentando mensajes adecuados.#
 |[small]#Se presentará un listado de los drones disponibles según la fecha del trabajo.#
-|[small]#La ruta se introducirá manualmente sobre un grid presentado en pantalla.#
-|[small]#Se verificará la corrección de los datos introducidos en el grid de puntos de ruta.#
+|[small]#La ruta se importará desde un excel generado por la aplicación de gestión de mapas usada para la definición de rutas sobre mapa.#
 |===
+
+Posteriormente a la definición de los requisitos decidimos si usar o no una librería JSF específica que nos aporte capacidades adicionales en la capa de presentación. Nuestras pantallas usarán listados con capacidades de ordenación, paginación, etc. Además necesitamos acciones con confirmación. El coste de incluir la librería es muy bajo y finalmente optamos por incluir una en nuestro proyecto. Entre RichFaces y Primefaces elegimos la segunda. 
 
 
 
