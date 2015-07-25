@@ -29,8 +29,49 @@ La lista de requisitos extraida de la entrevista con el cliente es la siguiente:
 |[small]#La ruta se importará desde un excel generado por la aplicación de gestión de mapas usada para la definición de rutas sobre mapa.#
 |===
 
-Posteriormente a la definición de los requisitos decidimos si usar o no una librería JSF específica que nos aporte capacidades adicionales en la capa de presentación. Nuestras pantallas usarán listados con capacidades de ordenación, paginación, etc. Además necesitamos acciones con confirmación. El coste de incluir la librería es muy bajo y finalmente optamos por incluir una en nuestro proyecto. Entre RichFaces y Primefaces elegimos la segunda. 
+Posteriormente a la definición de los requisitos decidimos si usar o no una librería JSF específica que nos aporte capacidades adicionales en la capa de presentación. Nuestras pantallas usarán listados con capacidades de ordenación, paginación, etc. Además necesitamos acciones con confirmación. El coste de incluir la librería es muy bajo y finalmente optamos por incluir una en nuestro proyecto. Entre RichFaces y Primefaces elegimos la segunda por sus características en cuanto a número de componentes, curva de aprindizaje, documentación, comunidad y tendencia exponencial de incremento en el uso en nuevos proyectos.
 
+NOTE: Si queréis comparar la popularidad de distintas tecnologías usad Google Trends. Tendréis que añadir los términos que identifiquen a cada tecnología. Y hay que cuidar que el término no recoja resultados no deseados. Por ejmeplo si queréis ver la tendencia del framework ionic para aplicaciones híbridas escribir "ionic framework" y no "ionic" a secas. La URL es https://www.google.es/trends[ésta]. 
+
+Añadimos PrimeFaces al proyecto. Además, optamos por trabajar con la última versión de JSF. La versión que trae EAP 6.3 es la 2.1. Se ha intentado seguir el procedimiento existente en la web para incluir la última versión en este servidor pero no ha sido posible. En resumen el proceso pasa por bajar una aplicación Maven desde Github que genera un fichero CLI que realiza el deploy de los tres slots para los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que parece que el script está actualizado para operar con las primeras versiones del servidor Wildfly.
+
+De modo que se opta por instalar el nuevo servidor Wildfly en su última versión, la 9.0.1, y así tener disponible una plataforma Java EE 7 completa. Lo primero será descargar el fichero de instlación del servidor http://wildfly.org/downloads/[aquí]. Tenéis que elegir la primera de las opciones, la que tiene la versión 9.0.1.Final.
+
+NOTE: Descargaos también los Quickstarts porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea la naturaleza de éste.
+
+Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía un conector para la versión 8 del servidor pero después de las pruebas de arranque y parada parece que para un uso sencillo no tendremos problemas con esto.
+
+¿Qué cambios tendremos que hacer en nuestro proyecto tras el cambio de servidor y la actualización de las versiones de las tecnologías? En primer lugar tendremos que adaptar las dependencias Maven a las del nuevo servidor, un proceso sin demasiada complicación. Para consultar los cambios en el código que se produzcan durante el desarrollo de este post  bajaos la release 1.1.x en https://github.com/lametaweb/jdrone/archive/1.1.0.zip[esta dirección].
+
+En segundo lugar, como vamos a subir desde JSF 2.1 a 2.2 actualizamos los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tendremos que actualizar la faceta JavaServer Faces. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadirla de nuevo la opción _JSF Implementation Library_ dejadla así _Type > Disable Library Configuration_.
+
+Para comprobar que JSF 2.2 funciona correctamente modificamos nuestra página index.xhtml para adaptarla a HTML5 y JSF 2.2, añadiendo además una etiqueta nueva en la versión 2.2.
+
+Para la adaptación a HTML 5:
+
+`<!DOCTYPE html>`
+
+Para la adaptación a JSF 2.2 cambiamos los espacios de nombres:
+
+`<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">`
+
+Finalmente sustituimos:
+
+`<f:event listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}" type="preRenderView" />`
+
+por:
+
+`<f:viewAction action="#{disponibilidadBean.listaEstadoDronesPorFecha()}" onPostback="true"></f:viewAction>`
+
+Además ahora no se admitirán los típicos caracteres de espaciado `\&nbsp;` y tendremos que sustituirlos por el equivalente código unicode `\&#160;`.
+
+NOTE: La etiqueta viewAction es nueva en JSF 2.2. Asocia un evento a una página y su uso es más flexible que el de la etiqueta event para acciones de precarga de datos de pantalla. En nuestra pantalla inicial el uso no sigue el patrón habitual. Un uso más adecuado se verá en la implementación de las pantallas de mantenimiento de trabajos.
+
+Muy bien, una vez que tenemos correctamente actualizado el entorno de trabajo y disponemos de los requisitos para las pantallas de mantenimiento de trabajos pasaríamos al diseño de las mismas. Podemos usar lápiz y papel o algún programa de dibujo. Sobre estos diseños vemos si existen zonas comunes a las dos pantallas y si es así añadimos una plantilla aprovechando las capacidades que nos brinda JSF con Facelets. Optamos por añadir una plantilla simple.
+
+HACER COMMITS Y CREAR PLANTILLA
 
 
 
