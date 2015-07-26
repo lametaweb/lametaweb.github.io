@@ -43,6 +43,8 @@ Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución
 
 ¿Qué cambios tendremos que hacer en nuestro proyecto tras el cambio de servidor y la actualización de las versiones de las tecnologías? En primer lugar tendremos que adaptar las dependencias Maven a las del nuevo servidor, un proceso sin demasiada complicación. Para consultar los cambios en el código que se produzcan durante el desarrollo de este post  bajaos la release 1.1.x en https://github.com/lametaweb/jdrone/archive/1.1.0.zip[esta dirección].
 
+Aprovechando que pom.xml ha variado he refactorizado el ciclo de construcción de modo que ahora existe un profile "despliegue-recursos" que se debe ejecutar la primera vez que despleguemos la aplicación o bien si los recursos has sido eliminados por cualquier motivo. Esto lo he hecho para evitar los problemas derivados del bloqueo de la base de datos. Tenéis que crear un nueva configuración de ejecución: Botón derecho proyecto > Rus As > Run Configurations... > botón derecho sobre Maven build > New > En la entrada Goals escribir "clean install -Pdespliegue-recursos" y dar un nombre al nuevo perfil.
+
 En segundo lugar, como vamos a subir desde JSF 2.1 a 2.2 actualizamos los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tendremos que actualizar la faceta JavaServer Faces. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadirla de nuevo la opción _JSF Implementation Library_ dejadla así _Type > Disable Library Configuration_.
 
 Para comprobar que JSF 2.2 funciona correctamente modificamos nuestra página index.xhtml para adaptarla a HTML5 y JSF 2.2, añadiendo además una etiqueta nueva en la versión 2.2.
@@ -71,7 +73,31 @@ NOTE: La etiqueta viewAction es nueva en JSF 2.2. Asocia un evento a una página
 
 Muy bien, una vez que tenemos correctamente actualizado el entorno de trabajo y disponemos de los requisitos para las pantallas de mantenimiento de trabajos pasaríamos al diseño de las mismas. Podemos usar lápiz y papel o algún programa de dibujo. Sobre estos diseños vemos si existen zonas comunes a las dos pantallas y si es así añadimos una plantilla aprovechando las capacidades que nos brinda JSF con Facelets. Optamos por añadir una plantilla simple.
 
-HACER COMMITS Y CREAR PLANTILLA
+La plantilla será privada, por tanto va situada dentro de la carpeta _WEB-INF_. Una plantilla contendrá en la cabecera elementos comunes a todas las páginas como gestión de la caché de cliente, estilos CSS comunes, etc, y en el cuerpo el maquetado de la página, a base de divs y estilos, y dentro de estos divs las etiquetas <ui:insert...> de Facelets para insertar el contenido. Una maquetación  sencilla también se puede implementar con una tabla html en vez de a base de divs.
+
+En cuanto a la maquetación es interesante el uso del estilo _overflow: hidden_ en los divs contenedores de otros divs para que los primeros adquieran carácter de bloque y obliguen a los elementos externos a mostrase de forma correcta.
+
+Una vez que tenemos lista nuestra plantilla, en la carpeta _/jdrone/src/main/webapp/WEB-INF/plantillas/plantilla.xhtml_, y su hoja de estilos correspondiente, que podemos aprovechar para definir los estilos del ámbito de la aplicación, podemos empezar a implementar cada pantalla de la aplicación en base a la plantilla.
+
+La estructura de una página que usa una plantilla es la siguiente:
+
+[source,xhtml,indent=0]
+----
+	<ui:composition...>
+    	<ui:define name="central">
+        	...
+        </ui:define>
+        <ui:define name="logo">
+       		<ui:include... />
+        </ui:define>
+        ...
+    </ui:composition>
+----
+
+
+
+
+
 
 
 
