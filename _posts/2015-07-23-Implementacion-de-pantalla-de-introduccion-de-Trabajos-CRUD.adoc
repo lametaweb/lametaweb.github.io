@@ -94,6 +94,14 @@ La estructura de una página que usa una plantilla es la siguiente:
     </ui:composition>
 ----
 
+El contenido de la zona variable, etiquetada con el nombre _central_ en la plantilla, se define en la página en general al principio, para mayor claridad, dado que aquí el orden no afecta. Como la zona del logo será fija para todas las pantallas la añadimos con un include que toma como fuente la página xhtml que contiene el logo de la aplicación.
+
+En primer lugar adaptamos nuestra pantalla de consulta de drones disponibles en una fecha de los posts anteriores al uso de la plantilla, y movemos el contenido desde el fichero index.xhtml, que ahora será una pantalla inicial, al fichero consulta-inicial.xhtml.
+
+En este punto vamos a añadir la librería jQuery y una animación del logo que lo mueva cuando el ratón entre y salga para tener un primer contacto de uso de JQuery. Añadimos la libraría al proyecto, elegimos la versión no comprimida para poder inspeccionar el código que nos interese. Una aplicación real en producción tendrá todos los ficheros js minimizados para ahorrar ancho de banda.
+
+Lo siguiente que hacemos es implementar un menú para la aplicación. En cuanto al diseño tenemos muchas posibilidades: Menú lateral, animado, de barra... Elegimos éste último por ser el que más se adapta a nuestra aplicación. En vez de implementarlo desde cero tiramos de Primefaces. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en nuestro programa, tiene casi 150 componentes, así que en general lo más probable es que ya exista algún componente en la librería pata cualquier necesidad que tengamos en la capa de presentación.
+
 
 
 
