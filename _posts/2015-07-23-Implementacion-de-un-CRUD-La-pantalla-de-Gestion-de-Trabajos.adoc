@@ -157,7 +157,16 @@ Bien, para dejar lista la aplicación para el comienzo de la implementación de 
 
 Empezamos añadiendo la página que nos muestre la lista de trabajos. Tenemos que añadir a cada item un botón para eliminarlo, y otro para modificarlo. Además cada item tendrá un link para la consulta de los detalles del trabajo. Por último a nivel de página tendremos un botón para dar de alta un nuevo trabajo y otro para volver a la pantalla inicial.
 
-Creamos la página trabajos.xhtml a partir de index.html y escribimos el código necesario dentro del define del área "central".
+Creamos la página trabajos.xhtml a partir de index.html. Escribiremos el código necesario dentro del define del área "central". A continuación creamos el backing bean para la página, TrabajosBean.java, en la misma carpeta que DisponibilidadBean.java y con el mismo ámbito. 
+
+Lo siguiente es crear la clase de negocio. De momento iremos creando una para cada entidad persistente. Ya teníamos el bean de negocio de la entidad Drone, ahora creamos uno para la entidad Trabajo. Como para la entidad Trabajo necesitamos implementar las operaciones de persistencia típicas de un CRUD: Crear, Modificar, Eliminar y Consultar, vamos a refactorizar el código de los beans de negocio creando una superclase abstracta que contenga estas operaciones básicas, de manera que en la clase concreta sólo irán las operaciones de negocio particulares de cada una.
+
+Creamos por tanto una nueva clase java con el nombre AbstractFacade.java en la carpeta _negocio_. Esta clase no necesita características de bean EJB por lo que no añadiremos ninguna anotación.
+
+REFACTORIZAR BEANS EJB
+EXPLICAR CLASE ABSTRACTA
+EXPLICAR BEAN TRABAJOS
+SEGUIR IMPLEMENTANDO PANTALLA DE LISTADO
 
 
 
