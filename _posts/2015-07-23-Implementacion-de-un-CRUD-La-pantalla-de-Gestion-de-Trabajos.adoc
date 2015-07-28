@@ -131,12 +131,19 @@ Guardamos los cambios. Si abrimos el fichero pom.xml observamos que se muestra u
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig010.png[]
 
-Pulsamos OK y Finish. Para terminar reducimos la altura de la barra de manú modificando el estilo aplicado por el frmaework a este componente. Añadid al principio del fichero _plantilla.css_ lo siguiente: 
+Pulsamos OK y Finish. Para afinar el estilo de la barra de menú aún más podemos modificar el estilo aplicado por el frmaework a los componentes que forman el menú. En la documentación de Primefaces aparecen estos estilos pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios _on the fly_.
+
+
+Añadid al principio del fichero _plantilla.css_ lo siguiente: 
 
 [source,css,indent=0]
 ----
 .ui-menubar{
-	height:20px;	
+	height: 1.em;	
+	padding:0em !important;	
+}
+.ui-menuitem{
+	height: 1.8em;
 }
 ----
 
@@ -144,7 +151,11 @@ Desplegad los cambios en WildFly y comprobad que el nuevo aspecto de la pantalla
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig015.png[]
 
-jrebel
+NOTE: Existe una herramienta muy interesante que evita los redespliegues en el servidor de desarrollo durante la implementación de una aplicación. Se trata de JRebel, http://zeroturnaround.com/software/jrebel/. Es una herramienta de pago pero merece la pena bajar la versión demo y evaluar si nos merece la pena incluirla entre nuestro set de plugins.
+
+Bien, para dejar lista la aplicación para el comienzo de la implementación de las dos pantallas de "Gestión de trabajos" movemos el contenido de index.html a consulta-inicial.xhtml y dejamos index.xhtml con un fondo de pantalla limpio como pantalla inicial de la aplicación, añadiendo una imagen de fondo.
+
+
 
 
 
