@@ -155,6 +155,10 @@ NOTE: Existe una herramienta muy interesante que evita los redespliegues en el s
 
 Bien, para dejar lista la aplicación para el comienzo de la implementación de las dos pantallas de "Gestión de trabajos" movemos el contenido de index.html a consulta-inicial.xhtml y dejamos index.xhtml con un fondo de pantalla limpio como pantalla inicial de la aplicación, añadiendo una imagen de fondo.
 
+Empezamos añadiendo la página que nos muestre la lista de trabajos. Tenemos que añadir a cada item un botón para eliminarlo, y otro para modificarlo. Además cada item tendrá un link para la consulta de los detalles del trabajo. Por último a nivel de página tendremos un botón para dar de alta un nuevo trabajo y otro para volver a la pantalla inicial.
+
+Creamos la página trabajos.xhtml a partir de index.html y escribimos el código necesario dentro del define del área "central".
+
 
 
 
