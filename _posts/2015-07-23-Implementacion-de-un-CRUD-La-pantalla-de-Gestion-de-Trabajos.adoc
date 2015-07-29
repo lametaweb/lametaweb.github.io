@@ -41,6 +41,8 @@ NOTE: Descargaos también los Quickstarts porque os van a venir muy bien como ma
 
 Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía un conector para la versión 8 del servidor pero después de las pruebas de arranque y parada parece que para un uso sencillo no tendremos problemas con esto.
 
+NOTE: Si no lo habéis hecho aún versionad bajo Git el proyecto y cread el correspondiente repositorio remoto en GitHub para ir publicando vuestras releases. 
+
 ¿Qué cambios tendremos que hacer en nuestro proyecto tras el cambio de servidor y la actualización de las versiones de las tecnologías? En primer lugar tendremos que adaptar las dependencias Maven a las del nuevo servidor, un proceso sin demasiada complicación. Para consultar los cambios en el código que se produzcan durante el desarrollo de este post  bajaos la release 1.1.x en https://github.com/lametaweb/jdrone/archive/1.1.0.zip[esta dirección].
 
 Aprovechando que pom.xml ha variado he refactorizado el ciclo de construcción de modo que ahora existe un profile "despliegue-recursos" que se debe ejecutar la primera vez que despleguemos la aplicación o bien si los recursos has sido eliminados por cualquier motivo. Esto lo he hecho para evitar los problemas derivados del bloqueo de la base de datos. Tenéis que crear un nueva configuración de ejecución: Botón derecho proyecto > Rus As > Run Configurations... > botón derecho sobre Maven build > New > En la entrada Goals escribir "clean install -Pdespliegue-recursos" y dar un nombre al nuevo perfil.
@@ -161,13 +163,178 @@ Creamos la página trabajos.xhtml a partir de index.html. Escribiremos el códig
 
 Lo siguiente es crear la clase de negocio. De momento iremos creando una para cada entidad persistente. Ya teníamos el bean de negocio de la entidad Drone, ahora creamos uno para la entidad Trabajo. Como para la entidad Trabajo necesitamos implementar las operaciones de persistencia típicas de un CRUD: Crear, Modificar, Eliminar y Consultar, vamos a refactorizar el código de los beans de negocio creando una superclase abstracta que contenga estas operaciones básicas, de manera que en la clase concreta sólo irán las operaciones de negocio particulares de cada una.
 
-Creamos por tanto una nueva clase java con el nombre AbstractFacade.java en la carpeta _negocio_. Esta clase no necesita características de bean EJB por lo que no añadiremos ninguna anotación.
+Creamos por tanto una nueva clase java con el nombre AbstractFacade.java en la carpeta _negocio_. Esta clase no necesita características de bean EJB por lo que no añadiremos ninguna anotación. Y refactorizamos.
 
-REFACTORIZAR BEANS EJB
-EXPLICAR CLASE ABSTRACTA
-EXPLICAR BEAN TRABAJOS
-SEGUIR IMPLEMENTANDO PANTALLA DE LISTADO
+La clase TrabajoFacade inicialmente:
 
+[source,java,indent=0]
+----
+package com.lametaweb.jdrone.negocio;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
+/**
+ * Session Bean implementation class TrabajoFacade
+ */
+@Stateless
+@LocalBean
+public class TrabajoFacade {
+
+    /**
+     * Default constructor. 
+     */
+    public TrabajoFacade() {
+        // TODO Auto-generated constructor stub
+    }
+
+}
+----
+
+La clase TrabajoFacade refactorizada:
+
+[source,java,indent=0]
+----
+package com.lametaweb.jdrone.negocio;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import com.lametaweb.jdrone.persistencia.Trabajo;
+
+/**
+ * Session Bean implementation class TrabajoFacade
+ */
+@Stateless
+@LocalBean
+public class TrabajoFacade extends AbstractFacade<Trabajo>{
+	
+	@PersistenceContext(unitName = "datosdrones")
+    private EntityManager em;
+
+    /**
+     * Default constructor. 
+     */
+    public TrabajoFacade() {
+        // TODO Auto-generated constructor stub
+    	super(Trabajo.class);
+    }
+    
+    protected EntityManager getEntityManager(){
+    	return em;
+    }
+
+}
+----
+
+Observad como la clase abstracta además es genérica dado que utiliza el método de consulta tipado y necesita referirse al tipo de la entidad que se gestiona en la subclase.
+
+En primer lugar planteamos los métodos de negocio/dao que necesitamos, en este caso no necesito crear ninguno ya que en la superclase ya dispongo de un método que lee todos los trabajos y otro que lee un trabajo por su ID. A continuación iremos creando los componentes en la página xhtml y en paralelo los elementos java que vayamos necesitando en la clase backing bean. Continuaremos dentro de un proceso iterativo hasta conseguir una página de listado de trabajos libre de bugs. Es el momento de pasar a la página de detalle de trabajo que nos va a servir para consulta y modificación y para la que seguiremos el mismo proceso de implementación.
+
+Empezamos con la página trabajos.xhtml, que iremos implementando y probando paso a paso. Implementad de forma metódica y no mezclando funcionalidades. El primer paso será simplemente mostrar la lista de trabajos en la pantalla. Aquí os copio el estado de la página y del backing bean con este primer paso implementado.
+
+La página:
+
+[source,xhtml,indent=0]
+----
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"                
+                template="/WEB-INF/plantillas/plantilla.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+	<f:metadata>
+		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}"></f:viewAction>
+	</f:metadata>
+    <ui:define name="central">
+		<!-- listado selección trabajos -->
+		<h:form>
+
+		<p:dataTable var="trabajo" value="#{trabajosBean.trabajos}">
+		    <p:column headerText="N. Registro">
+		        <h:outputText value="#{trabajo.numeroDeRegistro}" />
+		    </p:column>
+		 
+		    <p:column headerText="Inicio" priority="3">
+		        <h:outputText value="#{trabajo.fechaHoraInicio}" />
+		    </p:column>
+		 
+		    <p:column headerText="Finalización" priority="2">
+		        <h:outputText value="#{trabajo.fechaHoraFinalizacion}" />
+		    </p:column>
+		 
+		    <p:column headerText="Drone" priority="4">
+		        <h:outputText value="#{trabajo.droneAsignado.numeroDeSerie}" />
+		    </p:column>
+		</p:dataTable>
+		</h:form>
+	</ui:define>
+	
+	<!-- contenido de zona logo -->
+    <ui:define name="logo">
+        <ui:include src="/WEB-INF/paneles/panelLogo.xhtml" />
+    </ui:define>
+
+	<!-- contenido de zona barra menu -->
+    <ui:define name="menu">
+        <ui:include src="/WEB-INF/paneles/panelMenu.xhtml" />
+    </ui:define>
+    
+	<!-- TODO: contenido de otras zonas... -->
+
+</ui:composition>
+----
+
+Y la clase:
+
+[source,java,indent=0]
+----
+package com.lametaweb.jdrone.vista;
+
+import java.util.List;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import com.lametaweb.jdrone.negocio.TrabajoFacade;
+import com.lametaweb.jdrone.persistencia.Trabajo;
+
+@Named
+@RequestScoped
+public class TrabajosBean {
+	
+	private List<Trabajo> trabajos;
+	@Inject
+	private TrabajoFacade trabajoFacade;
+
+	public TrabajosBean() {
+		// TODO Auto-generated constructor stub
+	}
+
+	
+	public void actualizaModeloTrabajos(){
+		trabajos = trabajoFacade.findAll();
+	}
+	
+	
+	public List<Trabajo> getTrabajos() {
+		return trabajos;
+	}
+}
+----
+
+
+Y seguiremos añadiendo funcionalidades a la pantalla hasta completarla.
+
+
+
+
+
+
+VER PRUEBAS CON ARQUILLIAN
 
 
 
