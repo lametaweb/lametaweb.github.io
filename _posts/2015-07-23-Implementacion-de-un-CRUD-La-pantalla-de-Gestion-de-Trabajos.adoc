@@ -337,9 +337,15 @@ Añadimos a continuación los botones de eliminación y edición a la tabla. La 
 
 Cuando implementamos operaciones de negocio con Hibernate ayuda bastante, durante la depuración del código, visualizar las sentencias SQL que Hibernate genera contra la base de datos, de modo que podamos detectar problemas con facilidad. Una primera aproximación a esto es añadir esta configuración a Hibernate en el archivo _persistence.xml_:
 
+[source,xml,indent=0]
+----
+  <property name="hibernate.show_sql" value="true"/>
+  <property name="hibernate.format_sql" value="true"/>
+----
 
+Pero esto sólo nos sacará por la consola las sentencias SQL, sin los valores de los parámetros. Para mostrar estos valores tenemos que cambiar la configuración del logger log4j. Añadimos un fichero log4j.properties en cualquier carpeta dentro del classpath con el siguiente contenido:
 
-
+AÑADIR CONF LOG4J, COMPROBAR QUE NO SE PIERDE SALIDA APLICACION. INSTALAR PROXY, VER TEXTO EN ARCHIVO .TEX
 
 
 
