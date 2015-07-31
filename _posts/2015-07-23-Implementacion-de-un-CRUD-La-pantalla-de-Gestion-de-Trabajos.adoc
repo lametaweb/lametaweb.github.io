@@ -33,9 +33,9 @@ Posteriormente a la definición de los requisitos decidimos si usar o no una lib
 
 NOTE: Si queréis comparar la popularidad de distintas tecnologías usad Google Trends. Tendréis que añadir los términos que identifiquen a cada tecnología. Y hay que cuidar que el término no recoja resultados no deseados. Por ejmeplo si queréis ver la tendencia del framework ionic para aplicaciones híbridas escribir "ionic framework" y no "ionic" a secas. La URL es https://www.google.es/trends[ésta]. 
 
-Añadimos PrimeFaces al proyecto. Además, optamos por trabajar con la última versión de JSF. La versión que trae EAP 6.3 es la 2.1. Se ha intentado seguir el procedimiento existente en la web para incluir la última versión en este servidor pero no ha sido posible. En resumen el proceso pasa por bajar una aplicación Maven desde Github que genera un fichero CLI que realiza el deploy de los tres slots para los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que parece que el script está actualizado para operar con las primeras versiones del servidor Wildfly.
+Añadimos PrimeFaces al proyecto. Además, optamos por trabajar con la última versión de JSF. La versión que trae EAP 6.3 es la 2.1. Se ha intentado seguir el procedimiento existente en la web para incluir la última versión en este servidor pero no ha sido posible. En resumen el proceso pasa por bajar una aplicación Maven desde Github que genera un fichero CLI que realiza el deploy de los tres slots para los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que parece que el script está actualizado para operar con las versiones iniciales del servidor Wildfly y no del EAP.
 
-De modo que se opta por instalar el nuevo servidor Wildfly en su última versión, la 9.0.1, y así tener disponible una plataforma Java EE 7 completa. Lo primero será descargar el fichero de instlación del servidor http://wildfly.org/downloads/[aquí]. Tenéis que elegir la primera de las opciones, la que tiene la versión 9.0.1.Final.
+De modo que optamos por adoptar el nuevo servidor Wildfly en su última versión, la 9.0.1, y así tener disponible una plataforma Java EE 7 completa. Lo primero será descargar el fichero de instlación del servidor http://wildfly.org/downloads/[aquí]. Tenéis que elegir la primera de las opciones, la que tiene la versión 9.0.1.Final.
 
 NOTE: Descargaos también los Quickstarts porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea la naturaleza de éste.
 
@@ -75,13 +75,13 @@ NOTE: La etiqueta viewAction es nueva en JSF 2.2. Asocia un evento a una página
 
 Muy bien, una vez que tenemos correctamente actualizado el entorno de trabajo comenzamos con la implementación del caso de uso planteado. Como siempre habrá que implementar las capas de presentación y negocio. Empecemos por la primera.
 
-Antes de empezar con la primera pantalla hay que crear una plantilla que proporcione el maquetado de las pantallas de la aplicación. Primefaces nos da la solución con Grid CSS, una librería de estilos con el que crear un layout responsive al estilo de Bootstrap. Antes de empezar con la implementación dibujamos un boceto del layout para tener claro los divs que tengo que considerar.
+Antes de empezar con la primera pantalla hay que crear una plantilla que proporcione el maquetado de las pantallas de la aplicación. Primefaces nos da la solución con Grid CSS, una librería de estilos con la que crearemos un layout responsive al estilo de Bootstrap. Antes de empezar con la implementación dibujamos un boceto del layout para tener claro los divs que tengo que considerar.
 
 La plantilla debe ser privada, por tanto va situada dentro de la carpeta _WEB-INF_. Una plantilla contendrá en la cabecera elementos comunes a todas las páginas como gestión de la caché de cliente, estilos CSS comunes, y en el cuerpo el maquetado de la página y dentro de cada elemento div (con estilos de Grid CSS) las etiquetas <ui:insert...> de Facelets para insertar el contenido.
 
 Una vez que tenemos lista nuestra plantilla, en la carpeta _/jdrone/src/main/webapp/WEB-INF/plantillas/plantilla.xhtml_, y su hoja de estilos correspondiente, podemos empezar a implementar cada pantalla de la aplicación en base a la plantilla.
 
-La estructura de una página que usa una plantilla es la siguiente:
+La estructura de una página será:
 
 [source,xhtml,indent=0]
 ----
@@ -100,7 +100,10 @@ El contenido de la zona variable, etiquetada con el nombre _central_ en la plant
 
 En primer lugar vamos a adaptar nuestra pantalla de consulta de los posts anteriores, de drones disponibles en una fecha, al uso de la plantilla, y movemos el contenido desde el fichero index.xhtml, que ahora se convertirá en la pantalla inicial, al fichero consulta-inicial.xhtml.
 
-En este punto vamos a añadir la librería jQuery y para hacer algo con ella como toma de contacto implementamos una simple animación del logo. Añadimos la librería al proyecto eligiendo la versión no comprimida para poder inspeccionar el código que nos interese. Una aplicación real en producción tendrá todos los ficheros js minimizados para ahorrar ancho de banda.
+Implementamos el panel del logo e incluímos una simple animación en jQuery. Primefaces está basado en esta librería Javascript que es conveniente conocer ya que su uso está muy extendido en la capa de presentación de proyectos reales. Como nuestro proyecto incluye Primemefaces y éste incluye jQuery no tenemos que añadir la librería de manera explícita. En general, para cualquier proyecto, en páginas que no usen ninguna estiqueta de Primefaces incluiremos de manera explícita la librería jQuery embebida en Primefaces con las siguientes líneas:
+
+`<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
+`<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />`
 
 Lo siguiente que necesitamos es un menú de opciones. Se opta por la clásica barra de menú. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da también en esta ocasión la solución con el componente MenuBar. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en nuestro programa, tiene casi 150 componentes, y grancantidad de características adicionales. Dibujamos las opciones y submenús que tengamos previstos para la aplicación e implementamos el manú en un nuevo panel, de la misma manera que en el caso del logo.
 
@@ -330,8 +333,11 @@ public class TrabajosBean {
 }
 ----
 
+Añadimos a continuación los botones de eliminación y edición a la tabla. La eliminación la hacemos con una llamada ajax, que es el comportamiento por defecto en PrimeFaces, para que sólo se actualice la tabla. Después de comprobar que puedo eliminar un trabajo correctamente paso a implementar el cuadro de diálogo de confirmación. En un borrado ya sea físico o lógico siempre poned antes una confirmación. La manera más limpia de añadir un cuadro de confirmación es con un ConfirmDialog global.
 
-Y seguiremos añadiendo funcionalidades a la pantalla hasta completarla.
+Cuando implementamos operaciones de negocio con Hibernate ayuda bastante, durante la depuración del código, visualizar las sentencias SQL que Hibernate genera contra la base de datos, de modo que podamos detectar problemas con facilidad. Una primera aproximación a esto es añadir esta configuración a Hibernate en el archivo _persistence.xml_:
+
+
 
 
 
@@ -339,7 +345,7 @@ Y seguiremos añadiendo funcionalidades a la pantalla hasta completarla.
 
 
 VER PRUEBAS CON ARQUILLIAN
-
+https://github.com/wildfly/boms/tree/master/jboss-javaee-7.0-with-tools
 
 
 
