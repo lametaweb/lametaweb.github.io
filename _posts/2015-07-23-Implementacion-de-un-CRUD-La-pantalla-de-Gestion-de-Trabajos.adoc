@@ -343,9 +343,13 @@ Cuando implementamos operaciones de negocio con Hibernate ayuda bastante, durant
   <property name="hibernate.format_sql" value="true"/>
 ----
 
-Pero esto sólo nos sacará por la consola las sentencias SQL, sin los valores de los parámetros. Para mostrar estos valores tenemos que cambiar la configuración del logger log4j. Añadimos un fichero log4j.properties en cualquier carpeta dentro del classpath con el siguiente contenido:
+Pero esto sólo nos sacará por la consola las sentencias SQL, sin los valores de los parámetros. Para mostrar estos valores tenemos que ajustar la configuración de  log4j añadiendo el fichero log4j.properties en alguna carpeta del classpath y estableciendo las propiedades necesarias. Cuando necesitemos visualizar la consulta real lanzada por Hibernate contra la base de datos utilizaremos un driver de proxy jdbc como https://p6spy.github.io/p6spy/2.0/install.html#generic[P6Spy].
 
-AÑADIR CONF LOG4J, COMPROBAR QUE NO SE PIERDE SALIDA APLICACION. INSTALAR PROXY, VER TEXTO EN ARCHIVO .TEX
+
+
+
+
+
 
 
 
