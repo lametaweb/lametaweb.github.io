@@ -39,6 +39,8 @@ De modo que optamos por adoptar el nuevo servidor Wildfly en su última versión
 
 NOTE: Descargaos también los Quickstarts porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea la naturaleza de éste.
 
+Antes de usar el servidor debemos añadir un usuario. Para ello tenemos que ejecutar el archivo por lotes bin\add-user.bat. Aparece una ventana de diálogo y después de varias preguntas el usuario se crea.
+
 Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía un conector para la versión 8 del servidor pero después de las pruebas de arranque y parada parece que para un uso sencillo no tendremos problemas con esto.
 
 NOTE: Si no lo habéis hecho aún versionad bajo Git el proyecto y cread el correspondiente repositorio remoto en GitHub para ir publicando vuestras releases. 
@@ -168,7 +170,7 @@ El ámbito para el backing bean debe extenderse hasta el ámbito de la vista, Vi
 
 NOTE: Tened cuidado de elegir la clase ViewScoped correcta tras pulsar Ctrl + O. Tenemos que elegir javax.faces.view.ViewScoped y no javax.faces.bean.ViewScoped. La segunda clase es nueva en JSF 2.2 y totalmente compatible con CDI.
 
-Lo siguiente es crear la clase de negocio. De momento iremos creando una para cada entidad persistente. Ya teníamos el bean de negocio de la entidad Drone, ahora creamos uno para la entidad Trabajo. Como para la entidad Trabajo necesitamos implementar las operaciones de persistencia típicas de un CRUD: Crear, Modificar, Eliminar y Consultar, vamos a refactorizar el código de los beans de negocio creando una superclase abstracta que contenga estas operaciones básicas, de manera que en la clase concreta sólo irán las operaciones de negocio particulares de cada una.
+Lo siguiente es crear la clase de negocio. En principio creamos una para cada entidad persistente. Ya teníamos el bean de negocio de la entidad Drone, ahora creamos uno para la entidad Trabajo. Como para la entidad Trabajo necesitamos implementar las operaciones de persistencia típicas de un CRUD: Crear, Modificar, Eliminar y Consultar, vamos a refactorizar el código de los beans de negocio creando una superclase abstracta que contenga estas operaciones básicas, de manera que en la clase concreta sólo irán las operaciones de negocio particulares de cada una.
 
 Creamos por tanto una nueva clase java con el nombre AbstractFacade.java en la carpeta _negocio_. Esta clase no necesita características de bean EJB por lo que no añadiremos ninguna anotación. Y refactorizamos.
 
@@ -343,11 +345,26 @@ Cuando implementamos operaciones de negocio con Hibernate ayuda bastante, durant
   <property name="hibernate.format_sql" value="true"/>
 ----
 
-Pero esto sólo nos sacará por la consola las sentencias SQL, sin los valores de los parámetros. Para mostrar estos valores tenemos que ajustar la configuración de  log4j añadiendo el fichero log4j.properties en alguna carpeta del classpath y estableciendo las propiedades necesarias. Cuando necesitemos visualizar la consulta real lanzada por Hibernate contra la base de datos utilizaremos un driver de proxy jdbc como https://p6spy.github.io/p6spy/2.0/install.html#generic[P6Spy].
+Pero esto sólo nos sacará por la consola las sentencias SQL, sin los valores de los parámetros. Para mostrar estos valores tenemos que ajustar la configuración de  log4j añadiendo el fichero log4j.properties en alguna carpeta del classpath y estableciendo las propiedades necesarias. Cuando necesitemos visualizar la consulta real lanzada por Hibernate contra la base de datos utilizaremos un driver de proxy jdbc como https://p6spy.github.io/p6spy/2.0/install.html#generic[P6Spy] o https://github.com/arthurblake/log4jdbc[log4jdbc].
 
+Implementamos ahora el botón de edición. Cuando pulsemos el botón tendremos que navegar a una nueva pantalla donde exista un formulario sobre el que pueda modificar el estado del trabajo seleccionado. Añadimos una nueva pantalla trabajo.xhtml. En trabajos.xhtml la llamada será así:
 
+[source,xhtml,indent=0]
+----
+  <p:button outcome="/trabajo.xhtml" icon="ui-icon-pencil">
+      <f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
+  </p:button>
+----
 
+y en la pantalla trabajo.xhtml la asignación del parámetro en el backing bean y la posterior actualización del modelo será así:
 
+[source,xhtml,indent=0]
+----
+  <f:metadata>
+    <f:viewParam name="idTrabajo" value="trabajoBean.idTrabajo"></f:viewParam>
+    <f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}"></f:viewAction>
+  </f:metadata>
+----
 
 
 
