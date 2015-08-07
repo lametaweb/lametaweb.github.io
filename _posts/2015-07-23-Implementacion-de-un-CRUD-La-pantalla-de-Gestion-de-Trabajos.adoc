@@ -366,14 +366,19 @@ y en la pantalla trabajo.xhtml la asignación del parámetro en el backing bean 
   </f:metadata>
 ----
 
-La pantalla trabajo.xhtml nos valdrá tanto para la edición como para la creación de nuevos trabajos. Distinguimos un caso del otro viendo si el ID de la entidad creada localmente en el backing bean es o no igual a null. A la hora de persistir la entidad el código es el mismo en el cao de una edición o de una creación, se realiza un mergeen ambos casos para simplificar. En principio para los puntos de ruta implementamos sólo la edición de las celdas. 
+La pantalla trabajo.xhtml nos valdrá tanto para la edición como para la creación de nuevos trabajos. Distinguimos un caso del otro viendo si el ID de la entidad creada localmente en el backing bean es o no igual a null. A la hora de persistir la entidad el código es el mismo en el caso de una edición o de una creación, se realiza un merge en ambos casos. En principio para los puntos de ruta implementamos sólo la edición de las celdas. 
 
-Para terminar la funcionalidad de edición tenemos que incluir la lógica que evite generar entidades con valores únicos duplicados. La entidad Trabajo tiene un sólo campo único _numeroDeRegistro_.
+Para terminar la funcionalidad de edición tenemos que incluir la lógica que evite generar entidades con valores únicos duplicados. La entidad Trabajo tiene un sólo campo único _numeroDeRegistro_. Aprovechamos para incluir las anotaciones JPA de campo único en las entidades Trabajo y Drone, un detalle que se me había pasado. En general es normal que tengamos que ir tocando código a todos los niveles durante el desarrollo de una funcionalidad, por olvidos como éste o por refactorizaciones diversas. No hay por tanto que obsesionarse con ir haciendo todo perfecto desde el principio. Si es importante probar todo a conciencia e implementar los casos de prueba necesarios. Los casos de prueba los veremos en el próximo post.
 
-Una vez tenemos resulta la edición de la entidad vamos con la creación. Aquí hay que tener en cuenta el cumplimiento de las restricciones de valores únicos definidas en el mapeo JPA. 
+Una vez tenemos resuelta la edición de la entidad vamos con la creación. Primero añadimos un botón que navegue a la misma pantalla que la de edición, que ya tenemos implementada. Sólo habrá que añadir un _if_ para que se actualice el modelo sólo cuando se trate de una edición. Finalmente implementamos el tratamiento de las excepciones posibles, en este caso tenemos la excepción que se produce por violación de clave única.
 
-. comentar converter en selectonemenu
-. comentar adicion toString, hash, equal: usar clave natural, no id pq las entities new no tienen id.
+NOTE: En general para cada entidad que vaya a ser mostrada en un componente de tipo select tengo que implementar una clase Converter. Un converter gestiona la conversión desde valor local del componente, el que se usa para crear la representación que ve el usuario, al valor enlazado en el backing bean, el que se usa para el negocio, y viceversa. Una alternativa es el uso de la potente librería http://showcase.omnifaces.org/converters/SelectItemsConverter[OmniFaces].
+
+Para completar nuestro CRUD sólo queda añadir un botón de consulta a cada item en la lista de trabajos. Lo hacemos al estilo PrimeFaces, mostrando el detalle de un item en una ventana modal.
+
+
+
+
 HACER OPCIONAL CARGA DATOS CON PROPIEDAD EN FICHERO PROPERTIES.
 VER PRUEBAS CON ARQUILLIAN
 https://github.com/wildfly/boms/tree/master/jboss-javaee-7.0-with-tools
