@@ -13,6 +13,8 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 La pantalla de consulta de detalle simplemente amplía la información mostrada en cada fila de la tabla de la pantalla de maestro y es común mostrarla en una ventana emergente. Veremos que esto es muy sencillo cuando utilizamos la librería Primefaces.
 
+NOTE: Si queréis ver o comparar la popularidad de alguna librería o tecnología usad Google Trends. Tendréis que añadir los términos que identifiquen a cada tecnología. Y hay que cuidar que el término no recoja resultados no deseados. Por ejmeplo si queréis ver la tendencia del framework ionic para aplicaciones híbridas escribir "ionic framework" y no "ionic" a secas. La URL es https://www.google.es/trends[ésta].
+
 La pantalla de creación / edición de detalle es la más compleja, y la más interesante, y es diferente en cada CRUD ya que dependerá de las relaciones que existan entre ella y las otras entidades del Modelo. Recordando nuestro diagrama de clases:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
@@ -29,6 +31,9 @@ Una vez tenemos clara la estructura de las páginas, pensando que la implementac
 
 Primero vamos a ver, ya sobre el código fuente, el código que interviene desde que entramos en la pantalla de maestro hasta que finalizamos la edición de una entidad. Al final además explicaré algunas técnicas menos usuales que fueron necesarias para lograr la funcionalidad deseada.
 
+Pero antes de todo como siempre vienen las tareas de preparación del entorno de trabajo. Queremos que nuestra productividad sea máxima y para ello decidimos instalar la librería de componentes Primefaces así como la última versión disponible de JSF.
+
+Añadir Primefaces es sencillo. 
 
 
 
@@ -36,9 +41,8 @@ Primero vamos a ver, ya sobre el código fuente, el código que interviene desde
 
 
 
-Posteriormente a la definición de los requisitos decidimos si usar o no una librería JSF específica que nos aporte capacidades adicionales en la capa de presentación. Nuestras pantallas usarán listados con capacidades de ordenación, paginación, etc. Además necesitamos acciones con confirmación. El coste de incluir la librería es muy bajo y finalmente optamos por incluir una en nuestro proyecto. Entre RichFaces y Primefaces elegimos la segunda por sus características en cuanto a número de componentes, curva de aprindizaje, documentación, comunidad y tendencia exponencial de incremento en el uso en nuevos proyectos.
 
-NOTE: Si queréis comparar la popularidad de distintas tecnologías usad Google Trends. Tendréis que añadir los términos que identifiquen a cada tecnología. Y hay que cuidar que el término no recoja resultados no deseados. Por ejmeplo si queréis ver la tendencia del framework ionic para aplicaciones híbridas escribir "ionic framework" y no "ionic" a secas. La URL es https://www.google.es/trends[ésta]. 
+
 
 Añadimos PrimeFaces al proyecto. Además, optamos por trabajar con la última versión de JSF. La versión que trae EAP 6.3 es la 2.1. Se ha intentado seguir el procedimiento existente en la web para incluir la última versión en este servidor pero no ha sido posible. En resumen el proceso pasa por bajar una aplicación Maven desde Github que genera un fichero CLI que realiza el deploy de los tres slots para los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que parece que el script está actualizado para operar con las versiones iniciales del servidor Wildfly y no del EAP.
 
