@@ -52,17 +52,17 @@ WARNING: En el momento de redactar este post ya está disponible Wilfly 10, así
 
 NOTE: Descargaos también los Quickstarts porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea la naturaleza de éste.
 
-Una vez instalado el servidor y antes de iniciarlo debemos añadir un usuario. Para ello tenemos que ejecutar el archivo por lotes `bin\add-user.bat`. Aparece una ventana de diálogo y después de varias preguntas el usuario se crea.
+Una vez instalado el servidor y antes de iniciarlo debemos añadir un usuario. Para ello tenemos que ejecutar el archivo por lotes `bin\add-user.bat`.
 
-Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía un conector para la versión 8 del servidor pero después de las pruebas de arranque y parada parece que para un uso sencillo no tendremos problemas con esto.
+Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía un conector para la versión 8 del servidor pero después de las pruebas de arranque y parada se comprueba no hay problemas con esto.
 
-NOTE: Si no lo habéis hecho aún versionad bajo Git el proyecto y cread el correspondiente repositorio remoto en GitHub para ir publicando vuestras releases. 
+NOTE: Si queréis practicar con el programa de control de versiones Git podéis hacer un fork de la aplicación jdrone en vuestra cuenta de Git y a continuación crear un repo local pque os permita realizar pruebas sobre la aplicación en vuestra máquina. 
 
-¿Qué cambios tendremos que hacer en nuestro proyecto tras el cambio de servidor y la actualización de las versiones de las tecnologías? En primer lugar tendremos que adaptar las dependencias Maven a las del nuevo servidor, un proceso sin demasiada complicación. Para consultar los cambios en el código que se produzcan durante el desarrollo de este post  bajaos la release 1.1.x en https://github.com/lametaweb/jdrone/archive/1.1.0.zip[esta dirección].
+Bien, después de actualizar a Wilfly 9 ó 10 ¿Qué cambios tenemos que hacer en nuestro proyecto? En primer lugar tendremos que adaptar las dependencias Maven a las del nuevo servidor, un proceso sin demasiada complicación. Podéis consultar el contenido del fichero pom.xml en GitHub.
 
-Aprovechando que pom.xml ha variado he refactorizado el ciclo de construcción de modo que ahora existe un profile "despliegue-recursos" que se debe ejecutar la primera vez que despleguemos la aplicación o bien si los recursos has sido eliminados por cualquier motivo. Esto lo he hecho para evitar los problemas derivados del bloqueo de la base de datos. Tenéis que crear un nueva configuración de ejecución: Botón derecho proyecto > Rus As > Run Configurations... > botón derecho sobre Maven build > New > En la entrada Goals escribir "clean install -Pdespliegue-recursos" y dar un nombre al nuevo perfil.
+Se ha refactorizado el ciclo de construcción de modo que ahora existe un profile _despliegue-recursos_ que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados por cualquier motivo. Tenéis también que crear un nueva configuración de ejecución: Botón derecho proyecto > Run As > Run Configurations...  Botón derecho sobre Maven build > New.  En la entrada _Goals_ escribid `clean install -Pdespliegue-recursos` y dar un nombre al nuevo perfil.
 
-En segundo lugar, como vamos a subir desde JSF 2.1 a 2.2 actualizamos los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tendremos que actualizar la faceta JavaServer Faces. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadirla de nuevo la opción _JSF Implementation Library_ dejadla así _Type > Disable Library Configuration_.
+En segundo lugar, como vamos a subir desde JSF 2.1 a 2.2 tenemos que actualizar los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tendremos que actualizar la faceta JavaServer Faces. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadirla de nuevo la opción _JSF Implementation Library_ dejadla así _Type > Disable Library Configuration_.
 
 Para comprobar que JSF 2.2 funciona correctamente modificamos nuestra página index.xhtml para adaptarla a HTML5 y JSF 2.2, añadiendo además una etiqueta nueva en la versión 2.2.
 
@@ -86,7 +86,7 @@ por:
 
 Además ahora no se admitirán los típicos caracteres de espaciado `\&nbsp;` y tendremos que sustituirlos por el equivalente código unicode `\&#160;`.
 
-NOTE: La etiqueta viewAction es nueva en JSF 2.2. Asocia un evento a una página y su uso es más flexible que el de la etiqueta event para acciones de precarga de datos de pantalla. En nuestra pantalla inicial el uso no sigue el patrón habitual. Un uso más adecuado se verá en la implementación de las pantallas de mantenimiento de trabajos.
+NOTE: La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página y ofrece más flexibilidad que la etiqueta `event` para acciones de precarga de datos para una página. Comentaros que en la página inicial de ejemplo el uso de esta etiquta no sigue el patrón habitual de uso. Un uso más adecuado podremos verlo en la implementación de las páginas de maestro y de detallo del mantenimiento de la entidad Trabajo.
 
 Muy bien, una vez que tenemos correctamente actualizado el entorno de trabajo comenzamos con la implementación del caso de uso planteado. Como siempre habrá que implementar las capas de presentación y negocio. Empecemos por la primera.
 
