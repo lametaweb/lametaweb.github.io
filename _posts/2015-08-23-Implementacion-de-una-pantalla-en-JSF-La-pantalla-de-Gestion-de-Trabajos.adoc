@@ -19,7 +19,7 @@ Se observa una relación muchos a uno con la entidad Drone y otra de composició
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig025.png[]
 
-Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para la interfaz, ni para la manera en que implementemos el backing bean. Deberemos intentar siempre un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla todos los requisitos acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que desde la pantalla CU de trabajos sea posible acceder a otra pantalla que permita añadir un nuevo Drone.
+Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para la interfaz, ni para la manera en que implementemos el backing bean. Deberemos intentar siempre conseguir un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla todos los requisitos acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que desde la pantalla CU de trabajos sea posible acceder a otra pantalla que permita añadir un nuevo Drone.
 
 
 
