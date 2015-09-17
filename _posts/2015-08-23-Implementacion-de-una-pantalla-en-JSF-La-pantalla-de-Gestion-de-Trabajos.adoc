@@ -3,46 +3,38 @@ La metaweb
 :hp-tags: JSF, JavaServer Faces, CRUD, EJB, Hibernate, backing bean, Primefaces
 :published_at: 2015-08-23
 
-En este post implementaremos la gestión de Trabajos. La release de la que se parte es la 1.0.1, y a la que llegaremos será la 1.1.x.
+En este post implementaremos el caso de uso del mantenimiento de la entidad Trabajo. La release de la que se parte es la 1.0.1, y a la que llegaremos será la 1.1.x.
 
-Lo que tenemos que implementar es un CRUD (create, read, update and delete) de la entidad Trabajo. En general en un CRUD se presenta inicialmente una pantalla con el listado de entidades a gestionar, donde cada fila contiene una serie de campos que identifican a cada entidad y otros adicionales que puedan ser de utilidad a la hora de ordenar o filtrar las entidades para su localización.
+El mantenimiento de un entidad se conoce por sus siglas en inglés como CRUD (create, read, update and delete). En general un CRUD se implementará con tres páginas. La página inicial o de maestro, que se presenta inicialmente y contiene el listado de entidades a gestionar, la página de consulta de detalle, que muestra una información completa de una entidad, y la página de creación / edición del detalle, que permite dar de alta o modificar cualquier dato de una entidad concreta.
 
-A la derecha de los campos de la entidad tendremos tres botones, correspondientes a las operaciones RUD (read, update and delete). Y fuera del listado situaremos un botón adicional para la operación C (create). Finalmente necesitaremos un botón, también fuera del listado, para salir de la pantalla cuando queramos finalizar la gestión de Trabajos. A continuación os muestro el aspecto que debería tener la pantalla de listado de entidades del CRUD:
+En la pantalla de maestro cada fila contiene una serie de campos que identifican a cada entidad y otros adicionales que puedan ser de utilidad a la hora de ordenar o filtrar las entidades para su localización. En cada fila, a la derecha, tendremos tres botones, correspondientes a las operaciones RUD (read, update and delete). Y fuera del listado situaremos un botón adicional para la operación C (create). Finalmente necesitaremos un botón, también fuera del listado, para salir de la pantalla cuando queramos finalizar la gestión de Trabajos. Esta pantalla es común a todos los CRUDs. A continuación os muestro el aspecto que debería tener la pantalla de listado de entidades del CRUD:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig020.png[]
 
-Esta pantalla es común a todos los CRUDs. Por el contrario la pantalla de creación / edición (CU) de la entidad dependerá principalmente de las relaciones que existan entre ella y otras entidades del Modelo. Recordemos nuestro diagrama de clases:
+La pantalla de consulta de detalle simplemente amplía la información mostrada en cada fila de la tabla de la pantalla de maestro y es común mostrarla en una ventana emergente. Veremos que esto es muy sencillo cuando utilizamos la librería Primefaces.
+
+La pantalla de creación / edición de detalle es la más compleja, y la más interesante, y es diferente en cada CRUD ya que dependerá de las relaciones que existan entre ella y las otras entidades del Modelo. Recordando nuestro diagrama de clases:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
-Se observa una relación muchos a uno con la entidad Drone y otra de composición con la entidad PuntoRuta. Ambas relaciones tendrán su efecto en la pantalla de CU. La relación con Drone se traducirá en un componente `selectOneMenu` y la relación con los PuntoRuta en un componente `dataTable` que deberá tener asociado una serie de componentes adicionales que permitan gestionar la relación de composición, es decir, añadir, quitar o editar puntos de ruta del Trabajo. El boceto de la pantalla CU sería algo así:
+Observamos una relación muchos a uno con la entidad Drone y otra de composición con la entidad PuntoRuta. Ambas relaciones tendrán su correspondiente efecto en la pantalla de detalle. La relación con Drone se traducirá en un componente `selectOneMenu` y la relación con los PuntoRuta en un componente `dataTable` que deberá tener asociado una serie de componentes adicionales que permitan gestionar la relación de composición, es decir, añadir, quitar o editar puntos de ruta del Trabajo. El boceto de la pantalla de detalle sería algo así:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig025.png[]
 
-Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para la interfaz, ni para la manera en que implementemos el backing bean. Deberemos intentar siempre conseguir un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla todos los requisitos acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que desde la pantalla CU de trabajos sea posible acceder a otra pantalla que permita añadir un nuevo Drone.
+Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para la interfaz, ni para la manera en que implementemos el o los backing beans. Deberemos intentar siempre conseguir un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla todos los requisitos funcionales acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que desde la página de detalle fuera posible acceder a otra página que permitiera añadir un nuevo Drone.
+
+En un CRUD por tanto existirán tareas de programación generales y comunes a cualquier mantenimiento de entidades, y tareas especificas de ese CRUD, localizadas sobre todo en la pantalla de detalle, que son las que van a plantearnos los mayores retos a la hora de conseguir una experiencia de usuario satisfactoria.
+
+Una vez tenemos clara la estructura de las páginas, pensando que la implementación final muchas veces variará debido a factores que no se tuvieron en cuenta inicialmente u otros que puedan surgir posteriormente, pasaremos a ver el comportamiento dinámico. Aquí tenemos que considerar: Los bindings o enlaces entre los componentes de la vista y el modelo, la navegación entre pantallas y las distintas acciones de usuario.
+
+Primero vamos a ver, ya sobre el código fuente, el código que interviene desde que entramos en la pantalla de maestro hasta que finalizamos la edición de una entidad. Al final además explicaré algunas técnicas menos usuales que fueron necesarias para lograr la funcionalidad deseada.
 
 
 
 
 
 
-Centrándonos en el mantenimiento de la entidad Trabajo empecemos con su resolución. Por partes, hacemos primero un análisis, luego el diseño de la interfaz y por último vemos la implementación de cada capa.
 
-La lista de requisitos extraida de la entrevista con el cliente es la siguiente:
-
-.Lista de requisitos del mantenimiento de trabajos
-[width="90%"]
-|===
-|[small]*Pantalla de listado de trabajos*
-|[small]#Inicialmente se presentará un listado de trabajos en pantalla.#
-|[small]#El listado se debe ordenar por todos sus campos y se presentará paginado.#
-|[small]#Sobre el listado dispondremos de comandos para Editar, dar de baja y dar de baja definitiva un trabajo.#
-|[small]#La baja definitiva debe ser confirmada.#
-|[small]*Pantalla de mantenimiento de trabajo*
-|[small]#Todos los campos se validarán presentando mensajes adecuados.#
-|[small]#Se presentará un listado de los drones disponibles según la fecha del trabajo.#
-|[small]#La ruta se importará desde un excel generado por la aplicación de gestión de mapas usada para la definición de rutas sobre mapa.#
-|===
 
 Posteriormente a la definición de los requisitos decidimos si usar o no una librería JSF específica que nos aporte capacidades adicionales en la capa de presentación. Nuestras pantallas usarán listados con capacidades de ordenación, paginación, etc. Además necesitamos acciones con confirmación. El coste de incluir la librería es muy bajo y finalmente optamos por incluir una en nuestro proyecto. Entre RichFaces y Primefaces elegimos la segunda por sus características en cuanto a número de componentes, curva de aprindizaje, documentación, comunidad y tendencia exponencial de incremento en el uso en nuevos proyectos.
 
