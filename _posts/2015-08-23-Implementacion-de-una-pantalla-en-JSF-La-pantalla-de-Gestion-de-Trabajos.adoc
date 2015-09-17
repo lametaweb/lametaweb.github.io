@@ -9,7 +9,7 @@ Lo que tenemos que implementar es un CRUD (create, read, update and delete) de l
 
 A la derecha de los campos de la entidad tendremos tres botones, correspondientes a las operaciones RUD (read, update and delete). Y fuera del listado situaremos un botón adicional para la operación C (create). Finalmente necesitaremos un botón, también fuera del listado, para salir de la pantalla cuando queramos finalizar la gestión de Trabajos. A continuación os muestro el aspecto que debería tener la pantalla de listado de entidades del CRUD:
 
-
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig020.png[]
 
 Esta pantalla es común a todos los CRUDs. Por el contrario la pantalla de creación / edición (CU) de la entidad dependerá principalmente de las relaciones que existan entre ella y otras entidades del Modelo. Recordemos nuestro diagrama de clases:
 
@@ -17,9 +17,9 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Se observa una relación muchos a uno con la entidad Drone y otra de composición con la entidad PuntoRuta. Ambas relaciones tendrán su efecto en la pantalla de CU. La relación con Drone se traducirá en un componente `selectOneMenu` y la relación con los PuntoRuta en un componente `dataTable` que deberá tener asociado una serie de componentes adicionales que permitan gestionar la relación de composición, es decir, añadir, quitar o editar puntos de ruta del Trabajo. El boceto de la pantalla CU sería algo así:
 
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig025.png[]
 
-
-Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para la interfaz, ni para la manera en que implementemos el backing bean. Deberemos intentar siempre un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla todos los requisitos acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que desde la pantalla CU de trabajos sea posible acceder a otra pantalla que permita añadir un nuevo Drone
+Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para la interfaz, ni para la manera en que implementemos el backing bean. Deberemos intentar siempre un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla todos los requisitos acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que desde la pantalla CU de trabajos sea posible acceder a otra pantalla que permita añadir un nuevo Drone.
 
 
 
