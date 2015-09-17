@@ -33,24 +33,26 @@ Primero vamos a ver, ya sobre el código fuente, el código que interviene desde
 
 Pero antes de todo como siempre vienen las tareas de preparación del entorno de trabajo. Queremos que nuestra productividad sea máxima y para ello decidimos instalar la librería de componentes Primefaces así como la última versión disponible de JSF.
 
-Añadir Primefaces es sencillo. 
+Añadir Primefaces al proyecto es sencillo, basta con añadir la dependencia correspondiente a Maven:
 
+[source,xhtml,indent=0]
+----
+		<dependency>  
+		    <groupId>org.primefaces</groupId>  
+		    <artifactId>primefaces</artifactId>  
+		    <version>5.2</version>  
+		</dependency>
+----
 
+Sin embargo subir de la versión 2.1 a la 2.2 no es tan simple. El servidor que instalamos para nuestro entorno de trabajo era el JBoss EAP 6.3 y el proceso para añadir un nuevo módulo con JSF 2.2 no es directo. Se ha intentado seguir el procedimiento existente en la web para incluir la última versión en este servidor pero no ha sido posible. En resumen el proceso pasa por bajar una aplicación Maven desde Github que genera un fichero CLI que realiza el deploy de los tres slots para los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que parece que el script está actualizado para operar con las versiones iniciales del servidor Wildfly y no del EAP.
 
+A la vista de lo anterior optamos por instalar el nuevo servidor Wildfly en su última versión, la 9.0.1, y así tener disponible una plataforma Java EE 7 completa. Lo primero será descargar el fichero de instalación del servidor desde http://wildfly.org/downloads/[aquí]. Tenéis que elegir la primera de las opciones en la lista, etiquetada con Java EE7 Full & Web Distribution.
 
-
-
-
-
-
-
-Añadimos PrimeFaces al proyecto. Además, optamos por trabajar con la última versión de JSF. La versión que trae EAP 6.3 es la 2.1. Se ha intentado seguir el procedimiento existente en la web para incluir la última versión en este servidor pero no ha sido posible. En resumen el proceso pasa por bajar una aplicación Maven desde Github que genera un fichero CLI que realiza el deploy de los tres slots para los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que parece que el script está actualizado para operar con las versiones iniciales del servidor Wildfly y no del EAP.
-
-De modo que optamos por adoptar el nuevo servidor Wildfly en su última versión, la 9.0.1, y así tener disponible una plataforma Java EE 7 completa. Lo primero será descargar el fichero de instlación del servidor http://wildfly.org/downloads/[aquí]. Tenéis que elegir la primera de las opciones, la que tiene la versión 9.0.1.Final.
+WARNING: En el momento de redactar este post ya está disponible Wilfly 10, así que podéis instalar este último. Entiendo que no debe afectar en cuento a instalación e integración con Eclipse.
 
 NOTE: Descargaos también los Quickstarts porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea la naturaleza de éste.
 
-Antes de usar el servidor debemos añadir un usuario. Para ello tenemos que ejecutar el archivo por lotes bin\add-user.bat. Aparece una ventana de diálogo y después de varias preguntas el usuario se crea.
+Una vez instalado el servidor y antes de iniciarlo debemos añadir un usuario. Para ello tenemos que ejecutar el archivo por lotes `bin\add-user.bat`. Aparece una ventana de diálogo y después de varias preguntas el usuario se crea.
 
 Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía un conector para la versión 8 del servidor pero después de las pruebas de arranque y parada parece que para un uso sencillo no tendremos problemas con esto.
 
