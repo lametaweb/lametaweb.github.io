@@ -25,13 +25,9 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para la interfaz, ni para la manera en que implementemos el o los backing beans. Deberemos intentar siempre conseguir un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla todos los requisitos funcionales acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que desde la página de detalle fuera posible acceder a otra página que permitiera añadir un nuevo Drone.
 
-En un CRUD por tanto existirán tareas de programación generales y comunes a cualquier mantenimiento de entidades, y tareas especificas de ese CRUD, localizadas sobre todo en la pantalla de detalle, que son las que van a plantearnos los mayores retos a la hora de conseguir una experiencia de usuario satisfactoria.
+En un CRUD por tanto existirán tareas de programación generales y comunes a cualquier mantenimiento de entidades, y tareas especificas de ese CRUD, localizadas sobre todo en la pantalla de detalle, que son las que van a plantearnos los mayores retos a la hora de conseguir la funcionalidad deseada.
 
-Una vez tenemos clara la estructura de las páginas, pensando que la implementación final muchas veces variará debido a factores que no se tuvieron en cuenta inicialmente u otros que puedan surgir posteriormente, pasaremos a ver el comportamiento dinámico. Aquí tenemos que considerar: Los bindings o enlaces entre los componentes de la vista y el modelo, la navegación entre pantallas y las distintas acciones de usuario.
-
-Primero vamos a ver, ya sobre el código fuente, el código que interviene desde que entramos en la pantalla de maestro hasta que finalizamos la edición de una entidad. Al final además explicaré algunas técnicas menos usuales que fueron necesarias para lograr la funcionalidad deseada.
-
-Pero antes de todo como siempre vienen las tareas de preparación del entorno de trabajo. Queremos que nuestra productividad sea máxima y para ello decidimos instalar la librería de componentes Primefaces así como la última versión disponible de JSF.
+Hacemos aquí un paréntesis para actualizar el entorno de trabajo. Queremos que nuestra productividad sea máxima y para ello decidimos instalar la librería de componentes Primefaces así como la última versión disponible de JSF.
 
 Añadir Primefaces al proyecto es sencillo, basta con añadir la dependencia correspondiente a Maven:
 
@@ -52,7 +48,7 @@ WARNING: En el momento de redactar este post ya está disponible Wilfly 10, así
 
 NOTE: Descargaos también los Quickstarts porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea la naturaleza de éste.
 
-Una vez instalado el servidor y antes de iniciarlo debemos añadir un usuario. Para ello tenemos que ejecutar el archivo por lotes `bin\add-user.bat`.
+Después de instalar el servidor y antes de iniciarlo debemos añadir un usuario. Para ello tenemos que ejecutar el archivo por lotes `bin\add-user.bat`.
 
 Una vez instalado WildFly lo añadimos a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía un conector para la versión 8 del servidor pero después de las pruebas de arranque y parada se comprueba no hay problemas con esto.
 
@@ -86,9 +82,36 @@ por:
 
 Además ahora no se admitirán los típicos caracteres de espaciado `\&nbsp;` y tendremos que sustituirlos por el equivalente código unicode `\&#160;`.
 
-NOTE: La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página y ofrece más flexibilidad que la etiqueta `event` para acciones de precarga de datos para una página. Comentaros que en la página inicial de ejemplo el uso de esta etiquta no sigue el patrón habitual de uso. Un uso más adecuado podremos verlo en la implementación de las páginas de maestro y de detallo del mantenimiento de la entidad Trabajo.
+La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página y ofrece más flexibilidad que la etiqueta `event` para acciones de precarga de datos para una página. El uso que acabamos de ver no es el habitual, y por eso es necesario añadir el atributo `onPostback="true"`, sin embargo, a continuación veremos un uso adecuado tanto en la página de maestro como en la de detalle.
 
-Muy bien, una vez que tenemos correctamente actualizado el entorno de trabajo comenzamos con la implementación del caso de uso planteado. Como siempre habrá que implementar las capas de presentación y negocio. Empecemos por la primera.
+Bien, tenemos definido el diseño de las páginas (que es normal que varíe algo durante la implementación), ahora veremos los aspectos principales del código de cada una de las páginas sobre el código final. Nos centraremos en la capa de presentación y comentaremos la capa de servicio al final ya que en un CRUD no tiene demasiado interés debido a su simplicidad.
+
+=== La página de maestro: trabajos.xhtml 
+
+Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones borrar, editar y ver asociados a cada entidad del listado y los botones salir y crear a nivel de pantalla:
+
+* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Tenemos que tener los datos disponibles por tanto antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction. Esta etiqueta añade un evento a los ciclos de vida de JSF de las requests Initial Request a la página que la contiene, que es justo lo que necesitamos.
+
+[source,xhtml,indent=0]
+----
+	<f:metadata>
+		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}"></f:viewAction>
+	</f:metadata>
+----
+
+El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio y actualiza el Modelo en el backing bean de la capa de presentación. Lo siguiente es que la página es renderizada en el servidor en la fase de Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que turan del Modelo para renderizar cada campo de datos de cada Trabajo. En el siguiente trozo de código aparece el binding para la primera columna de la tabla:
+
+[source,xhtml,indent=0]
+----
+		<p:dataTable id="tabla" var="trabajo" value="#{trabajosBean.trabajos}">
+			<!-- datos -->
+		    <p:column headerText="N. Registro">
+		        <h:outputText value="#{trabajo.numeroDeRegistro}" />
+		    </p:column>
+----
+
+* Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuendo pulsemos uno de los botones Borrar, Editar o Consultar, designados con los iconos  
+
 
 Antes de empezar con la primera pantalla hay que crear una plantilla que proporcione el maquetado de las pantallas de la aplicación. Primefaces nos da la solución con Grid CSS, una librería de estilos con la que crearemos un layout responsive al estilo de Bootstrap. Antes de empezar con la implementación dibujamos un boceto del layout para tener claro los divs que tengo que considerar.
 
