@@ -88,9 +88,9 @@ Bien, tenemos definido el diseño de las páginas (que es normal que varíe algo
 
 === La página de maestro: trabajos.xhtml 
 
-Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones borrar, editar y ver asociados a cada entidad del listado y los botones salir y crear a nivel de pantalla:
+Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
 
-* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Tenemos que tener los datos disponibles por tanto antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction. Esta etiqueta añade un evento a los ciclos de vida de JSF de las requests Initial Request a la página que la contiene, que es justo lo que necesitamos.
+* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Tenemos que tener los datos disponibles por tanto antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction. Esta etiqueta añade un evento al ciclo de vida de JSF de la request Initial Request a la página que la contiene, que es justo lo que necesitamos.
 
 [source,xhtml,indent=0]
 ----
@@ -99,7 +99,7 @@ Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado
 	</f:metadata>
 ----
 
-El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio y actualiza el Modelo en el backing bean de la capa de presentación. Lo siguiente es que la página es renderizada en el servidor en la fase de Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que turan del Modelo para renderizar cada campo de datos de cada Trabajo. En el siguiente trozo de código aparece el binding para la primera columna de la tabla:
+El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio y actualiza el Modelo en el backing bean de la capa de presentación. Lo siguiente es que la página es renderizada en el servidor en la fase de Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. En el siguiente trozo de código aparece el binding para la primera columna de la tabla:
 
 [source,xhtml,indent=0]
 ----
@@ -110,7 +110,52 @@ El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la cap
 		    </p:column>
 ----
 
-* Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuendo pulsemos uno de los botones Borrar, Editar o Consultar, designados con los iconos  
+* Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuando pulsemos alguno de los botones Borrar, Editar o Ver se debe obtener la funcionalidad deseada.
+
+El botón Ver en general se implementa para que navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovechamos las capacidades de Primefaces para mostrar ventanas emergentes y mostramos los datos del Trabajo en un diálogo emergente. El código sería:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton update=":formulario:trabajoDetail" icon="ui-icon-search" oncomplete="PF('trabajoDialog').show()">
+	<f:setPropertyActionListener value="#{trabajo}" target="#{trabajosBean.trabajoSeleccionado}"></f:setPropertyActionListener>
+</p:commandButton>
+----
+
+La secuencia sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tira el cuadro de diálogo. La llamada Ajax actualiza el panel de datos `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada Javascript `PF('trabajoDialog').show()`. Lo que tenemos es una Postback Request a la propia página.
+
+El botón Editar sí lleva a cabo una navegación. El código es el siguiente:
+
+[source,xhtml,indent=0]
+----
+		        <p:button outcome="/trabajo" icon="ui-icon-pencil">
+		        	<f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
+		        </p:button>
+----
+
+Como vemos lo único que hace es navegar a la página de creación / edición del detalle. Para esto se usa la etiqueta `button`, no la `commandButton`. Es necesario enviar un parámetro en la request que indique el Trabajo que se va a editar. Se lleva a cabo por tanto una Initial Request a la página de detalle.
+
+Por último el botón Borrar genera, al igual que el botón Ver, una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
+
+[source,xhtml,indent=0]
+----
+		        <p:commandButton 
+			        action="#{trabajosBean.eliminar(trabajo)}"
+			        update=":formulario:paneltrabajos"
+			        icon="ui-icon-trash">
+		        		<p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" />
+		        </p:commandButton>
+----
+
+En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En Primefaces es muy fácil de implementar usando un cuadro de diálogo global.
+
+Bien, nos queda por ver los dos botones a nivel de página `Salir` y `Crear`. Como véis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, sobre todo en pantallas de tamaño reducido.
+
+El botón Salir 
+
+
+
+
+
 
 
 Antes de empezar con la primera pantalla hay que crear una plantilla que proporcione el maquetado de las pantallas de la aplicación. Primefaces nos da la solución con Grid CSS, una librería de estilos con la que crearemos un layout responsive al estilo de Bootstrap. Antes de empezar con la implementación dibujamos un boceto del layout para tener claro los divs que tengo que considerar.
