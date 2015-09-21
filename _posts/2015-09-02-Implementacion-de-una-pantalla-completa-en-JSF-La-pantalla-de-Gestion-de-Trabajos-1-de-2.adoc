@@ -412,6 +412,4 @@ Desplegad los cambios en WildFly y comprobad que el nuevo aspecto de la pantalla
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig015.png[]
 
-NOTE: Existe una herramienta muy interesante que evita los redespliegues en el servidor de desarrollo durante la implementación de una aplicación. Se trata de JRebel, http://zeroturnaround.com/software/jrebel/. Es una herramienta de pago pero ofrecen una modalidad gratuita en http://my.jrebel.com[esta dirección].
-
-En el próximo Post terminaremos de analizar el código de las pantallas de gestión de Trabajos esta vez bajando al detalle de cada técnica usada. . Hasta pronto!
+En el próximo Post terminaremos de analizar el código fuente de las pantallas de gestión de Trabajos, esta vez bajando al detalle, y analizando las técnicas más interesantes. Hasta pronto!
