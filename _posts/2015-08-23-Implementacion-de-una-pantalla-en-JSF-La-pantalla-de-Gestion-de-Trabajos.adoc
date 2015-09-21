@@ -3,7 +3,9 @@ La metaweb
 :hp-tags: JSF, JavaServer Faces, CRUD, EJB, Hibernate, backing bean, Primefaces
 :published_at: 2015-08-23
 
-En este post implementaremos el caso de uso del mantenimiento de la entidad Trabajo. La release de la que se parte es la 1.0.1, y a la que llegaremos será la 1.1.x.
++++<style>span.boton {color:#A80000;border-style: solid;border-width: 2px;padding-top: 0em;padding-right: .8em;padding-bottom: 0em;padding-left: .8em;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}</style>+++
+
+En este post veremos los aspectos generales de la implementación del caso de uso del mantenimiento de la entidad Trabajo. Podéis bajaros el código fuente del proyecto con el caso de uso ya implementado en [esta] dirección.
 
 El mantenimiento de un entidad se conoce por sus siglas en inglés como CRUD (create, read, update and delete). En general un CRUD se implementará con tres páginas. La página inicial o de maestro, que se presenta inicialmente y contiene el listado de entidades a gestionar, la página de consulta de detalle, que muestra una información completa de una entidad, y la página de creación / edición del detalle, que permite dar de alta o modificar cualquier dato de una entidad concreta.
 
@@ -150,21 +152,88 @@ En general para las acciones de borrado, ya sea físico o lógico, es convenient
 
 Bien, nos queda por ver los dos botones a nivel de página `Salir` y `Crear`. Como véis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, sobre todo en pantallas de tamaño reducido.
 
-El botón Salir 
+El botón Salir simplemente navega a la página de inicio:
 
+[source,xhtml,indent=0]
+----
+<p:button value="Salir" outcome="/index" />
+----
 
+Y el botón `Crear ` es igual de simple, navega a la misma página a la que nos lleva el botón `Editar` pero sin especificar ningún parámetro:
 
+[source,xhtml,indent=0]
+----
+<p:button value="Crear" outcome="/trabajo" />
+----
 
+Y hasta aquí los aspectos más importantes de la página de maestro.
 
+=== La página de detalle: trabajo.xhtml 
 
+Como hemos visto esta pantalla es más compleja que la de maestro y su complejidad dependerá del número y tipo de relaciones de la entidad que queremos gestionar.
 
-Antes de empezar con la primera pantalla hay que crear una plantilla que proporcione el maquetado de las pantallas de la aplicación. Primefaces nos da la solución con Grid CSS, una librería de estilos con la que crearemos un layout responsive al estilo de Bootstrap. Antes de empezar con la implementación dibujamos un boceto del layout para tener claro los divs que tengo que considerar.
+Veamos los aspectos generales primero y luego los detalles más destacables. Usaremos la misma página tanto para la edición como para la creación de una entidad Trabajo. Veamos la secuencia de acciones que ocurren cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación. Recordemos que lo que tenemos es una Initial Request.
 
-La plantilla debe ser privada, por tanto va situada dentro de la carpeta _WEB-INF_. Una plantilla contendrá en la cabecera elementos comunes a todas las páginas como gestión de la caché de cliente, estilos CSS comunes, y en el cuerpo el maquetado de la página y dentro de cada elemento div (con estilos de Grid CSS) las etiquetas <ui:insert...> de Facelets para insertar el contenido.
+En primer lugar una instancia del backing bean es creada. Justo después se ejecuta el método anotado con @PostConstruct, que crea una instancia  de la entidad gestionada, Trabajo. A continuación se acualiza el modelo con el valor del parámetro `idTrabajo` si existe, y finalmente se ejecuta el método especificado en la etiqueta `viewParam`:
 
-Una vez que tenemos lista nuestra plantilla, en la carpeta _/jdrone/src/main/webapp/WEB-INF/plantillas/plantilla.xhtml_, y su hoja de estilos correspondiente, podemos empezar a implementar cada pantalla de la aplicación en base a la plantilla.
+[source,xhtml,indent=0]
+----
+	<f:metadata>
+		<f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}"></f:viewParam>
+		<f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}"></f:viewAction>
+	</f:metadata>
+----
 
-La estructura de una página será:
+Si el usuario navegó para una creación, el parámetro es nulo y la entidad `trabajo` del modelo no varía. En cambio en una edición el campo `idTrabajo` se actualiza con el valor del ID seleccionado en la pantalla de maestro.
+
+En el método `actualizaModeloTrabajo()` comprobamos el valor del ID y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
+
+Bien, como antes, tenemos nuestra página lista para la creación o la edición. En este post vamos a ver sólo los dos botones a nivel de página: Salir y Aceptar.
+
+El botón Salir es simple, se trata de un botón de cancelación:
+
+`<p:button value="Salir" outcome="/trabajos.xhtml"/>`
+
+Ejecuta una navegación con una petición GET a la página de maestro. Esta simplicidad es posible porque en este caso la cancelación de la sesión de edición de un Trabajo no requiere ninguna acción adicional. Si precisaramos realizar alguna acción, por ejemplo para liberar recursos a nivel del ámbito de sesión o de aplicación, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, entonces no nos valdría con lo anterior y tendríamos que elegir entre dos soluciones, siempre usando un componente de tipo "command":
+
+* Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se vé afectado y conseguimos evitar la ejecución de conversiones y validaciones:
+
+`<p:commandButton value="Salir" process="@this" action="/trabajos.xhtml?faces-redirect=true" />`
+
+* Configurar el botón con el modificador `inmmediate` a true. De esta manera la accion asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, ignorando como en el caso anterior conversiones y validaciones:
+
+`<p:commandButton value="Salir" action="/trabajos.xhtml?faces-redirect=true" immediate="true" />`
+
+Es importante tener claro que durante una sesión de edición de una entidad tenemos que guardar los cambios en la correspondiente variable del Modelo en el backing bean, y sólo llamar al método de la capa de Servicio para persistir estos cambios al final de la sesión, cuando el usuario pulsa el botón +++<span class="boton">+++Aceptar+++</span>+++. La variable del backing bean será una entidad _detached_ en el caso de una edición y una entidad _new_ en el caso de una creación. En el método de Servicio   simplemente metemos la entidad en el contexto de persistencia convirtiéndola en _managed_, y finalmente cuando el método finaliza JTA ordena el commit que persiste los cambios.
+
+Veamos por último el botón +++<span class="boton">+++Aceptar+++</span>+++. Su aspecto puede intimidar un poco a primera vista:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton id="aceptar" value="Aceptar" action="#{trabajoBean.aceptar}" update="@(:input:not(.notsend)) mensajes" process="@(:input:not(.notsend))" oncomplete="ajustaPosicionEtiquetas();" />
+----
+
+Bien, primero lo sencillo. Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback de la propia página. Esto dispara en el servidor un ciclo de vida completo de JSF. Se llevarán a cabo las conversiones, validaciones y actualización del Modelo para el subconjunto de valores que nos interesa, a continuación se ejecuta la llamada al método de servicio y finalmente actualizamos la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. Veamos más detenidamente cada atributo del componente:
+
+* process y update: El primero determina lo que enviamos y en segundo lo que actualizamos en la llamada Ajax. Lo interesante aquí es que se ha tenido que usar un selector complejo para definir estos conjuntos de elementos. El motivo es que se ha usado un elemento para maquetar la página que englobaba a la entidad Trabajo y también a sus PuntosRuta y como no puedo meter un formulario dentro de otro tanto la entidad padre como las hijas están en el mismo formulario y de ahí que sea necesario filtrar lo que se envía al servidor. Cuando pulse Aceptar sólo deberé enviar al servidor los campos de la entidad Trabajo y no los de los tres campos de introducción de un PuntoRuta. Para esto uso la capacidad de PrimeFaces de usar selectores de jQuery:
+
+`@(:input:not(.notsend))`
+
+Aquí se usa el selector de jQuery para seleccionar todos los elementos de entrada del formulario, y luego se restan los de la clase .notsend. De modo que si damos a los tres campos de entrada de PuntoRuta la clase .notsend evitaremos que estos intervengan en el submit generado al pulsar el botón Aceptar.
+
+* action: Indica la llamada a la capa de Servicio para persistir el Trabajo. Tenemos un mismo método tanto para la creación como para la edición de la entidad. Esto es posible porque en JPA con un merge metemos en el contexto de persistencia tanto una entidad new como una detached, y esto es lo único que tenemos que hacer para que la entidad se persista cuando el método de la capa de Servicio termine y JTA invoque el commit de manera automática.
+
+* oncomplete: Se incluye para llamar a una función JS que restablece el estilo de las etiquetas de campos que ocupan una altura grande, en concreto los campos _Descripción_ y _Puntos de Ruta_. Esto es necesario porque para modificar el estilo de estos elementos fue necesario usar JS al no existir ningún selector adecuado, y cada vez que la pantalla se refrescar hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas un poco atípicas.
+
+Bien, hasta aquí los aspectos generales de la pantalla de detalle. A continuación y para concluir con este post veamos qués una plantilla de Facelets y su aplicación a la pantalla de consulta del post anterior.
+
+== Uso de plantillas: Una plantilla adaptativa para jDrone
+
+Una interfaz adaptativa, en inglés responsive, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, phablets, moviles, es muy variado. En una aplicación JSF una buena alternativa es usar el componente Grid CSS de Primefaces para realizar la maquetación de las áreas principales y comunes de las páginas del proyecto: Cabecera, menú, barra de navegación, sides, zona central principal, pie. Así mismo es interesante el uso de la clase CSS `ui-fluid` que va a darnos una interfaz fluida cálculando la posición y tamaño de cada componente dependiente del dispositivo.
+
+Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y Primefaces. Antes de empezar a implementar lo mejor es tomar lápiz y papel o una herramienta similar a Inkscape y dibujar un boceto del layout de la página completa que queremos y así tener claro los divs que voy a necesitar para crear las áreas de la pantalla.
+
+Una plantilla es otra página JSF que define la estructura y el contenido común de todas las páginas de la aplicación que la usan. El contenido variable se inyectará mediante etiquetas `<ui:insert...>`. Una vez que tenemos lista nuestra plantilla, en la carpeta _/jdrone/src/main/webapp/WEB-INF/plantillas/plantilla.xhtml_ con su hoja de estilos correspondiente podremos crear cada página de la aplicación en base a la plantilla:
 
 [source,xhtml,indent=0]
 ----
@@ -179,11 +248,14 @@ La estructura de una página será:
     </ui:composition>
 ----
 
-El contenido de la zona variable, etiquetada con el nombre _central_ en la plantilla, se define en la página en general al principio, para mayor claridad, dado que aquí el orden no afecta. Como la zona del logo será fija para todas las pantallas la implementamos en un panel (una página xhtml privada) aparte y la añadimos con un include que toma como el panel.
+El contenido de la zona variable _central_ se define en la página en general al principio para mayor claridad dado que aquí el orden no afecta. La zona del logo la hacemos insertable aunque en todas las páginas aparecerá como un include, esto nos da la posibilidad de tener páginas especiales que prescindan del logo si por ejemplo necesitamos espacio extra.
 
-En primer lugar vamos a adaptar nuestra pantalla de consulta de los posts anteriores, de drones disponibles en una fecha, al uso de la plantilla, y movemos el contenido desde el fichero index.xhtml, que ahora se convertirá en la pantalla inicial, al fichero consulta-inicial.xhtml.
+Veamos ahora un ejemplo práctico de uso de plantilla, y que mejor manera que adaptando la pantalla de consulta del post anterior, de drones disponibles en una fecha, al nuevo diseño de pantalla. Lo primero que hacemos es mover el contenido desde el fichero `index.xhtml`, que ahora pasará a ser la pantalla inicial de la aplicación, al fichero `consulta-inicial.xhtml`.
 
-Implementamos el panel del logo e incluímos una simple animación en jQuery. Primefaces está basado en esta librería Javascript que es conveniente conocer ya que su uso está muy extendido en la capa de presentación de proyectos reales. Como nuestro proyecto incluye Primemefaces y éste incluye jQuery no tenemos que añadir la librería de manera explícita. En general, para cualquier proyecto, en páginas que no usen ninguna estiqueta de Primefaces incluiremos de manera explícita la librería jQuery embebida en Primefaces con las siguientes líneas:
+Luego tendremos que crear el panel para el logo, podéis ir al código de la aplicación y ver que su raíz es un elemento `<ui:composition... >` ya que irá inyectado en la plantilla, pero sin embargo no contiene elementos `<ui:define...>` ya que no se trata de una página pública que hace uso de la plantilla. He incluido aquí una sencilla animación realizada con la librería JS jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto. Es muy importante conocerla al máximo ya que ahorra mucho tiempo de desarrollo en la parte de cliente. Además que Primefaces esté basado en jQuery es otro motivo más para dedicarle tiempo. Como nuestro proyecto incluye Primemefaces y éste incluye jQuery no tenemos ni debemos de añadir la librería de manera explícita. 
+
+WARNING: No es habitual, pero si una página de nuestro proyecto no usa ninguna estiqueta de Primefaces entonces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo:
+
 
 `<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
 `<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />`
@@ -249,7 +321,7 @@ Creamos la página trabajos.xhtml a partir de index.html. Escribiremos el códig
 
 El ámbito para el backing bean debe extenderse hasta el ámbito de la vista, ViewScoped. Esto es necesario porque en esta página vamos a implementar acciones que llaman a métodos con parámetros y para que esta construcción en EL (Expression Language) sea posible el bean debe permanecer en memoria más allá del ámbito de la petición.
 
-NOTE: Tened cuidado de elegir la clase ViewScoped correcta tras pulsar Ctrl + O. Tenemos que elegir javax.faces.view.ViewScoped y no javax.faces.bean.ViewScoped. La segunda clase es nueva en JSF 2.2 y totalmente compatible con CDI.
+NOTE: Tened cuidado en elegir la clase ViewScoped correcta tras pulsar Ctrl + O. Tenemos que elegir javax.faces.view.ViewScoped y no javax.faces.bean.ViewScoped. La segunda clase es nueva en JSF 2.2 y totalmente compatible con CDI.
 
 Lo siguiente es crear la clase de negocio. En principio creamos una para cada entidad persistente. Ya teníamos el bean de negocio de la entidad Drone, ahora creamos uno para la entidad Trabajo. Como para la entidad Trabajo necesitamos implementar las operaciones de persistencia típicas de un CRUD: Crear, Modificar, Eliminar y Consultar, vamos a refactorizar el código de los beans de negocio creando una superclase abstracta que contenga estas operaciones básicas, de manera que en la clase concreta sólo irán las operaciones de negocio particulares de cada una.
 
