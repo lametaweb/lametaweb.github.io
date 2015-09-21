@@ -254,15 +254,17 @@ Veamos ahora un ejemplo práctico de uso de plantilla, y que mejor manera que ad
 
 Luego tendremos que crear el panel para el logo, podéis ir al código de la aplicación y ver que su raíz es un elemento `<ui:composition... >` ya que irá inyectado en la plantilla, pero sin embargo no contiene elementos `<ui:define...>` ya que no se trata de una página pública que hace uso de la plantilla. He incluido aquí una sencilla animación realizada con la librería JS jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto. Es muy importante conocerla al máximo ya que ahorra mucho tiempo de desarrollo en la parte de cliente. Además que Primefaces esté basado en jQuery es otro motivo más para dedicarle tiempo. Como nuestro proyecto incluye Primemefaces y éste incluye jQuery no tenemos ni debemos de añadir la librería de manera explícita. 
 
-WARNING: No es habitual, pero si una página de nuestro proyecto no usa ninguna estiqueta de Primefaces entonces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo:
+No es habitual, pero si una página de nuestro proyecto no usa ninguna estiqueta de Primefaces entonces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo:
 
+[source,xhtml,indent=0]
+----
+<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+----
 
-`<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
-`<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />`
+Con nuestra página de consulta ya maquetada lo siguiente es añadir un menú de opciones. Optaremos por la clásica barra de menú de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da, también en esta ocasión, la solución con el componente `<p:MenuBar...>`. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en nuestro programa, tiene casi 150 componentes. Usando este componente en un par de minutos dibujamos las opciones y submenús que tengamos previstos para la aplicación. Finalmente, para situar el menú en la página, lo metemos, al igual que el logo, en un panel, y lo situamos en la plantilla añadiendo a la misma un elemento `<ui:insert...>`.
 
-Lo siguiente que necesitamos es un menú de opciones. Se opta por la clásica barra de menú. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da también en esta ocasión la solución con el componente MenuBar. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en nuestro programa, tiene casi 150 componentes, y grancantidad de características adicionales. Dibujamos las opciones y submenús que tengamos previstos para la aplicación e implementamos el manú en un nuevo panel, de la misma manera que en el caso del logo.
-
-Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver cómo queda todo en pantalla. Personalmente no me convence el aspecto por defecto del menú por lo que acudimos de nuevo a Primefaces para cambiar de Theme. De paso activamos los iconos de FontAwesome añadiendo el correspondiente parámetro en el fichero _web.xml_ para tener una gama mayor de iconos para elegir.
+Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver el aspecto en pantalla. Personalmente no me convence el aspecto por defecto del menú por lo que acudimos de nuevo a Primefaces y vemos que es muy sencillo dar un aspecto distinto a los componentes simplemente eligiendo otro _Theme_. Además de paso activamos los iconos de FontAwesome añadiendo el correspondiente parámetro en el fichero _web.xml_ y así disponer de una mayor variedad de iconos.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig005.png[]
 
