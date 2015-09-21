@@ -94,7 +94,7 @@ Bien, con el diseño inicial de las páginas listo podemos empezar con el desarr
 
 Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
 
-* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Tenemos que tener los datos disponibles por tanto antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction. Esta etiqueta añade un evento al ciclo de vida de JSF de la request Initial Request a la página que la contiene, que es justo lo que necesitamos.
+* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener los datos disponibles por tanto antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction. Esta etiqueta añade un evento al ciclo de vida de JSF de la request Initial Request a la página que la contiene, que es justo lo que necesitamos.
 
 [source,xhtml,indent=0]
 ----
@@ -103,7 +103,7 @@ Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado
 	</f:metadata>
 ----
 
-El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio y actualiza el Modelo en el backing bean de la capa de presentación. Lo siguiente es que la página es renderizada en el servidor en la fase de Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. En el siguiente trozo de código aparece el binding para la primera columna de la tabla:
+El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio y actualiza el Modelo en el backing bean, y a continuación la página es renderizada en el servidor en la fase Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. El código muestra el binding para la primera columna de la tabla:
 
 [source,xhtml,indent=0]
 ----
@@ -116,7 +116,7 @@ El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la cap
 
 * Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuando pulsemos alguno de los botones Borrar, Editar o Ver se debe obtener la funcionalidad deseada.
 
-El botón Ver en general se implementa para que navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovechamos las capacidades de Primefaces para mostrar ventanas emergentes y mostramos los datos del Trabajo en un diálogo emergente. El código sería:
+El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa para que se navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovecharemos las capacidades de Primefaces para mostrar ventanas emergentes. El código sería:
 
 [source,xhtml,indent=0]
 ----
@@ -125,9 +125,9 @@ El botón Ver en general se implementa para que navegue a otra página donde se 
 </p:commandButton>
 ----
 
-La secuencia sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tira el cuadro de diálogo. La llamada Ajax actualiza el panel de datos `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada Javascript `PF('trabajoDialog').show()`. Lo que tenemos es una Postback Request a la propia página.
+La secuencia de acciones tras pulsar el botón sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tira el cuadro de diálogo. La llamada Ajax actualiza el panel de datos `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada Javascript `PF('trabajoDialog').show()`. Lo que tenemos es una Postback Request a la propia página.
 
-El botón Editar sí lleva a cabo una navegación. El código es el siguiente:
+El botón +++<span class="boton">+++Editar+++</span>+++ sí lleva a cabo una navegación. El código es el siguiente:
 
 [source,xhtml,indent=0]
 ----
@@ -138,7 +138,7 @@ El botón Editar sí lleva a cabo una navegación. El código es el siguiente:
 
 Como vemos lo único que hace es navegar a la página de creación / edición del detalle. Para esto se usa la etiqueta `button`, no la `commandButton`. Es necesario enviar un parámetro en la request que indique el Trabajo que se va a editar. Se lleva a cabo por tanto una Initial Request a la página de detalle.
 
-Por último el botón Borrar genera, al igual que el botón Ver, una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
+Por último el botón +++<span class="boton">+++Borrar+++</span>+++ genera, al igual que el botón Ver, una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
 
 [source,xhtml,indent=0]
 ----
@@ -152,16 +152,16 @@ Por último el botón Borrar genera, al igual que el botón Ver, una Postback Re
 
 En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En Primefaces es muy fácil de implementar usando un cuadro de diálogo global.
 
-Bien, nos queda por ver los dos botones a nivel de página `Salir` y `Crear`. Como véis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, sobre todo en pantallas de tamaño reducido.
+Bien, nos queda por ver los dos botones a nivel de página, Salir y Crear. Como véis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, sobre todo en pantallas de tamaño reducido.
 
-El botón Salir simplemente navega a la página de inicio:
+El botón +++<span class="boton">+++Salir+++</span>+++ simplemente navega a la página de inicio:
 
 [source,xhtml,indent=0]
 ----
 <p:button value="Salir" outcome="/index" />
 ----
 
-Y el botón `Crear ` es igual de simple, navega a la misma página a la que nos lleva el botón `Editar` pero sin especificar ningún parámetro:
+Y el botón +++<span class="boton">+++Crear+++</span>+++ es igual de simple, navega a la misma página a la que nos lleva el botón Editar pero sin especificar ningún parámetro:
 
 [source,xhtml,indent=0]
 ----
@@ -172,11 +172,11 @@ Y hasta aquí los aspectos más importantes de la página de maestro.
 
 === La página de detalle: trabajo.xhtml.
 
-Como hemos visto esta pantalla es más compleja que la de maestro y su complejidad dependerá del número y tipo de relaciones de la entidad que queremos gestionar.
+Como hemos comentado esta pantalla es más compleja que la de maestro y su complejidad dependerá del número y tipo de relaciones de la entidad que queremos gestionar.
 
-Veamos los aspectos generales primero y luego los detalles más destacables. Usaremos la misma página tanto para la edición como para la creación de una entidad Trabajo. Veamos la secuencia de acciones que ocurren cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación. Recordemos que lo que tenemos es una Initial Request.
+Usaremos la misma página tanto para la edición como para la creación de una entidad Trabajo. Veamos la secuencia de acciones que ocurren cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación. Recordemos que lo que tenemos es una Initial Request.
 
-En primer lugar una instancia del backing bean es creada. Justo después se ejecuta el método anotado con @PostConstruct, que crea una instancia  de la entidad gestionada, Trabajo. A continuación se acualiza el modelo con el valor del parámetro `idTrabajo` si existe, y finalmente se ejecuta el método especificado en la etiqueta `viewParam`:
+En primer lugar una instancia del backing bean es creada. Justo después se ejecuta el método anotado con _@PostConstruct_, que crea una instancia  de la entidad gestionada, Trabajo. A continuación se acualiza el modelo con el valor del parámetro _idTrabajo_ si existe, y finalmente se ejecuta el método especificado en la etiqueta _viewParam_:
 
 [source,xhtml,indent=0]
 ----
@@ -186,23 +186,21 @@ En primer lugar una instancia del backing bean es creada. Justo después se ejec
 	</f:metadata>
 ----
 
-Si el usuario navegó para una creación, el parámetro es nulo y la entidad `trabajo` del modelo no varía. En cambio en una edición el campo `idTrabajo` se actualiza con el valor del ID seleccionado en la pantalla de maestro.
+Si el usuario navegó para una creación, el parámetro es nulo y el atributo _trabajo_ del Modelo no varía. En cambio en una edición el campo _idTrabajo_ se actualiza con el valor del ID seleccionado en la pantalla de maestro.
 
-En el método `actualizaModeloTrabajo()` comprobamos el valor del ID y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
+En el método _actualizaModeloTrabajo()_ comprobamos el valor del ID y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
 
-Bien, como antes, tenemos nuestra página lista para la creación o la edición. En este post vamos a ver sólo los dos botones a nivel de página: Salir y Aceptar.
-
-El botón Salir es simple, se trata de un botón de cancelación:
+Como antes, tenemos nuestra página lista para la creación o la edición. El botón +++<span class="boton">+++Salir+++</span>+++ es simple, se trata de un botón de cancelación:
 
 `<p:button value="Salir" outcome="/trabajos.xhtml"/>`
 
-Ejecuta una navegación con una petición GET a la página de maestro. Esta simplicidad es posible porque en este caso la cancelación de la sesión de edición de un Trabajo no requiere ninguna acción adicional. Si precisaramos realizar alguna acción, por ejemplo para liberar recursos a nivel del ámbito de sesión o de aplicación, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, entonces no nos valdría con lo anterior y tendríamos que elegir entre dos soluciones, siempre usando un componente de tipo "command":
+Ejecuta una navegación GET a la página de maestro. Esta simplicidad es posible porque la cancelación de la sesión de edición de un Trabajo no requiere ninguna acción adicional. Si precisaramos realizar alguna acción, por ejemplo para liberar recursos a nivel del ámbito de sesión o de aplicación, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, siempre usando un componente de tipo "command":
 
-* Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se vé afectado y conseguimos evitar la ejecución de conversiones y validaciones:
+* Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se ve afectado y conseguimos evitar la ejecución de conversiones y validaciones:
 
 `<p:commandButton value="Salir" process="@this" action="/trabajos.xhtml?faces-redirect=true" />`
 
-* Configurar el botón con el modificador `inmmediate` a true. De esta manera la accion asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, ignorando como en el caso anterior conversiones y validaciones:
+* Configurar el botón con el modificador _inmmediate_ a true. De esta manera la accion asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, ignorando como en el caso anterior conversiones y validaciones:
 
 `<p:commandButton value="Salir" action="/trabajos.xhtml?faces-redirect=true" immediate="true" />`
 
