@@ -1,13 +1,13 @@
-= Implementación de una pantalla en JSF: La pantalla de Gestión de Trabajos.
+= Implementación de una pantalla completa en JSF: La pantalla de Gestión de Trabajos (1 de 2).
 La metaweb
-:hp-tags: JSF, JavaServer Faces, CRUD, EJB, Hibernate, backing bean, Primefaces
-:published_at: 2015-08-23
+:hp-tags: JSF, JavaServer Faces, Primefaces, CRUD, EJB, Hibernate, backing bean
+:published_at: 2015-09-02
 
 +++<style>span.boton {color:#A80000;border-style: solid;border-width: 2px;padding-top: 0em;padding-right: .8em;padding-bottom: 0em;padding-left: .8em;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}</style>+++
 
-En este post veremos los aspectos generales de la implementación del caso de uso del mantenimiento de la entidad Trabajo. Podéis bajaros el código fuente del proyecto con el caso de uso ya implementado en [esta] dirección.
+En este post veremos los aspectos generales de la implementación del caso de uso del mantenimiento de la entidad Trabajo. https://github.com/lametaweb/jdrone/releases/tag/1.1.0[Aquí] podéis bajaros la release 1.1.0 del proyecto, que se corresponde con el código de este Post y del siguiente, que tratará aspectos más específicos de la implementación.
 
-El mantenimiento de un entidad se conoce por sus siglas en inglés como CRUD (create, read, update and delete). En general un CRUD se implementará con tres páginas. La página inicial o de maestro, que se presenta inicialmente y contiene el listado de entidades a gestionar, la página de consulta de detalle, que muestra una información completa de una entidad, y la página de creación / edición del detalle, que permite dar de alta o modificar cualquier dato de una entidad concreta.
+El mantenimiento o gestión de una entidad, conocido en inglés como CRUD (create, read, update and delete) tiene por objeto permitir el tratamiento de la información de la entidad en un sistema. En general un CRUD se implementa en tres pantallas: La pantalla inicial o de maestro, que se presenta inicialmente, contiene el listado de entidades a gestionar, y da acceso a la operaciones, la pantalla de consulta de detalle, que muestra una vista completa de la entidad, y por último la pantalla de creación / edición del detalle, que permite dar de alta o modificar una entidad concreta.
 
 En la pantalla de maestro cada fila contiene una serie de campos que identifican a cada entidad y otros adicionales que puedan ser de utilidad a la hora de ordenar o filtrar las entidades para su localización. En cada fila, a la derecha, tendremos tres botones, correspondientes a las operaciones RUD (read, update and delete). Y fuera del listado situaremos un botón adicional para la operación C (create). Finalmente necesitaremos un botón, también fuera del listado, para salir de la pantalla cuando queramos finalizar la gestión de Trabajos. Esta pantalla es común a todos los CRUDs. A continuación os muestro el aspecto que debería tener la pantalla de listado de entidades del CRUD:
 
@@ -268,7 +268,7 @@ Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver el a
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig005.png[]
 
-Para cambiar el Theme tenemos que añadir una dependencia de Maven, elegimos el Theme bluesky, más acorde con la Marca de la compañía:
+Para cambiar el _Theme_ tenemos que añadir una dependencia de Maven, elegimos el _Theme bluesky_, más acorde con la Marca de la compañía cliente:
 
 [source,xml,indent=0]
 ----
@@ -279,7 +279,7 @@ Para cambiar el Theme tenemos que añadir una dependencia de Maven, elegimos el 
   </dependency>
 ----
 
-Y añadir un parámetro en el descriptor de despliegue, web.xml:
+Y añadir un parámetro en el descriptor de despliegue, _web.xml_:
 
 [source,xml,indent=0]
 ----
@@ -289,14 +289,14 @@ Y añadir un parámetro en el descriptor de despliegue, web.xml:
   </context-param>
 ----
 
-Guardamos los cambios. Si abrimos el fichero pom.xml observamos que se muestra un error en la dependencia añadida, esto es debido a que esta dependencia no está en el repositorio Central. Tenemos por tanto que añadir el repositorio de Primefaces a nuestra configuración. Podemos hacerlo directamente desde la sugerencia que nos muestra Eclipse al poner el puntero del ratón sobre el error. Introducid los datos tal y como aparecen en la siguiente figura:
+Guardamos los cambios. Si abrimos el fichero _pom.xml_ observamos que se muestra un error en la dependencia añadida, esto es debido a que esta dependencia no está en el repositorio Central. Tenemos por tanto que añadir el repositorio de Primefaces a nuestra configuración de Maven. Podemos hacerlo directamente desde la sugerencia que nos muestra Eclipse al poner el puntero del ratón sobre el error. Introducid los datos tal y como aparecen en la siguiente figura:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig010.png[]
 
-Pulsamos OK y Finish. Para afinar el estilo de la barra de menú aún más podemos modificar el estilo aplicado por el frmaework a los componentes que forman el menú. En la documentación de Primefaces aparecen estos estilos pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios _on the fly_.
+Pulsamos _OK_ y _Finish_. Para afinar el estilo de la barra de menú aún más podemos modificar el estilo aplicado por el framework a los componentes que forman el menú. En la documentación de Primefaces aparecen estos estilos, pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox (F12) para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios on the fly.
 
 
-Añadid al principio del fichero _plantilla.css_ lo siguiente: 
+Para estilizar los menús añadid al principio del fichero _plantilla.css_ lo siguiente: 
 
 [source,css,indent=0]
 ----
@@ -315,257 +315,6 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 NOTE: Existe una herramienta muy interesante que evita los redespliegues en el servidor de desarrollo durante la implementación de una aplicación. Se trata de JRebel, http://zeroturnaround.com/software/jrebel/. Es una herramienta de pago pero ofrecen una modalidad gratuita en http://my.jrebel.com[esta dirección].
 
-Bien, para dejar lista la aplicación para el comienzo de la implementación de las dos pantallas de "Gestión de trabajos" movemos el contenido de index.html a consulta-inicial.xhtml y dejamos index.xhtml con un fondo de pantalla limpio como pantalla inicial de la aplicación, añadiendo una imagen de fondo.
+Para terminar movemos el contenido de index.html a consulta-inicial.xhtml y dejamos index.xhtml con un fondo de pantalla limpio como pantalla inicial de la aplicación, añadiendo una imagen de fondo.
 
-Empezamos añadiendo la página que nos muestre la lista de trabajos. Tenemos que añadir a cada item un botón para eliminarlo, y otro para modificarlo. Además cada item tendrá un link para la consulta de los detalles del trabajo. Por último a nivel de página tendremos un botón para dar de alta un nuevo trabajo y otro para volver a la pantalla inicial.
-
-Creamos la página trabajos.xhtml a partir de index.html. Escribiremos el código necesario dentro del define del área "central". A continuación creamos el backing bean para la página, TrabajosBean.java, en la misma carpeta que DisponibilidadBean.java. 
-
-El ámbito para el backing bean debe extenderse hasta el ámbito de la vista, ViewScoped. Esto es necesario porque en esta página vamos a implementar acciones que llaman a métodos con parámetros y para que esta construcción en EL (Expression Language) sea posible el bean debe permanecer en memoria más allá del ámbito de la petición.
-
-NOTE: Tened cuidado en elegir la clase ViewScoped correcta tras pulsar Ctrl + O. Tenemos que elegir javax.faces.view.ViewScoped y no javax.faces.bean.ViewScoped. La segunda clase es nueva en JSF 2.2 y totalmente compatible con CDI.
-
-Lo siguiente es crear la clase de negocio. En principio creamos una para cada entidad persistente. Ya teníamos el bean de negocio de la entidad Drone, ahora creamos uno para la entidad Trabajo. Como para la entidad Trabajo necesitamos implementar las operaciones de persistencia típicas de un CRUD: Crear, Modificar, Eliminar y Consultar, vamos a refactorizar el código de los beans de negocio creando una superclase abstracta que contenga estas operaciones básicas, de manera que en la clase concreta sólo irán las operaciones de negocio particulares de cada una.
-
-Creamos por tanto una nueva clase java con el nombre AbstractFacade.java en la carpeta _negocio_. Esta clase no necesita características de bean EJB por lo que no añadiremos ninguna anotación. Y refactorizamos.
-
-La clase TrabajoFacade inicialmente:
-
-[source,java,indent=0]
-----
-package com.lametaweb.jdrone.negocio;
-
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
-
-/**
- * Session Bean implementation class TrabajoFacade
- */
-@Stateless
-@LocalBean
-public class TrabajoFacade {
-
-    /**
-     * Default constructor. 
-     */
-    public TrabajoFacade() {
-        // TODO Auto-generated constructor stub
-    }
-
-}
-----
-
-La clase TrabajoFacade refactorizada:
-
-[source,java,indent=0]
-----
-package com.lametaweb.jdrone.negocio;
-
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import com.lametaweb.jdrone.persistencia.Trabajo;
-
-/**
- * Session Bean implementation class TrabajoFacade
- */
-@Stateless
-@LocalBean
-public class TrabajoFacade extends AbstractFacade<Trabajo>{
-	
-	@PersistenceContext(unitName = "datosdrones")
-    private EntityManager em;
-
-    /**
-     * Default constructor. 
-     */
-    public TrabajoFacade() {
-        // TODO Auto-generated constructor stub
-    	super(Trabajo.class);
-    }
-    
-    protected EntityManager getEntityManager(){
-    	return em;
-    }
-
-}
-----
-
-Observad como la clase abstracta además es genérica dado que utiliza el método de consulta tipado y necesita referirse al tipo de la entidad que se gestiona en la subclase.
-
-En primer lugar planteamos los métodos de negocio/dao que necesitamos, en este caso no necesito crear ninguno ya que en la superclase ya dispongo de un método que lee todos los trabajos y otro que lee un trabajo por su ID. A continuación iremos creando los componentes en la página xhtml y en paralelo los elementos java que vayamos necesitando en la clase backing bean. Continuaremos dentro de un proceso iterativo hasta conseguir una página de listado de trabajos libre de bugs. Es el momento de pasar a la página de detalle de trabajo que nos va a servir para consulta y modificación y para la que seguiremos el mismo proceso de implementación.
-
-Empezamos con la página trabajos.xhtml, que iremos implementando y probando paso a paso. Implementad de forma metódica y no mezclando funcionalidades. El primer paso será simplemente mostrar la lista de trabajos en la pantalla. Aquí os copio el estado de la página y del backing bean con este primer paso implementado.
-
-La página:
-
-[source,xhtml,indent=0]
-----
-<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"                
-                template="/WEB-INF/plantillas/plantilla.xhtml"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
-	
-	<f:metadata>
-		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}"></f:viewAction>
-	</f:metadata>
-    <ui:define name="central">
-		<!-- listado selección trabajos -->
-		<h:form>
-
-		<p:dataTable var="trabajo" value="#{trabajosBean.trabajos}">
-		    <p:column headerText="N. Registro">
-		        <h:outputText value="#{trabajo.numeroDeRegistro}" />
-		    </p:column>
-		 
-		    <p:column headerText="Inicio" priority="3">
-		        <h:outputText value="#{trabajo.fechaHoraInicio}" />
-		    </p:column>
-		 
-		    <p:column headerText="Finalización" priority="2">
-		        <h:outputText value="#{trabajo.fechaHoraFinalizacion}" />
-		    </p:column>
-		 
-		    <p:column headerText="Drone" priority="4">
-		        <h:outputText value="#{trabajo.droneAsignado.numeroDeSerie}" />
-		    </p:column>
-		</p:dataTable>
-		</h:form>
-	</ui:define>
-	
-	<!-- contenido de zona logo -->
-    <ui:define name="logo">
-        <ui:include src="/WEB-INF/paneles/panelLogo.xhtml" />
-    </ui:define>
-
-	<!-- contenido de zona barra menu -->
-    <ui:define name="menu">
-        <ui:include src="/WEB-INF/paneles/panelMenu.xhtml" />
-    </ui:define>
-    
-	<!-- TODO: contenido de otras zonas... -->
-
-</ui:composition>
-----
-
-Y la clase:
-
-[source,java,indent=0]
-----
-package com.lametaweb.jdrone.vista;
-
-import java.util.List;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import com.lametaweb.jdrone.negocio.TrabajoFacade;
-import com.lametaweb.jdrone.persistencia.Trabajo;
-
-@Named
-@RequestScoped
-public class TrabajosBean {
-	
-	private List<Trabajo> trabajos;
-	@Inject
-	private TrabajoFacade trabajoFacade;
-
-	public TrabajosBean() {
-		// TODO Auto-generated constructor stub
-	}
-
-	
-	public void actualizaModeloTrabajos(){
-		trabajos = trabajoFacade.findAll();
-	}
-	
-	
-	public List<Trabajo> getTrabajos() {
-		return trabajos;
-	}
-}
-----
-
-Añadimos a continuación los botones de eliminación y edición a la tabla. La eliminación la hacemos con una llamada ajax, que es el comportamiento por defecto en PrimeFaces, para que sólo se actualice la tabla. Después de comprobar que puedo eliminar un trabajo correctamente paso a implementar el cuadro de diálogo de confirmación. En un borrado ya sea físico o lógico siempre poned antes una confirmación. La manera más limpia de añadir un cuadro de confirmación es con un ConfirmDialog global.
-
-Cuando implementamos operaciones de negocio con Hibernate ayuda bastante, durante la depuración del código, visualizar las sentencias SQL que Hibernate genera contra la base de datos, de modo que podamos detectar problemas con facilidad. Una primera aproximación a esto es añadir esta configuración a Hibernate en el archivo _persistence.xml_:
-
-[source,xml,indent=0]
-----
-  <property name="hibernate.show_sql" value="true"/>
-  <property name="hibernate.format_sql" value="true"/>
-----
-
-Pero esto sólo nos sacará por la consola las sentencias SQL, sin los valores de los parámetros. Para mostrar estos valores tenemos que ajustar la configuración de  log4j añadiendo el fichero log4j.properties en alguna carpeta del classpath y estableciendo las propiedades necesarias. Cuando necesitemos visualizar la consulta real lanzada por Hibernate contra la base de datos utilizaremos un driver de proxy jdbc como https://p6spy.github.io/p6spy/2.0/install.html#generic[P6Spy] o https://github.com/arthurblake/log4jdbc[log4jdbc].
-
-Implementamos ahora el botón de edición. Cuando pulsemos el botón tendremos que navegar a una nueva pantalla donde exista un formulario sobre el que pueda modificar el estado del trabajo seleccionado. Añadimos una nueva pantalla trabajo.xhtml. En trabajos.xhtml la llamada será así:
-
-[source,xhtml,indent=0]
-----
-  <p:button outcome="/trabajo.xhtml" icon="ui-icon-pencil">
-      <f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
-  </p:button>
-----
-
-y en la pantalla trabajo.xhtml la asignación del parámetro en el backing bean y la posterior actualización del modelo será así:
-
-[source,xhtml,indent=0]
-----
-  <f:metadata>
-    <f:viewParam name="idTrabajo" value="trabajoBean.idTrabajo"></f:viewParam>
-    <f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}"></f:viewAction>
-  </f:metadata>
-----
-
-La pantalla trabajo.xhtml nos valdrá tanto para la edición como para la creación de nuevos trabajos. Distinguimos un caso del otro viendo si el ID de la entidad creada localmente en el backing bean es o no igual a null. A la hora de persistir la entidad el código es el mismo en el caso de una edición o de una creación, se realiza un merge en ambos casos. En principio para los puntos de ruta implementamos sólo la edición de las celdas. 
-
-Para terminar la funcionalidad de edición tenemos que incluir la lógica que evite generar entidades con valores únicos duplicados. La entidad Trabajo tiene un sólo campo único _numeroDeRegistro_. Aprovechamos para incluir las anotaciones JPA de campo único en las entidades Trabajo y Drone, un detalle que se me había pasado. En general es normal que tengamos que ir tocando código a todos los niveles durante el desarrollo de una funcionalidad, por olvidos como éste o por refactorizaciones diversas. No hay por tanto que obsesionarse con ir haciendo todo perfecto desde el principio. Si es importante probar todo a conciencia e implementar los casos de prueba necesarios. Los casos de prueba los veremos en el próximo post.
-
-Una vez tenemos resuelta la edición de la entidad vamos con la creación. Primero añadimos un botón que navegue a la misma pantalla que la de edición, que ya tenemos implementada. Sólo habrá que añadir un _if_ para que se actualice el modelo sólo cuando se trate de una edición. Finalmente implementamos el tratamiento de las excepciones posibles, en este caso tenemos la excepción que se produce por violación de clave única.
-
-NOTE: En general para cada entidad que vaya a ser mostrada en un componente de tipo select tengo que implementar una clase Converter. Un converter gestiona la conversión desde valor local del componente, el que se usa para crear la representación que ve el usuario, al valor enlazado en el backing bean, el que se usa para el negocio, y viceversa. Una alternativa es el uso de la potente librería http://showcase.omnifaces.org/converters/SelectItemsConverter[OmniFaces].
-
-Para completar nuestro CRUD sólo queda añadir un botón de consulta a cada item en la lista de trabajos. Lo hacemos al estilo PrimeFaces, mostrando el detalle de un item en una ventana modal.
-
-
-COMENTAR:
-Comentar que la creación / modificación se realiza en memoria y al final se persiste por eso cancelar es solo salir de la pagina.
-COMENTAR:
-FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-COMENTAR:
-Manera de enviar índice tabla seleccionado a backing bean.
-COMENTAR: 
-IDs negativos para que los nuevos ptos ruta puedan introducirse en el componente dataTable
-COMENTAR:
-Validaciones de bean validation con localizacion
-Validaciones de JSF con localizacion
-
-
-COMENTAR:
-Icono animado de espera con generación de icono en http://ajaxload.info/
-COMENTAR:
-exclusión de campos de nuevo punto en envío de datos de Trabajo
-
-COMENTAR:
-Tratamiento de las excepciones de la capa de persistencia:
-. Siempre que sea posible hay que realizar consulta para evitar en lo posible una excepción. Por ejemplo en el caso del alta de una nueva entidad comprobamos que no existe ya una en la base de datos una entidad con la misma clave natural. Esto lo hacemos con un validator de JSF. Tb se podria haber hecho con validator de bean validations, pero optamos por el primero porque se contempla realizar cargas masivas de información que se sabe es correcta y no debe verse sobrecargada por la validación .
-. Además hacemos un tratamiento de excepciones de manera que el mensaje mostrado al usuario esté controlado y que podamos añadir información personalizada de log.
-. Por otro lado en el punto en que se produce la excepción 
-
-COMENTAR:
-FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-Para preservar los mensajes después de una navegación a otra página con redirect.
-
-
-
-
-
-
-
-
-
-
+Para el próximo Post voy a preparar una lista en un formato de Preguntas y repuestas, Q&A, para aclarar distintas partes del código de la aplicación jDrone y no dejarnos nada en el tintero. Hasta pronto!
