@@ -3,13 +3,15 @@ La metaweb
 :hp-tags: JSF, JavaServer Faces, Primefaces, CRUD, EJB, Hibernate, backing bean
 :published_at: 2015-09-02
 
-+++<style>span.boton {color:#A80000;border-style: solid;border-width: 2px;padding-top: 0em;padding-right: .8em;padding-bottom: 0em;padding-left: .8em;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}</style>+++
-
 == El concepto de CRUD.
 
 En este post veremos los aspectos generales de la implementación del caso de uso del mantenimiento de la entidad Trabajo. https://github.com/lametaweb/jdrone/releases/tag/1.1.0[Aquí] podéis bajaros la release 1.1.0 del proyecto, que se corresponde con el código de este Post y del siguiente, que tratará aspectos más específicos de la implementación.
 
 El mantenimiento o gestión de una entidad, conocido en inglés como CRUD (create, read, update and delete) tiene por objeto permitir el tratamiento de la información de la entidad en un sistema. En general un CRUD se implementa en tres pantallas: La pantalla inicial o de maestro, que se presenta inicialmente, contiene el listado de entidades a gestionar, y da acceso a la operaciones, la pantalla de consulta de detalle, que muestra una vista completa de la entidad, y por último la pantalla de creación / edición del detalle, que permite dar de alta o modificar una entidad concreta.
+
+
++++<style>span.boton {color:#A80000;border-style: solid;border-width: 2px;padding-top: 0em;padding-right: .8em;padding-bottom: 0em;padding-left: .8em;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}</style>+++
+
 
 En la pantalla de maestro tenemos una tabla donde cada fila corresponde a una entidad y contiene una serie de campos que la identifican y otros adicionales que puedan ser de utilidad a la hora de ordenar o filtrar. En cada fila, a la derecha, tendremos tres botones, correspondientes a las operaciones RUD (read, update and delete), y fuera del listado situaremos un botón adicional para la operación C (create). Finalmente necesitaremos un botón, también fuera del listado, para salir de la pantalla cuando queramos finalizar la gestión de Trabajos. Esta pantalla es común a todos los CRUDs. A continuación se muestra el aspecto que debería tener esta pantalla:
 
