@@ -31,7 +31,7 @@ La pantalla de creación / edición del detalle es la más compleja, y la más i
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
-Observamos una relación muchos a uno con la entidad _Drone_ y otra de composición con la entidad _PuntoRuta_. Ambas relaciones tendrán su correspondiente efecto en la pantalla de detalle. La relación con _Drone_ se traducirá en un componente _selectOneMenu_ y la relación con los _PuntoRuta_ en un componente _dataTable_ que deberá tener asociado una serie de componentes adicionales que permitan gestionar la relación de composición, es decir, añadir, quitar o editar puntos de ruta del Trabajo. El diseño de la pantalla de detalle sería algo así:
+Observamos una relación de asociación muchos a uno con la entidad _Drone_ y otra de composición uno a muchos con la entidad _PuntoRuta_. Ambas relaciones deben ser mantenidas en la pantalla de detalle porque forman parte de la información contenida en la entidad _Trabajo_. La gestion de la relación con _Drone_ la implementaremos con un componente _selectOneMenu_ y la de la relación con los _PuntoRuta_ con un componente _dataTable_ conteniendo los componentes adicionales necesarios para añadir, quitar o editar puntos de ruta. El diseño de la pantalla de detalle sería este:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig025.png[]
 
