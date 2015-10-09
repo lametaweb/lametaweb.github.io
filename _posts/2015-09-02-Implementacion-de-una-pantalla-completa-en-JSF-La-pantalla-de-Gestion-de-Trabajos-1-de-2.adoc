@@ -23,11 +23,11 @@ En la pantalla de maestro el elemento central es una tabla donde cada fila muest
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig020.png[]
 
-La pantalla de consulta de detalle simplemente amplía la información mostrada en cada fila y es común mostrarla en una ventana emergente. Veremos que esto es muy sencillo cuando utilizamos la librería Primefaces.
+La pantalla de consulta del detalle simplemente amplía la información mostrada en cada fila y es habitual mostrarla en una ventana emergente. Veremos luego que esto es muy sencillo de implementar cuando utilizamos la librería de componentes Primefaces.
 
-NOTE: Si queréis ver o comparar la popularidad de alguna librería o tecnología usad _Google Trends_. Tendréis que añadir los términos que identifiquen a cada tecnología cuidando de que el término no recoja resultados no deseados. Por ejemplo si queréis ver la tendencia del framework _ionic_ para aplicaciones híbridas escribid "ionic framework" y no "ionic" a secas. La URL es https://www.google.es/trends[ésta].
+TIP: Si queréis ver o comparar la popularidad de alguna librería o tecnología usad _Google Trends_. Tendréis que añadir las palabras clave que identifiquen a cada tecnología cuidando de que no arrastren resultados no deseados. Por ejemplo si queréis ver la popularidad del framework _ionic_ para aplicaciones híbridas escribid "ionic framework" y no "ionic" a secas. La URL es https://www.google.es/trends[ésta].
 
-La pantalla de creación / edición de detalle es la más compleja, y la más interesante, y es diferente en cada CRUD ya que dependerá de las relaciones que existan entre la entidad gestionada y el resto. Recordemos nuestro diagrama de clases:
+La pantalla de creación / edición del detalle es la más compleja, y la más interesante, y es diferente para cada entidad ya que depende de las relaciones que existan entre ésta y el resto de entidades. Recordemos ahora nuestro diagrama de clases:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
