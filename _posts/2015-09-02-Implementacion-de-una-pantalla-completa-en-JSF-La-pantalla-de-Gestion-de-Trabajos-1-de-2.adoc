@@ -17,9 +17,9 @@ En general un mantenimiento se organiza en tres pantallas:
 
 +++<style>span.boton {color:#A80000;border-style: solid;border-width: 2px;padding-top: 0em;padding-right: .8em;padding-bottom: 0em;padding-left: .8em;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}</style>+++
 
-Veamos más en detalle cada una de estas pantallas:
+Veamos más en detalle cada una de las pantallas:
 
-En la pantalla de maestro tenemos una tabla donde cada fila corresponde a una entidad y contiene una serie de campos que la identifican y otros adicionales que puedan ser de utilidad a la hora de ordenar o filtrar. En cada fila, a la derecha, tendremos tres botones, correspondientes a las operaciones RUD (read, update and delete), y fuera del listado situaremos un botón adicional para la operación C (create). Finalmente necesitaremos un botón, también fuera del listado, para salir de la pantalla cuando queramos finalizar la gestión de Trabajos. Esta pantalla es común a todos los CRUDs. A continuación se muestra el aspecto que debería tener esta pantalla:
+En la pantalla de maestro el elemento central es una tabla donde cada fila muestra un subconjunto de los campos de la entidad. Este subconjunto estará formado por un lado por los campos identificativos y por otro por campos adicionales que nos interese añadir para facilitar la ordenación o el filtrado del listado. A la derecha de los campos de datos, en cada fila, añadiremos tres botones para las operaciones de consulta, edición y eliminación de la entidad. Fuera ya del listado situaremos un botón para el acceso a la pantalla de creación de una nueva entidad y otro para salir de la pantalla de maestro cuando queramos finalizar la gestión de Trabajos. Esta pantalla es común a todos los mantenimientos y tiene este aspecto:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig020.png[]
 
