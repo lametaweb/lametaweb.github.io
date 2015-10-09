@@ -35,13 +35,13 @@ Observamos una relación de asociación muchos a uno con la entidad _Drone_ y ot
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig025.png[]
 
-Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para las páginas, ni los backing beans. Como regla general intentaremos siempre conseguir un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla con todos los requisitos funcionales acordados con el cliente. Respecto de esto último el cliente podría por ejemplo pedirnos que en la página de detalle dispusieramos de ventanas emergentes de asistencia: Ventana calculadora de distancias entre dos puntos, ángulos entre trayectorias, conversión de unidades, etc.
+Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para las páginas, ni para los backing beans. Como regla general intentaremos siempre conseguir un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla con todos los requisitos funcionales acordados con el cliente. Respecto de esto último el cliente podría por ejemplo solicitar que en la página de detalle existieran accesos a ventanas emergentes de asistencia: Ventana calculadora de distancias entre dos puntos, ángulos entre trayectorias, conversión de unidades, etc.
 
-En un CRUD por tanto existirán tareas de desarrollo generales y comunes a cualquier mantenimiento, y tareas especificas, localizadas sobre todo en la pantalla de detalle, que son las que van a plantearnos los mayores retos a la hora de conseguir la funcionalidad deseada.
+En el desarrollo de un mantenimiento existirán por tanto tareas de desarrollo generales y comunes a cualquier entidad, y tareas especificas, localizadas sobre todo en la pantalla de detalle, que son las que van a plantearnos los mayores retos a la hora de conseguir la funcionalidad deseada.
 
-== Configuraciones en el entorno de trabajo.
+=== Configuraciones adicionales sobre el entorno de trabajo
 
-Hacemos aquí un paréntesis para actualizar el entorno de trabajo. Queremos que nuestra productividad sea máxima y para ello decidimos instalar la librería de componentes Primefaces así como la última versión disponible de JSF.
+Queremos que nuestra productividad sea máxima y para ello decidimos en este punto del proyecto instalar la librería de componentes Primefaces así como la última versión disponible de JSF.
 
 Añadir Primefaces al proyecto es sencillo, basta con añadir la dependencia correspondiente al proyecto:
 
