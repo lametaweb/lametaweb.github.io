@@ -72,33 +72,44 @@ Se ha refactorizado además el ciclo de construcción de modo que ahora existe u
 
 En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción _JSF Implementation Library_ dejadla así _Type_ > _Disable Library Configuration_.
 
-Para comprobar que JSF 2.2 funciona correctamente realicemos unas sencillas modificaciones sobre nuestra página _index.xhtml_:
+Para comprobar que Javaserver Faces se actializó correctamente realicemos unas sencillas modificaciones sobre nuestra página _index.xhtml_:
 
-. Actualizamos a HTML5. Para ello actualizad el doctype de la página así:
+* Actualizamos a HTML5. Para ello actualizad el doctype de la página así:
 
-	<!DOCTYPE html>
+[source,xhtml,indent=0]
+----
+<!DOCTYPE html>
+----
 
-. Nos adaptación a JSF 2.2 cambiando los espacios de nombres:
+* Cambiamos los espacios de nombres:
 
-	<html xmlns="http://www.w3.org/1999/xhtml"
+[source,xhtml,indent=0]
+----
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
+----
 
-. Añadimos un elemento nuevo de JSF 2.2 para comnprobar si el cambio de versión ha sido efectivo. Sustituimos la línea de código primera por la segunda:
+* Añadimos un elemento nuevo de JSF 2.2 para comprobar si el cambio de versión ha sido efectivo. Sustituimos la línea de código primera por la segunda:
 
+[source,xhtml,indent=0]
+----
 	<f:event 
     listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
     type="preRenderView" />
-
+----
+[source,xhtml,indent=0]
+----
 	<f:viewAction 
     action="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
     onPostback="true"></f:viewAction>
+----
 
-Además ahora no se admitirán los típicos caracteres de espaciado `\&nbsp;` y tendremos que sustituirlos por el equivalente código unicode `\&#160;`.
+Ahora no se admiten los típicos caracteres de espaciado `\&nbsp;` y los sustituimos por el equivalente código unicode `\&#160;`.
 
-La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página ofreciendo más flexibilidad que la etiqueta `event` para acciones de precarga de datos para una página. La forma en que se usa en la página de consulta de listado de drones no es la habitual, y por eso es necesario añadir el atributo `onPostback="true"`, sin embargo, a continuación veremos un uso adecuado tanto en la página de maestro como en la de detalle.
+La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página ofreciendo más flexibilidad que la etiqueta `event` para acciones de precarga de datos para una página. La forma en que se usa en nuestra página de consulta `index.xhtml` no es la habitual, y por eso es necesario añadir el atributo `onPostback="true"`. En el siguiente apartado veremos usos adecuados de `viewAction` tanto en la página de maestro como en la de detalle.
 
-Bien, con el diseño inicial de las páginas listo podemos empezar con el desarrollo. Aquí no lo veremos paso a paso como en Posts anteriores sino que, sobre el código del proyecto que habéis bajado de GitHub, intentaremos entender cómo se desarrolla en JSF. Nos centraremos en la capa de presentación y comentaremos la capa de servicio al final ya que en un CRUD no tiene demasiado interés por su simplicidad.
+Bien, con el diseño de las páginas listo podemos empezar con el desarrollo. No se dará una explicación tan paso a paso como en Posts anteriores porque sé que ya tenéis cierta soltura con JSF y puede hacerse un poco pesado. En cambio os explicaré los puntos claves a la hora de desarrollar un maestro detalle en JSF. Y vosotros ayundándoos del código fuente del proyecto y de las explicaciones podéis intentar implementar las pantallas nombrando los ficheros por ejemplo con vuestras iniciales al final del nombre original. Por ejemplo para la pantalla de maestro cread una página con el nombre trabajoFJH.xhtml, y un backing bean con el nombre TrabajoFJHBean.java. Primero nos centraremos en la capa de presentación y comentaremos la capa de servicio / acceso a datos al final.
 
 === La página de maestro: trabajos.xhtml.
 
