@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-10T11:51:55.340Z" />
+    <meta property="article:modified_time" content="2015-10-10T15:55:18.757Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla completa en JSF: La pantalla de Gestión de Trabajos (1 de 2).",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-10T11:51:55.340Z",
+    "dateModified": "2015-10-10T15:55:18.757Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..."
 }
@@ -280,55 +280,63 @@ En el momento de revisar este Post ya estaba disponible la versión 10 de Wilfly
 <p>En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raiz del fichero <em>faces-config.xml</em>. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción <em>JSF Implementation Library</em> dejadla así <em>Type</em> &gt; <em>Disable Library Configuration</em>.</p>
 </div>
 <div class="paragraph">
-<p>Para comprobar que JSF 2.2 funciona correctamente realicemos unas sencillas modificaciones sobre nuestra página <em>index.xhtml</em>:</p>
+<p>Para comprobar que Javaserver Faces se actializó correctamente realicemos unas sencillas modificaciones sobre nuestra página <em>index.xhtml</em>:</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
 <p>Actualizamos a HTML5. Para ello actualizad el doctype de la página así:</p>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;!DOCTYPE html&gt;</pre>
-</div>
-</div>
 </li>
-<li>
-<p>Nos adaptación a JSF 2.2 cambiando los espacios de nombres:</p>
-<div class="literalblock">
+</ul>
+</div>
+<div class="listingblock">
 <div class="content">
-<pre>&lt;html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://xmlns.jcp.org/jsf/html"
-xmlns:f="http://xmlns.jcp.org/jsf/core"&gt;</pre>
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;!DOCTYPE html&gt;</code></pre>
 </div>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cambiamos los espacios de nombres:</p>
 </li>
-<li>
-<p>Añadimos un elemento nuevo de JSF 2.2 para comnprobar si el cambio de versión ha sido efectivo. Sustituimos la línea de código primera por la segunda:</p>
-<div class="literalblock">
+</ul>
+</div>
+<div class="listingblock">
 <div class="content">
-<pre>&lt;f:event
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Añadimos un elemento nuevo de JSF 2.2 para comprobar si el cambio de versión ha sido efectivo. Sustituimos la línea de código primera por la segunda:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;f:event
 listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
-type="preRenderView" /&gt;</pre>
+type="preRenderView" /&gt;</code></pre>
 </div>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>&lt;f:viewAction
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;f:viewAction
 action="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
-onPostback="true"&gt;&lt;/f:viewAction&gt;</pre>
+onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 <div class="paragraph">
-<p>Además ahora no se admitirán los típicos caracteres de espaciado <code>&amp;nbsp;</code> y tendremos que sustituirlos por el equivalente código unicode <code>&amp;#160;</code>.</p>
+<p>Ahora no se admiten los típicos caracteres de espaciado <code>&amp;nbsp;</code> y los sustituimos por el equivalente código unicode <code>&amp;#160;</code>.</p>
 </div>
 <div class="paragraph">
-<p>La etiqueta <code>viewAction</code> es nueva en JSF 2.2. Asocia un evento a una página ofreciendo más flexibilidad que la etiqueta <code>event</code> para acciones de precarga de datos para una página. La forma en que se usa en la página de consulta de listado de drones no es la habitual, y por eso es necesario añadir el atributo <code>onPostback="true"</code>, sin embargo, a continuación veremos un uso adecuado tanto en la página de maestro como en la de detalle.</p>
+<p>La etiqueta <code>viewAction</code> es nueva en JSF 2.2. Asocia un evento a una página ofreciendo más flexibilidad que la etiqueta <code>event</code> para acciones de precarga de datos para una página. La forma en que se usa en nuestra página de consulta <code>index.xhtml</code> no es la habitual, y por eso es necesario añadir el atributo <code>onPostback="true"</code>. En el siguiente apartado veremos usos adecuados de <code>viewAction</code> tanto en la página de maestro como en la de detalle.</p>
 </div>
 <div class="paragraph">
-<p>Bien, con el diseño inicial de las páginas listo podemos empezar con el desarrollo. Aquí no lo veremos paso a paso como en Posts anteriores sino que, sobre el código del proyecto que habéis bajado de GitHub, intentaremos entender cómo se desarrolla en JSF. Nos centraremos en la capa de presentación y comentaremos la capa de servicio al final ya que en un CRUD no tiene demasiado interés por su simplicidad.</p>
+<p>Bien, con el diseño de las páginas listo podemos empezar con el desarrollo. No se dará una explicación tan paso a paso como en Posts anteriores porque sé que ya tenéis cierta soltura con JSF y puede hacerse un poco pesado. En cambio os explicaré los puntos claves a la hora de desarrollar un maestro detalle en JSF. Y vosotros ayundándoos del código fuente del proyecto y de las explicaciones podéis intentar implementar las pantallas nombrando los ficheros por ejemplo con vuestras iniciales al final del nombre original. Por ejemplo para la pantalla de maestro cread una página con el nombre trabajoFJH.xhtml, y un backing bean con el nombre TrabajoFJHBean.java. Primero nos centraremos en la capa de presentación y comentaremos la capa de servicio / acceso a datos al final.</p>
 </div>
 </div>
 <div class="sect2">
