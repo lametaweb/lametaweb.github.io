@@ -172,7 +172,7 @@ Por último el botón +++<span class="boton">+++Borrar+++</span>+++ al igual que
 
 En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En Primefaces es muy fácil de implementar usando un cuadro de diálogo global.
 
-Bien, nos queda por ver los dos botones a nivel de página, Salir y Crear. Como véis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, sobre todo en pantallas de tamaño reducido.
+Bien, ya solo nos queda por analizar los dos botones a nivel de página, Salir y Crear. Como véis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, más en pantallas de tamaño reducido.
 
 El botón +++<span class="boton">+++Salir+++</span>+++ simplemente navega a la página de inicio:
 
