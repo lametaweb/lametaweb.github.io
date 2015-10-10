@@ -158,18 +158,16 @@ El botón +++<span class="boton">+++Editar+++</span>+++ navegará a la página e
 </p:button>
 ----
 
-Lo único que hace es navegar a la página de creación / edición del detalle. Para esto se usa la etiqueta `button`, no la `commandButton`. Es necesario enviar un parámetro en la request que indique el Trabajo que se va a editar. Se lleva a cabo por tanto una Initial Request a la página de detalle.
+Lo único que hace es navegar a la página de creación / edición del detalle. Por eso usamos un componente `button` y no un `commandButton`. Será además necesario enviar un parámetro en la request que indique el trabajo que se desea editar. Lo que tenemos es una Initial Request a la página de edición del detalle `trabajos.xhtml`.
 
-Por último el botón +++<span class="boton">+++Borrar+++</span>+++ genera, al igual que el botón Ver, una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
+Por último el botón +++<span class="boton">+++Borrar+++</span>+++ al igual que en el caso del botón Ver es un botón de comando porque necesitamos ejecutar una acción de servidor y no solo navegar a otra página. Generará por tanto una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
 
 [source,xhtml,indent=0]
 ----
-		        <p:commandButton 
-			        action="#{trabajosBean.eliminar(trabajo)}"
-			        update=":formulario:paneltrabajos"
-			        icon="ui-icon-trash">
-		        		<p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" />
-		        </p:commandButton>
+<p:commandButton action="#{trabajosBean.eliminar(trabajo)}"
+	update=":formulario:paneltrabajos" icon="ui-icon-trash">
+		<p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" />
+</p:commandButton>
 ----
 
 En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En Primefaces es muy fácil de implementar usando un cuadro de diálogo global.
