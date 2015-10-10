@@ -149,16 +149,16 @@ El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa pa
 
 La secuencia de acciones del Postback Request a la propia página que se genera tras pulsar el botón sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tirará el cuadro de diálogo del detalle con el trabajo de la fila pulsada. La llamada Ajax actualiza el panel del cuadro de diálogo `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada Javascript `PF('trabajoDialog').show()`.
 
-El botón +++<span class="boton">+++Editar+++</span>+++ sí lleva a cabo una navegación. El código es el siguiente:
+El botón +++<span class="boton">+++Editar+++</span>+++ navegará a la página edición del detalle. El código para este botón es bien diferente del anterior, veamos:
 
 [source,xhtml,indent=0]
 ----
-		        <p:button outcome="/trabajo" icon="ui-icon-pencil">
-		        	<f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
-		        </p:button>
+<p:button outcome="/trabajo" icon="ui-icon-pencil">
+	<f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
+</p:button>
 ----
 
-Como vemos lo único que hace es navegar a la página de creación / edición del detalle. Para esto se usa la etiqueta `button`, no la `commandButton`. Es necesario enviar un parámetro en la request que indique el Trabajo que se va a editar. Se lleva a cabo por tanto una Initial Request a la página de detalle.
+Lo único que hace es navegar a la página de creación / edición del detalle. Para esto se usa la etiqueta `button`, no la `commandButton`. Es necesario enviar un parámetro en la request que indique el Trabajo que se va a editar. Se lleva a cabo por tanto una Initial Request a la página de detalle.
 
 Por último el botón +++<span class="boton">+++Borrar+++</span>+++ genera, al igual que el botón Ver, una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
 
