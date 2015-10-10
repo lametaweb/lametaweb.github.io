@@ -70,27 +70,29 @@ Por último tendremos que realizar los cambios necesarios en nuestro proyecto pa
 
 Se ha refactorizado además el ciclo de construcción de modo que ahora existe un profile _despliegue-recursos_ que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados del servidor por cualquier motivo. Cread un nueva configuración de ejecución para este profile: Botón derecho sobre proyecto y _Run As_ > _Run Configurations..._  Botón derecho sobre _Maven build_ > _New_.  En la entrada _Goals_ escribid `clean install -Pdespliegue-recursos` y dad un nombre al nuevo perfil.
 
-En segundo lugar, como vamos a subir desde JSF 2.1 a 2.2 tenemos que actualizar los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tendremos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción _JSF Implementation Library_ dejadla así _Type > Disable Library Configuration_.
+En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción _JSF Implementation Library_ dejadla así _Type_ > _Disable Library Configuration_.
 
-Para comprobar que JSF 2.2 funciona correctamente modificamos nuestra página _index.xhtml_ para adaptarla a HTML5 y JSF 2.2, añadiendo además una etiqueta nueva en la versión 2.2.
+Para comprobar que JSF 2.2 funciona correctamente realicemos unas sencillas modificaciones sobre nuestra página _index.xhtml_:
 
-Para la adaptación a HTML 5 actualizamos la página así:
+. Actualizamos a HTML5. Para ello actualizad el doctype de la página así:
 
-`<!DOCTYPE html>`
+	<!DOCTYPE html>
 
-Para la adaptación a JSF 2.2 cambiamos los espacios de nombres:
+. Nos adaptación a JSF 2.2 cambiando los espacios de nombres:
 
-`<html xmlns="http://www.w3.org/1999/xhtml"
+	<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">`
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-Finalmente sustituimos:
+. Añadimos un elemento nuevo de JSF 2.2 para comnprobar si el cambio de versión ha sido efectivo. Sustituimos la línea de código primera por la segunda:
 
-`<f:event listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}" type="preRenderView" />`
+	<f:event 
+    listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+    type="preRenderView" />
 
-por:
-
-`<f:viewAction action="#{disponibilidadBean.listaEstadoDronesPorFecha()}" onPostback="true"></f:viewAction>`
+	<f:viewAction 
+    action="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+    onPostback="true"></f:viewAction>
 
 Además ahora no se admitirán los típicos caracteres de espaciado `\&nbsp;` y tendremos que sustituirlos por el equivalente código unicode `\&#160;`.
 
