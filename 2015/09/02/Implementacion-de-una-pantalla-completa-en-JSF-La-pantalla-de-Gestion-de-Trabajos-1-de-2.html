@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-10T11:35:35.837Z" />
+    <meta property="article:modified_time" content="2015-10-10T11:40:56.412Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla completa en JSF: La pantalla de Gestión de Trabajos (1 de 2).",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-10T11:35:35.837Z",
+    "dateModified": "2015-10-10T11:40:56.412Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..."
 }
@@ -274,7 +274,7 @@ En el momento de revisar este Post ya estaba disponible la versión 10 de Wilfly
 <p>Por último tendremos que realizar los cambios necesarios en nuestro proyecto para adaptarlo al cambio de servidor. En primer lugar tendremos que actualizar las dependencias Maven a las del nuevo servidor, un proceso sin demasiada complicación. Podéis consultar el contenido del fichero <em>pom.xml</em> en el código fuente del proyecto.</p>
 </div>
 <div class="paragraph">
-<p>Se ha refactorizado además el ciclo de construcción de modo que ahora existe un profile <em>despliegue-recursos</em> que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados del mismo por cualquier motivo. Tenéis también que crear un nueva configuración de ejecución: Botón derecho sobre proyecto y <em>Run As</em> &gt; <em>Run Configurations&#8230;&#8203;</em>  Botón derecho sobre <em>Maven build</em> &gt; <em>New</em>.  En la entrada <em>Goals</em> escribid <code>clean install -Pdespliegue-recursos</code> y dad un nombre al nuevo perfil.</p>
+<p>Se ha refactorizado además el ciclo de construcción de modo que ahora existe un profile <em>despliegue-recursos</em> que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados del servidor por cualquier motivo. Cread un nueva configuración de ejecución para este profile: Botón derecho sobre proyecto y <em>Run As</em> &gt; <em>Run Configurations&#8230;&#8203;</em>  Botón derecho sobre <em>Maven build</em> &gt; <em>New</em>.  En la entrada <em>Goals</em> escribid <code>clean install -Pdespliegue-recursos</code> y dad un nombre al nuevo perfil.</p>
 </div>
 <div class="paragraph">
 <p>En segundo lugar, como vamos a subir desde JSF 2.1 a 2.2 tenemos que actualizar los espacios de nombres en el nodo raiz del fichero <em>faces-config.xml</em>. Además tendremos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción <em>JSF Implementation Library</em> dejadla así <em>Type &gt; Disable Library Configuration</em>.</p>
