@@ -192,9 +192,9 @@ Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de 
 
 === La página de edición / creación del detalle: trabajo.xhtml.
 
-Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.
+Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad del código dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.
 
-Usaremos la misma página tanto para la edición como para la creación de una entidad Trabajo. Veamos la secuencia de acciones que ocurren cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación. Recordemos que lo que tenemos es una Initial Request.
+Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don't Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación.
 
 En primer lugar una instancia del backing bean es creada. Justo después se ejecuta el método anotado con _@PostConstruct_, que crea una instancia  de la entidad gestionada, Trabajo. A continuación se acualiza el modelo con el valor del parámetro _idTrabajo_ si existe, y finalmente se ejecuta el método especificado en la etiqueta _viewParam_:
 
