@@ -188,11 +188,11 @@ Y el botón +++<span class="boton">+++Crear+++</span>+++ es igual de simple. Nav
 <p:button value="Crear" outcome="/trabajo" />
 ----
 
-Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de JSF y de sus múltiples ventajas frente a frameworks MVC basados en la petición Y hasta aquí los aspectos más importantes de la página de maestro.
+Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de JSF y de sus ventajas frente a frameworks MVC basados en la petición como Struts 2 o Spring MVC. Javaserver Faces nos permitirá centrarnos totalmente en el caso de uso a resolver, realizando por nosotros las tareas ajenas al negocio en las distintas fases del ciclo de vida. 
 
-=== La página de detalle: trabajo.xhtml.
+=== La página de edición / creación del detalle: trabajo.xhtml.
 
-Como hemos comentado esta pantalla es más compleja que la de maestro y su complejidad dependerá del número y tipo de relaciones de la entidad que queremos gestionar.
+Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.
 
 Usaremos la misma página tanto para la edición como para la creación de una entidad Trabajo. Veamos la secuencia de acciones que ocurren cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación. Recordemos que lo que tenemos es una Initial Request.
 
