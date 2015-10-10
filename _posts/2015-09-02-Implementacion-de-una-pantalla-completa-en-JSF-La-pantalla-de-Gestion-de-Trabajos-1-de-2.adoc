@@ -194,23 +194,29 @@ Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de 
 
 Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad del código dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.
 
-Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don't Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación.
+Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don't Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación:
 
-En primer lugar una instancia del backing bean es creada. Justo después se ejecuta el método anotado con _@PostConstruct_, que crea una instancia  de la entidad gestionada, Trabajo. A continuación se acualiza el modelo con el valor del parámetro _idTrabajo_ si existe, y finalmente se ejecuta el método especificado en la etiqueta _viewParam_:
+Como ya sabemos en una Initial Request solo se ejecutarán las fases Restore View y Render Response del ciclo de vida. Durante la fase Restore View simplemente se crea una View vacía, el resto ocurrirá en la fase Render Response: 
+
+. Una instancia del backing bean es creada.
+
+. Se ejecuta el método _@PostConstruct_ donde crearemos una nueva instancia  de la entidad gestionada, Trabajo.
+
+. La etiqueta _viewParam_ es procesada: El campo _idTrabajo_ de la entidad recién creada se actualiza con el valor del parámetro de la request en el caso de que exista, es decir, cuando se trate de una llamada a la página de edición del detalle.
+
+. Se procesa la etiqueta _viewAction_: Se llama al método de la capa de servicio / acceso a datos _actualizaModeloTrabajo()_ comprobamos el valor del Id y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
 
 [source,xhtml,indent=0]
 ----
-	<f:metadata>
-		<f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}"></f:viewParam>
-		<f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}"></f:viewAction>
-	</f:metadata>
+<f:metadata>
+	<f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}" />
+	<f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}" />
+</f:metadata>
 ----
 
-Si el usuario navegó para una creación, el parámetro es nulo y el atributo _trabajo_ del Modelo no varía. En cambio en una edición el campo _idTrabajo_ se actualiza con el valor del ID seleccionado en la pantalla de maestro.
+. Finalmente una vez que el framework ha creado la View con todos los componentes y los valores correspondientes la página es renderizada como XHTML y enviada al usuario.
 
-En el método _actualizaModeloTrabajo()_ comprobamos el valor del ID y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
-
-Como antes, tenemos nuestra página lista para la creación o la edición. El botón +++<span class="boton">+++Salir+++</span>+++ es simple, se trata de un botón de cancelación:
+En este punto tenemos ya nuestra página lista para la creación o la edición de un Trabajo. El botón +++<span class="boton">+++Salir+++</span>+++ es simple, se trata de un típico botón de cancelación:
 
 `<p:button value="Salir" outcome="/trabajos.xhtml"/>`
 
