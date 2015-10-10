@@ -115,16 +115,16 @@ Bien, con el diseño de las páginas listo podemos empezar con el desarrollo. No
 
 Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
 
-* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener por tanto estos datos disponibles antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction, ahora sí usada de la manera habitual. Esta etiqueta añade una llamada al Modelo para el ciclo de vida de JSF de una request Initial Request hacia la página que la contiene, que es justo lo que necesitamos.
+* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener por tanto estos datos disponibles antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction, ahora sí usada de la manera habitual. Esta etiqueta añade una llamada al Modelo para el ciclo de vida de JSF de una request Initial Request realizada hacia la página que la contiene, que es justo lo que necesitamos. Por defecto la llamada se realiza en la fase de Invoke Application, anterior a la de Render Response.
 
 [source,xhtml,indent=0]
 ----
 	<f:metadata>
-		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}"></f:viewAction>
+		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}" />
 	</f:metadata>
 ----
 
-El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio y actualiza el Modelo en el backing bean, y a continuación la página es renderizada en el servidor en la fase Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. El código muestra el binding para la primera columna de la tabla:
+El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio para la lectura de los datos y actualiza el Modelo en el backing bean, y a continuación la página es renderizada en el servidor en la fase Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. El siguiente código muestra el binding para la primera columna de la tabla:
 
 [source,xhtml,indent=0]
 ----
@@ -133,11 +133,12 @@ El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la cap
 		    <p:column headerText="N. Registro">
 		        <h:outputText value="#{trabajo.numeroDeRegistro}" />
 		    </p:column>
+            ...
 ----
 
 * Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuando pulsemos alguno de los botones Borrar, Editar o Ver se debe obtener la funcionalidad deseada.
 
-El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa para que se navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovecharemos las capacidades de Primefaces para mostrar ventanas emergentes. El código sería:
+El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa para que se navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovechamos las capacidades de Primefaces para mostrar ventanas emergentes. El código para este botón es el siguiente:
 
 [source,xhtml,indent=0]
 ----
