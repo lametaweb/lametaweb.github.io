@@ -115,7 +115,7 @@ Bien, con el diseño de las páginas listo podemos empezar con el desarrollo. No
 
 Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
 
-* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener los datos disponibles por tanto antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction. Esta etiqueta añade un evento al ciclo de vida de JSF de la request Initial Request a la página que la contiene, que es justo lo que necesitamos.
+* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener por tanto estos datos disponibles antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction, ahora sí usada de la manera habitual. Esta etiqueta añade una llamada al Modelo para el ciclo de vida de JSF de una request Initial Request hacia la página que la contiene, que es justo lo que necesitamos.
 
 [source,xhtml,indent=0]
 ----
