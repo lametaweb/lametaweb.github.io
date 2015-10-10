@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-10T16:31:09.529Z" />
+    <meta property="article:modified_time" content="2015-10-10T16:40:17.772Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla completa en JSF: La pantalla de Gestión de Trabajos (1 de 2).",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-10T16:31:09.529Z",
+    "dateModified": "2015-10-10T16:40:17.772Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..."
 }
@@ -402,18 +402,16 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Lo único que hace es navegar a la página de creación / edición del detalle. Para esto se usa la etiqueta <code>button</code>, no la <code>commandButton</code>. Es necesario enviar un parámetro en la request que indique el Trabajo que se va a editar. Se lleva a cabo por tanto una Initial Request a la página de detalle.</p>
+<p>Lo único que hace es navegar a la página de creación / edición del detalle. Por eso usamos un componente <code>button</code> y no un <code>commandButton</code>. Será además necesario enviar un parámetro en la request que indique el trabajo que se desea editar. Lo que tenemos es una Initial Request a la página de edición del detalle <code>trabajos.xhtml</code>.</p>
 </div>
 <div class="paragraph">
-<p>Por último el botón <span class="boton">Borrar</span> genera, al igual que el botón Ver, una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado <code>trabajosBean.eliminar(trabajo)</code> del backing bean. El código completo es:</p>
+<p>Por último el botón <span class="boton">Borrar</span> al igual que en el caso del botón Ver es un botón de comando porque necesitamos ejecutar una acción de servidor y no solo navegar a otra página. Generará por tanto una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en Primefaces. En la fase Invoke Application de este ciclo se llamará al método de borrado <code>trabajosBean.eliminar(trabajo)</code> del backing bean. El código completo es:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;p:commandButton
-    action="#{trabajosBean.eliminar(trabajo)}"
-    update=":formulario:paneltrabajos"
-    icon="ui-icon-trash"&gt;
-        &lt;p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" /&gt;
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;p:commandButton action="#{trabajosBean.eliminar(trabajo)}"
+	update=":formulario:paneltrabajos" icon="ui-icon-trash"&gt;
+		&lt;p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" /&gt;
 &lt;/p:commandButton&gt;</code></pre>
 </div>
 </div>
