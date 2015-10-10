@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-10T11:40:56.412Z" />
+    <meta property="article:modified_time" content="2015-10-10T11:51:55.340Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla completa en JSF: La pantalla de Gestión de Trabajos (1 de 2).",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-10T11:40:56.412Z",
+    "dateModified": "2015-10-10T11:51:55.340Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..."
 }
@@ -277,36 +277,49 @@ En el momento de revisar este Post ya estaba disponible la versión 10 de Wilfly
 <p>Se ha refactorizado además el ciclo de construcción de modo que ahora existe un profile <em>despliegue-recursos</em> que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados del servidor por cualquier motivo. Cread un nueva configuración de ejecución para este profile: Botón derecho sobre proyecto y <em>Run As</em> &gt; <em>Run Configurations&#8230;&#8203;</em>  Botón derecho sobre <em>Maven build</em> &gt; <em>New</em>.  En la entrada <em>Goals</em> escribid <code>clean install -Pdespliegue-recursos</code> y dad un nombre al nuevo perfil.</p>
 </div>
 <div class="paragraph">
-<p>En segundo lugar, como vamos a subir desde JSF 2.1 a 2.2 tenemos que actualizar los espacios de nombres en el nodo raiz del fichero <em>faces-config.xml</em>. Además tendremos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción <em>JSF Implementation Library</em> dejadla así <em>Type &gt; Disable Library Configuration</em>.</p>
+<p>En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raiz del fichero <em>faces-config.xml</em>. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción <em>JSF Implementation Library</em> dejadla así <em>Type</em> &gt; <em>Disable Library Configuration</em>.</p>
 </div>
 <div class="paragraph">
-<p>Para comprobar que JSF 2.2 funciona correctamente modificamos nuestra página <em>index.xhtml</em> para adaptarla a HTML5 y JSF 2.2, añadiendo además una etiqueta nueva en la versión 2.2.</p>
+<p>Para comprobar que JSF 2.2 funciona correctamente realicemos unas sencillas modificaciones sobre nuestra página <em>index.xhtml</em>:</p>
 </div>
-<div class="paragraph">
-<p>Para la adaptación a HTML 5 actualizamos la página así:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Actualizamos a HTML5. Para ello actualizad el doctype de la página así:</p>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;!DOCTYPE html&gt;</pre>
 </div>
-<div class="paragraph">
-<p><code>&lt;!DOCTYPE html&gt;</code></p>
 </div>
-<div class="paragraph">
-<p>Para la adaptación a JSF 2.2 cambiamos los espacios de nombres:</p>
+</li>
+<li>
+<p>Nos adaptación a JSF 2.2 cambiando los espacios de nombres:</p>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"&gt;</pre>
 </div>
-<div class="paragraph">
-<p><code>&lt;html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"&gt;</code></p>
 </div>
-<div class="paragraph">
-<p>Finalmente sustituimos:</p>
+</li>
+<li>
+<p>Añadimos un elemento nuevo de JSF 2.2 para comnprobar si el cambio de versión ha sido efectivo. Sustituimos la línea de código primera por la segunda:</p>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;f:event
+listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+type="preRenderView" /&gt;</pre>
 </div>
-<div class="paragraph">
-<p><code>&lt;f:event listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}" type="preRenderView" /&gt;</code></p>
 </div>
-<div class="paragraph">
-<p>por:</p>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;f:viewAction
+action="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+onPostback="true"&gt;&lt;/f:viewAction&gt;</pre>
 </div>
-<div class="paragraph">
-<p><code>&lt;f:viewAction action="#{disponibilidadBean.listaEstadoDronesPorFecha()}" onPostback="true"&gt;&lt;/f:viewAction&gt;</code></p>
+</div>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>Además ahora no se admitirán los típicos caracteres de espaciado <code>&amp;nbsp;</code> y tendremos que sustituirlos por el equivalente código unicode <code>&amp;#160;</code>.</p>
