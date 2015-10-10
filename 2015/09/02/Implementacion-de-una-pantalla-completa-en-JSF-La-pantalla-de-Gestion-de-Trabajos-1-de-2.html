@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-10T18:51:14.060Z" />
+    <meta property="article:modified_time" content="2015-10-10T21:58:35.622Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla completa en JSF: La pantalla de Gestión de Trabajos (1 de 2).",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-10T18:51:14.060Z",
+    "dateModified": "2015-10-10T21:58:35.622Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..."
 }
@@ -447,27 +447,44 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <p>Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad del código dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.</p>
 </div>
 <div class="paragraph">
-<p>Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don&#8217;t Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación.</p>
+<p>Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don&#8217;t Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación:</p>
 </div>
 <div class="paragraph">
-<p>En primer lugar una instancia del backing bean es creada. Justo después se ejecuta el método anotado con <em>@PostConstruct</em>, que crea una instancia  de la entidad gestionada, Trabajo. A continuación se acualiza el modelo con el valor del parámetro <em>idTrabajo</em> si existe, y finalmente se ejecuta el método especificado en la etiqueta <em>viewParam</em>:</p>
+<p>Como ya sabemos en una Initial Request solo se ejecutarán las fases Restore View y Render Response del ciclo de vida. Durante la fase Restore View simplemente se crea una View vacía, el resto ocurrirá en la fase Render Response:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Una instancia del backing bean es creada.</p>
+</li>
+<li>
+<p>Se ejecuta el método <em>@PostConstruct</em> donde crearemos una nueva instancia  de la entidad gestionada, Trabajo.</p>
+</li>
+<li>
+<p>La etiqueta <em>viewParam</em> es procesada: El campo <em>idTrabajo</em> de la entidad recién creada se actualiza con el valor del parámetro de la request en el caso de que exista, es decir, cuando se trate de una llamada a la página de edición del detalle.</p>
+</li>
+<li>
+<p>Se procesa la etiqueta <em>viewAction</em>: Se llama al método de la capa de servicio / acceso a datos <em>actualizaModeloTrabajo()</em> comprobamos el valor del Id y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.</p>
+</li>
+</ol>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;f:metadata&gt;
-    &lt;f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}"&gt;&lt;/f:viewParam&gt;
-    &lt;f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}"&gt;&lt;/f:viewAction&gt;
+	&lt;f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}" /&gt;
+	&lt;f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}" /&gt;
 &lt;/f:metadata&gt;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Si el usuario navegó para una creación, el parámetro es nulo y el atributo <em>trabajo</em> del Modelo no varía. En cambio en una edición el campo <em>idTrabajo</em> se actualiza con el valor del ID seleccionado en la pantalla de maestro.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Finalmente una vez que el framework ha creado la View con todos los componentes y los valores correspondientes la página es renderizada como XHTML y enviada al usuario.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>En el método <em>actualizaModeloTrabajo()</em> comprobamos el valor del ID y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.</p>
-</div>
-<div class="paragraph">
-<p>Como antes, tenemos nuestra página lista para la creación o la edición. El botón <span class="boton">Salir</span> es simple, se trata de un botón de cancelación:</p>
+<p>En este punto tenemos ya nuestra página lista para la creación o la edición de un Trabajo. El botón <span class="boton">Salir</span> es simple, se trata de un típico botón de cancelación:</p>
 </div>
 <div class="paragraph">
 <p><code>&lt;p:button value="Salir" outcome="/trabajos.xhtml"/&gt;</code></p>
