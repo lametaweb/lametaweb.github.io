@@ -280,7 +280,7 @@ Antes de empezar a implementar la plantilla lo mejor es tomar lápiz y papel o u
 
 Una plantilla es una página XHTML privada que define la estructura y el contenido común de todas las páginas de la aplicación que la usan. Dentro de esa estructura tendremos que situar los elementos _<ui:insert...> para definir los puntos de inserción del contenido variable. Podéis consultar la plantilla usada en *+++<span style="color:blue">+++j+++</span>+++drone* abriendo el fichero _\jdrone\src\main\webapp\WEB-INF\plantillas\plantilla.xhtml_.
 
-Por otro lado tenemos las páginas públicas de la aplicación, que van a usar la plantilla incluyendo el contenido variable mediante la inclusión de elementos _<ui:define...>_. Básicamente una página tendrá este aspecto:
+Por otro lado tenemos las páginas públicas de la aplicación, que van a usar la plantilla incluyendo el contenido variable mediante elementos _<ui:define...>_. Una página tendrá un aspecto similar al siguiente:
 
 [source,xhtml,indent=0]
 ----
