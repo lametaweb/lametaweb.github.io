@@ -256,11 +256,11 @@ Se trata de un botón de comando, y que por lo tanto genera una petición Ajax d
 
 Veamos más detenidamente cada atributo del botón:
 
-* process y update: El primero determina los elementos que enviamos y en segundo lo que actualizamos en la llamada Ajax. Lo interesante aquí es que se ha tenido que usar un selector complejo para definir el conjunto de elementos. El motivo de esto es que se ha usado un componente para maquetar la página que englobaba a la entidad Trabajo y también a sus PuntosRuta y como no puedo meter un formulario dentro de otro, tanto la entidad padre como las hijas están en el mismo formulario y de ahí que sea necesario filtrar lo que se envía al servidor. Cuando pulse Aceptar sólo deberé enviar al servidor los campos de la entidad Trabajo y excluir los tres campos de introducción de un PuntoRuta. Para esto uso la capacidad de PrimeFaces de usar selectores jQuery:
+* process y update: El primero determina los elementos que enviamos y en segundo lo que actualizamos en la llamada Ajax. Lo interesante aquí es que se ha tenido que usar un selector poco usual para definir el conjunto de elementos. El motivo de esto es que se ha usado un componente para maquetar la página que englobaba a la entidad Trabajo y también a sus PuntosRuta y como no se deben anidar formularios, tanto la entidad padre como las hijas han de estar en el mismo formulario y de ahí que sea necesario filtrar lo que se envía al servidor. Cuando pulse Aceptar sólo deberé enviar al servidor los campos de la entidad Trabajo y excluir los tres campos de introducción de un PuntoRuta. Para esto uso la capacidad de PrimeFaces de usar selectores jQuery:
 
 `@(:input:not(.notsend))`
 
-El selector toma todos los elementos de entrada del formulario, y luego se excluyen los de la clase _.notsend._ De modo que si asignamos a los tres campos de entrada de PuntoRuta esta clase evitaremos que intervengan en el submit generado al pulsar el botón Aceptar.
+El selector toma el conjunto de todos los elementos de entrada del formulario con el selector jQuery `:input`, y le aplica luego el selector jQuery `:not` para excluir los que tienen la clase `.notsend.` De modo que si asignamos a los tres campos de entrada de PuntoRuta esta clase evitaremos que intervengan en el submit generado al pulsar el botón Aceptar.
 
 * action: Indica la llamada a la capa de Servicio para persistir el Trabajo. Tenemos un mismo método tanto para la creación como para la edición de la entidad. Esto es posible porque como se ha comentado en JPA con un merge metemos en el contexto de persistencia tanto una entidad new como una detached.
 
