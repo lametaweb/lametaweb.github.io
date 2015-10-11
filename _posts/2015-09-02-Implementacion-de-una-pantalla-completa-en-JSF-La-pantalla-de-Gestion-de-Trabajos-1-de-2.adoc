@@ -243,9 +243,11 @@ Ejecuta una navegación GET (Initial Request) a la página de maestro. Esta simp
 
 En los dos casos anteriores podemos optar por prescindir del atributo `actionListener` y escribir la llamada al método `miAccionNecesaria` en el atributo `action`. Esto obliga a devolver la cadena `"/trabajos.xhtml?faces-redirect=true"` en el método. De todos modos como ya hemos comentado en el caso de la cancelación de la edición de la entidad Trabajo no es necesario la llamada a un método tras la cancelación.
 
-Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar. El bean de la capa de presentación, será una entidad _detached_ en el caso de una edición y una entidad _new_ en el caso de una creación. En el método de Servicio simplemente meteremos la entidad en el contexto de persistencia convirtiéndola en _managed_, y finalmente, antes de salir del método, JTA ordenará el commit para persistir todos los cambios o guardar la nueva entidad.
+El botón +++<span class="boton">+++Aceptar+++</span>+++ persiste los cambios en una edición o bien la nueva entidad Trabajo en una creación. En ambos casos se ha usado el mismo código. Esto es posible porque el método _merge_ mete en el contexto de persistencia tanto una entidad _detached_ como una _new_. En el caso de una edición la entidad Trabajo que se lee de la base de datos pasa al estado  _detached_ cuando la transacción del método de lectura finaliza. En el caso de una creación el JavaBean creado pasa al estado _new_. Estos estados se prolongan durante toda la sesión de usuario de edición o creación de un Trabajo. Finalmente, cuando el usuario pulsa el botón Aceptar para persistir los cambios,  lo único que quedará es hacer un merge para que la entidad Trabajo vuelva al contexto de persistencia, es decir, pase al estado _managed_, y dejar que JTA ejecute el correspondiente commit en la sálida del método Java de la capa de Servicio.
 
-Esto es lo que sucede cuando pulsamos el botón +++<span class="boton">+++Aceptar+++</span>+++. El código fuente puede ser confuso en principio:
+Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar.
+
+El código fuente puede ser confuso en principio:
 
 [source,xhtml,indent=0]
 ----
