@@ -301,13 +301,15 @@ Como ejemplo aquí tenéis la página de consulta de drones disponibles en una f
 
 [source,xhtml,indent=0]
 ----
+<!-- EL ATRIBUTO template INDICA LA PLANTILLA EMPLEADA -->
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"                
                 template="/WEB-INF/plantillas/plantilla.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+                
+	<!-- DEFINICION AL PRINCIPIO DE LA O LAS ZONAS NO COMUNES -->
     <ui:define name="central">
     	<!-- estilo aplicable a la página -->
         <f:facet name="last">
@@ -379,6 +381,7 @@ Como ejemplo aquí tenéis la página de consulta de drones disponibles en una f
 			
 	</ui:define>
 	
+    <!-- DEFINICION DE OTRAS ZONAS COMUNES DE LA PANTALLA -->
 	<!-- contenido de zona logo -->
     <ui:define name="logo">
         <ui:include src="/WEB-INF/paneles/panelLogo.xhtml" />
