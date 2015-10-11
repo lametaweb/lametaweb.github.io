@@ -247,7 +247,7 @@ El botón +++<span class="boton">+++Aceptar+++</span>+++ persiste los cambios en
 
 Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar.
 
-El código fuente puede ser confuso en principio:
+El código fuente del botón puede ser confuso en principio:
 
 [source,xhtml,indent=0]
 ----
@@ -264,11 +264,13 @@ Veamos más detenidamente cada atributo del botón:
 
 El selector toma el conjunto de todos los elementos de entrada del formulario con el selector jQuery `:input`, y le aplica luego el selector jQuery `:not` para excluir los que tienen la clase `.notsend.` De modo que si asignamos a los tres campos de entrada de PuntoRuta esta clase evitaremos que intervengan en el submit generado al pulsar el botón Aceptar.
 
-* action: Indica la llamada a la capa de Servicio para persistir el Trabajo. Tenemos un mismo método tanto para la creación como para la edición de la entidad. Esto es posible porque como se ha comentado en JPA con un merge metemos en el contexto de persistencia tanto una entidad new como una detached.
+* action: Indica el método de la capa de Servicio que persiste el Trabajo, que como ya se ha indicado será el mismo tanto para la edición como para la creación.
 
-* oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las etiquetas de campos que ocupan una altura extra, _Descripción_ y _Puntos de Ruta_. El problema aquí es que en CSS no existe una manera de seleccionar un elemento conocido su hijo y tenemos que recurrir por tanto a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas un poco atípicas.
+* oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las labels de los campos que ocupan una altura extra en la pantalla: _Descripción_ y _Puntos de Ruta_. El problema aquí es que en la versión actual de CSS no existe una manera de seleccionar un elemento padre conocido su hijo y tenemos por tanto que recurrir a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas más eleboradas.
 
-Bien, hasta aquí los aspectos generales de la pantalla de detalle. A continuación y para concluir con este Post vemos cómo implementar una plantilla de Facelets.
+Bien, hasta aquí los aspectos generales de la pantalla de detalle. 
+
+Para concluir este Post veamos cómo implementar y usar las plantilla de Facelets.
 
 == Uso de plantillas: Una plantilla adaptativa para jDrone
 
