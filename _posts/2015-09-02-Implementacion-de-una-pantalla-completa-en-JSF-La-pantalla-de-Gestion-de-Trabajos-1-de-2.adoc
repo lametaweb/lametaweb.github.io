@@ -295,9 +295,9 @@ Por otro lado tenemos las páginas públicas de la aplicación, que van a usar l
     </ui:composition>
 ----
 
-El contenido de la zona de contenido variable, _central_, se define en cada página en general al principio para mayor claridad dado que aquí el orden no afecta. La zona del logo la hacemos también insertable aunque en todas las páginas aparecerá como un include, esto nos da la posibilidad de tener páginas especiales que prescindan del logo si por ejemplo necesitamos espacio extra.
+El contenido de la zona de contenido variable, _central_, se define en cada página en general al principio para mayor claridad dado que aquí el orden de aparición en el fichero XHTML no afecta. La zona del logo la haremos también insertable aunque en todas las páginas aparecerá como un include, sin embargo esto nos da la posibilidad de tener páginas especiales que prescindan del logo si por ejemplo fuera interesante disponer de un espacio de visualización extra.
 
-La página de consulta de drones disponibles en una fecha del Post anterior se ha movido desde _index.xhtml_ a _consulta-inicial.xhtml_ y tras adaptarla al uso de la plantilla queda así:
+Como ejemplo aquí tenéis la página de consulta de drones disponibles en una fecha del Post anterior, que se había movido desde _index.xhtml_ a _consulta-inicial.xhtml_, tras adaptarla al uso de la plantilla:
 
 [source,xhtml,indent=0]
 ----
