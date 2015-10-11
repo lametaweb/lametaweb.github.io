@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-11T10:00:32.452Z" />
+    <meta property="article:modified_time" content="2015-10-11T10:04:45.016Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla completa en JSF: La pantalla de Gestión de Trabajos (1 de 2).",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-completa-en-JSF-La-pantalla-de-Gestion-de-Trabajos-1-de-2.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-11T10:00:32.452Z",
+    "dateModified": "2015-10-11T10:04:45.016Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post analizaremos los aspectos generales implicados en la implementación de la funcionalidad de gestión / mantenimiento de la entidad Trabajo. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un..."
 }
@@ -525,7 +525,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <p>Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar. El bean de la capa de presentación, será una entidad <em>detached</em> en el caso de una edición y una entidad <em>new</em> en el caso de una creación. En el método de Servicio simplemente meteremos la entidad en el contexto de persistencia convirtiéndola en <em>managed</em>, y finalmente, antes de salir del método, JTA ordenará el commit para persistir todos los cambios o guardar la nueva entidad.</p>
 </div>
 <div class="paragraph">
-<p>Esto es lo que sucede cuando pulsamos el botón <span class="boton">Aceptar</span>. Su aspecto puede intimidar un poco a primera vista:</p>
+<p>Esto es lo que sucede cuando pulsamos el botón <span class="boton">Aceptar</span>. El código fuente puede ser confuso en principio:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -533,7 +533,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Bien, primero lo sencillo. Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback de la propia página. Esto dispara en el servidor un ciclo de vida completo de JSF. Se llevarán a cabo las conversiones, validaciones y actualización del Modelo para el subconjunto de valores que nos interesa, a continuación se ejecutará la llamada al método de servicio y se actualizará la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. Veamos más detenidamente cada atributo del botón:</p>
+<p>Bien, primero lo sencillo. Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback a la propia página. Esto dispara en el servidor un ciclo de vida completo de JSF. Se llevarán a cabo las conversiones, validaciones y actualización del Modelo para el subconjunto de valores que nos interesa, a continuación se ejecutará la llamada al método de servicio y se actualizará la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. Veamos más detenidamente cada atributo del botón:</p>
 </div>
 <div class="ulist">
 <ul>
