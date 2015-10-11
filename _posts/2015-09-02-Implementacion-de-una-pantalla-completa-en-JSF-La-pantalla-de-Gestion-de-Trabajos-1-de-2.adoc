@@ -245,14 +245,14 @@ En los dos casos anteriores podemos optar por prescindir del atributo `actionLis
 
 Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar. El bean de la capa de presentación, será una entidad _detached_ en el caso de una edición y una entidad _new_ en el caso de una creación. En el método de Servicio simplemente meteremos la entidad en el contexto de persistencia convirtiéndola en _managed_, y finalmente, antes de salir del método, JTA ordenará el commit para persistir todos los cambios o guardar la nueva entidad.
 
-Esto es lo que sucede cuando pulsamos el botón +++<span class="boton">+++Aceptar+++</span>+++. Su aspecto puede intimidar un poco a primera vista:
+Esto es lo que sucede cuando pulsamos el botón +++<span class="boton">+++Aceptar+++</span>+++. El código fuente puede ser confuso en principio:
 
 [source,xhtml,indent=0]
 ----
 <p:commandButton id="aceptar" value="Aceptar" action="#{trabajoBean.aceptar}" update="@(:input:not(.notsend)) mensajes" process="@(:input:not(.notsend))" oncomplete="ajustaPosicionEtiquetas();" />
 ----
 
-Bien, primero lo sencillo. Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback de la propia página. Esto dispara en el servidor un ciclo de vida completo de JSF. Se llevarán a cabo las conversiones, validaciones y actualización del Modelo para el subconjunto de valores que nos interesa, a continuación se ejecutará la llamada al método de servicio y se actualizará la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. Veamos más detenidamente cada atributo del botón:
+Bien, primero lo sencillo. Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback a la propia página. Esto dispara en el servidor un ciclo de vida completo de JSF. Se llevarán a cabo las conversiones, validaciones y actualización del Modelo para el subconjunto de valores que nos interesa, a continuación se ejecutará la llamada al método de servicio y se actualizará la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. Veamos más detenidamente cada atributo del botón:
 
 * process y update: El primero determina los elementos que enviamos y en segundo lo que actualizamos en la llamada Ajax. Lo interesante aquí es que se ha tenido que usar un selector complejo para definir el conjunto de elementos. El motivo de esto es que se ha usado un componente para maquetar la página que englobaba a la entidad Trabajo y también a sus PuntosRuta y como no puedo meter un formulario dentro de otro, tanto la entidad padre como las hijas están en el mismo formulario y de ahí que sea necesario filtrar lo que se envía al servidor. Cuando pulse Aceptar sólo deberé enviar al servidor los campos de la entidad Trabajo y excluir los tres campos de introducción de un PuntoRuta. Para esto uso la capacidad de PrimeFaces de usar selectores jQuery:
 
