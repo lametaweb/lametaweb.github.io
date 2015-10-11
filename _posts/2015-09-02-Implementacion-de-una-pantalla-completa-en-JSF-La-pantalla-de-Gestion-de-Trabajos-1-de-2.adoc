@@ -214,25 +214,38 @@ Como ya sabemos en una Initial Request solo se ejecutarán las fases Restore Vie
 </f:metadata>
 ----
 
-. Finalmente una vez que el framework ha creado la View con todos los componentes y los valores correspondientes la página es renderizada como XHTML y enviada al usuario.
+[start=5]
+. Finalmente una vez que el framework ha creado la View con todos los componentes y los valores correspondientes la página es renderizada como HTML y enviada al usuario.
 
 En este punto tenemos ya nuestra página lista para la creación o la edición de un Trabajo. El botón +++<span class="boton">+++Salir+++</span>+++ es simple, se trata de un típico botón de cancelación:
 
-`<p:button value="Salir" outcome="/trabajos.xhtml"/>`
+[source,xhtml,indent=0]
+----
+<p:button value="Salir" outcome="/trabajos.xhtml"/>
+----
 
-Ejecuta una navegación GET a la página de maestro. Esta simplicidad es posible porque la cancelación de la sesión de edición de un Trabajo no requiere ninguna acción adicional. Si precisaramos realizar alguna acción, por ejemplo para liberar recursos a nivel del ámbito de sesión o de aplicación, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, siempre usando un componente de tipo "command":
+Ejecuta una navegación GET (Initial Request) a la página de maestro. Esta simplicidad es posible porque la cancelación aquí no requiere de ninguna acción adicional. Si encambio necesitaramos realizar alguna acción, por ejemplo para liberar recursos de sesión, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, etc, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, ahora usando un componente commandButton o commandLink:
 
-* Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se ve afectado y conseguimos evitar la ejecución de conversiones y validaciones:
+. Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se ve implicado y conseguimos evitar la ejecución de conversiones y validaciones:
 
-`<p:commandButton value="Salir" process="@this" action="/trabajos.xhtml?faces-redirect=true" />`
+[source,xhtml,indent=0]
+----
+<p:commandButton value="Salir" process="@this" action="/trabajos.xhtml?faces-redirect=true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
+----
 
-* Configurar el botón con el modificador _inmmediate_ a true. De esta manera la accion asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, ignorando como en el caso anterior conversiones y validaciones:
+[start=2]
+. Configurar el botón con el modificador _inmmediate_ a true. De esta manera la accion asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, puenteando como en el caso anterior conversiones y validaciones:
 
-`<p:commandButton value="Salir" action="/trabajos.xhtml?faces-redirect=true" immediate="true" />`
+[source,xhtml,indent=0]
+----
+<p:commandButton value="Salir" action="/trabajos.xhtml?faces-redirect=true" immediate="true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
+----
 
-Es importante tener claro que durante una sesión de edición sólo tenemos que guardar los cambios en la correspondiente variable del Modelo en el backing bean, y llamar al método de la capa de Servicio para persistir los cambios sólo al final de la sesión, cuando el usuario pulse el botón Aceptar. La variable del backing bean será una entidad _detached_ en el caso de una edición y una entidad _new_ en el caso de una creación. En el método de Servicio simplemente metemos la entidad en el contexto de persistencia convirtiéndola en _managed_, y por último antes de salir del método JTA ordena el commit que persiste los cambios.
+En los dos casos anteriores podemos optar por prescindir del atributo `actionListener` y escribir la llamada al método `miAccionNecesaria` en el atributo `action`. Esto obliga a devolver la cadena `"/trabajos.xhtml?faces-redirect=true"` en el método. De todos modos como ya hemos comentado en el caso de la cancelación de la edición de la entidad Trabajo no es necesario la llamada a un método tras la cancelación.
 
-Nos queda el botón +++<span class="boton">+++Aceptar+++</span>+++. Su aspecto puede intimidar un poco a primera vista:
+Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar. El bean de la capa de presentación, será una entidad _detached_ en el caso de una edición y una entidad _new_ en el caso de una creación. En el método de Servicio simplemente meteremos la entidad en el contexto de persistencia convirtiéndola en _managed_, y finalmente, antes de salir del método, JTA ordenará el commit para persistir todos los cambios o guardar la nueva entidad.
+
+Esto es lo que sucede cuando pulsamos el botón +++<span class="boton">+++Aceptar+++</span>+++. Su aspecto puede intimidar un poco a primera vista:
 
 [source,xhtml,indent=0]
 ----
