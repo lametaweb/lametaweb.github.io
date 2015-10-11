@@ -272,7 +272,7 @@ Bien, hasta aquí los aspectos generales de la pantalla de detalle.
 
 Para concluir este Post veamos cómo implementar y usar las plantilla de Facelets.
 
-== Uso de plantillas: Una plantilla adaptativa para jDrone
+=== Uso de plantillas: Una plantilla adaptativa para jDrone
 
 Una interfaz adaptativa, en inglés _responsive_, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, smartphones... En una aplicación JSF una buena alternativa para esto es usar el componente _Grid CSS_ de Primefaces, que permite realizar la maquetación de las páginas del proyecto definiendo las zonas comunes: Cabecera, menú, barra de navegación, sides, zona central principal y pie. Asimismo, aunque no se ha incluido en jDrone, es interesante el uso de la clase CSS _ui-fluid_ que va a darnos una interfaz fluida cálculando la posición y tamaño de cada componente dependiente del dispositivo. Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y Primefaces. 
 
