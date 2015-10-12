@@ -407,13 +407,13 @@ Dentro de este panel he incluido una sencilla animación realizada con la librer
 No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna estiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código: `<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
 y `<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />`
 
-Con nuestra página de consulta ya maquetada lo siguiente es añadir el menú de opciones de la aplicación a la página. Optaremos por la clásica barra de menú de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da la solución, en este caso con el componente _<p:MenuBar...>_. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en nuestro programa, tiene casi 150 componentes. Usando este componente en un par de minutos dibujamos las opciones y submenús que tengamos previstos para la aplicación. Finalmente, para situar el menú en la página, lo metemos, al igual que el logo, en un panel, y lo situamos en la plantilla añadiendo a la misma un elemento _<ui:insert...>_.
+Vamos ahora con el menú de la aplicación. Optaremos por la clásica barra de menú al estilo de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da la respuesta, en este caso con el componente _<p:MenuBar...>_. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en *+++<span style="color:blue">+++j+++</span>+++drone*, tiene casi 150 componentes. Usando este componente, en un par de minutos tendremos un atractivo menú con todas las opciones y submenús. Finalmente, para situar el menú en la página lo implementamos, al igual que el logo, como un panel, y lo situamos en la plantilla añadiendo a la misma el correspondiente elemento _<ui:insert...>_.
 
-Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver el aspecto en pantalla. Personalmente no me convence el aspecto por defecto del menú por lo que acudimos de nuevo a Primefaces y vemos que es muy sencillo dar un aspecto distinto a los componentes simplemente eligiendo otro _Theme_. Además de paso activamos los iconos de FontAwesome añadiendo el correspondiente parámetro en el fichero _web.xml_ y así disponer de una mayor variedad de iconos.
+Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver el nuevo aspecto de la aplicación. Personalmente no me convence el estilo por defecto del menú por lo que acudimos de nuevo a Primefaces y vemos que es muy sencillo dar un aspecto distinto a los componentes simplemente eligiendo otro _Theme_. Además de paso activamos los iconos de FontAwesome añadiendo el correspondiente parámetro en el fichero _web.xml_ para disponer de una mayor variedad de iconos. Elegimos el _Theme bluesky_, más acorde con la Marca de la compañía cliente:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig005.png[]
 
-Para cambiar el _Theme_ tenemos que añadir una dependencia de Maven, elegimos el _Theme bluesky_, más acorde con la Marca de la compañía cliente:
+Para cambiar el _Theme_ tenemos primero que añadir una dependencia a Maven.
 
 [source,xml,indent=0]
 ----
@@ -424,7 +424,7 @@ Para cambiar el _Theme_ tenemos que añadir una dependencia de Maven, elegimos e
   </dependency>
 ----
 
-Y añadir un parámetro en el descriptor de despliegue, _web.xml_:
+Y luego añadir un parámetro en el descriptor de despliegue, _web.xml_:
 
 [source,xml,indent=0]
 ----
@@ -434,12 +434,11 @@ Y añadir un parámetro en el descriptor de despliegue, _web.xml_:
   </context-param>
 ----
 
-Guardamos los cambios. Si abrimos el fichero _pom.xml_ observamos que se muestra un error en la dependencia añadida, esto es debido a que esta dependencia no está en el repositorio Central. Tenemos por tanto que añadir el repositorio de Primefaces a nuestra configuración de Maven. Podemos hacerlo directamente desde la sugerencia que nos muestra Eclipse al poner el puntero del ratón sobre el error. Introducid los datos tal y como aparecen en la siguiente figura:
+Despues de añadir la dependencia y guardar los cambios, si abrís el fichero _pom.xml_ se muestrará un error en la dependencia añadida, esto es debido a que no se encuentra en el repositorio Central. Tenemos por tanto que añadir el repositorio de Primefaces a nuestra configuración de Maven. Podemos hacerlo directamente desde la sugerencia que nos muestra Eclipse al poner el puntero del ratón sobre el error. Introducid los datos tal y como aparecen en la siguiente figura:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig010.png[]
 
-Pulsamos _OK_ y _Finish_. Para afinar el estilo de la barra de menú aún más podemos modificar el estilo aplicado por el framework a los componentes que forman el menú. En la documentación de Primefaces aparecen estos estilos, pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox (F12) para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios on the fly.
-
+Pulsamos _OK_ y _Finish_. Para afinar el estilo de la barra de menú aún más podemos modificarlo como nos convenga usando CSS. En la documentación de Primefaces aparecen estos estilos, pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox (F12) para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios on the fly.
 
 Para estilizar los menús añadid al principio del fichero _plantilla.css_ lo siguiente: 
 
@@ -454,8 +453,8 @@ Para estilizar los menús añadid al principio del fichero _plantilla.css_ lo si
 }
 ----
 
-Desplegad los cambios en WildFly y comprobad que el nuevo aspecto de la pantalla sea similar a éste:
+Tras desplegar los cambios en WildFly vermos el aspecto final de la aplicación:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig015.png[]
 
-En el próximo Post terminaremos de analizar el código fuente de las pantallas de gestión de Trabajos, esta vez bajando al detalle, y analizando las técnicas más interesantes. Hasta pronto!
+En el próximo Post terminaremos de analizar el código fuente de las pantallas de mantenimiento de la entidad Trabajo. Hasta pronto!
