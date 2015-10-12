@@ -403,13 +403,9 @@ El logo se implementa en la página _panelLogo.xhtml_, con un elemento _<ui:comp
 
 Dentro de este panel he incluido una sencilla animación realizada con la librería Javascript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto con ella. Es importante conocer bien jQuery porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con Primefaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo jDrone. 
 
-WARNING: No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna estiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código:
-
-[source,xhtml,indent=0]
-----
-<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
-<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
-----
+[WARNING]
+No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna estiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código: `<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
+y `<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />`
 
 Con nuestra página de consulta ya maquetada lo siguiente es añadir el menú de opciones de la aplicación a la página. Optaremos por la clásica barra de menú de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da la solución, en este caso con el componente _<p:MenuBar...>_. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en nuestro programa, tiene casi 150 componentes. Usando este componente en un par de minutos dibujamos las opciones y submenús que tengamos previstos para la aplicación. Finalmente, para situar el menú en la página, lo metemos, al igual que el logo, en un panel, y lo situamos en la plantilla añadiendo a la misma un elemento _<ui:insert...>_.
 
