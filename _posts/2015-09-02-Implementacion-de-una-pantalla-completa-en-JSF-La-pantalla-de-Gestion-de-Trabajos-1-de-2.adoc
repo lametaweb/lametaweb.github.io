@@ -397,7 +397,7 @@ Como ejemplo aquí tenéis la página de consulta de drones disponibles en una f
 </ui:composition>
 ----
 
-Se tienen tres puntos de definición de contenido, _central_, donde se ha añadido el contenido de la página antigua,_menu_, donde incluiremos un menú como veremos a continuación, y _logo_ para el logo de la aplicación y de la empresa. 
+Se tienen tres puntos de definición de contenido, _central_, donde se ha añadido el contenido original de la página, _menu_, donde incluiremos el menú principal de la aplicación como veremos a continuación, y _logo_ para ubicar el logo de la aplicación y de la empresa. 
 
 El logo se implementa con un elemento _<ui:composition... >_ sin elementos `<ui:define...>` al contrario que el resto de páginas cliente de la plantilla. Se ha incluido aquí una sencilla animación realizada con la librería Javascript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto. Es muy importante conocerla bien porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con Primefaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo jDrone. 
 
