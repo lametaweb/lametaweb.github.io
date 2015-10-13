@@ -1,4 +1,4 @@
-= Desarrollo de una aplicación desde cero: Definición y creación del proyecto.
+= Desarrollo de una aplicación desde cero: Definición y creación del proyecto en Eclipse.
 La metaweb
 :hp-tags: Modelo de Dominio, Maven, Eclipse, Java EE, desde cero
 :published_at: 2015-05-17
