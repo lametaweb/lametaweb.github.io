@@ -15,7 +15,7 @@ En cuanto a la segunda cuestión las tres partes del patrón MVC se sitúan en J
 
 La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la aplicación es la siguiente:
 
-* Modelo: Es una representación del *modelo* (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean, también conocidos como backing beans. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
+* Modelo: Es una representación del *modelo* (lo escribo en negrita para distinguirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean, también conocidos como backing beans. El *modelo* tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:
 
 ** Parte de datos del *modelo*: Son los beans de entidad JPA de la capa de persistencia. En el Modelo se representan como atributos de los managed beans con el mismo tipo que los entity beans JPA.
 
@@ -23,8 +23,8 @@ La correspondencia entre cada parte M, V, y C y cada uno de los elementos de la 
 
 En resumen, el Modelo se implementa en los managed beans y es una representación o punto de acceso al *modelo* de la aplicación.
 
-* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
-	** Páginas xml facelets.
+* Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología Facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:
+	** Páginas xml Facelets.
     ** Ficheros de recursos para soporte multiidioma, etc.
     ** Clases representando conversores, validadores y listeners.
     ** Propiedades de la Vista en las clases managed bean.
@@ -37,7 +37,7 @@ En la figura siguiente podéis ver de manera gráfica el Modelo, la Vista y el C
 .Diagrama de capas para una aplicación Java EE básica
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig084.png[]
 
-El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el *modelo* de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como usabilidad o UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente y tunning de bases de datos, conocimientos adicionales en Oracle Forms para migraciones, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la página y cuyos expertises serían Javascript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.
+El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el *modelo* de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, Facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como usabilidad o UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente y tunning de bases de datos, conocimientos adicionales en Oracle Forms para migraciones, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la página y cuyos expertises serían JavaScript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.
 
 == MVC en marcha, el ciclo de vida de JavaServer Faces
 
@@ -45,7 +45,7 @@ Lo anterior nos da una idea de la estructura o aspecto estático. Sin embargo pa
 
 Existen dos ciclos de vida, uno corto y otro completo. El ciclo corto se compone de la primera y última fases del ciclo completo, que tiene seis fases. ¿Cuándo se dispara uno u otro? Bien, en JSF distinguimos dos tipos de requests:
 
-* Initial request: Es la petición GET que inicialmente hacemos hacia una página facelet, en general conteniendo un formulario, para mostrar como la respuesta dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
+* Initial request: Es la petición GET que inicialmente hacemos hacia una página Facelet, en general conteniendo un formulario, para mostrar como la respuesta dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.
 
 * Postback request: Es la petición que se realiza después de una initial request, en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.
 
@@ -53,11 +53,11 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 . Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto, FacesContext. La View es un objeto que contiene una representación en el lado del servidor del árbol de componentes DOM del lado del cliente/navegador. El objeto FacesContext representa el contexto de servidor que contiene todos los elementos para la gestión de la petición. Después de la creación de la View se salta a la última fase Render Response. En cambio, en una postback request la View ya existe (de la initial request que la precedió o de otra postback) y simplemente se restaura en el contexto con la View ya montada.
 
-. Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View.  Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response. Si existen componentes con el atributo immediate igual a true para ellos se adelantan a esta fase todas las fases excepto la última Render Response: Las conversiones y las validaciones, actualización del Modelo y la ejecución de eventos asociados. El uso del atributo immediate = true tiene distintas implicaciones típicas por lo tanto, dependiendo del componente o componentes con esta característica:
+. Apply Request Values: En esta fase sabemos que estamos en una postback request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View.  Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response. Si existen componentes con el atributo immediate igual a true para ellos se adelantan a esta fase todas las fases excepto la última Render Response: Las conversiones y las validaciones, actualización del Modelo y la ejecución de eventos asociados. El uso del atributo immediate = true tiene distintas implicaciones típicas por lo tanto, dependiendo del componente o componentes con esta característica:
 
-* En un fomulario con un componente de acción no immediate:
+* En un formulario con un componente de acción no immediate:
 
-	** En componentes de entrada, por ejemplo un inputText, las validaciones del conjunto de componentes immediate = true se realizan antes que las del resto. Si alguna o algunas fallan no se evaluan los componentes no immediate ya que se saltará a la fase Render Response. Es decir que puedo asignar inmmediate = true para priorizar validaciones en un formulario.
+	** En componentes de entrada, por ejemplo un inputText, las validaciones del conjunto de componentes immediate = true se realizan antes que las del resto. Si alguna o algunas fallan no se evalúan los componentes no immediate ya que se saltará a la fase Render Response. Es decir que puedo asignar immediate = true para priorizar validaciones en un formulario.
     
 * En un fomulario con un componente de acción immediate = true:
     
@@ -80,7 +80,7 @@ Veamos el ciclo completo indicando lo relativo al ciclo corto cuando proceda:
 
 * Si se devuelve la página del formulario ocurre como en el caso anterior.
 
-* Si se devuelve el nombre de una página facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.
+* Si se devuelve el nombre de una página Facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.
 
 * Si al igual que en el caso anterior se devuelve el nombre de una página, pero sin añadir la cadena "?faces-redirect=true", se crea y puebla una nueva View para la página en cuestión. Esto sería un Forward, que es algo considerado en general como una mala práctica en JSF2.
 
@@ -94,7 +94,7 @@ Cuando tengamos nuestra aplicación terminada, en el próximo post, afianzaremos
 
 == Montaje de la capa web
 
-Abrimos Eclipse para empezar a añadir los elementos a la capa web. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita.  Inicialmente sin embargo, para probar el despliegue de la aplicación, sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!". 
+Abrimos Eclipse para empezar a añadir los elementos a la capa web. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página Facelets en la Vsita.  Inicialmente sin embargo, para probar el despliegue de la aplicación, sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!". 
 
 Las tecnologías implicadas en esta capa son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto. Copiamos dentro del elemento _<dependencies>_ esto:
 
