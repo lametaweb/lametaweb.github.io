@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-con-JSF-y-PrimeFaces.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-13T16:59:16.493Z" />
+    <meta property="article:modified_time" content="2015-10-13T17:08:07.971Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla con JSF y PrimeFaces.",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-con-JSF-y-PrimeFaces.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-13T16:59:16.493Z",
+    "dateModified": "2015-10-13T17:08:07.971Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..."
 }
@@ -215,7 +215,7 @@ Si queréis ver o comparar la popularidad de alguna librería o tecnología usad
 </div>
 </div>
 <div class="paragraph">
-<p>Observamos una relación de asociación muchos a uno con la entidad <em>Drone</em> y otra de composición uno a muchos con la entidad <em>PuntoRuta</em>. Ambas relaciones deben ser mantenidas en la pantalla de detalle porque forman parte de la información contenida en la entidad <em>Trabajo</em>. La gestion de la relación con <em>Drone</em> la implementaremos con un componente <em>selectOneMenu</em> y la de la relación con los <em>PuntoRuta</em> con un componente <em>dataTable</em> conteniendo los componentes adicionales necesarios para añadir, quitar o editar puntos de ruta. El diseño de la pantalla de detalle sería este:</p>
+<p>Observamos una relación de asociación muchos a uno con la entidad <em>Drone</em> y otra de composición uno a muchos con la entidad <em>PuntoRuta</em>. Ambas relaciones deben ser mantenidas en la pantalla de detalle porque forman parte de la información contenida en la entidad <em>Trabajo</em>. La gestión de la relación con <em>Drone</em> la implementaremos con un componente <em>selectOneMenu</em> y la de la relación con los <em>PuntoRuta</em> con un componente <em>dataTable</em> conteniendo los componentes adicionales necesarios para añadir, quitar o editar puntos de ruta. El diseño de la pantalla de detalle sería este:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -247,10 +247,10 @@ Si queréis ver o comparar la popularidad de alguna librería o tecnología usad
 </div>
 </div>
 <div class="paragraph">
-<p>Sin embargo, actualizar JSF desde la versión 2.1 a la 2.2 no es tan simple. El procedimiento para añadir el nuevo módulo de servidor dista de ser directo. Se intentó seguir el procedimiento existente en internet sin resultados positivos: En resumen el proceso pasa por bajar de GitHub una aplicación Maven que genera un fichero CLI que realiza el deploy de los tres slots correspondientes a los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que el script está actualizado para operar con las versiones iniciales del servidor Wildfly y no con JBoss EAP.</p>
+<p>Sin embargo, actualizar JSF desde la versión 2.1 a la 2.2 no es tan simple. El procedimiento para añadir el nuevo módulo de servidor dista de ser directo. Se intentó seguir el procedimiento existente en internet sin resultados positivos: En resumen el proceso pasa por bajar de GitHub una aplicación Maven que genera un fichero CLI que realiza el deploy de los tres slots correspondientes a los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que el script está actualizado para operar con las versiones iniciales del servidor WildFly y no con JBoss EAP.</p>
 </div>
 <div class="paragraph">
-<p>A la vista de lo anterior aprovecharemos esta dificultad y la convertiremos en ventaja: Optamos por instalar el nuevo servidor Wildfly en su última versión disponible, en estos momentos la 9.0.1, y así tener a nuestra disposición una plataforma Java EE 7 completa. Bien, lo primero es descargar el fichero de instalación del servidor desde <a href="http://wildfly.org/downloads/">esta página</a>. Tenéis que elegir la primera de las opciones en la lista, etiquetada con <em>Java EE7 Full &amp; Web Distribution</em>.</p>
+<p>A la vista de lo anterior aprovecharemos esta dificultad y la convertiremos en ventaja: Optamos por instalar el nuevo servidor WildFly en su última versión disponible, en estos momentos la 9.0.1, y así tener a nuestra disposición una plataforma Java EE 7 completa. Bien, lo primero es descargar el fichero de instalación del servidor desde <a href="http://wildfly.org/downloads/">esta página</a>. Tenéis que elegir la primera de las opciones en la lista, etiquetada con <em>Java EE7 Full &amp; Web Distribution</em>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -259,7 +259,7 @@ Si queréis ver o comparar la popularidad de alguna librería o tecnología usad
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-En el momento de revisar este Post ya estaba disponible la versión 10 de Wilfly, así que instaladla si queréis en vez de la versión 9 para tener las últimas correcciones de bugs y últimas versiones de las librerías. Entiendo que no debe afectar en cuanto a instalación e integración con Eclipse. Descargaos también los <em>Quickstarts</em> porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea su naturaleza.
+En el momento de revisar este Post ya estaba disponible la versión 10 de WildFly, así que instaladla si queréis en vez de la versión 9 para tener las últimas correcciones de bugs y últimas versiones de las librerías. Entiendo que no debe afectar en cuanto a instalación e integración con Eclipse. Descargaos también los <em>Quickstarts</em> porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementación de un nuevo proyecto sea cual sea su naturaleza.
 </td>
 </tr>
 </table>
@@ -277,10 +277,10 @@ En el momento de revisar este Post ya estaba disponible la versión 10 de Wilfly
 <p>Se ha refactorizado además el ciclo de construcción de modo que ahora existe un profile <em>despliegue-recursos</em> que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados del servidor por cualquier motivo. Cread un nueva configuración de ejecución para este profile: Botón derecho sobre proyecto y <em>Run As</em> &gt; <em>Run Configurations&#8230;&#8203;</em>  Botón derecho sobre <em>Maven build</em> &gt; <em>New</em>.  En la entrada <em>Goals</em> escribid <code>clean install -Pdespliegue-recursos</code> y dad un nombre al nuevo perfil.</p>
 </div>
 <div class="paragraph">
-<p>En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raiz del fichero <em>faces-config.xml</em>. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción <em>JSF Implementation Library</em> dejadla así <em>Type</em> &gt; <em>Disable Library Configuration</em>.</p>
+<p>En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raíz del fichero <em>faces-config.xml</em>. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción <em>JSF Implementation Library</em> dejadla así <em>Type</em> &gt; <em>Disable Library Configuration</em>.</p>
 </div>
 <div class="paragraph">
-<p>Para comprobar que Javaserver Faces se actializó correctamente realicemos unas sencillas modificaciones sobre nuestra página <em>index.xhtml</em>:</p>
+<p>Para comprobar que JavaServer Faces se actializó correctamente realicemos unas sencillas modificaciones sobre nuestra página <em>index.xhtml</em>:</p>
 </div>
 <div class="ulist">
 <ul>
