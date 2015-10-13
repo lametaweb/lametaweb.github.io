@@ -8,11 +8,11 @@ En esta segunda entrada terminaremos de instalar y configurar el software del en
 
 == Preliminares
 
-Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando al máximo la complejidad de las tecnologías empleadas. Por ejemplo cuando creamos un web service el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API REST e implementar cada operación.
+Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando al máximo la complejidad de las tecnologías empleadas. Por ejemplo cuando creamos un Web service el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API REST e implementar cada operación.
 
 Existen otros IDEs además de Eclipse. En mi experiencia Netbeans es un buen entorno, con muchas ayudas, y maduro en su versión 8, además tiene detrás a una gran comunidad y a Oracle. Como dato en contra, durante el desarrollo de un proyecto mediano, en la versión 8.0, de cuando en cuando se quedaba "pensando" unos segundos. Por otro lado tenemos a JDeveloper, que es el IDE oficial de Oracle, muy potente y una opción recomendable para nuevos proyectos de gran tamaño, y si desarrollamos contra Oracle, y/o el servidor Weblogic. Para proyectos Spring está Eclipse STS que ofrece potentes wizards. Si nuestro servidor es JBoss o el nuevo WildFly podemos optar la solución adoptada aquí, Eclipse + JBoss Tools, o directamente por JBoss Developer Studio. La ventaja de optar por Eclipse es que podemos personalizar nuestro entorno instalando los plugins que elijamos. En definitiva tenemos múltiples opciones y la decisión muchas veces dependerá de las tecnologías que elijamos o nos imponga el tipo de proyecto o el propio cliente.
 
-Ok, antes de nada vamos a crear una sencilla estructura de carpetas donde ir guardardo el trabajo, y donde instalar el software. Por ejemplo la siguiente:
+Ok, antes de nada vamos a crear una sencilla estructura de carpetas donde ir guardando el trabajo, y donde instalar el software. Por ejemplo la siguiente:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig009.png[]
 
@@ -20,7 +20,7 @@ Bajo la carpeta `TALLER` creamos las siguientes:
 
 * `BD`: Para las bases de datos que vayamos instalando: MySQL, Derby, etc.
 * `IDE`: Para la instalación del IDE Eclipse. Instalad otros si queréis echarles un vistazo.
-* `Servidor`: Aquí irá nuestro JBoss EAP edición Comunity. Aunque si en el futuro vemos algo particular de Java EE 7 instalaremos WildFly o GlassFish. 
+* `Servidor`: Aquí irá nuestro JBoss EAP edición Community. Aunque si en el futuro vemos algo particular de Java EE 7 instalaremos WildFly o GlassFish. 
 * `Workspace`: Para guardar los proyectos desarrollados en Eclipse.
 
 El fichero comprimido es simplemente una forma rápida de hacer una copia de seguridad del workspace.
@@ -47,7 +47,7 @@ Esto nos lleva a la página del servidor JBoss para desarrolladores.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig022.png[]
 
-Elegimos nuestro sistema operativo y pulsamos sobre el enlace del installer. Si no estamos ya logados saltaremos a la página de introducción de usuario y contrseña. Procedemos a la creación de una cuenta pulsando el enlace `Create Account`.
+Elegimos nuestro sistema operativo y pulsamos sobre el enlace del installer. Si no estamos ya logados saltaremos a la página de introducción de usuario y contraseña. Procedemos a la creación de una cuenta pulsando el enlace `Create Account`.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig025.png[]
 
@@ -74,7 +74,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 == Probando nuestro nuevo entrono de trabajo
 
-Comprobaremos que la instalación es correcta desplegando la aplicación web _Hello World!_ localizada en los ejemplos recién instalados. Para arrancar manualmente el servidor abrimos una consola de comandos, vamos a la carpeta `bin\` dentro de la carpeta del servidor y lo iniciamos escribiendo `standalone.bat`. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejectuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.
+Comprobamos que la instalación es correcta desplegando la aplicación web _Hello World!_ localizada en los ejemplos recién instalados. Para arrancar manualmente el servidor abrimos una consola de comandos, vamos a la carpeta `bin\` dentro de la carpeta del servidor y lo iniciamos escribiendo `standalone.bat`. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejecuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.
 
 NOTE: Si antes no instalaste los ejemplos del servidor puedes bajarlos ahora en el enlace https://github.com/jboss-developer/jboss-eap-quickstarts/archive/6.3.0.GA.zip[jboss-eap-quickstarts-6.3.0.GA.zip]. Otra alternativa es obtener la aplicación desde Maven a partir del arquetipo `maven-archetype-site-simple`. Puedes consultar el Post anterior para recordar cómo lo hicimos.
 
@@ -90,7 +90,7 @@ Abrimos un navegador y vamos a la dirección `http://localhost:8080/jboss-hellow
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig050.png[]
 
-¿Y para desinstalar la aplicación? Otra única linea de comando: `mvn jboss-as:undeploy`. Refrescamos la ventana del navegador para ver el error 404 de recurso no disponible. 
+¿Y para desinstalar la aplicación? Otra única línea de comando: `mvn jboss-as:undeploy`. Refrescamos la ventana del navegador para ver el error 404 de recurso no disponible. 
 
 El plugin `jboss-as` es capaz de gestionar desde Maven cualquier operación contra el servidor JBoss. Para usarlo sobre un proyecto como acabamos de hacer sólo es necesario declararlo en la sección `<build>` del fichero `pom.xml`. Otra alternativa es incluir el goal de despliegue en la phase final del ciclo por defecto, la fase install, en el fichero pom.xml, y ejecutar entonces el comando mvn clean install, que ahora sólo hace referencia a las dos fases. En el fichero pom.xml tendríamos que tener lo siguiente:
 
@@ -125,11 +125,11 @@ El plugin `jboss-as` es capaz de gestionar desde Maven cualquier operación cont
 
 Paremos el servidor. Como fue arrancado desde una consola de comandos lo paramos cerrándola. Nos vamos a la ventana de la consola y pulsamos `Ctrl + C`. Escribimos `S` si nos pregunta si queremos finalizar el archivo por lotes y escribimos `exit` para cerrar la ventana.
 
-Vamos ahora a reemplazar la ventana de comando por nuestro IDE para cargar el proyecto y probarlo. Abrimos Eclipse. Una vez dentro del IDE lo primero que hacemos es asegurarnos de que el JRE que se usará sea el contenido en el JDK instalado y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK, como cualquier herrmienta de desarrollo de este tipo, y no le basta sólo con un JRE. Me voy a `Windows > Preferences > Java > Installed JREs` y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.
+Vamos ahora a reemplazar la ventana de comando por nuestro IDE para cargar el proyecto y probarlo. Abrimos Eclipse. Una vez dentro del IDE lo primero que hacemos es asegurarnos de que el JRE que se usará sea el contenido en el JDK instalado y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK, como cualquier herramienta de desarrollo de este tipo, y no le basta sólo con un JRE. Me voy a `Windows > Preferences > Java > Installed JREs` y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig051.png[]
 
-NOTE: Si vamos a experimentar con los ejemplos del servidor en Eclipse es aconsejable comprimir antes la carpeta raiz que los contiene y tener así una copia de seguridad que nos permita recuperar el contenido de los ficheros originales cuando lo necesitemos.
+NOTE: Si vamos a experimentar con los ejemplos del servidor en Eclipse es aconsejable comprimir antes la carpeta raíz que los contiene y tener así una copia de seguridad que nos permita recuperar el contenido de los ficheros originales cuando lo necesitemos.
 
 El siguiente paso es importar el proyecto a Eclipse. Me voy a `File > Import > Maven > Existing Maven Projects`. Click en `Next` y luego en `Browse...` localizamos la carpeta del proyecto en `C:\TALLER\Servidor\EAP-6.3.0\jboss-eap-quickstarts-6.3.0.GA\helloworld\`.En el recuadro `Projects` se seleccionará automáticamente el fichero POM del proyecto. Pulsamos en `Finish` y se nos pregunta si deseamos que nos muestre el cheatsheet que es el conjunto de notas del proyecto, si contestamos afirmativamente luego podemos cerrarlas.
 
@@ -169,7 +169,7 @@ Podemos ver los diferentes componentes contenidos en las JBoss Tools en la barra
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig058.png[]
 
-En la URL http://tools.jboss.org/features/[JBoss Tools - Features] podemos ver la cantidad de tecnologías dentro y fuera del estándar Java EE para las que nos ofrece soporte. La parte de gestión del servidor lo proporciona se presenta en el enlace _Server Tooling_. El resto de características son muy interesantes, tenemos soporte para Hibernate (Persistencia) con ayudas como la generación automática de Entities a partir de la base de datos o un editor de Criteria y otro para consultas HQL. También hay soporte para CDI a la hora de escribir el código para nuestros beans, o soporte para Arquillian, un framework para pruebas unitarias en aplicaciones web empresariales. Para el aprendizaje de todas estas tecnologías el secreto es el mismo: Lectura de teoría básica para empezar, a continuación montar un aplicación básica y practicar y practicar tocando alli y allá y viendo los efectos producidos, y vuelta a la documentación para consultar, en un proceso ciclico que nos dará cada vez más confianza en el uso de esa tecnología.
+En la URL http://tools.jboss.org/features/[JBoss Tools - Features] podemos ver la cantidad de tecnologías dentro y fuera del estándar Java EE para las que nos ofrece soporte. La parte de gestión del servidor lo proporciona se presenta en el enlace _Server Tooling_. El resto de características son muy interesantes, tenemos soporte para Hibernate (Persistencia) con ayudas como la generación automática de Entities a partir de la base de datos o un editor de Criteria y otro para consultas HQL. También hay soporte para CDI a la hora de escribir el código para nuestros beans, o soporte para Arquillian, un framework para pruebas unitarias en aplicaciones web empresariales. Para el aprendizaje de todas estas tecnologías el secreto es el mismo: Lectura de teoría básica para empezar, a continuación montar un aplicación básica y practicar y practicar tocando aquí y allá y viendo los efectos producidos, y vuelta a la documentación para consultar, en un proceso ciclico que nos dará cada vez más confianza en el uso de esa tecnología.
 
 Para instalar las Tools abrimos Eclipse y vamos a la opción del menú _Help > Eclipse Marketplace_. En la entrada _Find_ escribimos `JBoss Tools (Luna)` y en unos segundos aparecerá la entrada en la lista de productos, seleccionar y pulsar _Install_ para que comience la instalación. En la siguiente pantalla dejamos marcados todos los plugins y pulsamos _Confirmar_.
 
@@ -181,7 +181,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Para acceder de nuevo a la pantalla pulsaremos sobre el iconoimage:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig075.png[]en la barra de herramientas.
 
-Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación _Hello world!_ para que no entre en conflicto con el nuevo despliegue automático. Abrimos una última vez una ventana de consola para esto, y ejecutamos el comando standalone.bat de la carpeta del sevidor para iniciarlo.
+Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación _Hello world!_ para que no entre en conflicto con el nuevo despliegue automático. Abrimos una última vez una ventana de consola para esto, y ejecutamos el comando standalone.bat de la carpeta del servidor para iniciarlo.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig076.png[]
 
