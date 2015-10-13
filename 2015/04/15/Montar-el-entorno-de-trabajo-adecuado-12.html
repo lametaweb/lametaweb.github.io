@@ -36,7 +36,7 @@
     <meta property="og:description" content="Comienza aquí este blog sobre desarrollo Web en Java. La idea es que se convierta en un lugar para explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web alrededor de Java EE, y donde desmitificar el desarrollo sobre..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html" />
     <meta property="article:published_time" content="2015-04-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-05T20:22:44.902Z" />
+    <meta property="article:modified_time" content="2015-10-13T18:30:11.872Z" />
     <meta property="article:tag" content="JDK" />
     <meta property="article:tag" content="JRE" />
     <meta property="article:tag" content="Maven" />
@@ -62,7 +62,7 @@
     "headline": "Montar el entorno de trabajo adecuado (1/2)",
     "url": "http://www.lametaweb.com/2015/04/15/Montar-el-entorno-de-trabajo-adecuado-12.html",
     "datePublished": "2015-04-14T22:00:00.000Z",
-    "dateModified": "2015-10-05T20:22:44.902Z",
+    "dateModified": "2015-10-13T18:30:11.872Z",
     "keywords": "JDK,  JRE,  Maven,  Java EE",
     "description": "Comienza aquí este blog sobre desarrollo Web en Java. La idea es que se convierta en un lugar para explorar las últimas tecnologías y herramientas del ecosistema de desarrollo web alrededor de Java EE, y donde desmitificar el desarrollo sobre..."
 }
@@ -167,7 +167,7 @@
 <p>Un panorama muy prometedor al que además hay que sumar por un lado la velocidad a la que aparecen y se mejoran las herramientas de desarrollo, con ejemplos como JRebel que evita los redeploys, XRebel para afinar el rendimiento del site, JBoss Tools con ayudas como el editor de HQL, Gradle como alternativa a Maven que evita el XML a favor del más flexible Groovy, etc, y por otro lado la gran actividad que actualmente existe en el JCP en la definición y mejora de las JRS para el futuro estándar Java EE 8, que estará listo probablemente para finales del año que viene, incluyendo por ejemplo MVC 1.0, una nueva tecnología de interfaz de usuario que complementa a JSF, estandarización de la seguridad con Java EE Security API 1.0 o procesamiento directo del contenido JSON con JSON Binding 1.0.</p>
 </div>
 <div class="paragraph">
-<p>Para arrancar, en primer lugar, vamos a definir e instalar en nuestra máquina un entorno de trabajo adecuado, lo más parecido posible a lo que nos podamos encontrar hoy en una software factory sobre Java EE. Y a continuación montaremos una mini aplicación con capa de presentación, negocio y datos. Lo vamos a hacer partiendo de cero y sin ningún tipo de asistente, de modo que consigamos desmitificar la creación de una aplicación Java EE por capas y ganar así la confianza necesaria para seguir, en sucesivos posts, experimentando con el amplio abanico de tecnologías y herramientas disponibles.</p>
+<p>Para arrancar, en primer lugar, vamos a definir e instalar en nuestra máquina un entorno de trabajo adecuado, lo más parecido posible a lo que nos podamos encontrar hoy en una software factory sobre Java EE. Y a continuación montaremos una mini aplicación con capa de presentación, negocio y datos. Lo vamos a hacer partiendo de cero y sin ningún tipo de asistente, de modo que consigamos desmitificar la creación de una aplicación Java EE por capas y ganar así la confianza necesaria para seguir, en sucesivos Posts, experimentando con el amplio abanico de tecnologías y herramientas disponibles.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -228,7 +228,7 @@ En la lista de aplicaciones instaladas no aparecen de forma explícita los JDKs 
 </table>
 </div>
 <div class="paragraph">
-<p>En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desintalando el resto.</p>
+<p>En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desistalando el resto.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -261,7 +261,7 @@ En la lista de aplicaciones instaladas no aparecen de forma explícita los JDKs 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Siempre que sea posible instalad el sistema operativo (menos el teclado para no perder la eñe, acentos, etc) y vuestras herrmientas de desarrollo en el idioma Inglés. Vuestras consultas en Google devolveran muchos más resultados cuando busquemos por un mensaje de error o por alguna opción de menú en Inglés. Y creedme, cuando se está desarrollando un proyecto se tira mucho de Google.
+Siempre que sea posible instalad el sistema operativo (menos el teclado para no perder la eñe, acentos, etc) y vuestras herrmientas de desarrollo en el idioma Inglés. Vuestras consultas en Google devolverán muchos más resultados cuando busquemos por un mensaje de error o por alguna opción de menú en Inglés. Y creedme, cuando se está desarrollando un proyecto se tira mucho de Google.
 </td>
 </tr>
 </table>
@@ -454,7 +454,7 @@ Es importante emplear un poco de nuestro tiempo ahora en entender los conceptos 
 </table>
 </div>
 <div class="paragraph">
-<p>Una vez en la dirección anterior nos vamos directamente al tercer apartado <em>Creating a Project</em>. Lo que vamos a hacer es crear un proyecto <em>Hola mundo!</em> sin escribir ni una sola línea de código. Es otra de las capacidades de Maven, nos permite, a partir de los llamados arquetipos, comenzar un nuevo proyecto a partir de una plantilla. Hay muchos arquetipos, creados por el equipo de Maven o por otras empresas. Nosotros mismos podemos también crear uno, de hecho las empresas crean arquetipos para disponer de puntos de partida óptimos para sus nuevos proyectos. Los arquetipos están en los repositorios, que son almaceneces gestionados por Maven, donde también existen elementos de otra naturaleza como librerías, nuestros propios wars, etc. A todos estos elementos Maven los denomina artefactos. Un arquetipo es por tanto un artefacto. Bien, vamos con el ejercicio, abrimos una ventana de comandos, creamos una carpeta, por ejemplo <em>c:\prueba-maven</em>, y nos situamos dentro de ella. A continuación escribimos lo siguiente:</p>
+<p>Una vez en la dirección anterior nos vamos directamente al tercer apartado <em>Creating a Project</em>. Lo que vamos a hacer es crear un proyecto <em>Hola mundo!</em> sin escribir ni una sola línea de código. Es otra de las capacidades de Maven, nos permite, a partir de los llamados arquetipos, comenzar un nuevo proyecto a partir de una plantilla. Hay muchos arquetipos, creados por el equipo de Maven o por otras empresas. Nosotros mismos podemos también crear uno, de hecho las empresas crean arquetipos para disponer de puntos de partida óptimos para sus nuevos proyectos. Los arquetipos están en los repositorios, que son almacenes gestionados por Maven, donde también existen elementos de otra naturaleza como librerías, nuestros propios wars, etc. A todos estos elementos Maven los denomina artefactos. Un arquetipo es por tanto un artefacto. Bien, vamos con el ejercicio, abrimos una ventana de comandos, creamos una carpeta, por ejemplo <em>c:\prueba-maven</em>, y nos situamos dentro de ella. A continuación escribimos lo siguiente:</p>
 </div>
 <div class="paragraph">
 <p><span class="small"><code>mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</code></span></p>
@@ -466,7 +466,7 @@ Es importante emplear un poco de nuestro tiempo ahora en entender los conceptos 
 <p><code>mvn</code>: Es el comando que invoca a Maven.</p>
 </div>
 <div class="paragraph">
-<p><code>archetype:generate</code>: Indica lo que queremos que haga Maven. En este caso le estamos diciendo que ejecute el goal <code>generate</code> del plugin <code>archetype</code>. Los plugins (de Maven, no confundir con los de Eclipse) son las unidades que continen los goals, que representan lo que podemos pedir a Maven que haga por nosotros, en este caso generar un proyecto a partir de un arquetipo.</p>
+<p><code>archetype:generate</code>: Indica lo que queremos que haga Maven. En este caso le estamos diciendo que ejecute el goal <code>generate</code> del plugin <code>archetype</code>. Los plugins (de Maven, no confundir con los de Eclipse) son las unidades que contienen los goals, que representan lo que podemos pedir a Maven que haga por nosotros, en este caso generar un proyecto a partir de un arquetipo.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -531,7 +531,7 @@ Existen dos tipos de repositorio: Local y remoto. El local está en nuestro orde
 <p><a href="http://maven.apache.org/guides/introduction/introduction-to-archetypes.html">Arquetipos</a>.</p>
 </li>
 <li>
-<p><a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">Fichero POM</a>: Super POM, POM minimo, herencia, agregación y variables</p>
+<p><a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">Fichero POM</a>: Super POM, POM mínimo, herencia, agregación y variables</p>
 </li>
 <li>
 <p><a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html">Estructura de directorios de proyecto</a>.</p>
@@ -545,7 +545,7 @@ Existen dos tipos de repositorio: Local y remoto. El local está en nuestro orde
 </ol>
 </div>
 <div class="paragraph">
-<p>El mayor valor de Maven a mi parecer es haber sabido reunir un conjunto completo de estándares de gestión del desarrollo de un proyecto, desde las pruebas unitarias hasta el despliegue en producción pasando por los tests de integración en una única herramienta de código abierto y extensible. Es el motivo de que  haya sustitido a Ant+Ivy y de que conviva con un único compitidor, más joven, Gradle, una opción muy válida en proyectos nuevos y que ofrece un muy buen compromiso entre flexibilidad y simplicidad al sustituir el XML por el lenguaje Groovy.</p>
+<p>El mayor valor de Maven a mi parecer es haber sabido reunir un conjunto completo de estándares de gestión del desarrollo de un proyecto, desde las pruebas unitarias hasta el despliegue en producción pasando por los tests de integración en una única herramienta de código abierto y extensible. Es el motivo de que  haya sustituido a Ant+Ivy y de que conviva con un único competidor, más joven, Gradle, una opción muy válida en proyectos nuevos y que ofrece un muy buen compromiso entre flexibilidad y simplicidad al sustituir el XML por el lenguaje Groovy.</p>
 </div>
 <div class="paragraph">
 <p>Y hasta aquí la primera entrada del Blog! En la siguiente terminaremos de montar y configurar nuestro banco de trabajo Java EE y lo dejaremos listo para crear la miniaplicación sobre la que recorrer las distintas tecnologías de la Web.</p>
