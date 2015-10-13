@@ -1,4 +1,4 @@
-= Diseño e implementación de un servicio RESTful para la pantalla de Gestión de Trabajos.
+= Diseño e implementación de un servicio web RESTful para el mantenimiento de la entidad Trabajo.
 La metaweb
 :hp-tags: RESTful, REST
 :published_at: 2015-10-10
