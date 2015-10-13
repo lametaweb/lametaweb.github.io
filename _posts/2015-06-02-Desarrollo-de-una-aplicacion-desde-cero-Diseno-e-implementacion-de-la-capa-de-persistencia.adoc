@@ -17,11 +17,11 @@ En el plano tecnológico tenemos que definir lo siguiente:
 
 * El gestor de base de datos: Usamos una base de datos Derby embebida, lo que nos permite simplificar de momento la capa de datos del proyecto evitando la necesidad de instalar un servidor de base de datos, ya que el gestor de base de datos está contenido en este caso en un archivo jar, junto con el driver. Por otro lado con Derby podemos tener el esquema de la base de datos, es decir donde residen las tablas, en memoria o en el disco duro. Nosotros elegimos esta última opción para tener la posibilidad de explorar los elementos que hibernate generará de forma automática. No he querido usar la base de datos H2, que trae puesta el servidor JBoss EAP, similar a la base de datos Derby, para que veamos también como desplegar recursos en el servidor usando Maven.
 
-¿Y qué elementos tendremos que añadir a la capa de persistencia? Pues por un lado un fichero de configuración, donde definimos todo lo relevante, y que leerá Hibernate, y por otro las clases del mapeo objeto relacional, que serán tres: Drone, Trabajo y PuntoRuta. Y no hay más. Los que conozcáis EJB 2 estaréis de acuerdo conmigo en que ahora afortunadamente todo es es mucho más simple y limpio.
+¿Y qué elementos tendremos que añadir a la capa de persistencia? Pues por un lado un fichero de configuración, donde definimos todo lo relevante, y que leerá Hibernate, y por otro las clases del mapeo objeto relacional, que serán tres: Drone, Trabajo y PuntoRuta. Y no hay más. Los que conozcáis EJB 2 estaréis de acuerdo conmigo en que ahora afortunadamente todo es mucho más simple y limpio.
 
 == La configuración
 
-Vamos primero con la configuración. El fichero de configuración de la unidad de persitencia es _persistence.xml_. La especificación JPA 2 (JSR-338) permite desplegar clases de persistencia fuera de un empaquetado JAR, directamente dentro del WAR de nuestra aplicación. En este caso se indica que el fichero _persistence.xml_ debe situarse en la carpeta _WEB-INF/classes/META-INF/_. Por lo tanto, y con arreglo a la configuración por defecto de Maven para los ficheros de recursos, en nuestro proyecto tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero con la opción de menú _New > Other... > XML > XML File_.
+Vamos primero con la configuración. El fichero de configuración de la unidad de persistencia es _persistence.xml_. La especificación JPA 2 (JSR-338) permite desplegar clases de persistencia fuera de un empaquetado JAR, directamente dentro del WAR de nuestra aplicación. En este caso se indica que el fichero _persistence.xml_ debe situarse en la carpeta _WEB-INF/classes/META-INF/_. Por lo tanto, y con arreglo a la configuración por defecto de Maven para los ficheros de recursos, en nuestro proyecto tendremos que crear el fichero en la carpeta _src\main\resources\META-INF\_. Creamos el fichero con la opción de menú _New > Other... > XML > XML File_.
 
 
 .Fichero de configuración de persistencia
@@ -56,11 +56,11 @@ Copiamos y pegamos el siguiente contenido en el fichero persistence.xml:
 Veamos el significado de cada elemento:
 
 * La primera línea indica que se trata de un fichero XML.
-* *<persistence>*: Es el elemento raíz y declara los diferentes espacios de nombres que contienen las reglas de escritura del documento y además indica la versión JPA utilizada, en este caso la 2.0, que es la que correspende a Java EE 6. Dentro del elemento raíz podemos definir varias de unidades de persistencia. Nosotros queremos mapear nuestros objetos en un único lugar y de un mismo modo por lo que crearemos una única unidad.
+* *<persistence>*: Es el elemento raíz y declara los diferentes espacios de nombres que contienen las reglas de escritura del documento y además indica la versión JPA utilizada, en este caso la 2.0, que es la que corresponde a Java EE 6. Dentro del elemento raíz podemos definir varias de unidades de persistencia. Nosotros queremos mapear nuestros objetos en un único lugar y de un mismo modo por lo que crearemos una única unidad.
 * *<persistence-unit>*: Describe la unidad de persistencia, que es el mecanismo que genera el contexto de persistencia donde residen nuestros beans persistentes. El atributo _name_ lo usaremos para referirnos a ella desde el código. Por otro lado el atributo _transaction-type_ provee de la tecnología JTA para la gestión automática de las transacciones.
 * *<jta-data-source>*: Define el nombre JNDI del origen de datos, un recurso de servidor a través del cual nuestra aplicación accede a la base de datos. Más adelante veremos como instalarlo. El nombre JNDI seguirá el formato java:jboss/datasources/<nombre_origen_datos>.
 * *<exclude-unlisted-classes>*: Evita tener que nombrar en el fichero las clases persistentes estableciendo que todas las clases anotadas como entidades pertenecerán a este contexto de persistencia.
-* *<properties>*: Propiedades para el proveedor de peristencia elegido, en nuestro caso Hibernate. Suministramos dos propiedades:
+* *<properties>*: Propiedades para el proveedor de persistencia elegido, en nuestro caso Hibernate. Suministramos dos propiedades:
 	** _hibernate.dialect_ indica al proveedor que la base de datos es Derby.
 	** _hibernate.hbm2ddl.auto_ indica al proveedor que genere los elementos del esquema de la base de datos de forma automática a partir de la información de las entidades persistentes de nuestro código fuente. O sea que crea la base de datos por nosotros!.
 
@@ -153,7 +153,7 @@ Las propiedades tienen dos usos:
 
 == Diseño de entidades persistentes
 
-Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un POJO (Plain Java Object) con anotaciones para el mapeo de los atributos de la propia entidad y de las relaciones con el resto de entidades.
+Vamos con las clases de persistencia. Tendremos tres clases: Drone, Trabajo y PuntoRuta. Cada clase será básicamente un JavaBean con anotaciones para el mapeo de los atributos de la propia entidad y de las relaciones con el resto de entidades.
 
 Partiendo del trabajo de análisis la información que asignamos a cada entidad es la siguiente:
 
@@ -207,7 +207,7 @@ Bien, vamos con la implementación. Creamos las tres clases primero, y no una a 
 |Drone, Trabajo, PuntoRuta
 
 |Paquetes
-|paquete idem para las tres: com.lametaweb.jdrone.persistencia
+|paquete ídem para las tres: com.lametaweb.jdrone.persistencia
 |===
 
 Aspecto del proyecto después de crear las clases de persistencia:
@@ -235,7 +235,7 @@ private String descripcion;
 
 Y pulsamos la combinación de teclas o hotkey ctrl + shift + O para traernos las importaciones necesarias. En este caso se da una ambigüedad porque existen dos clases Date en paquetes diferentes, nosotros tenemos que elegir la del paquete java.util.Date.
  
-Generamos ahora los métodos de acceso a estos atributos, con botón derecho sobre la clase y _> Source > Generate Getters and Setters_, Seleccionar todos los atributos y pulsar OK. Dejamos el código fuente ordenado con botón derecho y _> Source > Format_. Finalmente guardamos la clase pulsando el icono del disquette o usando la hotkey Ctrl + S.
+Generamos ahora los métodos de acceso a estos atributos, con botón derecho sobre la clase y _> Source > Generate Getters and Setters_, Seleccionar todos los atributos y pulsar OK. Dejamos el código fuente ordenado con botón derecho y _> Source > Format_. Finalmente guardamos la clase pulsando el icono del disquete o usando la hotkey Ctrl + S.
  
 A nivel de clase hacemos los siguientes cambios: 
 
@@ -275,7 +275,7 @@ A nivel de atributos añadimos las siguientes anotaciones de persistencia:
 	** Este atributo no lleva ninguna anotación ya que se trata de un tipo Basic con un mapeo por defecto. http://en.wikibooks.org/wiki/Java_Persistence/Basic_Attributes[Aquí] tenéis una explicación clara sobre los tipos Basic en JPA.	
 
 * En descripcion:
-	** `@Lob`: Ya que preveemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente espacio con un tipo de datos Basic.
+	** `@Lob`: Ya que prevemos por lo indicado por el cliente que este campo albergará textos de gran tamaño y no tendremos suficiente espacio con un tipo de datos Basic.
     ** `@Size(max = 65535)`: Mapeamos este campo con un CLOB, con un tamaño de 64Kb. Lo hacemos así porque se prevé que la longitud de esta información textual sea mayor que los 32Kb que soporta el tipo VARCHAR generado para un tipo Basic String.
     ** `@Basic(fetch=FetchType.LAZY)`: Los atributos de tipo Basic son extraídos de la base de datos y asignados por defecto en una consulta. Sin embargo este atributo tendrá en general un tamaño elevado y para que el rendimiento de las consultas que muestran listados de drones sea óptimo indicamos a Hibernate que no lea el contenido del atributo a menos que se lo indiquemos de manera explícita.
 
@@ -297,7 +297,7 @@ Añadimos los atributos y el identificador `idDrone` y generamos los métodos ge
 
 El resto es todo análogo a lo visto con la entidad Trabajo exceptuando los dos detalles que se indican en los comentarios junto a sus atributos. Para el atributo numeroDeSerie, como antes, añadimos la anotación `@Basic(optional = false)` y para el rango numérico en el atributo numMotores usamos la anotación `@Range(min = 4, max = 8)`. Y eso es todo.
 
-Sin embargo como ya hebréis advertido surge un pequeño problema, cuando pulsamos la combinación de teclas Ctrl + Shift + O para traernos los imports nos damos cuenta de que Eclipse no es capaz de localizar el paquete para la anotación @Range. El motivo es que se trata de una anotación especifica del proveedor de persistencia Hibernate, y queda fuera por tanto del estándar JPA. Así que nos toca añadir otra dependencia a nuestro fichero pom.xml.
+Sin embargo como ya habréis advertido surge un pequeño problema, cuando pulsamos la combinación de teclas Ctrl + Shift + O para traernos los imports nos damos cuenta de que Eclipse no es capaz de localizar el paquete para la anotación @Range. El motivo es que se trata de una anotación especifica del proveedor de persistencia Hibernate, y queda fuera por tanto del estándar JPA. Así que nos toca añadir otra dependencia a nuestro fichero pom.xml.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig055.png[]
 
@@ -329,7 +329,7 @@ Muy bien, ya tenemos atributos persistentes para nuestras entidades, es momento 
 
 Entre estas dos entidades existe una relación de asociación ya que ambas se relacionan de manera continuada en el tiempo pero además no existe un relación de todo/parte. Establecemos que la relación sea bidireccional, es decir que exista navegabilidad en los dos sentidos, dado que se estima que en la capa de negocio necesitaremos en algún momento acceder desde una entidad a la otra y viceversa. En cada extremo además tenemos que definir las cardinalidades y roles. Para establecer los roles deberemos preguntarnos cómo ve una entidad a la otra dentro de la relación.
 
-La bidireccionalidad implica añadir un atributo en cada clase. El nombre de cada atributo será el nombre del rol de la otra clase y el tipo del atributo el tipo de la otra clase cuando la cardinalidad sea 0 ó 1, o una colección del tipo cuando sea superior.
+La bidireccionalidad implica añadir un atributo en cada clase. El nombre de cada atributo será el nombre del rol de la otra clase y el tipo del atributo el tipo de la otra clase cuando la cardinalidad sea 0 o 1, o una colección del tipo cuando sea superior.
 
 En la entidad Drone añadimos el atributo así `private List<Trabajo> trabajosAsignados = new ArrayList<Trabajo>();` y en la entidad Trabajo escribimos `private Drone droneAsignado;`.
 
@@ -355,7 +355,7 @@ Veamos en detalle los aspectos de cada anotación:
 
 ** Establece una relación uno a muchos.
 
-** El atributo mappedBy existe porque hay bidireccionalidad. El valor "droneAsignado" se corresponde con el nombre del atributo de la otra entidad que recoje la relación inversa y que es la que tiene la información de enlace entre las entidades. 
+** El atributo mappedBy existe porque hay bidireccionalidad. El valor "droneAsignado" se corresponde con el nombre del atributo de la otra entidad que recoge la relación inversa y que es la que tiene la información de enlace entre las entidades. 
 ** El atributo cascade no aparece porque que no existe una relación todo/parte de tipo composición y se aplica su valor por defecto en Hibernate que no propaga ninguna acción de persistencia.
 
 * @ManyToOne
@@ -386,6 +386,6 @@ Generamos el método getter y el método setter y anotamos el atributo así
 
 En este punto paramos un momento y pensamos si realmente merece la pena crear una entidad PuntoRuta. Esto dependerá sobre todo de si de los requisitos se deduce la necesidad de lanzar consultas sobre la entidad PuntoRuta, por ejemplo para consultar los trabajos programados en una determinada área geográfica. Para nuestro proyecto supondremos que estas consultas sí interesan al cliente. 
 
-Si en cambio tuvieramos el supuesto contrario podríamos plantearnos distintas implementaciones haciendo uso del concepto de embeddable de JPA. Una clase embeddable es persistida al mismo tiempo y en el mismo lugar que su entidad padre. En nuestro caso podríamos añadir una nueva clase Ruta embeddable que contuviera la lista de PuntoRuta, que ya no serie una Entity, y añadir un atributo de tipo Ruta embedded a la centidad Trabajo. En general tendremos siempre varias alternativas a la hora de modelar nuestros diagramas de clases persistentes y tendremos que encontrar la solución más conveniente en cada caso a través de la realización de pruebas y en base a nuestra experiencia.   
+Si en cambio tuviéramos el supuesto contrario podríamos plantearnos distintas implementaciones haciendo uso del concepto de embeddable de JPA. Una clase embeddable es persistida al mismo tiempo y en el mismo lugar que su entidad padre. En nuestro caso podríamos añadir una nueva clase Ruta embeddable que contuviera la lista de PuntoRuta, que ya no serie una Entity, y añadir un atributo de tipo Ruta embedded a la entidad Trabajo. En general tendremos siempre varias alternativas a la hora de modelar nuestros diagramas de clases persistentes y tendremos que encontrar la solución más conveniente en cada caso a través de la realización de pruebas y en base a nuestra experiencia.   
 
-Con la implementanción de estas tres clases damos por terminada la implementación de la capa de persistencia. En el próximo post veremos como se despliga el datasource para la capa de persistencia y también un modo de implementar la carga inicial de datos desde la propia aplicación usando la tecnología EJB. Hasta pronto!
+Con la implementación de estas tres clases damos por terminada la implementación de la capa de persistencia. En el próximo Post veremos como se despliega el datasource para la capa de persistencia y también un modo de implementar la carga inicial de datos desde la propia aplicación usando la tecnología EJB. Hasta pronto!
