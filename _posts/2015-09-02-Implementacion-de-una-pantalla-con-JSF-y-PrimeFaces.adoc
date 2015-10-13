@@ -33,7 +33,7 @@ La pantalla de creación / edición del detalle es la más compleja, y la más i
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
 
-Observamos una relación de asociación muchos a uno con la entidad _Drone_ y otra de composición uno a muchos con la entidad _PuntoRuta_. Ambas relaciones deben ser mantenidas en la pantalla de detalle porque forman parte de la información contenida en la entidad _Trabajo_. La gestion de la relación con _Drone_ la implementaremos con un componente _selectOneMenu_ y la de la relación con los _PuntoRuta_ con un componente _dataTable_ conteniendo los componentes adicionales necesarios para añadir, quitar o editar puntos de ruta. El diseño de la pantalla de detalle sería este:
+Observamos una relación de asociación muchos a uno con la entidad _Drone_ y otra de composición uno a muchos con la entidad _PuntoRuta_. Ambas relaciones deben ser mantenidas en la pantalla de detalle porque forman parte de la información contenida en la entidad _Trabajo_. La gestión de la relación con _Drone_ la implementaremos con un componente _selectOneMenu_ y la de la relación con los _PuntoRuta_ con un componente _dataTable_ conteniendo los componentes adicionales necesarios para añadir, quitar o editar puntos de ruta. El diseño de la pantalla de detalle sería este:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig025.png[]
 
@@ -56,11 +56,11 @@ Añadir Primefaces al proyecto es sencillo, basta con añadir una única  depend
 		</dependency>
 ----
 
-Sin embargo, actualizar JSF desde la versión 2.1 a la 2.2 no es tan simple. El procedimiento para añadir el nuevo módulo de servidor dista de ser directo. Se intentó seguir el procedimiento existente en internet sin resultados positivos: En resumen el proceso pasa por bajar de GitHub una aplicación Maven que genera un fichero CLI que realiza el deploy de los tres slots correspondientes a los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que el script está actualizado para operar con las versiones iniciales del servidor Wildfly y no con JBoss EAP.
+Sin embargo, actualizar JSF desde la versión 2.1 a la 2.2 no es tan simple. El procedimiento para añadir el nuevo módulo de servidor dista de ser directo. Se intentó seguir el procedimiento existente en internet sin resultados positivos: En resumen el proceso pasa por bajar de GitHub una aplicación Maven que genera un fichero CLI que realiza el deploy de los tres slots correspondientes a los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que el script está actualizado para operar con las versiones iniciales del servidor WildFly y no con JBoss EAP.
 
-A la vista de lo anterior aprovecharemos esta dificultad y la convertiremos en ventaja: Optamos por instalar el nuevo servidor Wildfly en su última versión disponible, en estos momentos la 9.0.1, y así tener a nuestra disposición una plataforma Java EE 7 completa. Bien, lo primero es descargar el fichero de instalación del servidor desde http://wildfly.org/downloads/[esta página]. Tenéis que elegir la primera de las opciones en la lista, etiquetada con _Java EE7 Full & Web Distribution_.
+A la vista de lo anterior aprovecharemos esta dificultad y la convertiremos en ventaja: Optamos por instalar el nuevo servidor WildFly en su última versión disponible, en estos momentos la 9.0.1, y así tener a nuestra disposición una plataforma Java EE 7 completa. Bien, lo primero es descargar el fichero de instalación del servidor desde http://wildfly.org/downloads/[esta página]. Tenéis que elegir la primera de las opciones en la lista, etiquetada con _Java EE7 Full & Web Distribution_.
 
-NOTE: En el momento de revisar este Post ya estaba disponible la versión 10 de Wilfly, así que instaladla si queréis en vez de la versión 9 para tener las últimas correcciones de bugs y últimas versiones de las librerías. Entiendo que no debe afectar en cuanto a instalación e integración con Eclipse. Descargaos también los _Quickstarts_ porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementanción de un nuevo proyecto sea cual sea su naturaleza.
+NOTE: En el momento de revisar este Post ya estaba disponible la versión 10 de WildFly, así que instaladla si queréis en vez de la versión 9 para tener las últimas correcciones de bugs y últimas versiones de las librerías. Entiendo que no debe afectar en cuanto a instalación e integración con Eclipse. Descargaos también los _Quickstarts_ porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementación de un nuevo proyecto sea cual sea su naturaleza.
 
 Tras la instalación del nuevo servidor, antes de iniciarlo, debemos añadir un usuario. Para ello ejecutad el archivo por lotes _bin\add-user.bat_ y seguid las indicaciones.
 
@@ -70,9 +70,9 @@ Por último tendremos que realizar los cambios necesarios en nuestro proyecto pa
 
 Se ha refactorizado además el ciclo de construcción de modo que ahora existe un profile _despliegue-recursos_ que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados del servidor por cualquier motivo. Cread un nueva configuración de ejecución para este profile: Botón derecho sobre proyecto y _Run As_ > _Run Configurations..._  Botón derecho sobre _Maven build_ > _New_.  En la entrada _Goals_ escribid `clean install -Pdespliegue-recursos` y dad un nombre al nuevo perfil.
 
-En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raiz del fichero _faces-config.xml_. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción _JSF Implementation Library_ dejadla así _Type_ > _Disable Library Configuration_.
+En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raíz del fichero _faces-config.xml_. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción _JSF Implementation Library_ dejadla así _Type_ > _Disable Library Configuration_.
 
-Para comprobar que Javaserver Faces se actializó correctamente realicemos unas sencillas modificaciones sobre nuestra página _index.xhtml_:
+Para comprobar que JavaServer Faces se actializó correctamente realicemos unas sencillas modificaciones sobre nuestra página _index.xhtml_:
 
 * Actualizamos a HTML5. Para ello actualizad el doctype de la página así:
 
