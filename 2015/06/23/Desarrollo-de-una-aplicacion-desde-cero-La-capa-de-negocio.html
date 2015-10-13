@@ -36,7 +36,7 @@
     <meta property="og:description" content="Como os comenté en el post anterior, antes de implementar la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos. Por..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html" />
     <meta property="article:published_time" content="2015-06-22T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-05T20:22:44.878Z" />
+    <meta property="article:modified_time" content="2015-10-13T22:36:01.743Z" />
     <meta property="article:tag" content="ij" />
     <meta property="article:tag" content="EJB" />
     <meta property="article:tag" content="JPA" />
@@ -64,7 +64,7 @@
     "headline": "Desarrollo de una aplicación desde cero: La capa de negocio.",
     "url": "http://www.lametaweb.com/2015/06/23/Desarrollo-de-una-aplicacion-desde-cero-La-capa-de-negocio.html",
     "datePublished": "2015-06-22T22:00:00.000Z",
-    "dateModified": "2015-10-05T20:22:44.878Z",
+    "dateModified": "2015-10-13T22:36:01.743Z",
     "keywords": "ij,  EJB,  JPA,  Derby,  Hibernate Tools,  Datasource Explorer",
     "description": "Como os comenté en el post anterior, antes de implementar la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos. Por..."
 }
@@ -163,7 +163,7 @@
 <h2 id="_uso_del_cliente_de_l_nea_de_comandos_ij_de_derby">Uso del cliente de línea de comandos ij de Derby</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>La herramienta cliente que Derby proporciona se llama <em>ij</em> y se encuentra en la carpeta <em>\bin\</em> del paquete de Derby, que os recuerdo podéis bajar desde <a href="http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip">este link</a>, y que, si recordáis, cuando montamos el entorno de trabajo descomprimimos en la ruta <em>C:\TALLER\BD\db-derby-10.11.1.1-bin\</em>. <em>ij</em> es una herramienta de tipo línea de comando, y que por tanto tenemos que ejecutar desde una ventana de comando en Windows, o en Linux desde un terminal. Para inspeccionar nuestro esquema de datos en la ruta <em>C:\BD\drones\</em> (ver elemento &lt;connection-url&gt; de la configuración del datasource en el fichero pom.xml) que será creado en breve cuando despleguemos nuestra aplicación, tendremos que llamar a <em>ij</em> desde esa carpeta. Para usar <em>ij</em> más comodamente creamos/editamos estas variables del sistema:</p>
+<p>La herramienta cliente que Derby proporciona se llama <em>ij</em> y se encuentra en la carpeta <em>\bin\</em> del paquete de Derby, que os recuerdo podéis bajar desde <a href="http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip">este link</a>, y que, si recordáis, cuando montamos el entorno de trabajo descomprimimos en la ruta <em>C:\TALLER\BD\db-derby-10.11.1.1-bin\</em>. <em>ij</em> es una herramienta de tipo línea de comando, y que por tanto tenemos que ejecutar desde una ventana de comando en Windows, o en Linux desde un terminal. Para inspeccionar nuestro esquema de datos en la ruta <em>C:\BD\drones\</em> (ver elemento &lt;connection-url&gt; de la configuración del datasource en el fichero pom.xml) que será creado en breve cuando despleguemos nuestra aplicación, tendremos que llamar a <em>ij</em> desde esa carpeta. Para usar <em>ij</em> más cómodamente creamos/editamos estas variables del sistema:</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <caption class="title">Table 1. Variables de sistema para Derby</caption>
@@ -196,7 +196,7 @@
 </tbody>
 </table>
 <div class="paragraph">
-<p>Como aún no hemos desplegado la aplicación no tenemos aún nada en la ruta <em>C:\BD\drones\</em>. Os indico ahora de todos modos como usar <em>ij</em> para ir cerrando las cuentiones relacionadas con la capa de datos. Podéis volver a este post cuando tengáis la base de datos tras un primer despliegue.</p>
+<p>Como aún no hemos desplegado la aplicación no tenemos aún nada en la ruta <em>C:\BD\drones\</em>. Os indico ahora de todos modos como usar <em>ij</em> para ir cerrando las cuestiones relacionadas con la capa de datos. Podéis volver a este post cuando tengáis la base de datos tras un primer despliegue.</p>
 </div>
 <div class="paragraph">
 <p>Abrimos una ventana de comando y nos vamos a la carpeta de la base de datos escribiendo <code>cd C:\BD\drones</code>. Para invocar el cliente ij simplemente escribimos <code>ij</code>, y pulsamos la tecla Enter (&#x21B5;). El cliente mostrará la versión de Derby instalada y a continuación el prompt <em>ij&gt;</em>. Para establecer la conexión con la base de datos escribimos el comando:</p>
@@ -243,7 +243,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Para acabar con esta introducción a <em>ij</em> comentaros que Derby restringe el número de máquinas virtuales a una a menos que usemos el Derby Network Server, de modo que debéis tener el cuidado de desconectar la sesión de <em>ij</em>, si la teníais abierta, antes de desplegar la aplicación, y reciprocamente, parar el servidor antes de iniciar una sesión de <em>ij</em>.</p>
+<p>Para finalizar esta introducción a <em>ij</em> comentaros que Derby restringe el número de máquinas virtuales a una a menos que usemos el Derby Network Server, de modo que debéis tener el cuidado de desconectar la sesión de <em>ij</em>, si la teníais abierta, antes de desplegar la aplicación, y recíprocamente, parar el servidor antes de iniciar una sesión de <em>ij</em>.</p>
 </div>
 </div>
 </div>
@@ -265,7 +265,7 @@
 <p>La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia, no estructural. Es la relación más débil del diagrama.</p>
 </div>
 <div class="paragraph">
-<p>Usaremos la tecnología EJB, en concreto la versión 3.1, incluída en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, que en nuestro caso de momento no usaremos, apoyándose en JTA, y realizar la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html">esta dirección</a>.</p>
+<p>Usaremos la tecnología EJB, en concreto la versión 3.1, incluida en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, que en nuestro caso de momento no usaremos, apoyándose en JTA, y realizar la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html">esta dirección</a>.</p>
 </div>
 <div class="paragraph">
 <p>Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna dependencia al fichero de proyecto. Para EJB sólo preciso la dependencia:</p>
@@ -280,10 +280,10 @@
 </div>
 </div>
 <div class="paragraph">
-<p>que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial de datos. Por lo tanto tenemos que tocar el pom.xml.</p>
+<p>que ya fue incluida cuando añadimos el bean EJB stateful singleton para la carga inicial de datos. Por lo tanto tenemos que tocar el pom.xml.</p>
 </div>
 <div class="paragraph">
-<p>Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta <code>negocio/</code> dentro de la carpeta de proyecto <code>src/main/java/com/lametaweb/jdrone/</code>. A continuación pulsamos botón dereho sobre la carpeta <em>negocio/</em> y elegimos la opción <em>New &gt; Other&#8230;&#8203;</em> , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción <em>Session Bean (EJB 3.x)</em>. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor <code>DroneFacade</code>. Antes de pulsar el botón <em>Aceptar</em> podéis ver como por defecto se marca la opción <em>No-interface View</em> que  hará que se cree un bean sin interfaz. Dejamos marcada la opción para simplificar la aplicación.</p>
+<p>Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta <code>negocio/</code> dentro de la carpeta de proyecto <code>src/main/java/com/lametaweb/jdrone/</code>. A continuación pulsamos botón derecho sobre la carpeta <em>negocio/</em> y elegimos la opción <em>New &gt; Other&#8230;&#8203;</em> , escribimos la cadena "ejb" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción <em>Session Bean (EJB 3.x)</em>. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor <code>DroneFacade</code>. Antes de pulsar el botón <em>Aceptar</em> podéis ver como por defecto se marca la opción <em>No-interface View</em> que  hará que se cree un bean sin interfaz. Dejamos marcada la opción para simplificar la aplicación.</p>
 </div>
 <div class="paragraph">
 <p>Una vez creado el bean sin estado y sin interfaz añadimos el método de negocio indicado en el diagrama, quedando la clase así:</p>
@@ -336,13 +336,13 @@ public class DroneFacade {
 <p>Al tratarse de un bean EJB podemos inyectar el entity manager directamente en el atributo <em>em</em>.</p>
 </div>
 <div class="paragraph">
-<p>El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.</p>
+<p>El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo Post formará parte del Modelo de nuestra capa de presetanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.</p>
 </div>
 <div class="paragraph">
 <p>Al tratarse de una consulta podemos prescindir del comportamiento transaccional, añadiendo una simple anotación al método.</p>
 </div>
 <div class="paragraph">
-<p>Una consulta puede montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como véis he optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y por tanto no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción.</p>
+<p>Una consulta puede montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como veis he optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y por tanto no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -353,7 +353,7 @@ order by d.numeroDeSerie</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>En la primera línea defino los atributos o entidades que quiero que la consulta devuelva. Al indicar el alias <em>d</em> en <em>select d</em> estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate a diferencia de JPA es posible prescindir de esta parte de la consulta. Si lo hacemos así no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la claúsula <em>from</em>. Nuestra consulta devolvería entonces una lista de array de objetos List&lt;Object[]&gt; donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.</p>
+<p>En la primera línea defino los atributos o entidades que quiero que la consulta devuelva. Al indicar el alias <em>d</em> en <em>select d</em> estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate a diferencia de JPA es posible prescindir de esta parte de la consulta. Si lo hacemos así no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la cláusula <em>from</em>. Nuestra consulta devolvería entonces una lista de array de objetos List&lt;Object[]&gt; donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.</p>
 </div>
 <div class="paragraph">
 <p>En la segunda línea como se ha comentado se determinan las entidades que intervienen en la consulta. En este caso el conjunto de datos consiste en un inner join entre Drone y Trabajo. El join, a diferencia de lo que ocurre en SQL, se hace indicando el campo de la entidad padre que da acceso a las entidades hijas relacionadas: <em>d.trabajosAsignados</em>.</p>
@@ -426,7 +426,7 @@ order by d.numeroDeSerie</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Lo primero que heremos será crear una conexión a Derby, que será la que use Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú <em>Window &gt; Open Perspective &gt; Other&#8230;&#8203;</em> y elegimos <em>Hibernate</em>:</p>
+<p>Lo primero que haremos será crear una conexión a Derby, que será la que use Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú <em>Window &gt; Open Perspective &gt; Other&#8230;&#8203;</em> y elegimos <em>Hibernate</em>:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -508,7 +508,7 @@ order by d.numeroDeSerie</code></pre>
 <p>Desmarcamos las dos opciones en la parte inferior de la ventana y pulsamos el botón <em>Test Connection</em> para comprobar que llegamos a la base de datos. Recordad que de momento no tenéis creada la base de datos y obtendréis un mensaje de error. Antes de probar la conexión además tenemos que asegurarnos de que no exista otra máquina virtual accediendo a la base de datos, en nuestro caso bien porque el servidor esté arrancado o bien porque hayamos dejado una conexión abierta con el cliente ij. Para terminar pulsamos <em>Finish</em>.</p>
 </div>
 <div class="paragraph">
-<p>La conexión que acabamos de crear para las Hibernate Tools podemos sin embargo usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más comodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos <em>Connect</em>. Navegando por la jerarquía accedemos a los distintos elementos:</p>
+<p>La conexión que acabamos de crear para las Hibernate Tools podemos sin embargo usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más cómodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos <em>Connect</em>. Navegando por la jerarquía accedemos a los distintos elementos:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -595,7 +595,7 @@ order by d.numeroDeSerie</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Para asignar un valor al parámetro <em>fecha</em> nos vamos a la vista <em>Query Parameters</em> a la derecha y hacemos click sobre el icono <span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png" alt="post003-fig081.png"></span>. Automaticamente se asigna el nombre <em>fecha</em> y el tipo <em>string</em>. En el campo <em>Value</em> introducimos una información de fecha y hora análoga a ésta:</p>
+<p>Para asignar un valor al parámetro <em>fecha</em> nos vamos a la vista <em>Query Parameters</em> a la derecha y hacemos click sobre el icono <span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png" alt="post003-fig081.png"></span>. Automáticamente se asigna el nombre <em>fecha</em> y el tipo <em>string</em>. En el campo <em>Value</em> introducimos una información de fecha y hora análoga a ésta:</p>
 </div>
 <div class="paragraph">
 <p><code>2015-06-16 20:36:49</code></p>
