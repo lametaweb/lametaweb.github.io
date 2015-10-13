@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Desarrollo de una aplicación desde cero: Definición y creación del proyecto en Eclipse.</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//www.lametaweb.com/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//www.lametaweb.com/themes/ichi/assets/css/asciidoctor.css?v=1.0.0" />
+
+    <link rel="canonical" href="http://www.lametaweb.com/2015/05/17/Desarrollo-de-una-aplicacion-desde-cero-Definicion-y-creacion-del-proyecto-en-Eclipse.html" />
+    
+    <meta property="og:site_name" content="la metaweb" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Desarrollo de una aplicación desde cero: Definición y creación del proyecto en Eclipse." />
+    <meta property="og:description" content="En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos posts recorreremos un camino que nos llevará hasta la creación de..." />
+    <meta property="og:url" content="http://www.lametaweb.com/2015/05/17/Desarrollo-de-una-aplicacion-desde-cero-Definicion-y-creacion-del-proyecto-en-Eclipse.html" />
+    <meta property="article:published_time" content="2015-05-16T22:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-10-13T18:43:25.964Z" />
+    <meta property="article:tag" content="Modelo de Dominio" />
+    <meta property="article:tag" content="Maven" />
+    <meta property="article:tag" content="Eclipse" />
+    <meta property="article:tag" content="Java EE" />
+    <meta property="article:tag" content="desde cero" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Desarrollo de una aplicación desde cero: Definición y creación del proyecto en Eclipse." />
+    <meta name="twitter:description" content="En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos posts recorreremos un camino que nos llevará hasta la creación de..." />
+    <meta name="twitter:url" content="http://www.lametaweb.com/2015/05/17/Desarrollo-de-una-aplicacion-desde-cero-Definicion-y-creacion-del-proyecto-en-Eclipse.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "la metaweb",
+    "author": {
+        "@type": "Person",
+        "name": "La metaweb",
+        "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": null
+    },
+    "headline": "Desarrollo de una aplicación desde cero: Definición y creación del proyecto en Eclipse.",
+    "url": "http://www.lametaweb.com/2015/05/17/Desarrollo-de-una-aplicacion-desde-cero-Definicion-y-creacion-del-proyecto-en-Eclipse.html",
+    "datePublished": "2015-05-16T22:00:00.000Z",
+    "dateModified": "2015-10-13T18:43:25.964Z",
+    "keywords": "Modelo de Dominio,  Maven,  Eclipse,  Java EE,  desde cero",
+    "description": "En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos posts recorreremos un camino que nos llevará hasta la creación de..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="la metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-Modelo-de-Dominio tag-Maven tag-Eclipse tag-Java-EE tag-desde-cero">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar style="background: none">
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="http://www.lametaweb.com">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area bgimage" style="background-image: url(https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/fblog.png)">
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="http://www.lametaweb.com"></a></li>
+                <li><a class="fi-torso" href="http://www.lametaweb.com/about"></a></li>
+                <li><a class="fi-mail" href="http://www.lametaweb.com/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="la metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">la metaweb</h1>
+            <hr>
+            <p class="blog-description">Ensayos no destructivos en el ecosistema Java EE, y algún off topic para desconectar ;-)</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+                  <a href="github.com/lametaweb" class="fi-social-github"></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-Modelo-de-Dominio tag-Maven tag-Eclipse tag-Java-EE tag-desde-cero">
+
+
+            <h1 class="post-title">Desarrollo de una aplicación desde cero: Definición y creación del proyecto en Eclipse.</h1>
+
+            <span class="post-meta label"><time datetime="2015-05-17">17 May 2015</time></span>
+
+            <section class="post-content">
+                <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos posts recorreremos un camino que nos llevará hasta la creación de una aplicación Java EE básica sobre la que podremos experimentar a nuestro antojo con técnicas, tecnologías y herramientas en la esfera de Java EE. Enfocaremos su desarrollo de manera pragmática, creando un proyecto desde cero y sin recurrir a ningún asistente. De este modo seremos realmente conscientes de cada elemento que compone la aplicación y de que ningún otro es necesario. En los proyectos reales al contrario, donde el objetivo es desarrollar de la manera más eficaz y eficiente, se utilizan diferentes tipos de herramientas integradas o no en Eclipse. Algunas de ellas seguro que tendrán un merecido hueco en el este Blog en futuras publicaciones.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_motivaci_n_de_la_aplicaci_n">Motivación de la aplicación</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lo que haremos es imaginar un cliente con una necesidad, analizarla para entenderla y finalmente darle respuesta en forma de aplicación. Empezaramos con un análisis a partir del que generaremos una documentación que será la base para la fase de implementación. La construcción de una aplicación web, por otro lado, no es un proceso lineal sino más bien cíclico, donde tendremos que ir trabajando sobre todas las fases, desde el análisis a la implementación, hasta el final del ciclo de vida de la aplicación, porque a medida que vayamos entendiendo con mayor profundidad la realidad del cliente irán produciéndose ajustes que afectarán tanto al análisis, como al diseño, y a las tecnologías empleadas. La creación de una aplicación es similar al proceso de pintar un cuadro. El cuadro no se empieza por arriba y se acaba por abajo como lo haría la impresora que tenemos en casa sino que se va definiendo y perfilando en su conjunto, incluso en ocasiones descartando, añadiendo o cambiando elementos completos de la escena. En pintura el pintor dialoga consigo mismo al crear su obra, en el desarrollo de software debe existir un dialogo continuado y fluido entre quien
+conoce qué necesita y quienes sabemos cómo construirlo.</p>
+</div>
+<div class="paragraph">
+<p>Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traido también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_an_lisis_inicial">Análisis inicial</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tras varias reuniones con los empleados designados como interlocutores para el proyecto detectamos estas carencias:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Dificultad en la planificación de trabajos: El Gerente no conoce la disponibilidad de aparatos para una fecha y no puede dar a sus clientes plazos de comienzo con agilidad.</p>
+</li>
+<li>
+<p>Carencia de datos sobre trabajos ya realizados: El Jefe Técnico no dispone de datos sobre trabajos ya realizados, muy útiles cuando éstos han de repetirse o cuando se inician trabajos similares.</p>
+</li>
+<li>
+<p>Desconocimiento del progreso de cada trabajo: El Jefe de Operación no puede informar de forma clara a los clientes en cada momento del progreso de los trabajos contratados.</p>
+</li>
+<li>
+<p>Ausencia de información estadística: Variaciones de carga de trabajo estacionales, frecuencia de averías por componentes y por modelo y marca de drone, etc.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Lo anterior naturalmente no es un análisis de requisitos exhaustivo, pero muestra cómo una aplicación puede facilitar en gran medida las tareas dentro de una organicación. Cómo nuestro objetivo ahora es entender las partes de una aplicación Java EE tomaremos en cuenta sólo el primer punto de la lista y lo convertiremos en nuestro requisito funcional único.</p>
+</div>
+<div class="paragraph">
+<p>Siguiendo con el análisis, delimitemos el alcance del sistema. Como entidades del modelo de dominio distinguimos las siguientes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Drone: Dispositivo mecánico que tiene una serie de trabajos programados.</p>
+</li>
+<li>
+<p>Trabajo: Tarea de un drone que se extiende en el tiempo desde un momento inicial a otro final estimados y que consiste en la realización de un recorrido con un punto inicial, o despegue, N puntos intermedios consecutivos, y un punto final, o aterrizaje, geolocalizados.</p>
+</li>
+<li>
+<p>PuntoRuta: Representa un punto geolocalizado que forma parte de la ruta que se define para un Trabajo.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Nuestro requisito genera un único caso de uso, donde el usuario introduce una fecha y hora y solicita un listado de los drones que están realizando un trabajo en esa fecha y hora. La interfaz de usuario necesaria será por tanto una sola pantalla con componentes para la entrada de la fecha/hora y un área para mostrar el listado de los drones. Para cerrar el análisis sólo nos falta ponerle el nombre al proyecto, y sin tirar de demasiada imaginación lo bautizaremos con el nombre de jDrone.</p>
+</div>
+<div class="paragraph">
+<p>A continuación establecemos la arquitectura de la aplicación, que es de lo que se trata realmente en este post. Haciendo una lista de todos los elementos tecnológicos implicados tenemos:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Entorno de desarrollo (IDE): Eclipse con conjunto de plugins de JBoss.</p>
+</li>
+<li>
+<p>Gestor de ciclo de vida: Maven. Que viene ya incluído e integrado con el IDE.</p>
+</li>
+<li>
+<p>Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista, de manera que los desarollos posteriores estén ya versionados.</p>
+</li>
+<li>
+<p>Empaquetado de la aplicación: WAR (Web ARchive).</p>
+</li>
+<li>
+<p>Servidor: JBoss EAP 6.3. Certificado para Java EE 6.</p>
+</li>
+<li>
+<p>Framework de capa de presentación: JSF 2.1.</p>
+</li>
+<li>
+<p>Framework de capa de negocio: EJB 3.1.</p>
+</li>
+<li>
+<p>Gestión de beans: CDI 1.1.</p>
+</li>
+<li>
+<p>Framework de persistencia: JPA 2.0 implementado con Hibernate.</p>
+</li>
+<li>
+<p>Base de datos: Derby embebida en la aplicación con base de datos en el disco duro (no en memoria).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ajuste_del_entorno">Ajuste del entorno</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Muy bien, manos a la obra, primero haremos algunos ajustes a nuestro recién estrenado entorno de desarrollo. Para que nuestro IDE pueda descargar a través de Maven las dependencias específicas de JBoss que vamos a necesitar en el proyecto, añadiremos un elemento adicional &lt;profile&gt; al fichero de configuración de Maven local a nivel de usuario, localizado en la ruta <em>C:\Users\Usuario\.m2\settings.xml</em>. Si la instalación de Maven es nueva y no existían cambios en esta configuración podemos copiar y pegar directamente todo el contenido XML mostrado más abajo. Si ya existía una configuración previa copiamos el contenido del elemento &lt;profile&gt; y lo pegamos dentro del elemento &lt;profiles&gt; y el elemento &lt;activeProfiles&gt; dentro del elemento &lt;settings&gt;.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;settings&gt;
+    &lt;profiles&gt;
+        &lt;profile&gt;
+            &lt;id&gt;jboss-public-repository&lt;/id&gt;
+            &lt;repositories&gt;
+                &lt;repository&gt;
+                    &lt;id&gt;jboss-public-repository-group&lt;/id&gt;
+                    &lt;name&gt;JBoss Public Maven Repository Group&lt;/name&gt;
+                    &lt;url&gt;https://repository.jboss.org/nexus/content/groups/public-jboss/&lt;/url&gt;
+                    &lt;layout&gt;default&lt;/layout&gt;
+                    &lt;releases&gt;
+                        &lt;enabled&gt;true&lt;/enabled&gt;
+                        &lt;updatePolicy&gt;never&lt;/updatePolicy&gt;
+                    &lt;/releases&gt;
+                    &lt;snapshots&gt;
+                        &lt;enabled&gt;true&lt;/enabled&gt;
+                        &lt;updatePolicy&gt;never&lt;/updatePolicy&gt;
+                    &lt;/snapshots&gt;
+                &lt;/repository&gt;
+            &lt;/repositories&gt;
+            &lt;pluginRepositories&gt;
+                &lt;pluginRepository&gt;
+                    &lt;id&gt;jboss-public-repository-group&lt;/id&gt;
+                    &lt;name&gt;JBoss Public Maven Repository Group&lt;/name&gt;
+                    &lt;url&gt;https://repository.jboss.org/nexus/content/groups/public-jboss/&lt;/url&gt;
+                    &lt;layout&gt;default&lt;/layout&gt;
+                    &lt;releases&gt;
+                        &lt;enabled&gt;true&lt;/enabled&gt;
+                        &lt;updatePolicy&gt;never&lt;/updatePolicy&gt;
+                    &lt;/releases&gt;
+                    &lt;snapshots&gt;
+                        &lt;enabled&gt;true&lt;/enabled&gt;
+                        &lt;updatePolicy&gt;never&lt;/updatePolicy&gt;
+                    &lt;/snapshots&gt;
+                &lt;/pluginRepository&gt;
+            &lt;/pluginRepositories&gt;
+        &lt;/profile&gt;
+    &lt;/profiles&gt;
+    &lt;activeProfiles&gt;
+        &lt;activeProfile&gt;jboss-public-repository&lt;/activeProfile&gt;
+    &lt;/activeProfiles&gt;
+&lt;/settings&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Por otro lado, para que en la carpeta de nuestro workspace Maven no genere ficheros de índice de gran tamaño nos vamos a Eclipse a la opción del menú <em>Window &gt; Preferences &gt; Maven</em> y dejamos las opciones tal como se indican en la figura.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig005.png" alt="post003 fig005.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Además podemos buscar en esta carpeta los ficheros con la extensión <em>.cfs</em> y borrar los que sean de gran tamaño.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig010.png" alt="post003 fig010.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Adicionalmente disponemos de una View de Eclipse donde podemos visualizar los repositorios que tenemos configurados y tocar la configuración sobre los índices que queremos descargar para cada uno de ellos.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig015.png" alt="post003 fig015.png">
+</div>
+</div>
+<div class="paragraph">
+<p>OK, nos vamos a Eclipse y elegimos como espacio de trabajo la carpeta que creamos para tal fin, que será similar a <em>C:\TALLER\workspace\</em>. Si es la primera vez que entramos en Eclipse con ese el workspace tendremos que retirar la pantalla de bienvenida pulsando el botón <em>Workbench</em> en la esquina superior derecha de la pantalla. A continuación, ya dentro de la Perspectiva inicial de Eclipse, desmarcamos el check <em>Show on Startup</em> en la ventana de JBoss Central que aparece en el centro del IDE y la cerramos. Finalmente maximizamos la ventana de Eclipse para trabajar con el mayor espacio posible.</p>
+</div>
+<div class="paragraph">
+<p>Antes de crear cualquier elemento de la aplicación definimos la codificación que Eclipse empleará en los ficheros del proyecto. Esta cuestión es importante ya que evita que tengamos problemas con los caracteres mostrados que estén fuera del estándar ASCII. Para ello nos vamos al menú <em>Window &gt; Preferences &gt; General &gt; Workspace &gt; Text File Encoding &gt; Other &gt; UTF-8</em> y en esa misma ventana desmarcamos la opción <em>Build automatically</em>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Si no lo has cambiado aún es conveniente quitar el revisor de sintaxis de Eclipse. Ve a <em>Window &gt; Preferences &gt; General &gt; Editors &gt; Text Editors &gt; Spelling</em>  y desmarca <em>Enable Spell Checking</em>. Así podremos distinguir mejor los errores y los warnings que aparezcan en nuestro código fuente durante el desarrollo.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_entrando_en_materia_creaci_n_del_proyecto">Entrando en materia. Creación del proyecto.</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creamos un proyecto Maven en blanco con la opción del menú <em>File &gt; New &gt; Maven Project</em>. En la primera pantalla del wizard marcamos la primera opción
+<em>Create a simple proyect (skip archetype selection)</em> y pulsamos <em>Next</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig020.png" alt="post003 fig020.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Definimos las propiedades básicas del proyecto: Coordenadas en el repositorio Maven, empaquetado y datos descriptivos:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GroupId : com.lametaweb.javaee</p>
+</li>
+<li>
+<p>ArtifactId : jdrone</p>
+</li>
+<li>
+<p>pakcaging : war</p>
+</li>
+<li>
+<p>Name : jDrone Lite</p>
+</li>
+<li>
+<p>Description : Proyecto Maven Java EE basico desde cero</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Los demás campos los dejamos a su valor por defecto y pulsamos el botón <em>Finish</em>. Después de unos segundos el proyecto se habrá creado. Si abrimos
+el nodo correspondiente al proyecto veremos que la estructura y ficheros es la que corresponde a un proyecto Maven. Para ver de forma más limpia los elementos del proyecto abrimos la View <em>Navigator</em>. Esta vista nos muestra simplemente carpetas y ficheros, es decir lo que constituye un proyecto Java EE sin más.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig025.png" alt="post003 fig025.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la codificación a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y <em>Properties &gt; Resource &gt; Text File encoding &gt; Other: UTF-8</em>.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Elementos generados en la creación del proyecto</caption>
+<colgroup>
+<col style="width: 28%;">
+<col style="width: 71%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Elemento</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carpeta <em>.settings</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Es generada por el propio Eclipse para guardar información de configuración del proyecto. No es parte constituyente de nuestro aplicación ya que es creada para gestión interna del IDE.</span></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carpeta <em>src</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Aquí situaremos todos los elementos de nuestro proyecto organizados en carpetas según las convenciones adoptadas por Maven. En la subcarpeta <em>main</em> están los elementos necesarios para generar la aplicación y en la carpeta <em>test</em> los elementos para las pruebas unitarias.</span></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carpeta <em>target</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Contendrá los productos generados a partir de los elementos de la carpeta <em>src</em>. En este caso será un fichero desplegable <em>.war</em> conteniendo nuestra aplicación, que incluirá toda la información para su despliegue en el servidor.</span></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fichero <em>.classpath</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Generado por Eclipse para registrar información de tiempo de compilación: Qué compilar, dónde y los lugares donde buscar clases java de terceros. Es de uso interno de Eclipse y no es parte constituyente de nuestra aplicación.</span></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fichero <em>.project</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Contiene metainformación del proyecto para su autodescripción. No es parte constituyente de nuestro aplicación.</span></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fichero <em>pom.xml</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="small">Es el fichero que contiene toda la información para la construcción del proyecto. Es decir el proceso de generación de artefactos instalables a partir de los distintos elementos de nuestro proyecto.</span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Cuando abrimos un fichero de proyecto con contenido XML en general preferimos visualizarlo como texto y no a modo de formulario como lo muestra por defecto Eclipse. Para cambier esto nos vamos al menú a la opción <em>Window &gt; Preferences &gt; General &gt; Editors &gt; File associantions &gt; *.xml &gt; XML Editor</em> y pulsamos <em>Default</em> y finalmente <em>OK</em>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>El empaquetado por defecto para un proyecto Maven como es el nuestro es JAR, sin embargo nosotros queremos crear una aplicación web. Se hace necesario por tanto especificar el empaquetado de forma explícita en el fichero <em>pom.xml</em>. Añadamos la línea <code>&lt;packaging&gt;war&lt;/packaging&gt;</code> bajo el elemento raiz <em>&lt;proyect&gt;</em> y Ctrl + S para guardar los cambios.</p>
+</div>
+<div class="paragraph">
+<p>Pero algo ocurre, después de guardar vemos que aparece una nueva indicación de error abajo en la solapa <em>Markers</em>. Lo que nos está diciendo es que tenemos que actualizar el proyecto para que tome los cambios del fichero POM. En general
+siempre que modifiquemos el POM tenemos que actualizar para que los cambios vayan al proyecto. Pulsamos botón derecho sobre el icono del proyecto y <em>Maven &gt; Update Project&#8230;&#8203;</em> o de manera más directa con la hotkey Alt + F5. El warning en cuestión desaparece de la escena.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig030.png" alt="post003 fig030.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Pero si nos fijamos en la solapa <em>Markers</em> vemos que aún tenemos un warning. Es debido a que no hemos especificado la versión de Java en que se interpretará nuestro código ni la versión de máquina virtual para a que generaremos el código. Añadamos lo siguiente al POM bajo el elemento &lt;project&gt;:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;build&gt;
+    &lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.2&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;source&gt;1.8&lt;/source&gt;
+                &lt;target&gt;1.8&lt;/target&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El elemento &lt;finalName&gt; en la segunda línea no tiene nada que ver con las versiones de Java, en cambio lo que hace es fijar un nombre simple para nuestro artefacto WAR final, en nuestro caso "jdrone.war". Esto es importante porque por defecto este nombre es el que el servidor usa para nombrar el contexto de la aplicación en el proceso de despliegue. El contexto de un aplicación web es lo que la distingue de los demás elementos instalados en el servidor y nos permite por tanto referenciarla, y siempre es conveniente que este nombre sea sencillo.</p>
+</div>
+<div class="paragraph">
+<p>El resto corresponde como se ha indicado a la especificación de las versiones de Java usadas durante la compilación de las clases en el proyecto, puedes consultar el primer post para recordar los detalles. Aquí hemos declarado que trabajaremos con la máquina virtual de Java 8 y así mismo escribiremos el código en la versión 8. Es importante señalar que la versión del servidor que usemos en los distíntos ámbitos: Desarrollo, preproducción y producción, debe ser por tanto compatible con Java 8. En nuestro caso sí es así ya que la versión 6.3 del servidor JBoss EAP con la Update 3 es compatible. La versión 6.4 también tiene compatibilidad completa con Java 8.</p>
+</div>
+<div class="paragraph">
+<p>Como hemos visto para configurar un plugin para nuestro proyecto debemos declarlo en el POM, aquí hemos modificando la configuración del plugin compilador. Y finalmente como siempre actualizamos el proyecto como antes se ha indicado y observamos que el warning ya no aparece.</p>
+</div>
+<div class="paragraph">
+<p>Es interesante ver como Eclipse después actualizar la información de configuración en el fichero POM ha actualizado las facetas de nuestro proyecto. Inicialmente no teniamos ninguna y ahora tenemos las facetas: Web, Java y Javascript. Podemos comprobarlo con un click en botón derecho sobre proyecto en la opción <em>Properties &gt; Project Facets</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig035.png" alt="post003 fig035.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Y hasta aquí el primer post de la serie. Hemos creado un proyecto dirigido por Maven y lo hemos dejado listo para empezar a añadir cada uno de los elementos de las distintas tecnologías Java EE que generen finalmente el artefacto WAR que darán respuesta a las necesidades nuestro cliente, TAS.</p>
+</div>
+<div class="paragraph">
+<p>En el siguiente post empezaremos con el diseño de las clases de la capa de persistencia. Un interesante tema. Nos vemos en breve!</p>
+</div>
+</div>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/Modelo-de-Dominio">Modelo de Dominio</a>, <a href="http://www.lametaweb.com/tag/Maven"> Maven</a>, <a href="http://www.lametaweb.com/tag/Eclipse"> Eclipse</a>, <a href="http://www.lametaweb.com/tag/Java-EE"> Java EE</a>, <a href="http://www.lametaweb.com/tag/desde-cero"> desde cero</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.lametaweb.com/2015/05/17/Desarrollo-de-una-aplicacion-desde-cero-Definicion-y-creacion-del-proyecto-en-Eclipse.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Desarrollo%20de%20una%20aplicaci%C3%B3n%20desde%20cero%3A%20Definici%C3%B3n%20y%20creaci%C3%B3n%20del%20proyecto%20en%20Eclipse.&amp;url=http://www.lametaweb.com/2015/05/17/Desarrollo-de-una-aplicacion-desde-cero-Definicion-y-creacion-del-proyecto-en-Eclipse.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=http://www.lametaweb.com/2015/05/17/Desarrollo-de-una-aplicacion-desde-cero-Definicion-y-creacion-del-proyecto-en-Eclipse.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>La metaweb</h4>
+                        <img src="https://avatars.githubusercontent.com/u/11819148?v=3">
+                        
+                        
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'lametaweb'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//www.lametaweb.com/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-62743682-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
