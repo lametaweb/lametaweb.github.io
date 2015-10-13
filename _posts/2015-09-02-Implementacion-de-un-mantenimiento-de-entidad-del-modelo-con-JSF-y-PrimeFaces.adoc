@@ -147,7 +147,7 @@ El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa pa
 </p:commandButton>
 ----
 
-La secuencia de acciones del Postback Request a la propia página que se genera tras pulsar el botón sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tirará el cuadro de diálogo del detalle con el trabajo de la fila pulsada. La llamada Ajax actualiza el panel del cuadro de diálogo `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada Javascript `PF('trabajoDialog').show()`.
+La secuencia de acciones del Postback Request a la propia página que se genera tras pulsar el botón sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tirará el cuadro de diálogo del detalle con el trabajo de la fila pulsada. La llamada Ajax actualiza el panel del cuadro de diálogo `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada JavaScript `PF('trabajoDialog').show()`.
 
 El botón +++<span class="boton">+++Editar+++</span>+++ navegará a la página edición del detalle. El código para este botón es bien diferente del anterior, veamos:
 
@@ -170,9 +170,9 @@ Por último el botón +++<span class="boton">+++Borrar+++</span>+++ al igual que
 </p:commandButton>
 ----
 
-En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En Primefaces es muy fácil de implementar usando un cuadro de diálogo global.
+En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En PrimeFaces es muy fácil de implementar usando un cuadro de diálogo global.
 
-Bien, ya solo nos queda por analizar los dos botones a nivel de página, Salir y Crear. Como véis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, más en pantallas de tamaño reducido.
+Bien, ya solo nos queda por analizar los dos botones a nivel de página, Salir y Crear. Como veis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, más en pantallas de tamaño reducido.
 
 El botón +++<span class="boton">+++Salir+++</span>+++ simplemente navega a la página de inicio:
 
@@ -188,7 +188,7 @@ Y el botón +++<span class="boton">+++Crear+++</span>+++ es igual de simple. Nav
 <p:button value="Crear" outcome="/trabajo" />
 ----
 
-Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de JSF y de sus ventajas frente a frameworks MVC basados en la petición como Struts 2 o Spring MVC. Javaserver Faces nos permitirá centrarnos totalmente en el caso de uso a resolver, realizando por nosotros las tareas ajenas al negocio en las distintas fases del ciclo de vida. 
+Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de JSF y de sus ventajas frente a frameworks MVC centrados en la petición como Struts 2 o Spring MVC. JavaServer Faces nos permitirá centrarnos totalmente en el caso de uso a resolver, realizando por nosotros las tareas ajenas al negocio en las distintas fases del ciclo de vida. Es cierto también que, para aplicaciones que precisen de un mayor control sobre el ciclo HTTP de petición-respuesta, un framework centrado en la petición puede ser una mejor opción.
 
 === La página de edición / creación del detalle: trabajo.xhtml.
 
