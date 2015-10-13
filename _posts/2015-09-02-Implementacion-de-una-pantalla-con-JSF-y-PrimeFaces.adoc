@@ -268,11 +268,15 @@ El selector toma el conjunto de todos los elementos de entrada del formulario co
 
 * oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las labels de los campos que ocupan una altura extra en la pantalla: _Descripción_ y _Puntos de Ruta_. El problema aquí es que en la versión actual de CSS no existe una manera de seleccionar un elemento padre conocido su hijo y tenemos por tanto que recurrir a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas más eleboradas.
 
-Bien, hasta aquí los aspectos generales de la pantalla de detalle. 
+Bien, hasta aquí los aspectos generales de la pantalla de detalle.
 
-Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.
+=== La validación por antonomasia en un mantenimiento: Comprobación de clave natural duplicada.
+
+
 
 === Uso de plantillas: Una plantilla adaptativa para jDrone
+
+Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.
 
 Una interfaz adaptativa, en inglés _responsive_, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, smartphones... En una aplicación JSF una buena alternativa para esto es usar el componente _Grid CSS_ de Primefaces, que permite realizar la maquetación de las páginas del proyecto definiendo las zonas comunes: Cabecera, menú, barra de navegación, sides, zona central principal y pie. Asimismo, aunque no se ha incluido en *+++<span style="color:blue">+++j+++</span>+++drone*, es interesante el uso de la clase CSS _ui-fluid_ que va a darnos una interfaz fluida cálculando la posición y tamaño de cada componente en tiempo real dependiendo del tamaño del viewport. Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y Primefaces. 
 
@@ -404,7 +408,7 @@ El logo se implementa en la página _panelLogo.xhtml_, con un elemento _<ui:comp
 Dentro de este panel he incluido una sencilla animación realizada con la librería Javascript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto con ella. Es importante conocer bien jQuery porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con Primefaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo jDrone. 
 
 [WARNING]
-No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna estiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código: `<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
+No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna etiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código: `<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
 y `<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />`
 
 Vamos ahora con el menú de la aplicación. Optaremos por la clásica barra de menú al estilo de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da la respuesta, en este caso con el componente _<p:MenuBar...>_. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en *+++<span style="color:blue">+++j+++</span>+++drone*, tiene casi 150 componentes. Usando este componente, en un par de minutos tendremos un atractivo menú con todas las opciones y submenús. Finalmente, para situar el menú en la página lo implementamos, al igual que el logo, como un panel, y lo situamos en la plantilla añadiendo a la misma el correspondiente elemento _<ui:insert...>_.
