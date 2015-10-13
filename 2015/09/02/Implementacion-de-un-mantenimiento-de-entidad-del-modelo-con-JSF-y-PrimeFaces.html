@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-un-mantenimiento-de-entidad-del-modelo-con-JSF-y-PrimeFaces.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-13T17:30:54.631Z" />
+    <meta property="article:modified_time" content="2015-10-13T17:57:34.160Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de un mantenimiento de entidad del modelo con JSF y PrimeFaces.",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-un-mantenimiento-de-entidad-del-modelo-con-JSF-y-PrimeFaces.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-13T17:30:54.631Z",
+    "dateModified": "2015-10-13T17:57:34.160Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..."
 }
@@ -492,7 +492,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Ejecuta una navegación GET (Initial Request) a la página de maestro. Esta simplicidad es posible porque la cancelación aquí no requiere de ninguna acción adicional. Si encambio necesitaramos realizar alguna acción, por ejemplo para liberar recursos de sesión, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, etc, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, ahora usando un componente commandButton o commandLink:</p>
+<p>Ejecuta una navegación GET (Initial Request) a la página de maestro. Esta simplicidad es posible porque la cancelación aquí no requiere de ninguna acción adicional. Si en cambio necesitáramos realizar alguna acción, por ejemplo para liberar recursos de sesión, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, etc, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, ahora usando un componente commandButton o commandLink:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -509,7 +509,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p>Configurar el botón con el modificador <em>inmmediate</em> a true. De esta manera la accion asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, puenteando como en el caso anterior conversiones y validaciones:</p>
+<p>Configurar el botón con el modificador <em>inmmediate</em> a true. De esta manera la acción asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, puenteando como en el caso anterior conversiones y validaciones:</p>
 </li>
 </ol>
 </div>
@@ -560,7 +560,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <p>action: Indica el método de la capa de Servicio que persiste el Trabajo, que como ya se ha indicado será el mismo tanto para la edición como para la creación.</p>
 </li>
 <li>
-<p>oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las labels de los campos que ocupan una altura extra en la pantalla: <em>Descripción</em> y <em>Puntos de Ruta</em>. El problema aquí es que en la versión actual de CSS no existe una manera de seleccionar un elemento padre conocido su hijo y tenemos por tanto que recurrir a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas más eleboradas.</p>
+<p>oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las labels de los campos que ocupan una altura extra en la pantalla: <em>Descripción</em> y <em>Puntos de Ruta</em>. El problema aquí es que en la versión actual de CSS no existe una manera de seleccionar un elemento padre conocido su hijo y tenemos por tanto que recurrir a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas más elaboradas.</p>
 </li>
 </ul>
 </div>
@@ -578,10 +578,10 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <p>Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.</p>
 </div>
 <div class="paragraph">
-<p>Una interfaz adaptativa, en inglés <em>responsive</em>, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, smartphones&#8230;&#8203; En una aplicación JSF una buena alternativa para esto es usar el componente <em>Grid CSS</em> de Primefaces, que permite realizar la maquetación de las páginas del proyecto definiendo las zonas comunes: Cabecera, menú, barra de navegación, sides, zona central principal y pie. Asimismo, aunque no se ha incluido en <strong><span style="color:blue">j</span>drone</strong>, es interesante el uso de la clase CSS <em>ui-fluid</em> que va a darnos una interfaz fluida cálculando la posición y tamaño de cada componente en tiempo real dependiendo del tamaño del viewport. Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y Primefaces.</p>
+<p>Una interfaz adaptativa, en inglés <em>responsive</em>, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, smartphones&#8230;&#8203; En una aplicación JSF una buena alternativa para esto es usar el componente <em>Grid CSS</em> de PrimeFaces, que permite realizar la maquetación de las páginas del proyecto definiendo las zonas comunes: Cabecera, menú, barra de navegación, sides, zona central principal y pie. Asimismo, aunque no se ha incluido en <strong><span style="color:blue">j</span>drone</strong>, es interesante el uso de la clase CSS <em>ui-fluid</em> que va a darnos una interfaz fluida calculando la posición y tamaño de cada componente en tiempo real dependiendo del tamaño del viewport. Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y PrimeFaces.</p>
 </div>
 <div class="paragraph">
-<p>Antes de empezar a implementar la plantilla lo mejor es tomar lápiz y papel o una herramienta como Inkscape y dibujar un boceto del layout de la página completa que necesitamos, de esta manera podré averiguar facilmente los <em>divs</em> que voy a necesitar para crear las distintas áreas en la pantalla.</p>
+<p>Antes de empezar a implementar la plantilla lo mejor es tomar lápiz y papel o una herramienta como Inkscape y dibujar un boceto del layout de la página completa que necesitamos, de esta manera podré averiguar fácilmente los <em>divs</em> que voy a necesitar para crear las distintas áreas en la pantalla.</p>
 </div>
 <div class="paragraph">
 <p>Una plantilla es una página XHTML privada que define la estructura y el contenido común de todas las páginas de la aplicación que la usan. Dentro de esa estructura tendremos que situar los elementos <em>&lt;ui:insert&#8230;&#8203;&gt; para definir los puntos de inserción del contenido variable. Podéis consultar la plantilla usada en <strong><span style="color:blue">j</span>drone</strong> abriendo el fichero _\jdrone\src\main\webapp\WEB-INF\plantillas\plantilla.xhtml</em>.</p>
@@ -710,10 +710,10 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <p>Se tienen tres puntos de definición de contenido, <em>central</em>, donde se ha añadido el contenido original de la página, <em>menu</em>, donde incluiremos el menú principal de la aplicación como veremos a continuación, y <em>logo</em> para ubicar el logo de la aplicación y de la empresa.</p>
 </div>
 <div class="paragraph">
-<p>El logo se implementa en la página <em>panelLogo.xhtml</em>, con un elemento <em>&lt;ui:composition&#8230;&#8203; &gt;</em> pero sin elementos <code>&lt;ui:define&#8230;&#8203;&gt;</code> a diferencia del resto de páginas cliente de la plantilla. Se trata de un panel, es decir, una página que va a ocupar un area determinada dentro de la pantalla y que en general será común a todas las pantallas.</p>
+<p>El logo se implementa en la página <em>panelLogo.xhtml</em>, con un elemento <em>&lt;ui:composition&#8230;&#8203; &gt;</em> pero sin elementos <code>&lt;ui:define&#8230;&#8203;&gt;</code> a diferencia del resto de páginas cliente de la plantilla. Se trata de un panel, es decir, una página que va a ocupar un área determinada dentro de la pantalla y que en general será común a todas las pantallas.</p>
 </div>
 <div class="paragraph">
-<p>Dentro de este panel he incluido una sencilla animación realizada con la librería Javascript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto con ella. Es importante conocer bien jQuery porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con Primefaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo jDrone.</p>
+<p>Dentro de este panel he incluido una sencilla animación realizada con la librería JavaScript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto con ella. Es importante conocer bien jQuery porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con PrimeFaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo jDrone.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -722,17 +722,17 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna etiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código: <code>&lt;h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /&gt;</code>
+No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna etiqueta de PrimeFaces tendremos que incluir de manera explícita la librería jQuery embebida en PrimeFaces añadiendo estas dos líneas de código: <code>&lt;h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /&gt;</code>
 y <code>&lt;h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" /&gt;</code>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Vamos ahora con el menú de la aplicación. Optaremos por la clásica barra de menú al estilo de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación Primefaces nos da la respuesta, en este caso con el componente <em>&lt;p:MenuBar&#8230;&#8203;&gt;</em>. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en <strong><span style="color:blue">j</span>drone</strong>, tiene casi 150 componentes. Usando este componente, en un par de minutos tendremos un atractivo menú con todas las opciones y submenús. Finalmente, para situar el menú en la página lo implementamos, al igual que el logo, como un panel, y lo situamos en la plantilla añadiendo a la misma el correspondiente elemento <em>&lt;ui:insert&#8230;&#8203;&gt;</em>.</p>
+<p>Vamos ahora con el menú de la aplicación. Optaremos por la clásica barra de menú al estilo de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación PrimeFaces nos da la respuesta, en este caso con el componente <em>&lt;p:MenuBar&#8230;&#8203;&gt;</em>. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en <strong><span style="color:blue">j</span>drone</strong>, tiene casi 150 componentes. Usando este componente, en un par de minutos tendremos un atractivo menú con todas las opciones y submenús. Finalmente, para situar el menú en la página lo implementamos, al igual que el logo, como un panel, y lo situamos en la plantilla añadiendo a la misma el correspondiente elemento <em>&lt;ui:insert&#8230;&#8203;&gt;</em>.</p>
 </div>
 <div class="paragraph">
-<p>Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver el nuevo aspecto de la aplicación. Personalmente no me convence el estilo por defecto del menú por lo que acudimos de nuevo a Primefaces y vemos que es muy sencillo dar un aspecto distinto a los componentes simplemente eligiendo otro <em>Theme</em>. Además de paso activamos los iconos de FontAwesome añadiendo el correspondiente parámetro en el fichero <em>web.xml</em> para disponer de una mayor variedad de iconos. Elegimos el <em>Theme bluesky</em>, más acorde con la Marca de la compañía cliente:</p>
+<p>Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver el nuevo aspecto de la aplicación. Personalmente no me convence el estilo por defecto del menú por lo que acudimos de nuevo a PrimeFaces y vemos que es muy sencillo dar un aspecto distinto a los componentes simplemente eligiendo otro <em>Theme</em>. Además de paso activamos los iconos de FontAwesome añadiendo el correspondiente parámetro en el fichero <em>web.xml</em> para disponer de una mayor variedad de iconos. Elegimos el <em>Theme bluesky</em>, más acorde con la Marca de la compañía cliente:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -763,7 +763,7 @@ y <code>&lt;h:outputScript library="primefaces" name="jquery/jquery-plugins.js" 
 </div>
 </div>
 <div class="paragraph">
-<p>Despues de añadir la dependencia y guardar los cambios, si abrís el fichero <em>pom.xml</em> se muestrará un error en la dependencia añadida, esto es debido a que no se encuentra en el repositorio Central. Tenemos por tanto que añadir el repositorio de Primefaces a nuestra configuración de Maven. Podemos hacerlo directamente desde la sugerencia que nos muestra Eclipse al poner el puntero del ratón sobre el error. Introducid los datos tal y como aparecen en la siguiente figura:</p>
+<p>Después de añadir la dependencia y guardar los cambios, si abrís el fichero <em>pom.xml</em> se mostrará un error en la dependencia añadida, esto es debido a que no se encuentra en el repositorio Central. Tenemos por tanto que añadir el repositorio de Primefaces a nuestra configuración de Maven. Podemos hacerlo directamente desde la sugerencia que nos muestra Eclipse al poner el puntero del ratón sobre el error. Introducid los datos tal y como aparecen en la siguiente figura:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -771,7 +771,7 @@ y <code>&lt;h:outputScript library="primefaces" name="jquery/jquery-plugins.js" 
 </div>
 </div>
 <div class="paragraph">
-<p>Pulsamos <em>OK</em> y <em>Finish</em>. Para afinar el estilo de la barra de menú aún más podemos modificarlo como nos convenga usando CSS. En la documentación de Primefaces aparecen estos estilos, pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox (F12) para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios on the fly.</p>
+<p>Pulsamos <em>OK</em> y <em>Finish</em>. Para afinar el estilo de la barra de menú aún más podemos modificarlo como nos convenga usando CSS. En la documentación de PrimeFaces aparecen estos estilos, pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox (F12) para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios <em>on the fly</em>.</p>
 </div>
 <div class="paragraph">
 <p>Para estilizar los menús añadid al principio del fichero <em>plantilla.css</em> lo siguiente:</p>
@@ -796,7 +796,7 @@ y <code>&lt;h:outputScript library="primefaces" name="jquery/jquery-plugins.js" 
 </div>
 </div>
 <div class="paragraph">
-<p>Espero que el contenido de este Post os haya aclarado los conceptos generales del desarrollo de pantallas de mantenimiento en una aplicación JSF. Para prácticar y coger confianza podéis poneros manos a la obra con la pantalla de mantenimiento de la entidad Drone. El mantenimiento de Drone es bastante más sencillo ya que no hay que incluir ninguna relación en el mismo: El usuario va a asociar un drone a un trabajo pero no es natural asociar trabajos a un drone. Os espero en el próximo Post. Hasta pronto!</p>
+<p>Espero que el contenido de este Post os haya aclarado los conceptos generales del desarrollo de pantallas de mantenimiento en una aplicación JSF. Para practicar y coger confianza podéis poneros manos a la obra con la pantalla de mantenimiento de la entidad Drone. El mantenimiento de Drone es bastante más sencillo ya que no hay que incluir ninguna relación en el mismo: El usuario va a asociar un drone a un trabajo pero no es natural asociar trabajos a un drone. Os espero en el próximo Post. Hasta pronto!</p>
 </div>
 </div>
                         <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JSF">JSF</a>, <a href="http://www.lametaweb.com/tag/JavaServer-Faces"> JavaServer Faces</a>, <a href="http://www.lametaweb.com/tag/Primefaces"> Primefaces</a>, <a href="http://www.lametaweb.com/tag/CRUD"> CRUD</a>, <a href="http://www.lametaweb.com/tag/EJB"> EJB</a>, <a href="http://www.lametaweb.com/tag/Hibernate"> Hibernate</a>, <a href="http://www.lametaweb.com/tag/backing-bean"> backing bean</a></aside>
