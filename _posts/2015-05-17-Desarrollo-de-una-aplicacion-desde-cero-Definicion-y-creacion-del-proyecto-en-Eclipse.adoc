@@ -203,4 +203,4 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 Y hasta aquí el primer post de la serie. Hemos creado un proyecto dirigido por Maven y lo hemos dejado listo para empezar a añadir cada uno de los elementos de las distintas tecnologías Java EE que generen finalmente el artefacto WAR que darán respuesta a las necesidades nuestro cliente, TAS. 
 
-En el siguiente post empezaremos con el diseño de las clases de la capa de persistencia. Un interesante tema. Nos vemos en breve!
+En el siguiente Post empezaremos con el diseño de las clases de la capa de persistencia. Un interesante tema. Nos vemos en breve!
