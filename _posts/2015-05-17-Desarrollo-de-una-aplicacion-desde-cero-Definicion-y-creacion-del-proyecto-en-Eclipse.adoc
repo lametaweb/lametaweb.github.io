@@ -3,14 +3,14 @@ La metaweb
 :hp-tags: Modelo de Dominio, Maven, Eclipse, Java EE, desde cero
 :published_at: 2015-05-17
 
-En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos posts recorreremos un camino que nos llevará hasta la creación de una aplicación Java EE básica sobre la que podremos experimentar a nuestro antojo con técnicas, tecnologías y herramientas en la esfera de Java EE. Enfocaremos su desarrollo de manera pragmática, creando un proyecto desde cero y sin recurrir a ningún asistente. De este modo seremos realmente conscientes de cada elemento que compone la aplicación y de que ningún otro es necesario. En los proyectos reales al contrario, donde el objetivo es desarrollar de la manera más eficaz y eficiente, se utilizan diferentes tipos de herramientas integradas o no en Eclipse. Algunas de ellas seguro que tendrán un merecido hueco en el este Blog en futuras publicaciones.
+En las dos publicaciones anteriores dejamos listo un banco de trabajo sobre el que encarar el desarrollo de cualquier aplicación web basada en Java EE. En este y sucesivos Posts recorreremos un camino que nos llevará hasta la creación de una aplicación Java EE básica sobre la que podremos experimentar a nuestro antojo con técnicas, tecnologías y herramientas en la esfera de Java EE. Enfocaremos su desarrollo de manera pragmática, creando un proyecto desde cero y sin recurrir a ningún asistente. De este modo seremos realmente conscientes de cada elemento que compone la aplicación y de que ningún otro es necesario. En los proyectos reales al contrario, donde el objetivo es desarrollar de la manera más eficaz y eficiente, se utilizan diferentes tipos de herramientas integradas o no en Eclipse. Algunas de ellas seguro que tendrán un merecido hueco en el este Blog en futuras publicaciones.
 
 == Motivación de la aplicación
 
-Lo que haremos es imaginar un cliente con una necesidad, analizarla para entenderla y finalmente darle respuesta en forma de aplicación. Empezaramos con un análisis a partir del que generaremos una documentación que será la base para la fase de implementación. La construcción de una aplicación web, por otro lado, no es un proceso lineal sino más bien cíclico, donde tendremos que ir trabajando sobre todas las fases, desde el análisis a la implementación, hasta el final del ciclo de vida de la aplicación, porque a medida que vayamos entendiendo con mayor profundidad la realidad del cliente irán produciéndose ajustes que afectarán tanto al análisis, como al diseño, y a las tecnologías empleadas. La creación de una aplicación es similar al proceso de pintar un cuadro. El cuadro no se empieza por arriba y se acaba por abajo como lo haría la impresora que tenemos en casa sino que se va definiendo y perfilando en su conjunto, incluso en ocasiones descartando, añadiendo o cambiando elementos completos de la escena. En pintura el pintor dialoga consigo mismo al crear su obra, en el desarrollo de software debe existir un dialogo continuado y fluido entre quien
+Lo que haremos es imaginar un cliente con una necesidad, analizarla para entenderla y finalmente darle respuesta en forma de aplicación. Empezaremos con un análisis a partir del que generaremos una documentación que será la base para la fase de implementación. La construcción de una aplicación web, por otro lado, no es un proceso lineal sino más bien cíclico, donde tendremos que ir trabajando sobre todas las fases, desde el análisis a la implementación, hasta el final del ciclo de vida de la aplicación, porque a medida que vayamos entendiendo con mayor profundidad la realidad del cliente irán produciéndose ajustes que afectarán tanto al análisis, como al diseño, y a las tecnologías empleadas. La creación de una aplicación es similar al proceso de pintar un cuadro. El cuadro no se empieza por arriba y se acaba por abajo como lo haría la impresora que tenemos en casa sino que se va definiendo y perfilando en su conjunto, incluso en ocasiones descartando, añadiendo o cambiando elementos completos de la escena. En pintura el pintor dialoga consigo mismo al crear su obra, en el desarrollo de software debe existir un dialogo continuado y fluido entre quien
 conoce qué necesita y quienes sabemos cómo construirlo.
 
-Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traido también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución.
+Bien, imaginemos un cliente que posee una empresa de trabajos aéreos, TAS, con un parque de drones autónomos capaces de llevar a cabo diferentes tareas, desde vigilancia nocturna a control de plagas. La empresa arrancó hace solo un año, con un par de aparatos, y un sólo cliente, pero su actividad ha tenido un crecimiento progresivo y bien gestionado y en la actualidad su parque de aeronaves se ha incrementado hasta 20 drones con diferentes características. Este aumento de actividad ha traído también consigo un aumento de la dificultad en la gestión de los activos de la compañía. Por eso el gerente cree necesario apoyar los trabajos en un software que facilite la realización de tareas que se repiten en el tiempo y nos ha llamado para que le planteemos una solución.
 
 == Análisis inicial
 
@@ -21,7 +21,7 @@ Tras varias reuniones con los empleados designados como interlocutores para el p
 3. Desconocimiento del progreso de cada trabajo: El Jefe de Operación no puede informar de forma clara a los clientes en cada momento del progreso de los trabajos contratados.
 4. Ausencia de información estadística: Variaciones de carga de trabajo estacionales, frecuencia de averías por componentes y por modelo y marca de drone, etc.
 
-Lo anterior naturalmente no es un análisis de requisitos exhaustivo, pero muestra cómo una aplicación puede facilitar en gran medida las tareas dentro de una organicación. Cómo nuestro objetivo ahora es entender las partes de una aplicación Java EE tomaremos en cuenta sólo el primer punto de la lista y lo convertiremos en nuestro requisito funcional único.
+Lo anterior naturalmente no es un análisis de requisitos exhaustivo, pero muestra cómo una aplicación puede facilitar en gran medida las tareas dentro de una organiz	ación. Cómo nuestro objetivo ahora es entender las partes de una aplicación Java EE tomaremos en cuenta sólo el primer punto de la lista y lo convertiremos en nuestro requisito funcional único.
 
 Siguiendo con el análisis, delimitemos el alcance del sistema. Como entidades del modelo de dominio distinguimos las siguientes:
 
@@ -31,13 +31,13 @@ Siguiendo con el análisis, delimitemos el alcance del sistema. Como entidades d
 
 * PuntoRuta: Representa un punto geolocalizado que forma parte de la ruta que se define para un Trabajo.
 
-Nuestro requisito genera un único caso de uso, donde el usuario introduce una fecha y hora y solicita un listado de los drones que están realizando un trabajo en esa fecha y hora. La interfaz de usuario necesaria será por tanto una sola pantalla con componentes para la entrada de la fecha/hora y un área para mostrar el listado de los drones. Para cerrar el análisis sólo nos falta ponerle el nombre al proyecto, y sin tirar de demasiada imaginación lo bautizaremos con el nombre de jDrone.
+Nuestro requisito genera un único caso de uso, donde el usuario introduce una fecha y hora y solicita un listado de los drones que están realizando un trabajo en esa fecha y hora. La interfaz de usuario necesaria será por tanto una sola pantalla con componentes para la entrada de la fecha/hora y un área para mostrar el listado de los drones. Para cerrar el análisis sólo nos falta ponerle el nombre al proyecto, y sin tirar de demasiada imaginación lo bautizaremos con el nombre de *+++<span style="color:blue">+++j+++</span>+++drone*.
 
 A continuación establecemos la arquitectura de la aplicación, que es de lo que se trata realmente en este post. Haciendo una lista de todos los elementos tecnológicos implicados tenemos:
 
 * Entorno de desarrollo (IDE): Eclipse con conjunto de plugins de JBoss.
-* Gestor de ciclo de vida: Maven. Que viene ya incluído e integrado con el IDE.
-* Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista, de manera que los desarollos posteriores estén ya versionados.
+* Gestor de ciclo de vida: Maven. Que viene ya incluido e integrado con el IDE.
+* Gestor de versiones del código fuente: Git con repositorio remoto en GitHub. Este aspecto se tratará cuando ya tengamos la versión 1.0 de la aplicación lista, de manera que los desarrollos posteriores estén ya versionados.
 * Empaquetado de la aplicación: WAR (Web ARchive).
 * Servidor: JBoss EAP 6.3. Certificado para Java EE 6.
 * Framework de capa de presentación: JSF 2.1.
@@ -134,7 +134,7 @@ el nodo correspondiente al proyecto veremos que la estructura y ficheros es la q
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig025.png[]
 
-Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la codificación a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y _Properties > Resource > Text File encoding > Other: UTF-8_.
+Vamos a ver rápidamente el significado de cada elemento, pero antes fijamos la codificación a nivel del propio proyecto, con esto evitamos que nuestra codificación dependa del IDE al que eventualmente llevemos el proyecto. Así que pulsamos botón derecho sobre el proyecto y _Properties > Resource > Text File encoding > Other: UTF-8_.
 
 .Elementos generados en la creación del proyecto
 [cols="6,15", options="header"]
@@ -162,7 +162,7 @@ Vamos a ver rapidamente el significado de cada elemento, pero antes fijamos la c
 |[small]#Es el fichero que contiene toda la información para la construcción del proyecto. Es decir el proceso de generación de artefactos instalables a partir de los distintos elementos de nuestro proyecto.#
 |===
 
-TIP: Cuando abrimos un fichero de proyecto con contenido XML en general preferimos visualizarlo como texto y no a modo de formulario como lo muestra por defecto Eclipse. Para cambier esto nos vamos al menú a la opción _Window > Preferences > General > Editors > File associantions > *.xml > XML Editor_ y pulsamos _Default_ y finalmente _OK_.
+TIP: Cuando abrimos un fichero de proyecto con contenido XML en general preferimos visualizarlo como texto y no a modo de formulario como lo muestra por defecto Eclipse. Para cambiar esto nos vamos al menú a la opción _Window > Preferences > General > Editors > File associantions > *.xml > XML Editor_ y pulsamos _Default_ y finalmente _OK_.
 
 El empaquetado por defecto para un proyecto Maven como es el nuestro es JAR, sin embargo nosotros queremos crear una aplicación web. Se hace necesario por tanto especificar el empaquetado de forma explícita en el fichero _pom.xml_. Añadamos la línea `<packaging>war</packaging>` bajo el elemento raiz _<proyect>_ y Ctrl + S para guardar los cambios.
 
@@ -193,11 +193,11 @@ Pero si nos fijamos en la solapa _Markers_ vemos que aún tenemos un warning. Es
 
 El elemento <finalName> en la segunda línea no tiene nada que ver con las versiones de Java, en cambio lo que hace es fijar un nombre simple para nuestro artefacto WAR final, en nuestro caso "jdrone.war". Esto es importante porque por defecto este nombre es el que el servidor usa para nombrar el contexto de la aplicación en el proceso de despliegue. El contexto de un aplicación web es lo que la distingue de los demás elementos instalados en el servidor y nos permite por tanto referenciarla, y siempre es conveniente que este nombre sea sencillo.
 
-El resto corresponde como se ha indicado a la especificación de las versiones de Java usadas durante la compilación de las clases en el proyecto, puedes consultar el primer post para recordar los detalles. Aquí hemos declarado que trabajaremos con la máquina virtual de Java 8 y así mismo escribiremos el código en la versión 8. Es importante señalar que la versión del servidor que usemos en los distíntos ámbitos: Desarrollo, preproducción y producción, debe ser por tanto compatible con Java 8. En nuestro caso sí es así ya que la versión 6.3 del servidor JBoss EAP con la Update 3 es compatible. La versión 6.4 también tiene compatibilidad completa con Java 8.
+El resto corresponde como se ha indicado a la especificación de las versiones de Java usadas durante la compilación de las clases en el proyecto, puedes consultar el primer post para recordar los detalles. Aquí hemos declarado que trabajaremos con la máquina virtual de Java 8 y así mismo escribiremos el código en la versión 8. Es importante señalar que la versión del servidor que usemos en los distintos ámbitos: Desarrollo, preproducción y producción, debe ser por tanto compatible con Java 8. En nuestro caso sí es así ya que la versión 6.3 del servidor JBoss EAP con la Update 3 es compatible. La versión 6.4 también tiene compatibilidad completa con Java 8.
  
-Como hemos visto para configurar un plugin para nuestro proyecto debemos declarlo en el POM, aquí hemos modificando la configuración del plugin compilador. Y finalmente como siempre actualizamos el proyecto como antes se ha indicado y observamos que el warning ya no aparece.
+Como hemos visto, para configurar un plugin para nuestro proyecto, debemos declararlo en el POM. Aquí hemos modificado la configuración del plugin compilador. Y finalmente como siempre actualizaremos el proyecto, observando que el warning ya no aparece.
 
-Es interesante ver como Eclipse después actualizar la información de configuración en el fichero POM ha actualizado las facetas de nuestro proyecto. Inicialmente no teniamos ninguna y ahora tenemos las facetas: Web, Java y Javascript. Podemos comprobarlo con un click en botón derecho sobre proyecto en la opción _Properties > Project Facets_.
+Es interesante ver como Eclipse después actualizar la información de configuración en el fichero POM ha actualizado las facetas de nuestro proyecto. Inicialmente no teníamos ninguna y ahora tenemos las facetas: Web, Java y JavaScript. Podemos comprobarlo con un click en botón derecho sobre proyecto en la opción _Properties > Project Facets_.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig035.png[]
 
