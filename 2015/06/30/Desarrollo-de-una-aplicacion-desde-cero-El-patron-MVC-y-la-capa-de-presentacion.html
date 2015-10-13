@@ -36,7 +36,7 @@
     <meta property="og:description" content="Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html" />
     <meta property="article:published_time" content="2015-06-29T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-05T20:22:44.874Z" />
+    <meta property="article:modified_time" content="2015-10-13T23:24:06.181Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="MVC" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.",
     "url": "http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html",
     "datePublished": "2015-06-29T22:00:00.000Z",
-    "dateModified": "2015-10-05T20:22:44.874Z",
+    "dateModified": "2015-10-13T23:24:06.181Z",
     "keywords": "JSF,  JavaServer Faces,  MVC,  Facelets,  Maven",
     "description": "Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..."
 }
@@ -176,7 +176,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Modelo: Es una representación del <strong>modelo</strong> (lo escribo en negrita para distingirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean, también conocidos como backing beans. El <strong>modelo</strong> tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:</p>
+<p>Modelo: Es una representación del <strong>modelo</strong> (lo escribo en negrita para distinguirlo con claridad) de la aplicación entendido este último como todo el conjunto de datos y toda la lógica de negocio que procesa esos datos. En JSF el Modelo se implementa en las clases managed bean, también conocidos como backing beans. El <strong>modelo</strong> tiene una parte de datos y otra de comportamiento. Veamos cada una por separado:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -196,11 +196,11 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:</p>
+<p>Vista: Constituye también la vista de la aplicación. Aquí se sitúan los elementos para la entrada y salida de datos de usuario implementados con la tecnología Facelets de JSF y con el lenguaje EL de expresiones. Los elementos JSF de la Vista son:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Páginas xml facelets.</p>
+<p>Páginas xml Facelets.</p>
 </li>
 <li>
 <p>Ficheros de recursos para soporte multiidioma, etc.</p>
@@ -232,7 +232,7 @@
 <div class="title">Figure 1. Diagrama de capas para una aplicación Java EE básica</div>
 </div>
 <div class="paragraph">
-<p>El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el <strong>modelo</strong> de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como usabilidad o UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente y tunning de bases de datos, conocimientos adicionales en Oracle Forms para migraciones, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la página y cuyos expertises serían Javascript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.</p>
+<p>El patrón MVC por un lado implementa buena parte de la capa web para nosotros, además facilita la organización del código dentro de esta capa, y por último hace posible la separación entre la vista y el <strong>modelo</strong> de la aplicación. Esta separación permite dividir el trabajo de desarrollo en grupos especializados: Un grupo de trabajo para la interfaz de usuario, que conozca muy bien la tecnología JSF (ciclo de vida JSF, Facelets, componentes y managed beans), librerías como PrimeFaces y conceptos como usabilidad o UX (User Experience), y otro grupo que domine las tecnologías EJB/JAX-RS, JPA (Hibernate), técnicas de mapeo eficiente y tunning de bases de datos, conocimientos adicionales en Oracle Forms para migraciones, etc. La tecnología CDI debería ser conocida por ambos grupos aunque más en profundidad por el segundo. Además de estos dos grupos existiría otro más orientado al aspecto visual y dinámico de la página y cuyos expertises serían JavaScript de cliente, JQuery, HTML5, CSS3, Bootstrap (Interfaces adaptativos), UX, accesibilidad, etc.</p>
 </div>
 </div>
 </div>
@@ -248,7 +248,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Initial request: Es la petición GET que inicialmente hacemos hacia una página facelet, en general conteniendo un formulario, para mostrar como la respuesta dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.</p>
+<p>Initial request: Es la petición GET que inicialmente hacemos hacia una página Facelet, en general conteniendo un formulario, para mostrar como la respuesta dicho formulario al usuario y que éste pueda enviar valores hacia el servidor.</p>
 </li>
 <li>
 <p>Postback request: Es la petición que se realiza después de una initial request, en la que el usuario envía los valores del formulario al servidor. En JSF será siempre una petición POST.</p>
@@ -264,15 +264,15 @@
 <p>Restore view: En una initial request se crea un objeto View vacío y se asocia al contexto, FacesContext. La View es un objeto que contiene una representación en el lado del servidor del árbol de componentes DOM del lado del cliente/navegador. El objeto FacesContext representa el contexto de servidor que contiene todos los elementos para la gestión de la petición. Después de la creación de la View se salta a la última fase Render Response. En cambio, en una postback request la View ya existe (de la initial request que la precedió o de otra postback) y simplemente se restaura en el contexto con la View ya montada.</p>
 </li>
 <li>
-<p>Apply Request Values: En esta fase sabemos que estamos en una postBack request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View.  Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response. Si existen componentes con el atributo immediate igual a true para ellos se adelantan a esta fase todas las fases excepto la última Render Response: Las conversiones y las validaciones, actualización del Modelo y la ejecución de eventos asociados. El uso del atributo immediate = true tiene distintas implicaciones típicas por lo tanto, dependiendo del componente o componentes con esta característica:</p>
+<p>Apply Request Values: En esta fase sabemos que estamos en una postback request, es decir en una petición desde un formulario. Los valores del formulario en forma de parámetros de la petición son asignados a cada componente de la View.  Si se registran errores son añadidos al contexto para luego renderizarlos en la fase Render Response. Si existen componentes con el atributo immediate igual a true para ellos se adelantan a esta fase todas las fases excepto la última Render Response: Las conversiones y las validaciones, actualización del Modelo y la ejecución de eventos asociados. El uso del atributo immediate = true tiene distintas implicaciones típicas por lo tanto, dependiendo del componente o componentes con esta característica:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>En un fomulario con un componente de acción no immediate:</p>
+<p>En un formulario con un componente de acción no immediate:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>En componentes de entrada, por ejemplo un inputText, las validaciones del conjunto de componentes immediate = true se realizan antes que las del resto. Si alguna o algunas fallan no se evaluan los componentes no immediate ya que se saltará a la fase Render Response. Es decir que puedo asignar inmmediate = true para priorizar validaciones en un formulario.</p>
+<p>En componentes de entrada, por ejemplo un inputText, las validaciones del conjunto de componentes immediate = true se realizan antes que las del resto. Si alguna o algunas fallan no se evalúan los componentes no immediate ya que se saltará a la fase Render Response. Es decir que puedo asignar immediate = true para priorizar validaciones en un formulario.</p>
 </li>
 </ul>
 </div>
@@ -316,7 +316,7 @@
 <p>Si se devuelve la página del formulario ocurre como en el caso anterior.</p>
 </li>
 <li>
-<p>Si se devuelve el nombre de una página facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.</p>
+<p>Si se devuelve el nombre de una página Facelet seguido por la cadena "?faces-redirect=true" la fase Render Response no se ejecuta y directamente se inicia un nuevo ciclo con una Initial Request a dicha página.</p>
 </li>
 <li>
 <p>Si al igual que en el caso anterior se devuelve el nombre de una página, pero sin añadir la cadena "?faces-redirect=true", se crea y puebla una nueva View para la página en cuestión. Esto sería un Forward, que es algo considerado en general como una mala práctica en JSF2.</p>
@@ -344,7 +344,7 @@
 <h2 id="_montaje_de_la_capa_web">Montaje de la capa web</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Abrimos Eclipse para empezar a añadir los elementos a la capa web. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página facelet en la Vsita.  Inicialmente sin embargo, para probar el despliegue de la aplicación, sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!".</p>
+<p>Abrimos Eclipse para empezar a añadir los elementos a la capa web. En resumen tendremos que añadir todos los ficheros de configuración necesarios y además una clase managed bean para el Modelo/Vista y una página Facelets en la Vsita.  Inicialmente sin embargo, para probar el despliegue de la aplicación, sólo añadiremos los ficheros de configuración y una sencilla página "Hola mundo!".</p>
 </div>
 <div class="paragraph">
 <p>Las tecnologías implicadas en esta capa son JSF y CDI así que lo primero que hacemos es añadir las dependencias de Maven al fichero de proyecto. Copiamos dentro del elemento <em>&lt;dependencies&gt;</em> esto:</p>
