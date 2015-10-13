@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-con-JSF-y-PrimeFaces.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-13T15:51:23.791Z" />
+    <meta property="article:modified_time" content="2015-10-13T16:59:16.493Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="Primefaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de una pantalla con JSF y PrimeFaces.",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-una-pantalla-con-JSF-y-PrimeFaces.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-13T15:51:23.791Z",
+    "dateModified": "2015-10-13T16:59:16.493Z",
     "keywords": "JSF,  JavaServer Faces,  Primefaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..."
 }
@@ -567,12 +567,16 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <div class="paragraph">
 <p>Bien, hasta aquí los aspectos generales de la pantalla de detalle.</p>
 </div>
-<div class="paragraph">
-<p>Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.</p>
 </div>
+<div class="sect2">
+<h3 id="_la_validaci_n_por_antonomasia_en_un_mantenimiento_comprobaci_n_de_clave_natural_duplicada">La validación por antonomasia en un mantenimiento: Comprobación de clave natural duplicada.</h3>
+
 </div>
 <div class="sect2">
 <h3 id="_uso_de_plantillas_una_plantilla_adaptativa_para_jdrone">Uso de plantillas: Una plantilla adaptativa para jDrone</h3>
+<div class="paragraph">
+<p>Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.</p>
+</div>
 <div class="paragraph">
 <p>Una interfaz adaptativa, en inglés <em>responsive</em>, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, smartphones&#8230;&#8203; En una aplicación JSF una buena alternativa para esto es usar el componente <em>Grid CSS</em> de Primefaces, que permite realizar la maquetación de las páginas del proyecto definiendo las zonas comunes: Cabecera, menú, barra de navegación, sides, zona central principal y pie. Asimismo, aunque no se ha incluido en <strong><span style="color:blue">j</span>drone</strong>, es interesante el uso de la clase CSS <em>ui-fluid</em> que va a darnos una interfaz fluida cálculando la posición y tamaño de cada componente en tiempo real dependiendo del tamaño del viewport. Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y Primefaces.</p>
 </div>
@@ -718,7 +722,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna estiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código: <code>&lt;h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /&gt;</code>
+No debemos añadir jQuery a un proyecto Primefaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna etiqueta de Primefaces tendremos que incluir de manera explícita la librería jQuery embebida en Primefaces añadiendo estas dos líneas de código: <code>&lt;h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /&gt;</code>
 y <code>&lt;h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" /&gt;</code>
 </td>
 </tr>
