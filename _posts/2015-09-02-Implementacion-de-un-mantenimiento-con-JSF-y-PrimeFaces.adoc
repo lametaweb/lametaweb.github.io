@@ -3,9 +3,7 @@ La metaweb
 :hp-tags: JSF, JavaServer Faces, PrimeFaces, CRUD, EJB, Hibernate, backing bean
 :published_at: 2015-09-02
 
-=== Introducción
-
-En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un único dron, y que un trabajo tiene una ruta consistente en dos o más puntos de ruta.
+En este Post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un único dron, y que un trabajo tiene una ruta consistente en dos o más puntos de ruta.
 
 Podéis bajaros el código fuente del proyecto,  correspondiente a la release 1.1.0, en https://github.com/lametaweb/jdrone/releases/tag/1.1.0[esta dirección]. Otra alternativa para traeros el código fuente a vuestra máquina es que hagáis un Fork de la aplicación desde mi cuenta de GitHub a vuestra cuenta y a continuación creéis vuestro repo local Git. De esta manera tendréis vuestro propio proyecto en GitHub e incluso podréis enviar un Pull Request a mi cuenta con las modificaciones que consideréis oportunas.
 
