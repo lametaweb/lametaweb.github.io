@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-un-mantenimiento-con-JSF-y-PrimeFaces.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-14T11:20:57.205Z" />
+    <meta property="article:modified_time" content="2015-10-14T11:32:42.218Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="PrimeFaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de un mantenimiento con JSF y PrimeFaces.",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-un-mantenimiento-con-JSF-y-PrimeFaces.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-14T11:20:57.205Z",
+    "dateModified": "2015-10-14T11:32:42.218Z",
     "keywords": "JSF,  JavaServer Faces,  PrimeFaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..."
 }
@@ -159,7 +159,7 @@
 <p>En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un único dron, y que un trabajo tiene una ruta consistente en dos o más puntos de ruta.</p>
 </div>
 <div class="paragraph">
-<p>Podéis bajaros el código fuente del proyecto,  correspondiente a la release 1.1.0, en <a href="https://github.com/lametaweb/jdrone/releases/tag/1.1.0">esta dirección</a>. Otra alternativa para traeros el código fuente a vuestra máquina es que hagáis un fork de la aplicación desde mi cuenta de GitHub a vuestra cuenta y a continuación creéis vuestro repo local Git. De esta manera tendréis vuestro propio proyecto en GitHub e incluso podréis enviar un Pull Request a mi cuenta con las modificaciones que consideréis oportunas.</p>
+<p>Podéis bajaros el código fuente del proyecto,  correspondiente a la release 1.1.0, en <a href="https://github.com/lametaweb/jdrone/releases/tag/1.1.0">esta dirección</a>. Otra alternativa para traeros el código fuente a vuestra máquina es que hagáis un Fork de la aplicación desde mi cuenta de GitHub a vuestra cuenta y a continuación creéis vuestro repo local Git. De esta manera tendréis vuestro propio proyecto en GitHub e incluso podréis enviar un Pull Request a mi cuenta con las modificaciones que consideréis oportunas.</p>
 </div>
 <div class="paragraph">
 <p>En general un mantenimiento se organiza en tres pantallas:</p>
@@ -235,7 +235,7 @@ Si queréis ver o comparar la popularidad de alguna librería o tecnología usad
 <p>Queremos que nuestra productividad sea máxima y para ello vamos en este punto del proyecto a instalar la librería de componentes PrimeFaces así como la última versión disponible de JSF.</p>
 </div>
 <div class="paragraph">
-<p>Añadir Primefaces al proyecto es sencillo, basta con añadir una única  dependencia al proyecto:</p>
+<p>Añadir PrimeFaces al proyecto es sencillo, basta con añadir una única  dependencia al proyecto:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -405,7 +405,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <p>Lo único que hace es navegar a la página de creación / edición del detalle. Por eso usamos un componente <code>button</code> y no un <code>commandButton</code>. Será además necesario enviar un parámetro en la request que indique el trabajo que se desea editar. Lo que tenemos es una Initial Request a la página de edición del detalle <code>trabajos.xhtml</code>.</p>
 </div>
 <div class="paragraph">
-<p>Por último el botón <span class="boton">Borrar</span> al igual que en el caso del botón Ver es un botón de comando porque necesitamos ejecutar una acción de servidor y no solo navegar a otra página. Generará por tanto una Postback Request, que como ya sabemos, inicará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en PrimeFaces. En la fase Invoke Application de este ciclo se llamará al método de borrado <code>trabajosBean.eliminar(trabajo)</code> del backing bean. El código completo es:</p>
+<p>Por último el botón <span class="boton">Borrar</span> al igual que en el caso del botón Ver es un botón de comando porque necesitamos ejecutar una acción de servidor y no solo navegar a otra página. Generará por tanto una Postback Request, que como ya sabemos, iniciará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en PrimeFaces. En la fase Invoke Application de este ciclo se llamará al método de borrado <code>trabajosBean.eliminar(trabajo)</code> del backing bean. El código completo es:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -573,7 +573,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 
 </div>
 <div class="sect2">
-<h3 id="_uso_de_plantillas_una_plantilla_adaptativa_para_jdrone">Uso de plantillas: Una plantilla adaptativa para jDrone</h3>
+<h3 id="_uso_de_plantillas_una_plantilla_adaptativa_para_jdrone">Uso de plantillas: Una plantilla adaptativa para jdrone</h3>
 <div class="paragraph">
 <p>Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.</p>
 </div>
@@ -713,7 +713,7 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 <p>El logo se implementa en la página <em>panelLogo.xhtml</em>, con un elemento <em>&lt;ui:composition&#8230;&#8203; &gt;</em> pero sin elementos <code>&lt;ui:define&#8230;&#8203;&gt;</code> a diferencia del resto de páginas cliente de la plantilla. Se trata de un panel, es decir, una página que va a ocupar un área determinada dentro de la pantalla y que en general será común a todas las pantallas.</p>
 </div>
 <div class="paragraph">
-<p>Dentro de este panel he incluido una sencilla animación realizada con la librería JavaScript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto con ella. Es importante conocer bien jQuery porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con PrimeFaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo jDrone.</p>
+<p>Dentro de este panel he incluido una sencilla animación realizada con la librería JavaScript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto con ella. Es importante conocer bien jQuery porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con PrimeFaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo <strong><span style="color:blue">j</span>drone</strong>.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -788,7 +788,7 @@ y <code>&lt;h:outputScript library="primefaces" name="jquery/jquery-plugins.js" 
 </div>
 </div>
 <div class="paragraph">
-<p>Tras desplegar los cambios en WildFly vermos el aspecto final de la aplicación:</p>
+<p>Tras desplegar los cambios en WildFly veremos el aspecto final de la aplicación:</p>
 </div>
 <div class="imageblock">
 <div class="content">
