@@ -3,6 +3,6 @@ La metaweb
 :hp-tags: RESTful, JAX-RS
 :published_at: 2015-10-10
 
-=== Introducción
+¿Qué entendemos por REST?
 
-En este post  
+=== Apartado
