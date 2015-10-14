@@ -1,4 +1,4 @@
-= Implementación de un mantenimiento de entidad del modelo con JSF y PrimeFaces.
+= Implementación de un mantenimiento con JSF y PrimeFaces.
 La metaweb
 :hp-tags: JSF, JavaServer Faces, PrimeFaces, CRUD, EJB, Hibernate, backing bean
 :published_at: 2015-09-02
