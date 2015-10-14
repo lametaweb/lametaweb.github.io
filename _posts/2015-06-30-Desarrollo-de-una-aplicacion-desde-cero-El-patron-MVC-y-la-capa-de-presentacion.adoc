@@ -3,7 +3,7 @@ La metaweb
 :hp-tags: JSF, JavaServer Faces, MVC, Facelets, Maven
 :published_at: 2015-06-30
 
-Bienvenidos a otro post de la serie _Desarrollo de una aplicación desde cero_. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para no inflar demasiado el post, nuestra interfaz simplemente mostrará el mensaje "Hola mundo!". Pero antes de empezar a añadir elementos, considero importante mostraros un par de conceptos centrales en JSF: Por un lado el patrón Modelo-Vista-Controlador y por otro el ciclo de vida petición-respuesta.
+Bienvenidos a otro Post de la serie _Desarrollo de una aplicación desde cero_ donde dejaremos lista una primera versión de la aplicación después de implementar la capa de presentación y haremos además un primer despliegue en nuestro servidor. Inicialmente, para no inflar demasiado el Post, la interfaz sólo mostrará el mensaje "Hola mundo!". Antes de empezar a añadir elementos, considero importante mostraros un par de conceptos centrales en JSF: Por un lado el patrón Modelo-Vista-Controlador y por otro el ciclo de vida petición-respuesta.
 
 == El patrón Modelo-Vista-Controlador
 
