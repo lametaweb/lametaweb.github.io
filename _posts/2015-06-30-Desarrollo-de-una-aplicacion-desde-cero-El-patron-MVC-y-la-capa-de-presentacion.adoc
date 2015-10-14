@@ -273,5 +273,5 @@ En la pestaña _Console_ se irán generando de nuevo todos los mensajes de salid
 
 Llegamos al esperado momento. Para comprobar que la aplicación y los recursos de que depende se han desplegado correctamente en el servidor navegamos a la aplicación desde nuestro browser escribiendo la URL `http://localhost:8080/jdrone`. Y si todo ha ido bien se mostrará el mensaje "Hola mundo!" en pantalla.
 
-En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Seguid practicando mientras llega el siguiente Post!
+En el siguiente Post añadiremos el managed bean y el contenido final a la página index.xhtml. Seguid estudiando y practicando mientras llega!
 
