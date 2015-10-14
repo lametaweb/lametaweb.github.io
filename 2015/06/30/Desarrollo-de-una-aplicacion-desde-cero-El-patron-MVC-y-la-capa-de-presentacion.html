@@ -36,7 +36,7 @@
     <meta property="og:description" content="Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html" />
     <meta property="article:published_time" content="2015-06-29T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-13T23:24:06.181Z" />
+    <meta property="article:modified_time" content="2015-10-14T10:29:18.425Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="MVC" />
@@ -63,7 +63,7 @@
     "headline": "Desarrollo de una aplicación desde cero: El patrón MVC y la capa de presentación.",
     "url": "http://www.lametaweb.com/2015/06/30/Desarrollo-de-una-aplicacion-desde-cero-El-patron-MVC-y-la-capa-de-presentacion.html",
     "datePublished": "2015-06-29T22:00:00.000Z",
-    "dateModified": "2015-10-13T23:24:06.181Z",
+    "dateModified": "2015-10-14T10:29:18.425Z",
     "keywords": "JSF,  JavaServer Faces,  MVC,  Facelets,  Maven",
     "description": "Bienvenidos a otro post de la serie Desarrollo de una aplicación desde cero. En éste completaremos un desarrollo inicial de nuestra aplicación con la implementación de la capa de presentación y haremos un primer despliegue en nuestro servidor. Inicialmente, para..."
 }
@@ -412,7 +412,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>La carpeta <em>WEB-INF</em> contiene los elementos no públicos de nuestra capa web. Aquí meteremos los ficheros de configuración, plantillas y fragmentos de facelets cuando los tengamos, o librerías de terceros propias de la aplicación (en la carpeta lib) cuando las necesitemos.</p>
+<p>La carpeta <em>WEB-INF</em> contiene los elementos no públicos de nuestra capa web. Aquí meteremos los ficheros de configuración, plantillas y fragmentos de Facelets cuando los tengamos, o librerías de terceros propias de la aplicación (en la carpeta lib) cuando las necesitemos.</p>
 </div>
 <div class="paragraph">
 <p>Veamos el significado de cada elemento del descriptor de despliegue:</p>
@@ -420,10 +420,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p>web_app: Es el nodo raiz. Aquí se definen los espacios de nombres y el esquema XML que determina las reglas de validez para el documento. El atributo <em>version</em> fija la versión de la tecnología Servlets que usaremos. Para Java EE 6 la versión que corresponde es la 3.1.</p>
+<p>web_app: Es el nodo raíz. Aquí se definen los espacios de nombres y el esquema XML que determina las reglas de validez para el documento. El atributo <em>version</em> fija la versión de la tecnología Servlets que usaremos. Para Java EE 6 la versión que corresponde es la 3.1.</p>
 </li>
 <li>
-<p>servlet: Declara los Sevlets de nuestra aplicación. Al tratarse de una aplicación JSF simple el único Servlet es el que implementa el Controlador. El elemento  <em>load-on_startup</em> indica que el objeto de la clase se carguará en la memoria Heap de la JVM en el inicio de la aplicación.</p>
+<p>servlet: Declara los Sevlets de nuestra aplicación. Al tratarse de una aplicación JSF simple el único Servlet es el que implementa el Controlador. El elemento  <em>load-on_startup</em> indica que el objeto de la clase se cargará en la memoria Heap de la JVM en el inicio de la aplicación.</p>
 </li>
 <li>
 <p>servlet-mapping: Establece las correspondencias entre patrones de rutas URL de la aplicación y los servlets. En nuestro caso se traduce en que las peticiones de rutas que contengan la cadena "/faces/" detrás del contexto de la aplicación o que acaben en la cadena ".xhtml" serán atendidas por el Controlador de JSF.</p>
@@ -448,7 +448,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Como véis es un documento XML que en nuestro caso sólo contiene el elemento raiz. Aquí de nuevo definimos la versión en el atributo <em>version</em>. Se trata de la versión 2.1, que corresponde a Java EE 6. Esta es la versión que viene con nuestro servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.11, ya que trae características nuevas interesantes. Para esto tendríamos  que añadir la configuración necesaria al servidor de modo similar a cuando añadimos el driver de Derby aunque en este caso es algo más complejo. Podéis ampliar información <a href="https://developer.jboss.org/wiki/DesignOfAS7Multi-JSFFeature">aquí</a> y <a href="https://developer.jboss.org/message/914507">aquí</a>.</p>
+<p>Como veis es un documento XML que en nuestro caso sólo contiene el elemento raíz. Aquí de nuevo definimos la versión en el atributo <em>version</em>. Se trata de la versión 2.1, que corresponde a Java EE 6. Esta es la versión que viene con nuestro servidor JBoss. Es conveniente de todos modos actualizar a la última versión, la 2.2.11, ya que trae características nuevas interesantes. Para esto tendríamos  que añadir la configuración necesaria al servidor de modo similar a cuando añadimos el driver de Derby aunque en este caso es algo más complejo. Podéis ampliar información <a href="https://developer.jboss.org/wiki/DesignOfAS7Multi-JSFFeature">aquí</a> y <a href="https://developer.jboss.org/message/914507">aquí</a>.</p>
 </div>
 <div class="paragraph">
 <p>La ausencia de contenido en este fichero es una consecuencia, por un lado de la simplicidad de nuestra aplicación, y por otro del uso del principio COC, Convention Over Configuration, que implementa el framework JSF y que consiste en establecer siempre que sea posible valores y comportamientos por defecto. Por ejemplo para las reglas de validación se acuerda que pueden establecerse de modo programático simplemente haciendo referencia al nombre del fichero de la página destino. Además como ya sabéis el uso de anotaciones ha quitado peso, afortunadamente, a los ficheros de configuración.</p>
@@ -466,7 +466,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>También en este caso sólo precisamos el elemento raiz. La versión de CDI podemos verla reflejada en el nombre del esquema del documento XML. Aunque el documento no tiene contenido su presencia en el proyecto es necesaria ya que es el modo de indicarle al servidor que nuestro módulo war va a tener un contexto CDI.</p>
+<p>También en este caso sólo precisamos el elemento raíz. La versión de CDI podemos verla reflejada en el nombre del esquema del documento XML. Aunque el documento no tiene contenido su presencia en el proyecto es necesaria ya que es el modo de indicarle al servidor que nuestro módulo war va a tener un contexto CDI.</p>
 </div>
 <div class="paragraph">
 <p>En este punto sólo nos queda completar la capa web añadiendo la página JSF y la clase managed bean correspondiente. Sin embargo, como ya os he comentado, antes vamos a comprobar que la aplicación no contiene errores y es capaz de desplegarse en el servidor. Lo que haremos es añadir una página JSF sin funcionalidad, que presente el conocido mensaje "Hola mundo!".</p>
@@ -526,10 +526,10 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>La segunda línea se corresponde con el elemento raiz de una página HTML y representa el documento completo. En este elemento se declaran los espacios de nombres que vayamos a usar dentro de la página. Los espacios de nombres dentro de un fichero XML tienen la misión de evitar posibles conflictos de nombres anteponiendo al nombre de la etiqueta un prefijo seguido por el carácter dos puntos. Por ejemplo los elementos del core de JSF van precedidos por la cadena <em>f:</em>.</p>
+<p>La segunda línea se corresponde con el elemento raíz de una página HTML y representa el documento completo. En este elemento se declaran los espacios de nombres que vayamos a usar dentro de la página. Los espacios de nombres dentro de un fichero XML tienen la misión de evitar posibles conflictos de nombres anteponiendo al nombre de la etiqueta un prefijo seguido por el carácter dos puntos. Por ejemplo los elementos del core de JSF van precedidos por la cadena <em>f:</em>.</p>
 </li>
 <li>
-<p>Dentro del elemento html aparecen como es usual los dos elementos cabecera y cuerpo. Ahora simplemente escribiremos la cadena <code>Hola mundo!</code> dentro del elemento body. Pulsamos Ctrl + S para guardar los cambios.</p>
+<p>Dentro del elemento HTML aparecen como es usual los dos elementos cabecera y cuerpo. Ahora simplemente escribiremos la cadena <code>Hola mundo!</code> dentro del elemento body. Pulsamos Ctrl + S para guardar los cambios.</p>
 </li>
 </ol>
 </div>
@@ -586,7 +586,7 @@ war que se generará en la fase package será el definido en el elemento  <em>&l
 </div>
 <div class="paragraph">
 <p>Pulso el botón <em>Apply</em> y a continuación <em>Close</em> para guardar la nueva configuración de ejecución. Añadimos de paso otro perfil igual que el anterior
-pero en vez de con _ clean install_ esta vez escribimos <code>clean build</code>. Miro la pestaña <em>Servers</em> para asegurarme de que el servidor está arrancado. Pulso botón derecho sobre proyecto y <em>Run As &gt; Maven build</em> para que se muestre otro menú con las configuraciones personalizadas de arranque y selecciono mi configuracion <em>clean install</em>.</p>
+pero en vez de con _ clean install_ esta vez escribimos <code>clean build</code>. Miro la pestaña <em>Servers</em> para asegurarme de que el servidor está arrancado. Pulso botón derecho sobre proyecto y <em>Run As &gt; Maven build</em> para que se muestre otro menú con las configuraciones personalizadas de arranque y selecciono mi configuración <em>clean install</em>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -606,13 +606,13 @@ pero en vez de con _ clean install_ esta vez escribimos <code>clean build</code>
 <div class="ulist">
 <ul>
 <li>
-<p>compile: las clases son compiladas.</p>
+<p>compile: Las clases son compiladas.</p>
 </li>
 <li>
 <p>test: Ejecuta los tests unitarios. Esto no queremos que se haga de momento y lo anulamos configurando el plugin maven-surefire-plugin en el fichero pom.xml en la sección build, que configura las acciones ejecutadas en cada fase del ciclo de construcción.</p>
 </li>
 <li>
-<p>package: Se generera el archivo war en la carpeta target. Si abrimos la carpeta desde windows, en mi caso en la carpeta <em>C:\TALLER\workspace\jdrone\target\</em> podremos ver el artefacto war generado.</p>
+<p>package: Se genera el archivo war en la carpeta target. Si abrimos la carpeta desde Windows, en mi caso en la carpeta <em>C:\TALLER\workspace\jdrone\target\</em> podremos ver el artefacto war generado.</p>
 </li>
 <li>
 <p>install: Copia el artefacto jdrone.war en el repositorio local en la ruta <em>C:\Users\Javier\.m2\repository\com\lametaweb\javaee\jdrone\0.0.1-SNAPSHOT\jdrone-0.0.1-SNAPSHOT.war</em>, esto es útil cuando se trata de librerías ya que permite que el artefacto sea usado como dependencia en cualquier otro proyecto. El nombre nos está diciendo que se trata de la primera versión y que es una snapshot es decir una versión de desarrollo que no está destinada a producción como ocurre en el caso de una release.</p>
@@ -626,7 +626,7 @@ pero en vez de con _ clean install_ esta vez escribimos <code>clean build</code>
 <p>Llegamos al esperado momento. Para comprobar que la aplicación y los recursos de que depende se han desplegado correctamente en el servidor navegamos a la aplicación desde nuestro browser escribiendo la URL <code><a href="http://localhost:8080/jdrone" class="bare">http://localhost:8080/jdrone</a></code>. Y si todo ha ido bien se mostrará el mensaje "Hola mundo!" en pantalla.</p>
 </div>
 <div class="paragraph">
-<p>En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Hasta muy pronto!</p>
+<p>En el siguiente post añadiremos el managed bean y el contenido final a la página index.xhtml. Seguid practicando mientras llega el siguiente Post!</p>
 </div>
 </div>
 </div>
