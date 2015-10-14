@@ -36,11 +36,11 @@
     <meta property="og:description" content="Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html" />
     <meta property="article:published_time" content="2015-07-06T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-05T20:22:44.868Z" />
+    <meta property="article:modified_time" content="2015-10-14T11:04:30.827Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="MVC" />
-    <meta property="article:tag" content="Facelet" />
+    <meta property="article:tag" content="Facelets" />
     <meta property="article:tag" content="managed bean" />
     <meta property="article:tag" content="backing bean" />
     <meta property="article:tag" content="CDI" />
@@ -69,8 +69,8 @@
     "headline": "Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista.",
     "url": "http://www.lametaweb.com/2015/07/07/Desarrollo-de-una-aplicacion-desde-cero-Implementacion-y-depuracion-de-Modelo-y-Vista.html",
     "datePublished": "2015-07-06T22:00:00.000Z",
-    "dateModified": "2015-10-05T20:22:44.868Z",
-    "keywords": "JSF,  JavaServer Faces,  MVC,  Facelet,  managed bean,  backing bean,  CDI,  Depuración,  Debugging,  Git,  GitHub",
+    "dateModified": "2015-10-14T11:04:30.827Z",
+    "keywords": "JSF,  JavaServer Faces,  MVC,  Facelets,  managed bean,  backing bean,  CDI,  Depuración,  Debugging,  Git,  GitHub",
     "description": "Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la..."
 }
     </script>
@@ -79,7 +79,7 @@
     <link rel="alternate" type="application/rss+xml" title="la metaweb" href="http://www.lametaweb.com/rss" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
 </head>
-<body class="post-template tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelet tag-managed-bean tag-backing-bean tag-CDI tag-Depuracion tag-Debugging tag-Git tag-GitHub">
+<body class="post-template tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelets tag-managed-bean tag-backing-bean tag-CDI tag-Depuracion tag-Debugging tag-Git tag-GitHub">
 
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
@@ -149,7 +149,7 @@
 
 <main class="content" role="main">
 
-    <article class="post tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelet tag-managed-bean tag-backing-bean tag-CDI tag-Depuracion tag-Debugging tag-Git tag-GitHub">
+    <article class="post tag-JSF tag-JavaServer-Faces tag-MVC tag-Facelets tag-managed-bean tag-backing-bean tag-CDI tag-Depuracion tag-Debugging tag-Git tag-GitHub">
 
 
             <h1 class="post-title">Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista.</h1>
@@ -161,7 +161,7 @@
 <p>Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la confianza necesaria y como base sobre la que ensayar soluciones a cualquier requisito de cliente que podamos imaginar.</p>
 </div>
 <div class="paragraph">
-<p>En el post anterior conseguimos ya una aplicación funcional, sin embargo la capa de presentación se limitaba a un simple "Hola mundo!". Ahora toca resolver el caso de uso planteado inicialmente. Tendremos que añadir tan solo un par de ficheros: Una clase managed bean y una página facelet.</p>
+<p>En el post anterior conseguimos ya una aplicación funcional, sin embargo la capa de presentación se limitaba a un simple "Hola mundo!". Ahora toca resolver el caso de uso planteado inicialmente. Tendremos que añadir tan solo un par de ficheros: Una clase managed bean y una página Facelets.</p>
 </div>
 <div class="paragraph">
 <p>Empecemos por la clase. Creamos una carpeta de nombre <code>vista</code> dentro de la carpeta <em>jdrone/src/main/java/com/lametaweb/jdrone/</em> . Pulsamos
@@ -181,7 +181,7 @@ botón derecho sobre la nueva carpeta y <em>New &gt; Other&#8230;&#8203; &gt; CD
 <p>Name: DisponibilidadBean. Es el nombre de la clase que se genera. Tenemos que elegirlo de manera que explique el caso de uso que soporta. En este caso lo que se muestra al usuario es la disponibilidad de los drones en una fecha. La segunda parte del nombre indica que se trata de un bean gestionado por CDI. En Java EE la clase managed o backing bean representa el Modelo del patrón MVC.</p>
 </li>
 <li>
-<p>Interfaces: La anotación @Named incluye el bean en el contexto EL de JSF lo que me va a permitir acceder a sus atributos y metodos usando el lenguaje unificado de expresiones EL, en general desde una página facelet o, en ocasiones, desde código java donde no disponga de una referencia al bean. En EL el nombre por defecto para el bean se toma del nombre de la clase en minúscula. En nuestro caso tendremos <em>disponibilidadBean</em>.</p>
+<p>Interfaces: La anotación @Named incluye el bean en el contexto EL de JSF lo que me va a permitir acceder a sus atributos y métodos usando el lenguaje unificado de expresiones EL, en general desde una página facelet o, en ocasiones, desde código java donde no disponga de una referencia al bean. En EL el nombre por defecto para el bean se toma del nombre de la clase en minúscula. En nuestro caso tendremos <em>disponibilidadBean</em>.</p>
 </li>
 <li>
 <p>Scope: @RequestScoped: Define el tiempo de vida y la visibilidad del bean. En este caso el bean está disponible sólo para los objetos que existan en la thread creada para gestionar la request donde se crea el bean.</p>
@@ -359,7 +359,7 @@ public class DisponibilidadBean {
 </div>
 </div>
 <div class="paragraph">
-<p>Vamos pues con la página facelet. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos:</p>
+<p>Vamos pues con la página Facelets. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -444,13 +444,13 @@ public class DisponibilidadBean {
 <p>Cabecera: Etiqueta para el título de la página.</p>
 </li>
 <li>
-<p>Parámetros de entrada: El usuario debe introducir una fecha y una hora. Decido disponer dos componentes de texto. Uno para la fecha y otro para la hora. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de Primerfaces (añadir Primefaces, y al servidor, al proyecto es muy sencillo). En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.</p>
+<p>Parámetros de entrada: El usuario debe introducir una fecha y una hora. Decido disponer dos componentes de texto. Uno para la fecha y otro para la hora. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de PrimeFaces. En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de PrimeFaces.</p>
 </li>
 <li>
 <p>Botonera: En nuestro caso nos basta con un botón de solicitud de listado.</p>
 </li>
 <li>
-<p>Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de Primefaces, o Richfaces.</p>
+<p>Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de PrimeFaces, o RichFaces.</p>
 </li>
 </ul>
 </div>
@@ -591,15 +591,15 @@ Recordad que a la hora de escribir el código de una página o de un bean es de 
 </div>
 </div>
 <div class="paragraph">
-<p>Una página JSF o facelet es un documento XML y al mismo tiempo un documento HTML. Contiene etiquetas HTML para definir la maquetación de la página y la semántica de cada elemento, y etiquetas JSF para definir los componentes y los aspectos dinámicos a nivel de página y de componente. Además como en cualquier página HTML podemos tener el código javascript y las hojas de estilo que precisemos, para soportar elementos dinámicos y estilos personalizados respectivamente. Es muy común añadir por ejemplo frameworks como jQuery, para la manipulación de la interfaz, o Bootstrap, para añadir capacidades de interfaz adaptativa.</p>
+<p>Una página JSF es un documento XML basado en la tecnología Facelets que contiene, por un lado, etiquetas HTML en general para definir la maquetación de la página, y por otro lado etiquetas JSF, que permiten generar contenido dinámico en de la página. Es posible incluir código javascript y hojas de estilo a través de etiquetas HTML o bién mediante componentes JSF. Es muy común añadir por ejemplo frameworks como jQuery (Con PrimeFaces no lo añado porque ya lo tengo), como soporte a la lógica de cliente de la página, o Bootstrap, para añadir capacidades de interfaz adaptativa.</p>
 </div>
 <div class="paragraph">
-<p>Veamos cada elemento de nuestra página:</p>
+<p>Veamos cada elemento de la página:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>La primera línea indica que se trata de un documento XML. Las JSPs ya son historia.</p>
+<p>La primera línea indica que se trata de un documento XML. Las JSPs ya son historia dentro de JSF.</p>
 </li>
 <li>
 <p>La segunda línea indica que se trata también de un documento HTML. En este caso HTML 4. Si necesitamos usar HTML 5 escribimos solamente &lt;!DOCTYPE html&gt; ya que HTML 5 no se valida contra un DTD. JSF está mejorando la integración con HTML 5 en cada versión. Es otro motivo para instalar en nuestro proyecto y en nuestro servidor la última versión disponible.</p>
@@ -885,9 +885,9 @@ máquina).</p>
 </ol>
 </div>
 <div class="paragraph">
-<p>Hasta el próximo Post!</p>
+<p>Nos vemos en el siguiente Post!</p>
 </div>
-                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JSF">JSF</a>, <a href="http://www.lametaweb.com/tag/JavaServer-Faces"> JavaServer Faces</a>, <a href="http://www.lametaweb.com/tag/MVC"> MVC</a>, <a href="http://www.lametaweb.com/tag/Facelet"> Facelet</a>, <a href="http://www.lametaweb.com/tag/managed-bean"> managed bean</a>, <a href="http://www.lametaweb.com/tag/backing-bean"> backing bean</a>, <a href="http://www.lametaweb.com/tag/CDI"> CDI</a>, <a href="http://www.lametaweb.com/tag/Depuracion"> Depuración</a>, <a href="http://www.lametaweb.com/tag/Debugging"> Debugging</a>, <a href="http://www.lametaweb.com/tag/Git"> Git</a>, <a href="http://www.lametaweb.com/tag/GitHub"> GitHub</a></aside>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://www.lametaweb.com/tag/JSF">JSF</a>, <a href="http://www.lametaweb.com/tag/JavaServer-Faces"> JavaServer Faces</a>, <a href="http://www.lametaweb.com/tag/MVC"> MVC</a>, <a href="http://www.lametaweb.com/tag/Facelets"> Facelets</a>, <a href="http://www.lametaweb.com/tag/managed-bean"> managed bean</a>, <a href="http://www.lametaweb.com/tag/backing-bean"> backing bean</a>, <a href="http://www.lametaweb.com/tag/CDI"> CDI</a>, <a href="http://www.lametaweb.com/tag/Depuracion"> Depuración</a>, <a href="http://www.lametaweb.com/tag/Debugging"> Debugging</a>, <a href="http://www.lametaweb.com/tag/Git"> Git</a>, <a href="http://www.lametaweb.com/tag/GitHub"> GitHub</a></aside>
             </section>
             <hr>
             <footer class="post-footer">
