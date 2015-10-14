@@ -1,6 +1,6 @@
 = Diseño e implementación de un servicio web RESTful para el mantenimiento de la entidad Trabajo.
 La metaweb
-:hp-tags: RESTful, REST
+:hp-tags: RESTful, JAX-RS
 :published_at: 2015-10-10
 
 === Introducción
