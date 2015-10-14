@@ -1,11 +1,11 @@
 = Desarrollo de una aplicación desde cero: Implementación y depuración de Modelo y Vista.
 La metaweb
-:hp-tags: JSF, JavaServer Faces, MVC, Facelet, managed bean, backing bean, CDI, Depuración, Debugging, Git, GitHub
+:hp-tags: JSF, JavaServer Faces, MVC, Facelets, managed bean, backing bean, CDI, Depuración, Debugging, Git, GitHub
 :published_at: 2015-07-07
 
 Y llegamos al último post de esta serie. Estamos a pocos pasos de implementar una aplicación completa Java EE que, a pesar de ser muy básica, toca las principales tecnologías del stack. Una aplicación que nos servirá para ganar la confianza necesaria y como base sobre la que ensayar soluciones a cualquier requisito de cliente que podamos imaginar.
 
-En el post anterior conseguimos ya una aplicación funcional, sin embargo la capa de presentación se limitaba a un simple "Hola mundo!". Ahora toca resolver el caso de uso planteado inicialmente. Tendremos que añadir tan solo un par de ficheros: Una clase managed bean y una página facelet.
+En el post anterior conseguimos ya una aplicación funcional, sin embargo la capa de presentación se limitaba a un simple "Hola mundo!". Ahora toca resolver el caso de uso planteado inicialmente. Tendremos que añadir tan solo un par de ficheros: Una clase managed bean y una página Facelets.
 
 Empecemos por la clase. Creamos una carpeta de nombre `vista` dentro de la carpeta _jdrone/src/main/java/com/lametaweb/jdrone/_ . Pulsamos 
 botón derecho sobre la nueva carpeta y _New > Other... > CDI (Context and Dependency Inyection) > Bean_, para crear un bean CDI. Y en la ventana introducimos los valores indicados en la siguiente figura:
@@ -15,7 +15,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 Veamos el porqué de estos valores:
 
 * Name: DisponibilidadBean. Es el nombre de la clase que se genera. Tenemos que elegirlo de manera que explique el caso de uso que soporta. En este caso lo que se muestra al usuario es la disponibilidad de los drones en una fecha. La segunda parte del nombre indica que se trata de un bean gestionado por CDI. En Java EE la clase managed o backing bean representa el Modelo del patrón MVC.
-* Interfaces: La anotación @Named incluye el bean en el contexto EL de JSF lo que me va a permitir acceder a sus atributos y metodos usando el lenguaje unificado de expresiones EL, en general desde una página facelet o, en ocasiones, desde código java donde no disponga de una referencia al bean. En EL el nombre por defecto para el bean se toma del nombre de la clase en minúscula. En nuestro caso tendremos _disponibilidadBean_.
+* Interfaces: La anotación @Named incluye el bean en el contexto EL de JSF lo que me va a permitir acceder a sus atributos y métodos usando el lenguaje unificado de expresiones EL, en general desde una página facelet o, en ocasiones, desde código java donde no disponga de una referencia al bean. En EL el nombre por defecto para el bean se toma del nombre de la clase en minúscula. En nuestro caso tendremos _disponibilidadBean_.
 * Scope: @RequestScoped: Define el tiempo de vida y la visibilidad del bean. En este caso el bean está disponible sólo para los objetos que existan en la thread creada para gestionar la request donde se crea el bean. 
 
 NOTE: Una pega de la versión 2.1 de JSF, y al mismo tiempo una buena razón para actualizar en el servidor a la versión 2.2, es que el scope @ViewScoped, muy usado con formularios AJAX y en casos de uso que implican una o dos pantallas, no está integrado con el contexto CDI. Esto deriva en problemas como no poder inyectar beans CDI en un managed bean view scoped.
@@ -158,7 +158,7 @@ public class DisponibilidadBean {
 }
 ----
 
-Vamos pues con la página facelet. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos: 
+Vamos pues con la página Facelets. A la hora de plantear una página tengo que considerar los siguientes aspectos básicos: 
 
 * Elementos que deben aparecer: 
 	** Inmutables (por ejemplos leyendas de campos)
@@ -189,9 +189,9 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 En cuanto a los elementos, por áreas tengo que añadir:
 
 * Cabecera: Etiqueta para el título de la página.
-* Parámetros de entrada: El usuario debe introducir una fecha y una hora. Decido disponer dos componentes de texto. Uno para la fecha y otro para la hora. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de Primerfaces (añadir Primefaces, y al servidor, al proyecto es muy sencillo). En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de Primefaces.
+* Parámetros de entrada: El usuario debe introducir una fecha y una hora. Decido disponer dos componentes de texto. Uno para la fecha y otro para la hora. Podría igualmente haber decidido añadir un componente de terceros para fechas, como por ejemplo el componente Calendar de PrimeFaces. En esta área indicamos también al usuario el formato en el que debe introducir los datos. Esto no sería necesario usando el componente de PrimeFaces.
 * Botonera: En nuestro caso nos basta con un botón de solicitud de listado.
-* Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de Primefaces, o Richfaces.
+* Salida tabulada: Aquí hay que definir los campos que se muestran en la tabla. En nuestro caso la información de salida es una lista de drones y por tanto mostraremos los campos identificativos de los mismos. En este tipo de listados es interesante mostrar además campos adicionales calculados que aporten información sobre lo que se solicita. En nuestro caso consultamos los drones realizando un trabajo en una fecha y hora y al usuario le sería útil por ejemplo mostrar el número de minutos entre ese momento y el de finalización del trabajo, para pudiera ver qué drone queda antes disponible. Del mismo modo que con los parámetros de entrada aquí podemos mejorar la interfaz usando alguno de los componentes para listas de PrimeFaces, o RichFaces.
 
 La siguiente figura muestra el boceto o mockup final de nuestra página:
 
@@ -314,11 +314,11 @@ _webapp_, y dentro de _resources_ creo otra con el nombre `css`. Sobre esta últ
 }
 ----
 
-Una página JSF o facelet es un documento XML y al mismo tiempo un documento HTML. Contiene etiquetas HTML para definir la maquetación de la página y la semántica de cada elemento, y etiquetas JSF para definir los componentes y los aspectos dinámicos a nivel de página y de componente. Además como en cualquier página HTML podemos tener el código javascript y las hojas de estilo que precisemos, para soportar elementos dinámicos y estilos personalizados respectivamente. Es muy común añadir por ejemplo frameworks como jQuery, para la manipulación de la interfaz, o Bootstrap, para añadir capacidades de interfaz adaptativa.
+Una página JSF es un documento XML basado en la tecnología Facelets que contiene, por un lado, etiquetas HTML en general para definir la maquetación de la página, y por otro lado etiquetas JSF, que permiten generar contenido dinámico en de la página. Es posible incluir código javascript y hojas de estilo a través de etiquetas HTML o bién mediante componentes JSF. Es muy común añadir por ejemplo frameworks como jQuery (Con PrimeFaces no lo añado porque ya lo tengo), como soporte a la lógica de cliente de la página, o Bootstrap, para añadir capacidades de interfaz adaptativa. 
 
-Veamos cada elemento de nuestra página:
+Veamos cada elemento de la página:
 
-* La primera línea indica que se trata de un documento XML. Las JSPs ya son historia.
+* La primera línea indica que se trata de un documento XML. Las JSPs ya son historia dentro de JSF.
 * La segunda línea indica que se trata también de un documento HTML. En este caso HTML 4. Si necesitamos usar HTML 5 escribimos solamente <!DOCTYPE html> ya que HTML 5 no se valida contra un DTD. JSF está mejorando la integración con HTML 5 en cada versión. Es otro motivo para instalar en nuestro proyecto y en nuestro servidor la última versión disponible.
 * La tercera línea es la raiz en todo documento HTML, donde se declaran los espacios de nombres de XHTML y de las librerías de etiquetas de JSF que precisemos. En esta página sólo usamos la librerías Html y Core de JSF. La primera se usa para referirnos a los componentes y la segunda a elementos no renderizables como Validators, Converters o Listners, propios o predefinidos, elementos de binding de datos, etc. En 	http://docs.oracle.com/javaee/6/javaserverfaces/2.1/docs/vdldocs/facelets/[esta dirección] podéis ver las distintas librerías y sus componentes con sus atributos.
 * La cuarta es el nodo raiz del árbol de elementos JSF. Podemos no ponerlo si no necesitamos especificar ninguno de sus atributos. Por ejemplo en una aplicación multiidioma uso el atributo locale para fijar el idioma en que muestro la pantalla.
@@ -418,4 +418,4 @@ Para gestionar el versionado Git desde Eclipse en un proyecto ya versionado, por
 . En el explorador los iconos de los elementos del proyecto mostrarán un símbolo amarillo abajo a la derecha.
 . Si pulsamos de nuevo botón derecho sobre el proyecto y la opción _Team_ esta vez aparecerán las opciones correspondientes a las distintas acciones que podemos realizar sobre nuestro repositorio o sobre el repositorio remoto en GitHub.
 
-Hasta el próximo Post!
+Nos vemos en el siguiente Post!
