@@ -36,7 +36,7 @@
     <meta property="og:description" content="Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/09/02/Implementacion-de-un-mantenimiento-con-JSF-y-PrimeFaces.html" />
     <meta property="article:published_time" content="2015-09-01T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-14T11:32:42.218Z" />
+    <meta property="article:modified_time" content="2015-10-14T18:53:34.449Z" />
     <meta property="article:tag" content="JSF" />
     <meta property="article:tag" content="JavaServer Faces" />
     <meta property="article:tag" content="PrimeFaces" />
@@ -65,7 +65,7 @@
     "headline": "Implementación de un mantenimiento con JSF y PrimeFaces.",
     "url": "http://www.lametaweb.com/2015/09/02/Implementacion-de-un-mantenimiento-con-JSF-y-PrimeFaces.html",
     "datePublished": "2015-09-01T22:00:00.000Z",
-    "dateModified": "2015-10-14T11:32:42.218Z",
+    "dateModified": "2015-10-14T18:53:34.449Z",
     "keywords": "JSF,  JavaServer Faces,  PrimeFaces,  CRUD,  EJB,  Hibernate,  backing bean",
     "description": "Introducción En este post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que..."
 }
@@ -570,7 +570,18 @@ onPostback="true"&gt;&lt;/f:viewAction&gt;</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_la_validaci_n_por_antonomasia_en_un_mantenimiento_comprobaci_n_de_clave_natural_duplicada">La validación por antonomasia en un mantenimiento: Comprobación de clave natural duplicada.</h3>
-
+<div class="paragraph">
+<p>En un mantenimiento algo que tendremos siempre que incluir a la hora de guardar una nueva entidad durante un proceso de creación o alta es la comprobación de que no existe ya otra entidad con la misma clave natural en la base de datos. La clave natural o clave semántica es el conjunto de campos que identifican a una entidad diferenciándola del resto. Esta verificación debe existir independientemente de que la clave natural se use como clave primaria o no. En nuestro caso por ejemplo usamos una clave subrogada como clave principal, generada por la propia base de datos. Esta verificación la implementaremos en una clase Validator donde inyectaremos mediante CDI el componente EJB de acceso a datos y realizaremos la validación dentro del método validate.</p>
+</div>
+<div class="paragraph">
+<p>Lo anterior es el escenario habitual, donde los requisitos indican que la clave natural no puede ser modificada en una entidad persistida. La prohibición de modificar la clave natural impide problemas de integridad cuando se utiliza como clave primaria en las relaciones con otras entidades y en cualquier caso problemas de localización de entidades cuando la modificación se realice por error o se cometan errores en la misma. Cuando un usuario persista una entidad con errores en su clave natural, deberá borrar dicha entidad y crearla de nuevo con la clave natural correcta. Se puede facilitar esta tarea disponiendo un botón <em>Copiar desde</em> en la pantalla de creación de entidad, que permita copiar los valores ya introducidos en la entidad con la clave natural errónea a la nueva entidad con la clave correcta. Y adicionalmente un cuadro de dialogo que nos dé la posibilidad de borrar la entidad con la clave natural errónea.</p>
+</div>
+<div class="paragraph">
+<p>Sin embargo en ciertos casos puede tenerse unos requisitos que nos indiquen que la clave natural si pueda ser modificada. Por ejemplo si los datos entran en el sistema desde distintas fuentes mediante procesos de importación y la probabilidad de errores de formato en los mismos es alta. En este caso la lógica del validador será algo más compleja ya que ahora además de la comprobación al crear una entidad existirá una comprobación al modificarla. Tendremos que comprobar que la clave natural modificada no exista ya en la base de datos. Esta comprobación además debe excluir el valor inicial de la clave natural, sería el caso en que el usuario no modifica la clave natural durante la sesión de edición de la entidad.</p>
+</div>
+<div class="paragraph">
+<p>En la aplicación se implementan los dos casos para la pantalla de creación / modificación del detalle de la entidad Trabajo, incluyéndose el atributo booleano <em>isPosibleEdicionClaveNatural_en el componente _inputText</em> del campo Número de Registro, que constituye la clave natural de la entidad. El valor booleano es escrito directamente en la página <em>trabajo.xhtml</em>. En un caso real podríamos tomar este valor de una tabla de configuración en la base de datos. Echadle un vistazo al código en el fichero <em>trabajo.xhtml</em> correspondiente a la página JSF y el fichero <em>NumeroDeRegistroUnicoValidator.java</em> que implementa el validador.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_uso_de_plantillas_una_plantilla_adaptativa_para_jdrone">Uso de plantillas: Una plantilla adaptativa para jdrone</h3>
