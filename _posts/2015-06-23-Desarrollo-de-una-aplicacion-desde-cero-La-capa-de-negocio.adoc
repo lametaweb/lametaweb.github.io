@@ -3,11 +3,11 @@ La metaweb
 :hp-tags: ij, EJB, JPA, Derby, Hibernate Tools, Datasource Explorer
 :published_at: 2015-06-23
 
-Como os comenté en el post anterior, antes de implementar la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos. Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente tendremos que comprobar si las tablas, índices, restricciones, y demás elementos generados por Hibernate son los esperados.
+Como os comenté en el Post anterior, antes de comenzar con la implementación de la capa de negocio veremos brevemente la herramienta que trae Derby para inspeccionar un esquema de datos. El acceso al esquema de datos se hace necesario por dos motivos: Por un lado en ocasiones necesitaremos comprobar si los datos persistidos son correctos, y por otro lado frecuentemente tendremos que comprobar si las tablas, índices, restricciones, y demás elementos generados por Hibernate son los esperados.
 
 == Uso del cliente de línea de comandos ij de Derby 
 
-La herramienta cliente que Derby proporciona se llama _ij_ y se encuentra en la carpeta _\bin\_ del paquete de Derby, que os recuerdo podéis bajar desde http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip[este link], y que, si recordáis, cuando montamos el entorno de trabajo descomprimimos en la ruta _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. _ij_ es una herramienta de tipo línea de comando, y que por tanto tenemos que ejecutar desde una ventana de comando en Windows, o en Linux desde un terminal. Para inspeccionar nuestro esquema de datos en la ruta _C:\BD\drones\_ (ver elemento <connection-url> de la configuración del datasource en el fichero pom.xml) que será creado en breve cuando despleguemos nuestra aplicación, tendremos que llamar a _ij_ desde esa carpeta. Para usar _ij_ más comodamente creamos/editamos estas variables del sistema:
+La herramienta cliente que Derby proporciona se llama _ij_ y se encuentra en la carpeta _\bin\_ del paquete de Derby, que os recuerdo podéis bajar desde http://apache.rediris.es//db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip[este link], y que, si recordáis, cuando montamos el entorno de trabajo descomprimimos en la ruta _C:\TALLER\BD\db-derby-10.11.1.1-bin\_. _ij_ es una herramienta de tipo línea de comando, y que por tanto tenemos que ejecutar desde una ventana de comando en Windows, o en Linux desde un terminal. Para inspeccionar nuestro esquema de datos en la ruta _C:\BD\drones\_ (ver elemento <connection-url> de la configuración del datasource en el fichero pom.xml) que será creado en breve cuando despleguemos nuestra aplicación, tendremos que llamar a _ij_ desde esa carpeta. Para usar _ij_ más cómodamente creamos/editamos estas variables del sistema:
 
 .Variables de sistema para Derby
 [cols="1,1,2"]
@@ -29,7 +29,7 @@ h|[small]#Valor#
 |[small]#;%DERBY_HOME%\bin#
 |===
 
-Como aún no hemos desplegado la aplicación no tenemos aún nada en la ruta _C:\BD\drones\_. Os indico ahora de todos modos como usar _ij_ para ir cerrando las cuentiones relacionadas con la capa de datos. Podéis volver a este post cuando tengáis la base de datos tras un primer despliegue.
+Como aún no hemos desplegado la aplicación no tenemos aún nada en la ruta _C:\BD\drones\_. Os indico ahora de todos modos como usar _ij_ para ir cerrando las cuestiones relacionadas con la capa de datos. Podéis volver a este post cuando tengáis la base de datos tras un primer despliegue.
 
 Abrimos una ventana de comando y nos vamos a la carpeta de la base de datos escribiendo `cd C:\BD\drones`. Para invocar el cliente ij simplemente escribimos `ij`, y pulsamos la tecla Enter (&#x21B5;). El cliente mostrará la versión de Derby instalada y a continuación el prompt _ij>_. Para establecer la conexión con la base de datos escribimos el comando:
 
@@ -60,7 +60,7 @@ Os muestro la sesión de _ij_ completa en la siguiente figura:
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig068.png[]
 
 
-Para acabar con esta introducción a _ij_ comentaros que Derby restringe el número de máquinas virtuales a una a menos que usemos el Derby Network Server, de modo que debéis tener el cuidado de desconectar la sesión de _ij_, si la teníais abierta, antes de desplegar la aplicación, y reciprocamente, parar el servidor antes de iniciar una sesión de _ij_.
+Para finalizar esta introducción a _ij_ comentaros que Derby restringe el número de máquinas virtuales a una a menos que usemos el Derby Network Server, de modo que debéis tener el cuidado de desconectar la sesión de _ij_, si la teníais abierta, antes de desplegar la aplicación, y recíprocamente, parar el servidor antes de iniciar una sesión de _ij_.
 
 == La capa de negocio, confluencia de tres tecnologías: EJB, JPA y JTA
 
@@ -72,7 +72,7 @@ image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/im
 
 La clase DroneFacade representa la capa de negocio. Contiene un único método, que recibe una fecha y hora y devuelve una colección de Drones. Entre esta clase y la clase Drone existe una relación uso, que es un tipo de relación de dependencia, no estructural. Es la relación más débil del diagrama.
 
-Usaremos la tecnología EJB, en concreto la versión 3.1, incluída en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, que en nuestro caso de momento no usaremos, apoyándose en JTA, y realizar la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html[esta dirección].
+Usaremos la tecnología EJB, en concreto la versión 3.1, incluida en Java EE 6. Como ya vimos en el post anterior esta tecnología nos permite centrarnos en nuestro negocio al gestionar por nosotros las transacciones, que en nuestro caso de momento no usaremos, apoyándose en JTA, y realizar la inyección del contexto de persistencia a través del objeto EntityManager. JTA creará una transacción en el inicio del método de negocio y hará commit de la misma al final, si todo ha ido bien, o bien un rollback si se produce una excepción en alguna línea del método. En cuanto al objeto EntityManager es creado exclusivamente para las acciones implementadas en el método y es destruido a la salida del mismo. Para profundizar en las distintas alternativas de implementación podéis darle una lectura al apartado correspondiente a las transacciones del tutorial de Java EE 6 en http://docs.oracle.com/javaee/6/tutorial/doc/bncih.html[esta dirección].
 
 Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna dependencia al fichero de proyecto. Para EJB sólo preciso la dependencia:
 
@@ -85,9 +85,9 @@ Antes de crear e implementar la clase comprobamos si necesitamos añadir alguna 
 		</dependency>
 ----
 
-que ya fue incluída cuando añadimos el bean EJB stateful singleton para la carga inicial de datos. Por lo tanto tenemos que tocar el pom.xml.
+que ya fue incluida cuando añadimos el bean EJB stateful singleton para la carga inicial de datos. Por lo tanto tenemos que tocar el pom.xml.
 
-Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta `negocio/` dentro de la carpeta de proyecto `src/main/java/com/lametaweb/jdrone/`. A continuación pulsamos botón dereho sobre la carpeta _negocio/_ y elegimos la opción _New > Other..._ , escribimos la cadena "ebj" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor `DroneFacade`. Antes de pulsar el botón _Aceptar_ podéis ver como por defecto se marca la opción _No-interface View_ que  hará que se cree un bean sin interfaz. Dejamos marcada la opción para simplificar la aplicación.
+Vamos entonces con la clase de negocio. En primer lugar creamos la carpeta `negocio/` dentro de la carpeta de proyecto `src/main/java/com/lametaweb/jdrone/`. A continuación pulsamos botón derecho sobre la carpeta _negocio/_ y elegimos la opción _New > Other..._ , escribimos la cadena "ejb" en el cuadro de texto de la pantalla de nuevos elementos para filtrar el listado y seleccionamos la opción _Session Bean (EJB 3.x)_. Se abre la pantalla de configuración del nuevo bean donde lo único que hacemos es introducir en el campo nombre el valor `DroneFacade`. Antes de pulsar el botón _Aceptar_ podéis ver como por defecto se marca la opción _No-interface View_ que  hará que se cree un bean sin interfaz. Dejamos marcada la opción para simplificar la aplicación.
 
 Una vez creado el bean sin estado y sin interfaz añadimos el método de negocio indicado en el diagrama, quedando la clase así:
 
@@ -137,11 +137,11 @@ public class DroneFacade {
 
 Al tratarse de un bean EJB podemos inyectar el entity manager directamente en el atributo _em_.
 
-El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo post formará parte del Modelo de nuestra capa de presentanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.
+El método de negocio recibe un parámetro de tipo Date, que como veremos en el próximo Post formará parte del Modelo de nuestra capa de presetanción MVC (Modelo-Vista-Controlador), y devuelve una lista de objetos Drone ordenada por el número de serie, que actualizará el Modelo con la información a mostrar al usuario. Dentro del método ejecutamos la consulta apoyándonos en el entity manager. Podéis observar como la ejecución de la consulta se implementa en una sola línea usando la característica de encadenamiento de método de la API JPA, que se basa en que un método de un objeto A devuelve ese mismo objeto A, tras ejecutarse.
 
 Al tratarse de una consulta podemos prescindir del comportamiento transaccional, añadiendo una simple anotación al método.
 
-Una consulta puede montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como véis he optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y por tanto no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción.
+Una consulta puede montarse principalmente de dos maneras, una programática, a través del API Criteria, y otra textual basada en el lenguaje de consulta JPQL de JPA, o HQL de Hibernate. HQL es una extensión de JPQL. Aquí como veis he optado por la segunda alternativa. Las consultas JPQL tienen una estructura similar a las SQL y por tanto no es complicado aprender lo básico. Analicemos nuestra consulta a modo de breve introducción.
 
 [source,jpql,indent=0]
 ----
@@ -151,7 +151,7 @@ where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha
 order by d.numeroDeSerie
 ----
 
-En la primera línea defino los atributos o entidades que quiero que la consulta devuelva. Al indicar el alias _d_ en _select d_ estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate a diferencia de JPA es posible prescindir de esta parte de la consulta. Si lo hacemos así no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la claúsula _from_. Nuestra consulta devolvería entonces una lista de array de objetos List<Object[]> donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.
+En la primera línea defino los atributos o entidades que quiero que la consulta devuelva. Al indicar el alias _d_ en _select d_ estamos diciendo que queremos que la consulta sólo devuelva objetos Drone. En Hibernate a diferencia de JPA es posible prescindir de esta parte de la consulta. Si lo hacemos así no habrá filtrado de datos y la consulta devolverá todas los objetos que intervienen en la misma, definidos en la cláusula _from_. Nuestra consulta devolvería entonces una lista de array de objetos List<Object[]> donde el primer elemento del array es un objeto Drone y el segundo un objeto Trabajo.
 
 En la segunda línea como se ha comentado se determinan las entidades que intervienen en la consulta. En este caso el conjunto de datos consiste en un inner join entre Drone y Trabajo. El join, a diferencia de lo que ocurre en SQL, se hace indicando el campo de la entidad padre que da acceso a las entidades hijas relacionadas: _d.trabajosAsignados_. 
 
@@ -212,7 +212,7 @@ Para que en nuestra aplicación el mapeo de entidades que hace Hibernate Tools s
   </persistence>
 ----
 
-Lo primero que heremos será crear una conexión a Derby, que será la que use Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú _Window > Open Perspective > Other..._ y elegimos _Hibernate_:
+Lo primero que haremos será crear una conexión a Derby, que será la que use Hibernate Tools para alcanzar la base de datos. Cambiamos a la perspectiva Hibernate seleccionando la opción de menú _Window > Open Perspective > Other..._ y elegimos _Hibernate_:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig071.png[]
 
@@ -263,7 +263,7 @@ h|Value
 
 Desmarcamos las dos opciones en la parte inferior de la ventana y pulsamos el botón _Test Connection_ para comprobar que llegamos a la base de datos. Recordad que de momento no tenéis creada la base de datos y obtendréis un mensaje de error. Antes de probar la conexión además tenemos que asegurarnos de que no exista otra máquina virtual accediendo a la base de datos, en nuestro caso bien porque el servidor esté arrancado o bien porque hayamos dejado una conexión abierta con el cliente ij. Para terminar pulsamos _Finish_.
 
-La conexión que acabamos de crear para las Hibernate Tools podemos sin embargo usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más comodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos _Connect_. Navegando por la jerarquía accedemos a los distintos elementos:
+La conexión que acabamos de crear para las Hibernate Tools podemos sin embargo usarla simplemente para inspeccionar la base de datos y los datos al igual que hacíamos con la utilidad ij, pero ahora más cómodamente desde el IDE. Sobre la nueva conexión pulsamos botón derecho y seleccionamos _Connect_. Navegando por la jerarquía accedemos a los distintos elementos:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig074.png[]
 
@@ -319,7 +319,7 @@ from Drone d inner join d.trabajosAsignados t
 where t.fechaHoraInicio < :fecha and t.fechaHoraFinalizacion > :fecha 
 order by d.numeroDeSerie
 ----
-Para asignar un valor al parámetro _fecha_ nos vamos a la vista _Query Parameters_ a la derecha y hacemos click sobre el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png[]. Automaticamente se asigna el nombre _fecha_ y el tipo _string_. En el campo _Value_ introducimos una información de fecha y hora análoga a ésta:
+Para asignar un valor al parámetro _fecha_ nos vamos a la vista _Query Parameters_ a la derecha y hacemos click sobre el icono image:https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig081.png[]. Automáticamente se asigna el nombre _fecha_ y el tipo _string_. En el campo _Value_ introducimos una información de fecha y hora análoga a ésta:
 
 `2015-06-16 20:36:49`
 

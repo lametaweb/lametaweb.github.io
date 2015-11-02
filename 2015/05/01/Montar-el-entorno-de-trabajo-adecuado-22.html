@@ -30,13 +30,13 @@
 
     <link rel="canonical" href="http://www.lametaweb.com/2015/05/01/Montar-el-entorno-de-trabajo-adecuado-22.html" />
     
-    <meta property="og:site_name" content="La metaweb" />
+    <meta property="og:site_name" content="la metaweb" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Montar el entorno de trabajo adecuado (2/2)" />
     <meta property="og:description" content="En esta segunda entrada terminaremos de instalar y configurar el software del entorno de desarrollo Java EE. Como IDE elegimos Eclipse, por ser el más extendido. El cambio de IDE no es algo costoso si nuestro proyecto está bajo Maven..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/05/01/Montar-el-entorno-de-trabajo-adecuado-22.html" />
     <meta property="article:published_time" content="2015-04-30T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-07-01T11:35:14.043Z" />
+    <meta property="article:modified_time" content="2015-10-13T18:42:23.553Z" />
     <meta property="article:tag" content="Eclipse" />
     <meta property="article:tag" content="JBoss" />
     <meta property="article:tag" content="JBoss Tools" />
@@ -50,25 +50,25 @@
 {
     "@context": "http://schema.org",
     "@type": "Article",
-    "publisher": "La metaweb",
+    "publisher": "la metaweb",
     "author": {
         "@type": "Person",
         "name": "La metaweb",
         "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
         "url": "undefined/author/undefined",
-        "sameAs": ""
+        "sameAs": null
     },
     "headline": "Montar el entorno de trabajo adecuado (2/2)",
     "url": "http://www.lametaweb.com/2015/05/01/Montar-el-entorno-de-trabajo-adecuado-22.html",
     "datePublished": "2015-04-30T22:00:00.000Z",
-    "dateModified": "2015-07-01T11:35:14.043Z",
+    "dateModified": "2015-10-13T18:42:23.553Z",
     "keywords": "Eclipse,  JBoss,  JBoss Tools",
     "description": "En esta segunda entrada terminaremos de instalar y configurar el software del entorno de desarrollo Java EE. Como IDE elegimos Eclipse, por ser el más extendido. El cambio de IDE no es algo costoso si nuestro proyecto está bajo Maven..."
 }
     </script>
 
     <meta name="generator" content="Ghost ?" />
-    <link rel="alternate" type="application/rss+xml" title="La metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="alternate" type="application/rss+xml" title="la metaweb" href="http://www.lametaweb.com/rss" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
 </head>
 <body class="post-template tag-Eclipse tag-JBoss tag-JBoss-Tools">
@@ -110,8 +110,8 @@
                 <li><a class="fi-torso" href="http://www.lametaweb.com/about"></a></li>
                 <li><a class="fi-mail" href="http://www.lametaweb.com/contact"></a></li>
             </ul>
-            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="La metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
-            <h1 class="blog-title">La metaweb</h1>
+            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="la metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">la metaweb</h1>
             <hr>
             <p class="blog-description">Ensayos no destructivos en el ecosistema Java EE, y algún off topic para desconectar ;-)</p>
             <div class="blog-network">
@@ -127,6 +127,7 @@
                 <a href="#" class="fi-social-steam"></a>
                 <a href="#" class="fi-social-xbox"></a>
                 <a href="#" class="fi-social-reddit"></a> -->
+                  <a href="github.com/lametaweb" class="fi-social-github"></a>
             </div>
         </div>
     </div>
@@ -159,13 +160,13 @@
 <h2 id="_preliminares">Preliminares</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando al máximo la complejidad de las tecnologías empleadas. Por ejemplo cuando creamos un web service el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API REST e implementar cada operación.</p>
+<p>Un IDE debe procurar al desarrollador un entorno que le permita ser lo más productivo posible, ocultando al máximo la complejidad de las tecnologías empleadas. Por ejemplo cuando creamos un Web service el IDE nos generará todas las clases y ficheros necesarios y nosotros sólo tendremos que enfocarnos en definir la API REST e implementar cada operación.</p>
 </div>
 <div class="paragraph">
 <p>Existen otros IDEs además de Eclipse. En mi experiencia Netbeans es un buen entorno, con muchas ayudas, y maduro en su versión 8, además tiene detrás a una gran comunidad y a Oracle. Como dato en contra, durante el desarrollo de un proyecto mediano, en la versión 8.0, de cuando en cuando se quedaba "pensando" unos segundos. Por otro lado tenemos a JDeveloper, que es el IDE oficial de Oracle, muy potente y una opción recomendable para nuevos proyectos de gran tamaño, y si desarrollamos contra Oracle, y/o el servidor Weblogic. Para proyectos Spring está Eclipse STS que ofrece potentes wizards. Si nuestro servidor es JBoss o el nuevo WildFly podemos optar la solución adoptada aquí, Eclipse + JBoss Tools, o directamente por JBoss Developer Studio. La ventaja de optar por Eclipse es que podemos personalizar nuestro entorno instalando los plugins que elijamos. En definitiva tenemos múltiples opciones y la decisión muchas veces dependerá de las tecnologías que elijamos o nos imponga el tipo de proyecto o el propio cliente.</p>
 </div>
 <div class="paragraph">
-<p>Ok, antes de nada vamos a crear una sencilla estructura de carpetas donde ir guardardo el trabajo, y donde instalar el software. Por ejemplo la siguiente:</p>
+<p>Ok, antes de nada vamos a crear una sencilla estructura de carpetas donde ir guardando el trabajo, y donde instalar el software. Por ejemplo la siguiente:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -184,7 +185,7 @@
 <p><code>IDE</code>: Para la instalación del IDE Eclipse. Instalad otros si queréis echarles un vistazo.</p>
 </li>
 <li>
-<p><code>Servidor</code>: Aquí irá nuestro JBoss EAP edición Comunity. Aunque si en el futuro vemos algo particular de Java EE 7 instalaremos WildFly o GlassFish.</p>
+<p><code>Servidor</code>: Aquí irá nuestro JBoss EAP edición Community. Aunque si en el futuro vemos algo particular de Java EE 7 instalaremos WildFly o GlassFish.</p>
 </li>
 <li>
 <p><code>Workspace</code>: Para guardar los proyectos desarrollados en Eclipse.</p>
@@ -249,7 +250,7 @@ No marquéis el check <code>Use this as the default and do not ask again</code> 
 </div>
 </div>
 <div class="paragraph">
-<p>Elegimos nuestro sistema operativo y pulsamos sobre el enlace del installer. Si no estamos ya logados saltaremos a la página de introducción de usuario y contrseña. Procedemos a la creación de una cuenta pulsando el enlace <code>Create Account</code>.</p>
+<p>Elegimos nuestro sistema operativo y pulsamos sobre el enlace del installer. Si no estamos ya logados saltaremos a la página de introducción de usuario y contraseña. Procedemos a la creación de una cuenta pulsando el enlace <code>Create Account</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -307,7 +308,7 @@ Apuntad siempre en un sitio seguro los datos de las credenciales que vayáis nec
 <h2 id="_probando_nuestro_nuevo_entrono_de_trabajo">Probando nuestro nuevo entrono de trabajo</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Comprobaremos que la instalación es correcta desplegando la aplicación web <em>Hello World!</em> localizada en los ejemplos recién instalados. Para arrancar manualmente el servidor abrimos una consola de comandos, vamos a la carpeta <code>bin\</code> dentro de la carpeta del servidor y lo iniciamos escribiendo <code>standalone.bat</code>. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejectuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.</p>
+<p>Comprobamos que la instalación es correcta desplegando la aplicación web <em>Hello World!</em> localizada en los ejemplos recién instalados. Para arrancar manualmente el servidor abrimos una consola de comandos, vamos a la carpeta <code>bin\</code> dentro de la carpeta del servidor y lo iniciamos escribiendo <code>standalone.bat</code>. Es importante no cerrar la ventana de comandos ya que si lo hacemos el proceso en que se ejecuta el servidor se terminará y éste se parará. Así que dejamos la ventana de comandos abierta, aunque sí podemos minimizarla.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -346,7 +347,7 @@ Si antes no instalaste los ejemplos del servidor puedes bajarlos ahora en el enl
 </div>
 </div>
 <div class="paragraph">
-<p>¿Y para desinstalar la aplicación? Otra única linea de comando: <code>mvn jboss-as:undeploy</code>. Refrescamos la ventana del navegador para ver el error 404 de recurso no disponible.</p>
+<p>¿Y para desinstalar la aplicación? Otra única línea de comando: <code>mvn jboss-as:undeploy</code>. Refrescamos la ventana del navegador para ver el error 404 de recurso no disponible.</p>
 </div>
 <div class="paragraph">
 <p>El plugin <code>jboss-as</code> es capaz de gestionar desde Maven cualquier operación contra el servidor JBoss. Para usarlo sobre un proyecto como acabamos de hacer sólo es necesario declararlo en la sección <code>&lt;build&gt;</code> del fichero <code>pom.xml</code>. Otra alternativa es incluir el goal de despliegue en la phase final del ciclo por defecto, la fase install, en el fichero pom.xml, y ejecutar entonces el comando mvn clean install, que ahora sólo hace referencia a las dos fases. En el fichero pom.xml tendríamos que tener lo siguiente:</p>
@@ -384,7 +385,7 @@ Si antes no instalaste los ejemplos del servidor puedes bajarlos ahora en el enl
 <p>Paremos el servidor. Como fue arrancado desde una consola de comandos lo paramos cerrándola. Nos vamos a la ventana de la consola y pulsamos <code>Ctrl + C</code>. Escribimos <code>S</code> si nos pregunta si queremos finalizar el archivo por lotes y escribimos <code>exit</code> para cerrar la ventana.</p>
 </div>
 <div class="paragraph">
-<p>Vamos ahora a reemplazar la ventana de comando por nuestro IDE para cargar el proyecto y probarlo. Abrimos Eclipse. Una vez dentro del IDE lo primero que hacemos es asegurarnos de que el JRE que se usará sea el contenido en el JDK instalado y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK, como cualquier herrmienta de desarrollo de este tipo, y no le basta sólo con un JRE. Me voy a <code>Windows &gt; Preferences &gt; Java &gt; Installed JREs</code> y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.</p>
+<p>Vamos ahora a reemplazar la ventana de comando por nuestro IDE para cargar el proyecto y probarlo. Abrimos Eclipse. Una vez dentro del IDE lo primero que hacemos es asegurarnos de que el JRE que se usará sea el contenido en el JDK instalado y no un JRE público fuera del JDK. Esto es necesario porque Eclipse necesita un JDK, como cualquier herramienta de desarrollo de este tipo, y no le basta sólo con un JRE. Me voy a <code>Windows &gt; Preferences &gt; Java &gt; Installed JREs</code> y si el JRE no es el incluido en el JDK lo borramos, añadimos el incluido en el JDK y lo marcamos como JRE por defecto.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -398,7 +399,7 @@ Si antes no instalaste los ejemplos del servidor puedes bajarlos ahora en el enl
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Si vamos a experimentar con los ejemplos del servidor en Eclipse es aconsejable comprimir antes la carpeta raiz que los contiene y tener así una copia de seguridad que nos permita recuperar el contenido de los ficheros originales cuando lo necesitemos.
+Si vamos a experimentar con los ejemplos del servidor en Eclipse es aconsejable comprimir antes la carpeta raíz que los contiene y tener así una copia de seguridad que nos permita recuperar el contenido de los ficheros originales cuando lo necesitemos.
 </td>
 </tr>
 </table>
@@ -486,7 +487,7 @@ A partir de la versión 1.4 la denominación y formato de versión cambia para e
 </div>
 </div>
 <div class="paragraph">
-<p>En la URL <a href="http://tools.jboss.org/features/">JBoss Tools - Features</a> podemos ver la cantidad de tecnologías dentro y fuera del estándar Java EE para las que nos ofrece soporte. La parte de gestión del servidor lo proporciona se presenta en el enlace <em>Server Tooling</em>. El resto de características son muy interesantes, tenemos soporte para Hibernate (Persistencia) con ayudas como la generación automática de Entities a partir de la base de datos o un editor de Criteria y otro para consultas HQL. También hay soporte para CDI a la hora de escribir el código para nuestros beans, o soporte para Arquillian, un framework para pruebas unitarias en aplicaciones web empresariales. Para el aprendizaje de todas estas tecnologías el secreto es el mismo: Lectura de teoría básica para empezar, a continuación montar un aplicación básica y practicar y practicar tocando alli y allá y viendo los efectos producidos, y vuelta a la documentación para consultar, en un proceso ciclico que nos dará cada vez más confianza en el uso de esa tecnología.</p>
+<p>En la URL <a href="http://tools.jboss.org/features/">JBoss Tools - Features</a> podemos ver la cantidad de tecnologías dentro y fuera del estándar Java EE para las que nos ofrece soporte. La parte de gestión del servidor lo proporciona se presenta en el enlace <em>Server Tooling</em>. El resto de características son muy interesantes, tenemos soporte para Hibernate (Persistencia) con ayudas como la generación automática de Entities a partir de la base de datos o un editor de Criteria y otro para consultas HQL. También hay soporte para CDI a la hora de escribir el código para nuestros beans, o soporte para Arquillian, un framework para pruebas unitarias en aplicaciones web empresariales. Para el aprendizaje de todas estas tecnologías el secreto es el mismo: Lectura de teoría básica para empezar, a continuación montar un aplicación básica y practicar y practicar tocando aquí y allá y viendo los efectos producidos, y vuelta a la documentación para consultar, en un proceso ciclico que nos dará cada vez más confianza en el uso de esa tecnología.</p>
 </div>
 <div class="paragraph">
 <p>Para instalar las Tools abrimos Eclipse y vamos a la opción del menú <em>Help &gt; Eclipse Marketplace</em>. En la entrada <em>Find</em> escribimos <code>JBoss Tools (Luna)</code> y en unos segundos aparecerá la entrada en la lista de productos, seleccionar y pulsar <em>Install</em> para que comience la instalación. En la siguiente pantalla dejamos marcados todos los plugins y pulsamos <em>Confirmar</em>.</p>
@@ -508,7 +509,7 @@ A partir de la versión 1.4 la denominación y formato de versión cambia para e
 <p>Para acceder de nuevo a la pantalla pulsaremos sobre el icono<span class="image"><img src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig075.png" alt="prac001-fig075.png"></span>en la barra de herramientas.</p>
 </div>
 <div class="paragraph">
-<p>Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación <em>Hello world!</em> para que no entre en conflicto con el nuevo despliegue automático. Abrimos una última vez una ventana de consola para esto, y ejecutamos el comando standalone.bat de la carpeta del sevidor para iniciarlo.</p>
+<p>Antes de añadir nuestro servidor a Eclipse desinstalamos nuestra aplicación <em>Hello world!</em> para que no entre en conflicto con el nuevo despliegue automático. Abrimos una última vez una ventana de consola para esto, y ejecutamos el comando standalone.bat de la carpeta del servidor para iniciarlo.</p>
 </div>
 <div class="imageblock">
 <div class="content">

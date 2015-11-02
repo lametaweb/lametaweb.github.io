@@ -1,0 +1,468 @@
+= Implementación de un mantenimiento con JSF y PrimeFaces.
+La metaweb
+:hp-tags: JSF, JavaServer Faces, PrimeFaces, CRUD, EJB, Hibernate, backing bean
+:published_at: 2015-09-02
+
+En este Post veremos los aspectos más relevantes de la implementación de un caso de uso de gestión / mantenimiento de una entidad del Modelo. Elegiremos la entidad Trabajo porque es la que requiere un desarrollo más interesante. Recordad que un dron está asignado a ninguno, uno o más trabajos, que un trabajo lo realiza un único dron, y que un trabajo tiene una ruta consistente en dos o más puntos de ruta.
+
+Podéis bajaros el código fuente del proyecto,  correspondiente a la release 1.1.0, en https://github.com/lametaweb/jdrone/releases/tag/1.1.0[esta dirección]. Otra alternativa para traeros el código fuente a vuestra máquina es que hagáis un Fork de la aplicación desde mi cuenta de GitHub a vuestra cuenta y a continuación creéis vuestro repo local Git. De esta manera tendréis vuestro propio proyecto en GitHub e incluso podréis enviar un Pull Request a mi cuenta con las modificaciones que consideréis oportunas.
+
+En general un mantenimiento se organiza en tres pantallas: 
+
+. La pantalla inicial o de maestro, que se presenta inicialmente, contiene el listado de entidades, opcionalmente un área para el filtrado del listado, y una serie de componentes de acción que dan acceso a las operaciones de mantenimiento. 
+
+. La pantalla de consulta del detalle, que muestra o da acceso a todos los datos de la entidad concreta seleccionada en la pantalla de maestro. 
+
+. La pantalla de creación / edición del detalle, que permite crear una nueva entidad o bien modificar la entidad concreta seleccionada en la pantalla de maestro.
+
++++<style>span.boton {color:#A80000;border-style: solid;border-width: 2px;padding-top: 0em;padding-right: .8em;padding-bottom: 0em;padding-left: .8em;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}</style>+++
+
+Veamos más en detalle cada una de las pantallas:
+
+En la pantalla de maestro el elemento central es una tabla donde cada fila muestra un subconjunto de los campos de la entidad. Este subconjunto estará formado por un lado por los campos identificativos y por otro por campos adicionales que nos interese añadir para facilitar la ordenación o el filtrado del listado. A la derecha de los campos de datos, en cada fila, añadiremos tres botones para las operaciones de consulta, edición y eliminación de la entidad. Fuera ya del listado situaremos un botón para el acceso a la pantalla de creación de una nueva entidad y otro para salir de la pantalla de maestro cuando queramos finalizar la gestión de Trabajos. Esta pantalla es común a todos los mantenimientos y tiene este aspecto:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig020.png[]
+
+La pantalla de consulta del detalle simplemente amplía la información mostrada en cada fila y es habitual mostrarla en una ventana emergente. Veremos luego que esto es muy sencillo de implementar cuando utilizamos la librería de componentes PrimeFaces.
+
+TIP: Si queréis ver o comparar la popularidad de alguna librería o tecnología usad _Google Trends_. Tendréis que añadir las palabras clave que identifiquen a cada tecnología cuidando de que no arrastren resultados no deseados. Por ejemplo si queréis ver la popularidad del framework _ionic_ para aplicaciones híbridas escribid "ionic framework" y no "ionic" a secas. La URL es https://www.google.es/trends[ésta].
+
+La pantalla de creación / edición del detalle es la más compleja, y la más interesante, y es diferente para cada entidad ya que depende de las relaciones que existan entre ésta y el resto de entidades. Recordemos ahora nuestro diagrama de clases:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/003/post003-fig045.png[]
+
+Observamos una relación de asociación muchos a uno con la entidad _Drone_ y otra de composición uno a muchos con la entidad _PuntoRuta_. Ambas relaciones deben ser mantenidas en la pantalla de detalle porque forman parte de la información contenida en la entidad _Trabajo_. La gestión de la relación con _Drone_ la implementaremos con un componente _selectOneMenu_ y la de la relación con los _PuntoRuta_ con un componente _dataTable_ conteniendo los componentes adicionales necesarios para añadir, quitar o editar puntos de ruta. El diseño de la pantalla de detalle sería este:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig025.png[]
+
+Es importante señalar que no existe una solución única a la hora de implementar un caso de uso, ni para las páginas, ni para los backing beans. Como regla general intentaremos siempre conseguir un resultado que proporcione la mejor experiencia de usuario al tiempo que cumpla con todos los requisitos funcionales acordados con el cliente. Respecto de esto último el cliente podría por ejemplo solicitar que en la página de detalle existieran accesos a ventanas emergentes de asistencia: Ventana calculadora de distancias entre dos puntos, ángulos entre trayectorias, conversión de unidades, etc.
+
+En el desarrollo de un mantenimiento existirán por tanto tareas generales y comunes a cualquier entidad, y tareas especificas, localizadas sobre todo en la pantalla de detalle, que son las que van a plantearnos los mayores retos a la hora de conseguir la funcionalidad deseada.
+
+=== Configuraciones adicionales sobre el entorno de trabajo
+
+Queremos que nuestra productividad sea máxima y para ello vamos en este punto del proyecto a instalar la librería de componentes PrimeFaces así como la última versión disponible de JSF.
+
+Añadir PrimeFaces al proyecto es sencillo, basta con añadir una única  dependencia al proyecto:
+
+[source,xhtml,indent=0]
+----
+		<dependency>  
+		    <groupId>org.primefaces</groupId>  
+		    <artifactId>primefaces</artifactId>  
+		    <version>5.2</version>  
+		</dependency>
+----
+
+Sin embargo, actualizar JSF desde la versión 2.1 a la 2.2 no es tan simple. El procedimiento para añadir el nuevo módulo de servidor dista de ser directo. Se intentó seguir el procedimiento existente en internet sin resultados positivos: En resumen el proceso pasa por bajar de GitHub una aplicación Maven que genera un fichero CLI que realiza el deploy de los tres slots correspondientes a los tres módulos que se ven afectados por la actualización. Sin embargo uno de los slots da problemas ya que el script está actualizado para operar con las versiones iniciales del servidor WildFly y no con JBoss EAP.
+
+A la vista de lo anterior aprovecharemos esta dificultad y la convertiremos en ventaja: Optamos por instalar el nuevo servidor WildFly en su última versión disponible, en estos momentos la 9.0.1, y así tener a nuestra disposición una plataforma Java EE 7 completa. Bien, lo primero es descargar el fichero de instalación del servidor desde http://wildfly.org/downloads/[esta página]. Tenéis que elegir la primera de las opciones en la lista, etiquetada con _Java EE7 Full & Web Distribution_.
+
+NOTE: En el momento de revisar este Post ya estaba disponible la versión 10 de WildFly, así que instaladla si queréis en vez de la versión 9 para tener las últimas correcciones de bugs y últimas versiones de las librerías. Entiendo que no debe afectar en cuanto a instalación e integración con Eclipse. Descargaos también los _Quickstarts_ porque os van a venir muy bien como material de consulta en las etapas iniciales de la implementación de un nuevo proyecto sea cual sea su naturaleza.
+
+Tras la instalación del nuevo servidor, antes de iniciarlo, debemos añadir un usuario. Para ello ejecutad el archivo por lotes _bin\add-user.bat_ y seguid las indicaciones.
+
+Lo siguiente es añadir WildFly a Eclipse como nueva unidad de ejecución. La versión de las JBoss Tools sólo ofrecía en ese momento un conector para la versión 8 pero después de las pruebas de arranque y parada se comprueba no hay problemas en usarlo para la versión 9.
+
+Por último tendremos que realizar los cambios necesarios en nuestro proyecto para adaptarlo al cambio de servidor. En primer lugar tendremos que actualizar las dependencias Maven a las del nuevo servidor, un proceso sin demasiada complicación. Podéis consultar el contenido del fichero _pom.xml_ en el código fuente del proyecto.
+
+Se ha refactorizado además el ciclo de construcción de modo que ahora existe un profile _despliegue-recursos_ que se debe ejecutar la primera vez que despleguemos la aplicación, o bien cuando los recursos hayan sido eliminados del servidor por cualquier motivo. Cread un nueva configuración de ejecución para este profile: Botón derecho sobre proyecto y _Run As_ > _Run Configurations..._  Botón derecho sobre _Maven build_ > _New_.  En la entrada _Goals_ escribid `clean install -Pdespliegue-recursos` y dad un nombre al nuevo perfil.
+
+En segundo lugar, como hemos pasado de JSF 2.1 a 2.2, tenemos que actualizar los espacios de nombres en el nodo raíz del fichero _faces-config.xml_. Además tenemos que actualizar la faceta JavaServer Faces del proyecto. La desmarcamos, esperamos a que se desinstale y la volvemos a marcar. Al añadir de nuevo la opción _JSF Implementation Library_ dejadla así _Type_ > _Disable Library Configuration_.
+
+Para comprobar que JavaServer Faces se actualizó correctamente realicemos unas sencillas modificaciones sobre nuestra página _index.xhtml_:
+
+* Actualizamos a HTML5. Para ello actualizad el doctype de la página así:
+
+[source,xhtml,indent=0]
+----
+<!DOCTYPE html>
+----
+
+* Cambiamos los espacios de nombres:
+
+[source,xhtml,indent=0]
+----
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+----
+
+* Añadimos un elemento nuevo de JSF 2.2 para comprobar si el cambio de versión ha sido efectivo. Sustituimos la línea de código primera por la segunda:
+
+[source,xhtml,indent=0]
+----
+	<f:event 
+    listener="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+    type="preRenderView" />
+----
+[source,xhtml,indent=0]
+----
+	<f:viewAction 
+    action="#{disponibilidadBean.listaEstadoDronesPorFecha()}"
+    onPostback="true"></f:viewAction>
+----
+
+Ahora no se admiten los típicos caracteres de espaciado `\&nbsp;` y los sustituimos por el equivalente código unicode `\&#160;`.
+
+La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página ofreciendo más flexibilidad que la etiqueta `event` para acciones de precarga de datos para una página. La forma en que se usa en nuestra página de consulta `index.xhtml` no es la habitual, y por eso es necesario añadir el atributo `onPostback="true"`. En el siguiente apartado veremos usos adecuados de `viewAction` tanto en la página de maestro como en la de detalle.
+
+Bien, con el diseño de las páginas listo podemos empezar con el desarrollo. No se dará una explicación tan paso a paso como en Posts anteriores porque sé que ya tenéis cierta soltura con JSF y puede hacerse un poco pesado. En cambio os explicaré los puntos claves a la hora de desarrollar un maestro detalle en JSF. Y vosotros ayudándoos del código fuente del proyecto y de las explicaciones podéis intentar implementar las pantallas nombrando los ficheros por ejemplo con vuestras iniciales al final del nombre original. Por ejemplo para la pantalla de maestro cread una página con el nombre trabajoFJH.xhtml, y un backing bean con el nombre TrabajoFJHBean.java. Primero nos centraremos en la capa de presentación y comentaremos la capa de servicio / acceso a datos al final.
+
+=== La página de maestro: trabajos.xhtml.
+
+Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
+
+* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener por tanto estos datos disponibles antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction, ahora sí usada de la manera habitual. Esta etiqueta añade una llamada al Modelo para el ciclo de vida de JSF de una request Initial Request realizada hacia la página que la contiene, que es justo lo que necesitamos. Por defecto la llamada se realiza en la fase de Invoke Application, anterior a la de Render Response.
+
+[source,xhtml,indent=0]
+----
+	<f:metadata>
+		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}" />
+	</f:metadata>
+----
+
+El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio para la lectura de los datos y actualiza el Modelo en el backing bean, y a continuación la página es renderizada en el servidor en la fase Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. El siguiente código muestra el binding para la primera columna de la tabla:
+
+[source,xhtml,indent=0]
+----
+		<p:dataTable id="tabla" var="trabajo" value="#{trabajosBean.trabajos}">
+			<!-- datos -->
+		    <p:column headerText="N. Registro">
+		        <h:outputText value="#{trabajo.numeroDeRegistro}" />
+		    </p:column>
+            ...
+----
+
+* Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuando pulsemos alguno de los botones Borrar, Editar o Ver se debe obtener la funcionalidad deseada.
+
+El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa para que se navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovechamos las capacidades de PrimeFaces para mostrar ventanas emergentes. El código para este botón es el siguiente:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton update=":formulario:trabajoDetail" icon="ui-icon-search" oncomplete="PF('trabajoDialog').show()">
+	<f:setPropertyActionListener value="#{trabajo}" target="#{trabajosBean.trabajoSeleccionado}" />
+</p:commandButton>
+----
+
+La secuencia de acciones del Postback Request a la propia página que se genera tras pulsar el botón sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tirará el cuadro de diálogo del detalle con el trabajo de la fila pulsada. La llamada Ajax actualiza el panel del cuadro de diálogo `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada JavaScript `PF('trabajoDialog').show()`.
+
+El botón +++<span class="boton">+++Editar+++</span>+++ navegará a la página edición del detalle. El código para este botón es bien diferente del anterior, veamos:
+
+[source,xhtml,indent=0]
+----
+<p:button outcome="/trabajo" icon="ui-icon-pencil">
+	<f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
+</p:button>
+----
+
+Lo único que hace es navegar a la página de creación / edición del detalle. Por eso usamos un componente `button` y no un `commandButton`. Será además necesario enviar un parámetro en la request que indique el trabajo que se desea editar. Lo que tenemos es una Initial Request a la página de edición del detalle `trabajos.xhtml`.
+
+Por último el botón +++<span class="boton">+++Borrar+++</span>+++ al igual que en el caso del botón Ver es un botón de comando porque necesitamos ejecutar una acción de servidor y no solo navegar a otra página. Generará por tanto una Postback Request, que como ya sabemos, iniciará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en PrimeFaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton action="#{trabajosBean.eliminar(trabajo)}"
+	update=":formulario:paneltrabajos" icon="ui-icon-trash">
+		<p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" />
+</p:commandButton>
+----
+
+En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En PrimeFaces es muy fácil de implementar usando un cuadro de diálogo global.
+
+Bien, ya solo nos queda por analizar los dos botones a nivel de página, Salir y Crear. Como veis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, más en pantallas de tamaño reducido.
+
+El botón +++<span class="boton">+++Salir+++</span>+++ simplemente navega a la página de inicio:
+
+[source,xhtml,indent=0]
+----
+<p:button value="Salir" outcome="/index" />
+----
+
+Y el botón +++<span class="boton">+++Crear+++</span>+++ es igual de simple. Navega a la misma página a la que nos llevaba el botón Editar pero ahora sin especificar ningún parámetro:
+
+[source,xhtml,indent=0]
+----
+<p:button value="Crear" outcome="/trabajo" />
+----
+
+Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de JSF y de sus ventajas frente a frameworks MVC centrados en la petición como Struts 2 o Spring MVC. JavaServer Faces nos permitirá centrarnos totalmente en el caso de uso a resolver, realizando por nosotros las tareas ajenas al negocio en las distintas fases del ciclo de vida. Es cierto también que, para aplicaciones que precisen de un mayor control sobre el ciclo HTTP de petición-respuesta, un framework centrado en la petición puede ser una mejor opción.
+
+=== La página de edición / creación del detalle: trabajo.xhtml.
+
+Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad del código dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.
+
+Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don't Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación:
+
+Como ya sabemos en una Initial Request solo se ejecutarán las fases Restore View y Render Response del ciclo de vida. Durante la fase Restore View simplemente se crea una View vacía, el resto ocurrirá en la fase Render Response: 
+
+. Una instancia del backing bean es creada.
+
+. Se ejecuta el método _@PostConstruct_ donde crearemos una nueva instancia  de la entidad gestionada, Trabajo.
+
+. La etiqueta _viewParam_ es procesada: El campo _idTrabajo_ de la entidad recién creada se actualiza con el valor del parámetro de la request en el caso de que exista, es decir, cuando se trate de una llamada a la página de edición del detalle.
+
+. Se procesa la etiqueta _viewAction_: Se llama al método de la capa de servicio / acceso a datos _actualizaModeloTrabajo()_ comprobamos el valor del Id y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
+
+[source,xhtml,indent=0]
+----
+<f:metadata>
+	<f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}" />
+	<f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}" />
+</f:metadata>
+----
+
+[start=5]
+. Finalmente una vez que el framework ha creado la View con todos los componentes y los valores correspondientes la página es renderizada como HTML y enviada al usuario.
+
+En este punto tenemos ya nuestra página lista para la creación o la edición de un Trabajo. El botón +++<span class="boton">+++Salir+++</span>+++ es simple, se trata de un típico botón de cancelación:
+
+[source,xhtml,indent=0]
+----
+<p:button value="Salir" outcome="/trabajos.xhtml"/>
+----
+
+Ejecuta una navegación GET (Initial Request) a la página de maestro. Esta simplicidad es posible porque la cancelación aquí no requiere de ninguna acción adicional. Si en cambio necesitáramos realizar alguna acción, por ejemplo para liberar recursos de sesión, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, etc, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, ahora usando un componente commandButton o commandLink:
+
+. Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se ve implicado y conseguimos evitar la ejecución de conversiones y validaciones:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton value="Salir" process="@this" action="/trabajos.xhtml?faces-redirect=true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
+----
+
+[start=2]
+. Configurar el botón con el modificador _inmmediate_ a true. De esta manera la acción asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, puenteando como en el caso anterior conversiones y validaciones:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton value="Salir" action="/trabajos.xhtml?faces-redirect=true" immediate="true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
+----
+
+En los dos casos anteriores podemos optar por prescindir del atributo `actionListener` y escribir la llamada al método `miAccionNecesaria` en el atributo `action`. Esto obliga a devolver la cadena `"/trabajos.xhtml?faces-redirect=true"` en el método. De todos modos como ya hemos comentado en el caso de la cancelación de la edición de la entidad Trabajo no es necesario la llamada a un método tras la cancelación.
+
+El botón +++<span class="boton">+++Aceptar+++</span>+++ persiste los cambios en una edición o bien la nueva entidad Trabajo en una creación. En ambos casos se ha usado el mismo código. Esto es posible porque el método _merge_ mete en el contexto de persistencia tanto una entidad _detached_ como una _new_. En el caso de una edición la entidad Trabajo que se lee de la base de datos pasa al estado  _detached_ cuando la transacción del método de lectura finaliza. En el caso de una creación el JavaBean creado pasa al estado _new_. Estos estados se prolongan durante toda la sesión de usuario de edición o creación de un Trabajo. Finalmente, cuando el usuario pulsa el botón Aceptar para persistir los cambios,  lo único que quedará es hacer un merge para que la entidad Trabajo vuelva al contexto de persistencia, es decir, pase al estado _managed_, y dejar que JTA ejecute el correspondiente commit en la sálida del método Java de la capa de Servicio.
+
+Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar.
+
+El código fuente del botón puede ser confuso en principio:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton id="aceptar" value="Aceptar" action="#{trabajoBean.aceptar}" update="@(:input:not(.notsend)) mensajes" process="@(:input:not(.notsend))" oncomplete="ajustaPosicionEtiquetas();" />
+----
+
+Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback a la propia página. De forma resumida estos son los pasos que se seguirán durante el ciclo de vida completo generado: Si no hay errores, se llevarán a cabo las conversiones, las validaciones (tanto las de JSF como las de BV) y la actualización del Modelo para los atributos de la entidad Trabajo. A continuación se ejecutará la llamada al método de servicio para la persistencia y luego se actualizará la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. 
+
+Veamos más detenidamente cada atributo del botón:
+
+* process y update: El primero determina los elementos que enviamos y en segundo lo que actualizamos en la llamada Ajax. Lo interesante aquí es que se ha tenido que usar un selector poco usual para definir el conjunto de elementos. El motivo de esto es que se ha usado un componente para maquetar la página que englobaba a la entidad Trabajo y también a sus PuntosRuta y como no se deben anidar formularios, tanto la entidad padre como las hijas han de estar en el mismo formulario y de ahí que sea necesario filtrar lo que se envía al servidor. Cuando pulse Aceptar sólo deberé enviar al servidor los campos de la entidad Trabajo y excluir los tres campos de introducción de un PuntoRuta. Para esto uso la capacidad de PrimeFaces de usar selectores jQuery:
+
+`@(:input:not(.notsend))`
+
+El selector toma el conjunto de todos los elementos de entrada del formulario con el selector jQuery `:input`, y le aplica luego el selector jQuery `:not` para excluir los que tienen la clase `.notsend.` De modo que si asignamos a los tres campos de entrada de PuntoRuta esta clase evitaremos que intervengan en el submit generado al pulsar el botón Aceptar.
+
+* action: Indica el método de la capa de Servicio que persiste el Trabajo, que como ya se ha indicado será el mismo tanto para la edición como para la creación.
+
+* oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las labels de los campos que ocupan una altura extra en la pantalla: _Descripción_ y _Puntos de Ruta_. El problema aquí es que en la versión actual de CSS no existe una manera de seleccionar un elemento padre conocido su hijo y tenemos por tanto que recurrir a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas más elaboradas.
+
+Bien, hasta aquí los aspectos generales de la pantalla de detalle.
+
+=== La validación por antonomasia en un mantenimiento: Comprobación de clave natural duplicada.
+
+En un mantenimiento algo que tendremos siempre que incluir a la hora de guardar una nueva entidad durante un proceso de creación o alta es la comprobación de que no existe ya otra entidad con la misma clave natural en la base de datos. La clave natural o clave semántica es el conjunto de campos que identifican a una entidad diferenciándola del resto. Esta verificación debe existir independientemente de que la clave natural se use como clave primaria o no. En nuestro caso por ejemplo usamos una clave subrogada como clave principal, generada por la propia base de datos. Esta verificación la implementaremos en una clase Validator donde inyectaremos mediante CDI el componente EJB de acceso a datos y realizaremos la validación dentro del método validate.
+
+Lo anterior es el escenario habitual, donde los requisitos indican que la clave natural no puede ser modificada en una entidad persistida. La prohibición de modificar la clave natural impide problemas de integridad cuando se utiliza como clave primaria en las relaciones con otras entidades y en cualquier caso problemas de localización de entidades cuando la modificación se realice por error o se cometan errores en la misma. Cuando un usuario persista una entidad con errores en su clave natural, deberá borrar dicha entidad y crearla de nuevo con la clave natural correcta. Se puede facilitar esta tarea disponiendo un botón _Copiar desde_ en la pantalla de creación de entidad, que permita copiar los valores ya introducidos en la entidad con la clave natural errónea a la nueva entidad con la clave correcta. Y adicionalmente un cuadro de dialogo que nos dé la posibilidad de borrar la entidad con la clave natural errónea.
+
+Sin embargo en ciertos casos puede tenerse unos requisitos que nos indiquen que la clave natural si pueda ser modificada. Por ejemplo si los datos entran en el sistema desde distintas fuentes mediante procesos de importación y la probabilidad de errores de formato en los mismos es alta. En este caso la lógica del validador será algo más compleja ya que ahora además de la comprobación al crear una entidad existirá una comprobación al modificarla. Tendremos que comprobar que la clave natural modificada no exista ya en la base de datos. Esta comprobación además debe excluir el valor inicial de la clave natural, sería el caso en que el usuario no modifica la clave natural durante la sesión de edición de la entidad.
+
+En la aplicación se implementan los dos casos para la pantalla de creación / modificación del detalle de la entidad Trabajo, incluyéndose el atributo booleano _isPosibleEdicionClaveNatural_en el componente _inputText_ del campo Número de Registro, que constituye la clave natural de la entidad. El valor booleano es escrito directamente en la página _trabajo.xhtml_. En un caso real podríamos tomar este valor de una tabla de configuración en la base de datos. Echadle un vistazo al código en el fichero _trabajo.xhtml_ correspondiente a la página JSF y el fichero _NumeroDeRegistroUnicoValidator.java_ que implementa el validador. 
+
+=== Uso de plantillas: Una plantilla adaptativa para jdrone
+
+Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.
+
+Una interfaz adaptativa, en inglés _responsive_, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, smartphones... En una aplicación JSF una buena alternativa para esto es usar el componente _Grid CSS_ de PrimeFaces, que permite realizar la maquetación de las páginas del proyecto definiendo las zonas comunes: Cabecera, menú, barra de navegación, sides, zona central principal y pie. Asimismo, aunque no se ha incluido en *+++<span style="color:blue">+++j+++</span>+++drone*, es interesante el uso de la clase CSS _ui-fluid_ que va a darnos una interfaz fluida calculando la posición y tamaño de cada componente en tiempo real dependiendo del tamaño del viewport. Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y PrimeFaces. 
+
+Antes de empezar a implementar la plantilla lo mejor es tomar lápiz y papel o una herramienta como Inkscape y dibujar un boceto del layout de la página completa que necesitamos, de esta manera podré averiguar fácilmente los _divs_ que voy a necesitar para crear las distintas áreas en la pantalla.
+
+Una plantilla es una página XHTML privada que define la estructura y el contenido común de todas las páginas de la aplicación que la usan. Dentro de esa estructura tendremos que situar los elementos _<ui:insert...> para definir los puntos de inserción del contenido variable. Podéis consultar la plantilla usada en *+++<span style="color:blue">+++j+++</span>+++drone* abriendo el fichero _\jdrone\src\main\webapp\WEB-INF\plantillas\plantilla.xhtml_.
+
+Por otro lado tenemos las páginas públicas de la aplicación, que van a usar la plantilla incluyendo el contenido variable mediante elementos _<ui:define...>_. Una página tendrá un aspecto similar al siguiente:
+
+[source,xhtml,indent=0]
+----
+	<ui:composition...>
+    	<ui:define name="central">
+        	...
+        </ui:define>
+        <ui:define name="logo">
+       		<ui:include... />
+        </ui:define>
+        ...
+    </ui:composition>
+----
+
+El contenido de la zona de contenido variable, _central_, se define en cada página en general al principio para mayor claridad dado que aquí el orden de aparición en el fichero XHTML no afecta. La zona del logo la haremos también insertable aunque en todas las páginas aparecerá como un include, sin embargo esto nos da la posibilidad de tener páginas especiales que prescindan del logo si por ejemplo fuera interesante disponer de un espacio de visualización extra.
+
+Como ejemplo aquí tenéis la página de consulta de drones disponibles en una fecha del Post anterior, que se había movido desde _index.xhtml_ a _consulta-inicial.xhtml_, tras adaptarla al uso de la plantilla:
+
+[source,xhtml,indent=0]
+----
+<!-- EL ATRIBUTO template INDICA LA PLANTILLA EMPLEADA -->
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"                
+                template="/WEB-INF/plantillas/plantilla.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                
+	<!-- DEFINICION AL PRINCIPIO DE LA O LAS ZONAS NO COMUNES -->
+    <ui:define name="central">
+    	<!-- estilo aplicable a la página -->
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="estilo.css"/>
+        </f:facet>
+        <!-- acción asociada a la pantalla -->
+        <f:metadata>
+			<f:viewAction action="#{disponibilidadBean.listaEstadoDronesPorFecha()}" onPostback="true"></f:viewAction>
+        </f:metadata> 
+
+		<!-- contenido de zona central -->
+	¡Hola mundo!
+	<br />
+
+	<h:form>
+		<h:outputText
+			value="Consulta de drones realizando trabajos en una fecha" />
+		<br />
+		<br />
+		<h:messages />
+		<br />
+		<h:outputText
+			value="Introduce la fecha y la hora en el formato indicado:" />
+		<br />
+		<h:outputLabel value="Fecha (dd-mm-aaaa)" for="fecha" />&#160;
+		<h:inputText id="fecha" value="#{disponibilidadBean.fecha}"
+			required="true">
+			<f:convertDateTime pattern="dd-MM-yyyy" />
+		</h:inputText>
+		<br />
+		<h:outputLabel value="Hora (0-23:0-59)" for="hora" />&#160;
+		<h:inputText id="hora" value="#{disponibilidadBean.hora}"
+			required="true">
+			<f:convertDateTime pattern="HH:mm" />
+		</h:inputText>
+		<br />
+		<br />
+		<h:commandButton value="Consultar" />
+	</h:form>
+	<br />
+	<h:dataTable value="#{disponibilidadBean.drones}" var="drone" style="width:100%;"
+		styleClass="tabla-general" headerClass="tabla-general-cabecera" 
+		rowClasses="tabla-general-impar,tabla-general-par">
+
+		<h:column>
+			<!-- column header -->
+			<f:facet name="header">Número de Serie</f:facet>
+			<!-- row record -->
+    				#{drone.numeroDeSerie}
+    			</h:column>
+		<h:column>
+			<f:facet name="header">Modelo</f:facet>
+    				#{drone.modelo}
+    			</h:column>
+		<h:column>
+			<f:facet name="header">Autonomía</f:facet>
+    				#{drone.autonomia}
+    			</h:column>
+		<h:column>
+			<f:facet name="header">Número de Motores</f:facet>
+    				#{drone.numMotores}
+    			</h:column>
+		<h:column>
+			<f:facet name="header">Peso Máximo Despegue</f:facet>
+    				#{drone.pesoMaximoDespegue}
+    			</h:column>
+
+	</h:dataTable>
+			
+	</ui:define>
+	
+    <!-- DEFINICION DE OTRAS ZONAS COMUNES DE LA PANTALLA -->
+	<!-- contenido de zona logo -->
+    <ui:define name="logo">
+        <ui:include src="/WEB-INF/paneles/panelLogo.xhtml" />
+    </ui:define>
+
+	<!-- contenido de zona barra menu -->
+    <ui:define name="menu">
+        <ui:include src="/WEB-INF/paneles/panelMenu.xhtml" />
+    </ui:define>
+    
+	<!-- TODO: contenido de otras zonas... -->
+
+</ui:composition>
+----
+
+Se tienen tres puntos de definición de contenido, _central_, donde se ha añadido el contenido original de la página, _menu_, donde incluiremos el menú principal de la aplicación como veremos a continuación, y _logo_ para ubicar el logo de la aplicación y de la empresa. 
+
+El logo se implementa en la página _panelLogo.xhtml_, con un elemento _<ui:composition... >_ pero sin elementos `<ui:define...>` a diferencia del resto de páginas cliente de la plantilla. Se trata de un panel, es decir, una página que va a ocupar un área determinada dentro de la pantalla y que en general será común a todas las pantallas. 
+
+Dentro de este panel he incluido una sencilla animación realizada con la librería JavaScript jQuery para que, si aún no la conocéis, tengáis una primera toma de contacto con ella. Es importante conocer bien jQuery porque acelera el desarrollo de la parte de cliente y permite llegar más lejos con PrimeFaces, que está basado en jQuery. Para ver la animación sólo tenéis que pasar el puntero del ratón por encima del logo *+++<span style="color:blue">+++j+++</span>+++drone*. 
+
+[WARNING]
+No debemos añadir jQuery a un proyecto PrimeFaces ya que se añade ya como dependencia. Tened también en cuenta que en el caso, poco habitual, de tener una página en nuestro proyecto que no use ninguna etiqueta de PrimeFaces tendremos que incluir de manera explícita la librería jQuery embebida en PrimeFaces añadiendo estas dos líneas de código: `<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />`
+y `<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />`
+
+Vamos ahora con el menú de la aplicación. Optaremos por la clásica barra de menú al estilo de las aplicaciones de Escritorio. Como suele ocurrir cuando necesitamos algún elemento para la capa de presentación PrimeFaces nos da la respuesta, en este caso con el componente _<p:MenuBar...>_. Tened en cuenta que la versión 5.2, abierta a la comunidad y usada en *+++<span style="color:blue">+++j+++</span>+++drone*, tiene casi 150 componentes. Usando este componente, en un par de minutos tendremos un atractivo menú con todas las opciones y submenús. Finalmente, para situar el menú en la página lo implementamos, al igual que el logo, como un panel, y lo situamos en la plantilla añadiendo a la misma el correspondiente elemento _<ui:insert...>_.
+
+Arrancamos el servidor y ejecutamos nuestro ciclo de construcción para ver el nuevo aspecto de la aplicación. Personalmente no me convence el estilo por defecto del menú por lo que acudimos de nuevo a PrimeFaces y vemos que es muy sencillo dar un aspecto distinto a los componentes simplemente eligiendo otro _Theme_. Además de paso activamos los iconos de FontAwesome añadiendo el correspondiente parámetro en el fichero _web.xml_ para disponer de una mayor variedad de iconos. Elegimos el _Theme bluesky_, más acorde con la Marca de la compañía cliente:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig005.png[]
+
+Para cambiar el _Theme_ tenemos primero que añadir una dependencia a Maven.
+
+[source,xml,indent=0]
+----
+  <dependency>
+    <groupId>org.primefaces.themes</groupId>
+    <artifactId>bluesky</artifactId>
+    <version>1.0.10</version>
+  </dependency>
+----
+
+Y luego añadir un parámetro en el descriptor de despliegue, _web.xml_:
+
+[source,xml,indent=0]
+----
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>bluesky</param-value>
+  </context-param>
+----
+
+Después de añadir la dependencia y guardar los cambios, si abrís el fichero _pom.xml_ se mostrará un error en la dependencia añadida, esto es debido a que no se encuentra en el repositorio Central. Tenemos por tanto que añadir el repositorio de PrimeFaces a nuestra configuración de Maven. Podemos hacerlo directamente desde la sugerencia que nos muestra Eclipse al poner el puntero del ratón sobre el error. Introducid los datos tal y como aparecen en la siguiente figura:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig010.png[]
+
+Pulsamos _OK_ y _Finish_. Para afinar el estilo de la barra de menú aún más podemos modificarlo como nos convenga usando CSS. En la documentación de PrimeFaces aparecen estos estilos, pero lo más práctico es ayudarnos de las herramientas de desarrollador de Chrome o Firefox (F12) para localizar fácilmente los estilos aplicados a cada elemento sobre la propia pantalla y editarlos para ver los cambios _on the fly_.
+
+Para estilizar los menús añadid al principio del fichero _plantilla.css_ lo siguiente: 
+
+[source,css,indent=0]
+----
+.ui-menubar{
+	height: 1.em;	
+	padding:0em !important;	
+}
+.ui-menuitem{
+	height: 1.8em;
+}
+----
+
+Tras desplegar los cambios en WildFly veremos el aspecto final de la aplicación:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig015.png[]
+
+Espero que el contenido de este Post os haya aclarado los conceptos generales del desarrollo de pantallas de mantenimiento en una aplicación JSF. Para practicar y coger confianza podéis poneros manos a la obra con la pantalla de mantenimiento de la entidad Drone. El mantenimiento de Drone es bastante más sencillo ya que no hay que incluir ninguna relación en el mismo: El usuario va a asociar un drone a un trabajo pero no es natural asociar trabajos a un drone. Os espero en el próximo Post. Hasta pronto!

@@ -11,7 +11,7 @@ Pienso que los que estamos ahora dedicados al desarrollo web tenemos suerte. Si 
 
 Un panorama muy prometedor al que además hay que sumar por un lado la velocidad a la que aparecen y se mejoran las herramientas de desarrollo, con ejemplos como JRebel que evita los redeploys, XRebel para afinar el rendimiento del site, JBoss Tools con ayudas como el editor de HQL, Gradle como alternativa a Maven que evita el XML a favor del más flexible Groovy, etc, y por otro lado la gran actividad que actualmente existe en el JCP en la definición y mejora de las JRS para el futuro estándar Java EE 8, que estará listo probablemente para finales del año que viene, incluyendo por ejemplo MVC 1.0, una nueva tecnología de interfaz de usuario que complementa a JSF, estandarización de la seguridad con Java EE Security API 1.0 o procesamiento directo del contenido JSON con JSON Binding 1.0.
 
-Para arrancar, en primer lugar, vamos a definir e instalar en nuestra máquina un entorno de trabajo adecuado, lo más parecido posible a lo que nos podamos encontrar hoy en una software factory sobre Java EE. Y a continuación montaremos una mini aplicación con capa de presentación, negocio y datos. Lo vamos a hacer partiendo de cero y sin ningún tipo de asistente, de modo que consigamos desmitificar la creación de una aplicación Java EE por capas y ganar así la confianza necesaria para seguir, en sucesivos posts, experimentando con el amplio abanico de tecnologías y herramientas disponibles.
+Para arrancar, en primer lugar, vamos a definir e instalar en nuestra máquina un entorno de trabajo adecuado, lo más parecido posible a lo que nos podamos encontrar hoy en una software factory sobre Java EE. Y a continuación montaremos una mini aplicación con capa de presentación, negocio y datos. Lo vamos a hacer partiendo de cero y sin ningún tipo de asistente, de modo que consigamos desmitificar la creación de una aplicación Java EE por capas y ganar así la confianza necesaria para seguir, en sucesivos Posts, experimentando con el amplio abanico de tecnologías y herramientas disponibles.
 
 NOTE: En el blog se utiliza una máquina con el sistema operativo Windows 8.1 para la realización de las tareas. La manera de hacer las cosas en otros sistemas operativos como OS X o Linux puede diferir, en estos casos una simple búsqueda en Google nos mostrará la manera de proceder.
 
@@ -34,7 +34,7 @@ Al ejecutar el  comando obtendremos una línea con un formato similar a _C:\...\
 
 WARNING: En la lista de aplicaciones instaladas no aparecen de forma explícita los JDKs de terceros. Un JDK de tercero se identifica porque se encuentra en la carpeta de la aplicación que lo instaló y no debemos manipularlo en ningún caso.
 
-En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desintalando el resto.
+En la siguiente figura podemos ver un ejemplo de una máquina en la que existen tres JDKs y un JRE instalados siendo lo ideal dejar un único JDK, desistalando el resto.
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig004.png[]
 
@@ -48,7 +48,7 @@ Aceptamos la licencia para que se habiliten los links de bajada y si queremos ba
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/001/prac001-fig003.png[]
 
-TIP: Siempre que sea posible instalad el sistema operativo (menos el teclado para no perder la eñe, acentos, etc) y vuestras herrmientas de desarrollo en el idioma Inglés. Vuestras consultas en Google devolveran muchos más resultados cuando busquemos por un mensaje de error o por alguna opción de menú en Inglés. Y creedme, cuando se está desarrollando un proyecto se tira mucho de Google.
+TIP: Siempre que sea posible instalad el sistema operativo (menos el teclado para no perder la eñe, acentos, etc) y vuestras herrmientas de desarrollo en el idioma Inglés. Vuestras consultas en Google devolverán muchos más resultados cuando busquemos por un mensaje de error o por alguna opción de menú en Inglés. Y creedme, cuando se está desarrollando un proyecto se tira mucho de Google.
 
 Para instalar nuestro JDK hacemos doble click sobre el ejecutable descargado. En la pantalla inicial del wizard pulsamos _Next_, en la siguiente pantalla aceptamos los valores por defecto. La instalación del JDK comienza. A continuación aparece una ventana y se nos pregunta de nuevo por otra carpeta de instalación, se trata de la instalación del JRE público. Aceptamos el valor por defecto. Finalmente pulsamos _Close_.
 
@@ -121,7 +121,7 @@ Veamos un sencillo ejemplo de uso de Maven siguiendo el "ejercicio de cinco minu
 
 TIP: Es importante emplear un poco de nuestro tiempo ahora en entender los conceptos básicos de esta herramienta pues si bien al principio puede parecer confusa, después de una lectura de los recursos que os comento más adelante y siguiendo el ejemplo propuesto, nos damos cuenta de su gran potencial para simplificar nuestro trabajo.
 
-Una vez en la dirección anterior nos vamos directamente al tercer apartado _Creating a Project_. Lo que vamos a hacer es crear un proyecto _Hola mundo!_ sin escribir ni una sola línea de código. Es otra de las capacidades de Maven, nos permite, a partir de los llamados arquetipos, comenzar un nuevo proyecto a partir de una plantilla. Hay muchos arquetipos, creados por el equipo de Maven o por otras empresas. Nosotros mismos podemos también crear uno, de hecho las empresas crean arquetipos para disponer de puntos de partida óptimos para sus nuevos proyectos. Los arquetipos están en los repositorios, que son almaceneces gestionados por Maven, donde también existen elementos de otra naturaleza como librerías, nuestros propios wars, etc. A todos estos elementos Maven los denomina artefactos. Un arquetipo es por tanto un artefacto. Bien, vamos con el ejercicio, abrimos una ventana de comandos, creamos una carpeta, por ejemplo _c:\prueba-maven_, y nos situamos dentro de ella. A continuación escribimos lo siguiente:
+Una vez en la dirección anterior nos vamos directamente al tercer apartado _Creating a Project_. Lo que vamos a hacer es crear un proyecto _Hola mundo!_ sin escribir ni una sola línea de código. Es otra de las capacidades de Maven, nos permite, a partir de los llamados arquetipos, comenzar un nuevo proyecto a partir de una plantilla. Hay muchos arquetipos, creados por el equipo de Maven o por otras empresas. Nosotros mismos podemos también crear uno, de hecho las empresas crean arquetipos para disponer de puntos de partida óptimos para sus nuevos proyectos. Los arquetipos están en los repositorios, que son almacenes gestionados por Maven, donde también existen elementos de otra naturaleza como librerías, nuestros propios wars, etc. A todos estos elementos Maven los denomina artefactos. Un arquetipo es por tanto un artefacto. Bien, vamos con el ejercicio, abrimos una ventana de comandos, creamos una carpeta, por ejemplo _c:\prueba-maven_, y nos situamos dentro de ella. A continuación escribimos lo siguiente:
 
 [small]#`mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`#
 
@@ -129,7 +129,7 @@ Si es la primera vez que ejecutamos Maven en nuestro ordenador el comando puede 
 
 `mvn`: Es el comando que invoca a Maven.
 
-`archetype:generate`: Indica lo que queremos que haga Maven. En este caso le estamos diciendo que ejecute el goal `generate` del plugin `archetype`. Los plugins (de Maven, no confundir con los de Eclipse) son las unidades que continen los goals, que representan lo que podemos pedir a Maven que haga por nosotros, en este caso generar un proyecto a partir de un arquetipo.
+`archetype:generate`: Indica lo que queremos que haga Maven. En este caso le estamos diciendo que ejecute el goal `generate` del plugin `archetype`. Los plugins (de Maven, no confundir con los de Eclipse) son las unidades que contienen los goals, que representan lo que podemos pedir a Maven que haga por nosotros, en este caso generar un proyecto a partir de un arquetipo.
 
 
 NOTE: Maven puede ejecutar además de un goal, como en el caso del ejemplo, una phase. El ciclo de vida estándar de Maven se compone de varias fases ordenadas, cada fase tiene asociada la ejecución de varios goals de varios plugins. Existen valores por defecto pero todo es configurable como iremos viendo. El formato del comando sería diferente, sin el carácter `:`, por ejemplo `mvn package` ejecuta la fase de creación del fichero desplegable de un proyecto, y todas las fases anteriores. No es necesario entender todo esto ahora, los conceptos se afianzarán con las lecturas propuestas y el uso.
@@ -154,11 +154,11 @@ Para tener una idea general y conocer dónde acudir cuando tengamos alguna duda 
 
 . http://maven.apache.org/guides/mini/guide-configuring-maven.html[Configuración de Maven]: Ficheros de configuración, perfiles, repositorio propio. 
 . http://maven.apache.org/guides/introduction/introduction-to-archetypes.html[Arquetipos].
-. http://maven.apache.org/guides/introduction/introduction-to-the-pom.html[Fichero POM]: Super POM, POM minimo, herencia, agregación y variables 
+. http://maven.apache.org/guides/introduction/introduction-to-the-pom.html[Fichero POM]: Super POM, POM mínimo, herencia, agregación y variables 
 . http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html[Estructura de directorios de proyecto].
 . http://maven.apache.org/guides/introduction/introduction-to-repositories.html[Introducción al concepto de repositorio].
 . http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[Ciclo de vida]: Nociones sobre el ciclo de vida de construcción de un proyecto Maven. Añadir a una phase un goal y configurarlo. 
 
-El mayor valor de Maven a mi parecer es haber sabido reunir un conjunto completo de estándares de gestión del desarrollo de un proyecto, desde las pruebas unitarias hasta el despliegue en producción pasando por los tests de integración en una única herramienta de código abierto y extensible. Es el motivo de que  haya sustitido a Ant+Ivy y de que conviva con un único compitidor, más joven, Gradle, una opción muy válida en proyectos nuevos y que ofrece un muy buen compromiso entre flexibilidad y simplicidad al sustituir el XML por el lenguaje Groovy.
+El mayor valor de Maven a mi parecer es haber sabido reunir un conjunto completo de estándares de gestión del desarrollo de un proyecto, desde las pruebas unitarias hasta el despliegue en producción pasando por los tests de integración en una única herramienta de código abierto y extensible. Es el motivo de que  haya sustituido a Ant+Ivy y de que conviva con un único competidor, más joven, Gradle, una opción muy válida en proyectos nuevos y que ofrece un muy buen compromiso entre flexibilidad y simplicidad al sustituir el XML por el lenguaje Groovy.
 
 Y hasta aquí la primera entrada del Blog! En la siguiente terminaremos de montar y configurar nuestro banco de trabajo Java EE y lo dejaremos listo para crear la miniaplicación sobre la que recorrer las distintas tecnologías de la Web.

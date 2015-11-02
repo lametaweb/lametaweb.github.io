@@ -30,13 +30,13 @@
 
     <link rel="canonical" href="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     
-    <meta property="og:site_name" content="La metaweb" />
+    <meta property="og:site_name" content="la metaweb" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos." />
-    <meta property="og:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
+    <meta property="og:description" content="En este Post veremos cómo instalar y configurar un origen de datos para nuestra aplicación. Además implementaremos un proceso de carga inicial de datos sencillo que si bien dista de una carga de datos real sí nos valdrá como primera..." />
     <meta property="og:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     <meta property="article:published_time" content="2015-06-14T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-07-01T11:35:14.012Z" />
+    <meta property="article:modified_time" content="2015-10-14T21:47:11.281Z" />
     <meta property="article:tag" content="JPA" />
     <meta property="article:tag" content="Hibernate" />
     <meta property="article:tag" content="Persistencia" />
@@ -45,32 +45,32 @@
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos." />
-    <meta name="twitter:description" content="En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..." />
+    <meta name="twitter:description" content="En este Post veremos cómo instalar y configurar un origen de datos para nuestra aplicación. Además implementaremos un proceso de carga inicial de datos sencillo que si bien dista de una carga de datos real sí nos valdrá como primera..." />
     <meta name="twitter:url" content="http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html" />
     
     <script type="application/ld+json">
 {
     "@context": "http://schema.org",
     "@type": "Article",
-    "publisher": "La metaweb",
+    "publisher": "la metaweb",
     "author": {
         "@type": "Person",
         "name": "La metaweb",
         "image": "https://avatars.githubusercontent.com/u/11819148?v=3",
         "url": "undefined/author/undefined",
-        "sameAs": ""
+        "sameAs": null
     },
     "headline": "Desarrollo de una aplicación desde cero: El origen de datos y la carga inicial de datos.",
     "url": "http://www.lametaweb.com/2015/06/15/Desarrollo-de-una-aplicacion-desde-cero-El-origen-de-datos-y-la-carga-inicial-de-datos.html",
     "datePublished": "2015-06-14T22:00:00.000Z",
-    "dateModified": "2015-07-01T11:35:14.012Z",
+    "dateModified": "2015-10-14T21:47:11.281Z",
     "keywords": "JPA,  Hibernate,  Persistencia,  DataSource,  EntityManager",
-    "description": "En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple..."
+    "description": "En este Post veremos cómo instalar y configurar un origen de datos para nuestra aplicación. Además implementaremos un proceso de carga inicial de datos sencillo que si bien dista de una carga de datos real sí nos valdrá como primera..."
 }
     </script>
 
     <meta name="generator" content="Ghost ?" />
-    <link rel="alternate" type="application/rss+xml" title="La metaweb" href="http://www.lametaweb.com/rss" />
+    <link rel="alternate" type="application/rss+xml" title="la metaweb" href="http://www.lametaweb.com/rss" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
 </head>
 <body class="post-template tag-JPA tag-Hibernate tag-Persistencia tag-DataSource tag-EntityManager">
@@ -112,8 +112,8 @@
                 <li><a class="fi-torso" href="http://www.lametaweb.com/about"></a></li>
                 <li><a class="fi-mail" href="http://www.lametaweb.com/contact"></a></li>
             </ul>
-            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="La metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
-            <h1 class="blog-title">La metaweb</h1>
+            <a class="blog-logo" href="http://www.lametaweb.com"><img alt="la metaweb" src="https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/logo-blanco.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">la metaweb</h1>
             <hr>
             <p class="blog-description">Ensayos no destructivos en el ecosistema Java EE, y algún off topic para desconectar ;-)</p>
             <div class="blog-network">
@@ -129,6 +129,7 @@
                 <a href="#" class="fi-social-steam"></a>
                 <a href="#" class="fi-social-xbox"></a>
                 <a href="#" class="fi-social-reddit"></a> -->
+                  <a href="github.com/lametaweb" class="fi-social-github"></a>
             </div>
         </div>
     </div>
@@ -153,7 +154,7 @@
                 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>En este post veremos en primer lugar qué es un origen de datos, su relación con la capa de persistencia y la configuración e instalación en nuestra aplicación. Y a continuación implementaremos un proceso de carga de datos inicial simple que si bien no representa un ejemplo de carga de datos en un proyecto real sí servirá para nuestro propósito, disponer de datos que gestionar, y además nos mostrará un primer ejemplo de persistencia en JPA y además un tipo interesante de bean EJB introducido en la versión 6 de Java EE.</p>
+<p>En este Post veremos cómo instalar y configurar un origen de datos para nuestra aplicación. Además implementaremos un proceso de carga inicial de datos sencillo que si bien dista de una carga de datos real sí nos valdrá como primera toma de contacto con dos tecnologías centrales en Java EE: EJB y JPA.</p>
 </div>
 </div>
 </div>
@@ -164,7 +165,7 @@
 <p>Un origen de datos o datasource es un recurso de servidor que permite a una aplicación comunicarse con un gestor de base de datos, a través del proveedor de persistencia, para realizar operaciones de consulta y modificación sobre un   esquema de datos. El origen de datos necesita sin embargo un elemento adicional para realizar su función, el driver JDBC, que consiste en un conjunto de librerías que traducen los comandos del proveedor de datos en comandos específicos de la base de datos utilizada: Oracle, PostgreSQL, MySQL, etc.</p>
 </div>
 <div class="paragraph">
-<p>La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria para el despliegue en un mismo sitio. Tambíen veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.</p>
+<p>La instalación del datasource puede hacerse de distintas maneras. En nuestro caso la incluiremos dentro del ciclo de construcción del proyecto, en el archivo pom.xml, para que de este modo tengamos toda la información necesaria para el despliegue en un mismo sitio. También veremos sin embargo una manera de instalar el datasource en el servidor de forma manual, no automatizada, ya que es como comúnmente se hace en proyecto reales.</p>
 </div>
 <div class="paragraph">
 <p>Bien, empezamos. Abrimos Eclipse y a continuación el fichero pom.xml del proyecto. Añadimos la dependencia correspondiente al driver JDBC de Derby del que tirará el datasource con un copia pega del siguiente fragmento de XML dentro del elemento <em>&lt;dependencies&gt;</em>:</p>
@@ -188,7 +189,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Desinstalar una instalación pevia de la aplicación si existía.</p>
+<p>Desinstalar una instalación previa de la aplicación si existía.</p>
 </li>
 <li>
 <p>Instalar el artefacto correspondiente al driver a nivel de servidor como un despliegue estándar.</p>
@@ -278,7 +279,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Ejecutarlo en nuestro proyecto de forma manual, a través de la linea de comnandos o bien desde Eclipse en la opción <em>Run &gt; Run Configurations&#8230;&#8203;</em>.</p>
+<p>Ejecutarlo en nuestro proyecto de forma manual, a través de la línea de comandos o bien desde Eclipse en la opción <em>Run &gt; Run Configurations&#8230;&#8203;</em>.</p>
 </li>
 <li>
 <p>Cambiar la configuración de un plugin del ciclo de vida por defecto.</p>
@@ -312,16 +313,16 @@
 <h2 id="_despliegue_manual_del_datasource_una_tarea_de_sistemas">Despliegue manual del datasource: Una tarea de Sistemas</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Hasta aquí el despliegue automatizado con Maven. A continuación veremos un despliegue equivalente pero realizado de forma manual. No apliquéis en el servidor los cambios que se van a explicar ahora porque el despliegue del datasource ya lo hemos implementado en Maven. Si queréis, una vez que tengamos la aplicación funcionando podéis comentar, con comentarios de HTML &lt;!-- &nbsp;&#8230;&#8203;&nbsp; --&gt;, los fragmentos añadidos al pom.xml y aplicar el desliegue manual tal como os paso a explicar.</p>
+<p>Hasta aquí el despliegue automatizado con Maven. A continuación veremos un despliegue equivalente pero realizado de forma manual. No apliquéis en el servidor los cambios que se van a explicar ahora porque el despliegue del datasource ya lo hemos implementado en Maven. Si queréis, una vez que tengamos la aplicación funcionando podéis comentar, con comentarios de HTML &lt;!-- &nbsp;&#8230;&#8203;&nbsp; --&gt;, los fragmentos añadidos al pom.xml y aplicar el despliegue manual tal como os paso a explicar.</p>
 </div>
 <div class="paragraph">
 <p>La manera en que se añaden nuevas recursos a nivel de servidor es diferente desde la versión 6 de JBoss, y se basa en módulos. Podéis leer <a href="https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Development_Guide/chap-Class_Loading_and_Modules.html">esta documentación</a> para entender mejor el nuevo mecanismo de carga de clases y recursos en JBoss 6+.</p>
 </div>
 <div class="paragraph">
-<p>De hecho, en el despligue que hemos configurado desde Maven, el servidor generará, cuando ejecutemos el ciclo de vida de construcción, un módulo para el driver. En este caso será un módulo dinámico con el nombre <em>deployment.derby.jar</em> asociado al despliegue de la librería derby.jar. En el despliegue manual lo que se genera es un módulo estático, que se carga en el arranque del servidor y que no está asociado al despliegue de una aplicación como en el caso del dinámico.</p>
+<p>De hecho, en el despliegue que hemos configurado desde Maven, el servidor generará, cuando ejecutemos el ciclo de vida de construcción, un módulo para el driver. En este caso será un módulo dinámico con el nombre <em>deployment.derby.jar</em> asociado al despliegue de la librería derby.jar. En el despliegue manual lo que se genera es un módulo estático, que se carga en el arranque del servidor y que no está asociado al despliegue de una aplicación como en el caso del dinámico.</p>
 </div>
 <div class="paragraph">
-<p>En resumen hay que hacer dos cosas, pero recordad, no las hagais ahora porque colisionaría con el despliegue de Maven. La primera es añadir un nuevo módulo estático para incluir el driver JDBC de Derby en el servidor, y la otra añadir la configuración del datasource en el fichero de configuración del servidor. Para librerías de uso general compartidas por varias aplicaciones es más conveniente este despliegue manual, que en general se delega en el equipo de administradores de sistemas que crearán para nosotros los módulos estáticos y configuraciones que requiramos.</p>
+<p>En resumen hay que hacer dos cosas, pero recordad, no las hagáis ahora porque colisionaría con el despliegue de Maven. La primera es añadir un nuevo módulo estático para incluir el driver JDBC de Derby en el servidor, y la otra añadir la configuración del datasource en el fichero de configuración del servidor. Para librerías de uso general compartidas por varias aplicaciones es más conveniente este despliegue manual, que en general se delega en el equipo de administradores de sistemas que crearán para nosotros los módulos estáticos y configuraciones que requiramos.</p>
 </div>
 <div class="paragraph">
 <p>Los pasos a seguir para la instalación manual son:</p>
@@ -525,7 +526,7 @@ private EntityManager em;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Y finalmente añadimos el método para la carga inicial de datos anotado con <em>@PostConstruct</em>, quedándo el código de la clase así:</p>
+<p>Y finalmente añadimos el método para la carga inicial de datos anotado con <em>@PostConstruct</em>, quedando el código de la clase así:</p>
 </li>
 </ul>
 </div>
@@ -629,19 +630,19 @@ public class CargaInicialDatos {
 <p>Antes de analizar el código del método será bueno ver una introducción exprés a la persistencia en JPA.</p>
 </div>
 <div class="paragraph">
-<p>En JPA el objeto central es el EntityManager. A través de los métodos de este objeto llevaremos a cabo las operaciones de persistencia que necesitemos. Los datos asociados a estas operaciones de persistencia serán jerarquías de las entidades persistentes, Drone, Trabajo y PuntoRuta, y deberemos gestionarlos dentro de una zona de memoria llamada contexto de persistencia. El contexto de persistencia no debe confundirse con la unidad de persistencia, cuya configuración se encuentra en el fichero persistence.xml, y que define un conjunto de entidades persistentes y su almacen de datos. En nuestra aplicación la unidad de persistencia será creada automáticamente y no tenemos que preocuparnos por esto.</p>
+<p>En JPA el objeto central es el EntityManager. A través de los métodos de este objeto llevaremos a cabo las operaciones de persistencia que necesitemos. Los datos asociados a estas operaciones de persistencia serán jerarquías de las entidades persistentes, Drone, Trabajo y PuntoRuta, y deberemos gestionarlos dentro de una zona de memoria llamada contexto de persistencia. El contexto de persistencia no debe confundirse con la unidad de persistencia, cuya configuración se encuentra en el fichero persistence.xml, y que define un conjunto de entidades persistentes y su almacén de datos. En nuestra aplicación la unidad de persistencia será creada automáticamente y no tenemos que preocuparnos por esto.</p>
 </div>
 <div class="paragraph">
-<p>Las operaciones de persistencia que más usaremos serán: persist, find, merge y remove, que implementan, a grandes rasgos, las operaciones de alta, consulta,  modificación y baja, respectivamenete, conocidas por sus iniciales en inglés CRUD (Create, Read o Retrieve, Update y Delete). Por otra parte una entidad persistente, como por ejemplo Drone puede existir sólo en cuatro estados: new, managed, detached y removed.</p>
+<p>Las operaciones de persistencia que más usaremos serán: persist, find, merge y remove, que implementan, a grandes rasgos, las operaciones de alta, consulta,  modificación y baja, respectivamente, conocidas por sus iniciales en inglés CRUD (Create, Read o Retrieve, Update y Delete). Por otra parte una entidad persistente, como por ejemplo Drone puede existir sólo en cuatro estados: new, managed, detached y removed.</p>
 </div>
 <div class="paragraph">
-<p>Para persistir información tengo que crear la jerarquía de objetos que queremos dar de alta, dar valor a los atributos y establecer las relaciones entre ellos. Cuando un objeto persistente es creado su estado es new. En este estado el bean aún no está dentro del contexto de persistencia pero al contrario que un objeto común tiene la potencionalidad de entrar en el contexto y en último término persistirse en la base de datos.</p>
+<p>Para persistir información tengo que crear la jerarquía de objetos que queremos dar de alta, dar valor a los atributos y establecer las relaciones entre ellos. Cuando un objeto persistente es creado su estado es new. En este estado el bean aún no está dentro del contexto de persistencia pero al contrario que un objeto común tiene la potencialidad de entrar en el contexto y en último término persistirse en la base de datos.</p>
 </div>
 <div class="paragraph">
-<p>El objeto EntityManager es usado desde la capa de negocio, donde se sitúa nuestro bean para la carga inicial de datos CargaInicialDatos y el bean que veremos en el próximo post para la implementación del caso de uso de nuestra aplicación. Como ya sabemos nuestra capa de negocio usa la tecnología EJB. En un bean EJB puedo inyectar directamente un objeto EntityManager que me proporcione acceso a un contexto de persistencia gestionado por el contenedor y tengo además  disponible la tecnología JTA, que proporciona una gestion de las transacciones automática, de modo que dentro de una transacción accederé por inyección siempre al mismo EntityManager, y éste será destruido cuando la transacción finalice. Es decir que usando EJB y JTA, como es el caso de nuestra aplicación, me puedo centrar totalmente en las operaciones de negocio y olvidarme de la gestión de los aspectos técnicos de la persistencia.</p>
+<p>El objeto EntityManager es usado desde la capa de negocio, donde se sitúa nuestro bean para la carga inicial de datos CargaInicialDatos y el bean que veremos en el próximo post para la implementación del caso de uso de nuestra aplicación. Como ya sabemos nuestra capa de negocio usa la tecnología EJB. En un bean EJB puedo inyectar directamente un objeto EntityManager que me proporcione acceso a un contexto de persistencia gestionado por el contenedor y tengo además  disponible la tecnología JTA, que proporciona una gestión de las transacciones automática, de modo que dentro de una transacción accederé por inyección siempre al mismo EntityManager, y éste será destruido cuando la transacción finalice. Es decir que usando EJB y JTA, como es el caso de nuestra aplicación, me puedo centrar totalmente en las operaciones de negocio y olvidarme de la gestión de los aspectos técnicos de la persistencia.</p>
 </div>
 <div class="paragraph">
-<p>Después de esta breve introducción teórica examinemos el código del método para afianzar algunos conceptos. El propósito de una carga inicial de datos es llevar a la base de datos la información del negocio existente antes de la puesta en producción de la aplicación. Para simplificar sólo daremos de alta un drone y un trabajo, con varios puntos de ruta, y estableceremos que el trabajo es realizado por ese drone. Si observáis el código del metodo podéis ver que sólo se manejan objetos de la capa de datos, quedando los detalles de la base de datos ocultos por la tecnología JPA. Veamos un poco más en detalle el código desde el principio. Es conveniente que tengais delante el diagrama de diseño que vimos en el post anterior para entender más facilmente el código:</p>
+<p>Después de esta breve introducción examinemos el código del método para afianzar algunos conceptos. El propósito de una carga inicial de datos es llevar a la base de datos la información del negocio existente antes de la puesta en producción de la aplicación. Para simplificar sólo daremos de alta un drone y un trabajo, con varios puntos de ruta, y estableceremos que el trabajo es realizado por ese drone. Si observáis el código del método podéis ver que sólo se manejan objetos de la capa de datos, quedando los detalles de la base de datos ocultos por la tecnología JPA. Veamos un poco más en detalle el código desde el principio. Es conveniente que tengáis delante el diagrama de diseño que vimos en el post anterior para entender más fácilmente el código:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -658,19 +659,19 @@ public class CargaInicialDatos {
 <div class="ulist">
 <ul>
 <li>
-<p>A continuación se crea el objeto Trabajo y se inicializan sus atributos. Para el intervalo de comienzo y finalización del trabajo se calcula una hora hacia atrás y una hacia delante respecto del momento en que desplegamos la aplicación. Esto lo hago simplemente para que podamos probar la aplicación facilmente cuando la tengamos desplegada, de tal manera que para obtener el listado de drones realizando trabajos (sólo aparecerá el de la carga inicial) nos bastará con rellenar los campos de fecha y hora con la fecha y hora actuales.</p>
+<p>A continuación se crea el objeto Trabajo y se inicializan sus atributos. Para el intervalo de comienzo y finalización del trabajo se calcula una hora hacia atrás y una hacia delante respecto del momento en que desplegamos la aplicación. Esto lo hago simplemente para que podamos probar la aplicación fácilmente cuando la tengamos desplegada, de tal manera que para obtener el listado de drones realizando trabajos (sólo aparecerá el de la carga inicial) nos bastará con rellenar los campos de fecha y hora con la fecha y hora actuales.</p>
 </li>
 <li>
-<p>Los objetos PuntoRuta son añadidos a la colección que implementa la relación uno a mucho entre Trabajo y PuntoRuta.</p>
+<p>Los objetos PuntoRuta son añadidos a la colección que implementa la relación uno a muchos entre Trabajo y PuntoRuta.</p>
 </li>
 <li>
 <p>Creamos el objeto Drone y seteamos los atributos. En este punto el contexto de persistencia está aún vacío.</p>
 </li>
 <li>
-<p>Queremos guardar dos objetos independientes, Trabajo y Drone, entre los que existe una asocicación bidireccional y uno de ellos, Trabajo, se relaciona además con N objetos dependientes PuntoRuta. Entendemos independientes en el sentido de que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos que persistir por separado los dos objetos, además de la relación. Para los beans PuntoRuta no ocurre igual como veremos en un momento.</p>
+<p>Queremos guardar dos objetos independientes, Trabajo y Drone, entre los que existe una asociación bidireccional y uno de ellos, Trabajo, se relaciona además con N objetos dependientes PuntoRuta. Entendemos independientes en el sentido de que no hay una relación todo/parte y por tanto su persistencia se debe gestionar de forma independiente. Tendremos que persistir por separado los dos objetos, además de la relación. Para los beans PuntoRuta no ocurre igual como veremos en un momento.</p>
 </li>
 <li>
-<p>En una relación bidireccional existe lo que se entiende por lado dueño de la relación, que es aquel en el que se expresa la relación. En este caso el lado dueño de la relación entre Drone y Trabajo está en la entidad Trabajo ya que a través de la anotación @JoinColumn se expresa alli la relación. Como lo que queremos es persistir la relación bastará con dar valor al lado dueño.</p>
+<p>En una relación bidireccional existe lo que se entiende por lado dueño de la relación, que es aquel en el que se expresa la relación. En este caso el lado dueño de la relación entre Drone y Trabajo está en la entidad Trabajo ya que a través de la anotación @JoinColumn se expresa allí la relación. Como lo que queremos es persistir la relación bastará con dar valor al lado dueño.</p>
 </li>
 <li>
 <p>La persistencia la hacemos de la siguiente manera: Persistimos primero por ejemplo el objeto Drone, usando el método <em>persist</em> del entity manager. Esto provoca un cambio de estado en el objeto Drone desde new a managed. El objeto está ahora dentro del contexto de persistencia. No está aún en la base de datos. Y a continuación persistimos el objeto Trabajo. Y finalmente damos valor al lado dueño de la relación. El orden de las operaciones os puede extrañar pero he querido hacerlo así para aclarar los conceptos. Al persistir una entidad ésta pasa a estado managed en el contexto como ya hemos visto, pues bien, todos las asignaciones sobre los atributos de una entidad managed serán persistidas, cuando la transacción se complete. La transacción se completa cuando el método termina de ejecutarse. En este punto el proveedor de persistencia sincroniza el contexto de  persistencia con la base de datos, comprobará que en el contexto existen varias entidades managed que no existen en la base de datos y procederá a darlas de alta. Para aclarar aún más esta cuestión os diré que en el método de carga los métodos persist de drone y trabajo podríamos haberlos colocado justo debajo de línea que crea cada bean.</p>
@@ -684,7 +685,7 @@ public class CargaInicialDatos {
 <p>Y entonces surge la pregunta, ¿y el método merge, no era el que debería haber usado para persistir la relación entre las entidades Trabajo y Drone? Bueno, en este caso concreto la respuesta es no, aunque no siempre es así, veamos. En nuestro método de carga de datos, el objeto Trabajo, sobre el que actualizo la relación, estará en el estado managed antes de que el método finalice, porque es persistido en algún momento, y en un objeto managed cualquier modificación en sus atributos es automáticamente llevada a la base de datos en el commit de la transacción asociada. El método merge en cambio se aplica para persistir modificaciones en entidades en el estado detached.</p>
 </div>
 <div class="paragraph">
-<p>Es decir, que si leo una entidad y la modifico en el mismo método de negocio, no necesitaré llamar al método merge porque la entidad se lee como managed y los cambios se guardan al final del método de negocio, cuando se completa la transacción, para los objetos managed. Pero si en cambio estoy en un caso de uso típico de edición de un item por pantalla tendré que usar el merge ya que la entidad se guarda temporalmente en la capa de presentación  (en el controlador) en estado detached durante la sesión de pantalla, y cuando el usuario pulsa el botón Guardar lo que entra en el método de negocio es una entidad detached, con los cambios que realizó el usuario, que debe ser devuelta al estado managed con el método merge para que los cambios se persistan como antes, al finalizar el metodo de negocio.</p>
+<p>Es decir, que si leo una entidad y la modifico en el mismo método de negocio, no necesitaré llamar al método merge porque la entidad se lee como managed y los cambios se guardan al final del método de negocio, cuando se completa la transacción, para los objetos managed. Pero si en cambio estoy en un caso de uso típico de edición de un item por pantalla tendré que usar el merge ya que la entidad se guarda temporalmente en la capa de presentación  (en el controlador) en estado detached durante la sesión de pantalla, y cuando el usuario pulsa el botón Guardar lo que entra en el método de negocio es una entidad detached, con los cambios que realizó el usuario, que debe ser devuelta al estado managed con el método merge para que los cambios se persistan como antes, al finalizar el método de negocio.</p>
 </div>
 <div class="paragraph">
 <p>En <a href="http://openjpa.apache.org/builds/1.2.3/apache-openjpa/docs/jpa_overview_em_lifecycle.html">esta dirección</a> podéis ver el diagrama de estados de una entidad persistente en JPA. Es interesante tenerlo siempre a mano para aclarar las dudas que nos surjan durante la implementación de las reglas de negocio en cualquier proyecto.</p>
@@ -693,10 +694,10 @@ public class CargaInicialDatos {
 <p>Como veis hemos sido capaces de implementar las operaciones de persistencia abstrayéndonos totalmente de los detalles de la base de datos. Si logramos entender bien los distintos estados de una entidad y las distintas operaciones de persistencia seremos entonces capaces de desarrollar componentes de negocio para cualquier base de datos.</p>
 </div>
 <div class="paragraph">
-<p>Para afianzar los conceptos de persistencia vistos en este ejemplo y entender otros que en el ejemplo no aparecen podeis añadir a uestras lecturas el contenido de <a href="https://en.wikibooks.org/wiki/Java_Persistence/Persisting">esta dirección</a>.</p>
+<p>Para afianzar los conceptos de persistencia vistos en este ejemplo y entender otros que en el ejemplo no aparecen podéis añadir a vestras lecturas el contenido de <a href="https://en.wikibooks.org/wiki/Java_Persistence/Persisting">esta dirección</a>.</p>
 </div>
 <div class="paragraph">
-<p>Y hasta aquí este post dedicado a la capa de datos. En el anterior vimos la parte de mapeo y aquí hemos visto la configuración y una introducción a las operaciones de persistencia a través de una carga inicial de datos. En el proximo post veremos cómo inspeccionar la base de datos Derby que Hibernate nos genera y nos meteremos ya con la capa de negocio. Nos vemos en breve!</p>
+<p>Y hasta aquí este post dedicado a la capa de datos. En el anterior vimos la parte de mapeo y aquí hemos visto la configuración y una introducción a las operaciones de persistencia a través de una carga inicial de datos. En el próximo Post veremos cómo inspeccionar la base de datos Derby que Hibernate nos genera y nos meteremos ya con la capa de negocio. Nos vemos prontito!</p>
 </div>
 </div>
 </div>
