@@ -39,7 +39,7 @@ Es importante señalar que no existe una solución única a la hora de implement
 
 En el desarrollo de un mantenimiento existirán por tanto tareas generales y comunes a cualquier entidad, y tareas especificas, localizadas sobre todo en la pantalla de detalle, que son las que van a plantearnos los mayores retos a la hora de conseguir la funcionalidad deseada.
 
-=== Configuraciones adicionales sobre el entorno de trabajo
+=== Configuraciones adicionales en el entorno de trabajo
 
 Queremos que nuestra productividad sea máxima y para ello vamos en este punto del proyecto a instalar la librería de componentes PrimeFaces así como la última versión disponible de JSF.
 
@@ -111,7 +111,11 @@ Bien, con el diseño de las páginas listo podemos empezar con el desarrollo. No
 
 === La página de maestro: trabajos.xhtml.
 
-Pensemos en la pantalla de maestro y sus distintos elementos. Tenemos un listado con datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
+El aspecto final de la pantalla de maestro es este:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig030.png[]
+
+Necesitamos una tabla para mostrar el listado con los datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
 
 * El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener por tanto estos datos disponibles antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction, ahora sí usada de la manera habitual. Esta etiqueta añade una llamada al Modelo para el ciclo de vida de JSF de una request Initial Request realizada hacia la página que la contiene, que es justo lo que necesitamos. Por defecto la llamada se realiza en la fase de Invoke Application, anterior a la de Render Response.
 
