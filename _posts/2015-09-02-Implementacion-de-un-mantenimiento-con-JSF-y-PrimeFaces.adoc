@@ -107,181 +107,6 @@ Ahora no se admiten los típicos caracteres de espaciado `\&nbsp;` y los sustitu
 
 La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página ofreciendo más flexibilidad que la etiqueta `event` para acciones de precarga de datos para una página. La forma en que se usa en nuestra página de consulta `index.xhtml` no es la habitual, y por eso es necesario añadir el atributo `onPostback="true"`. En el siguiente apartado veremos usos adecuados de `viewAction` tanto en la página de maestro como en la de detalle.
 
-Bien, con el diseño de las páginas listo podemos empezar con el desarrollo. No se dará una explicación tan paso a paso como en Posts anteriores porque sé que ya tenéis cierta soltura con JSF y puede hacerse un poco pesado. En cambio os explicaré los puntos claves a la hora de desarrollar un maestro detalle en JSF. Y vosotros ayudándoos del código fuente del proyecto y de las explicaciones podéis intentar implementar las pantallas nombrando los ficheros por ejemplo con vuestras iniciales al final del nombre original. Por ejemplo para la pantalla de maestro cread una página con el nombre trabajoFJH.xhtml, y un backing bean con el nombre TrabajoFJHBean.java. Primero nos centraremos en la capa de presentación y comentaremos la capa de servicio / acceso a datos al final.
-
-=== La página de maestro: trabajos.xhtml.
-
-El aspecto final de la pantalla de maestro es este:
-
-image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig030.png[]
-
-Necesitamos una tabla para mostrar el listado con los datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
-
-* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener por tanto estos datos disponibles antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction, ahora sí usada de la manera habitual. Esta etiqueta añade una llamada al Modelo para el ciclo de vida de JSF de una request Initial Request realizada hacia la página que la contiene, que es justo lo que necesitamos. Por defecto la llamada se realiza en la fase de Invoke Application, anterior a la de Render Response.
-
-[source,xhtml,indent=0]
-----
-	<f:metadata>
-		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}" />
-	</f:metadata>
-----
-
-El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio para la lectura de los datos y actualiza el Modelo en el backing bean, y a continuación la página es renderizada en el servidor en la fase Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. El siguiente código muestra el binding para la primera columna de la tabla:
-
-[source,xhtml,indent=0]
-----
-		<p:dataTable id="tabla" var="trabajo" value="#{trabajosBean.trabajos}">
-			<!-- datos -->
-		    <p:column headerText="N. Registro">
-		        <h:outputText value="#{trabajo.numeroDeRegistro}" />
-		    </p:column>
-            ...
-----
-
-* Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuando pulsemos alguno de los botones Borrar, Editar o Ver se debe obtener la funcionalidad deseada.
-
-El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa para que se navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovechamos las capacidades de PrimeFaces para mostrar ventanas emergentes. El código para este botón es el siguiente:
-
-[source,xhtml,indent=0]
-----
-<p:commandButton update=":formulario:trabajoDetail" icon="ui-icon-search" oncomplete="PF('trabajoDialog').show()">
-	<f:setPropertyActionListener value="#{trabajo}" target="#{trabajosBean.trabajoSeleccionado}" />
-</p:commandButton>
-----
-
-La secuencia de acciones del Postback Request a la propia página que se genera tras pulsar el botón sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tirará el cuadro de diálogo del detalle con el trabajo de la fila pulsada. La llamada Ajax actualiza el panel del cuadro de diálogo `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada JavaScript `PF('trabajoDialog').show()`.
-
-El botón +++<span class="boton">+++Editar+++</span>+++ navegará a la página edición del detalle. El código para este botón es bien diferente del anterior, veamos:
-
-[source,xhtml,indent=0]
-----
-<p:button outcome="/trabajo" icon="ui-icon-pencil">
-	<f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
-</p:button>
-----
-
-Lo único que hace es navegar a la página de creación / edición del detalle. Por eso usamos un componente `button` y no un `commandButton`. Será además necesario enviar un parámetro en la request que indique el trabajo que se desea editar. Lo que tenemos es una Initial Request a la página de edición del detalle `trabajos.xhtml`.
-
-Por último el botón +++<span class="boton">+++Borrar+++</span>+++ al igual que en el caso del botón Ver es un botón de comando porque necesitamos ejecutar una acción de servidor y no solo navegar a otra página. Generará por tanto una Postback Request, que como ya sabemos, iniciará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en PrimeFaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
-
-[source,xhtml,indent=0]
-----
-<p:commandButton action="#{trabajosBean.eliminar(trabajo)}"
-	update=":formulario:paneltrabajos" icon="ui-icon-trash">
-		<p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" />
-</p:commandButton>
-----
-
-En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En PrimeFaces es muy fácil de implementar usando un cuadro de diálogo global.
-
-Bien, ya solo nos queda por analizar los dos botones a nivel de página, Salir y Crear. Como veis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, más en pantallas de tamaño reducido.
-
-El botón +++<span class="boton">+++Salir+++</span>+++ simplemente navega a la página de inicio:
-
-[source,xhtml,indent=0]
-----
-<p:button value="Salir" outcome="/index" />
-----
-
-Y el botón +++<span class="boton">+++Crear+++</span>+++ es igual de simple. Navega a la misma página a la que nos llevaba el botón Editar pero ahora sin especificar ningún parámetro:
-
-[source,xhtml,indent=0]
-----
-<p:button value="Crear" outcome="/trabajo" />
-----
-
-Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de JSF y de sus ventajas frente a frameworks MVC centrados en la petición como Struts 2 o Spring MVC. JavaServer Faces nos permitirá centrarnos totalmente en el caso de uso a resolver, realizando por nosotros las tareas ajenas al negocio en las distintas fases del ciclo de vida. Es cierto también que, para aplicaciones que precisen de un mayor control sobre el ciclo HTTP de petición-respuesta, un framework centrado en la petición puede ser una mejor opción.
-
-=== La página de edición / creación del detalle: trabajo.xhtml.
-
-Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad del código dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.
-
-Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don't Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación:
-
-Como ya sabemos en una Initial Request solo se ejecutarán las fases Restore View y Render Response del ciclo de vida. Durante la fase Restore View simplemente se crea una View vacía, el resto ocurrirá en la fase Render Response: 
-
-. Una instancia del backing bean es creada.
-
-. Se ejecuta el método _@PostConstruct_ donde crearemos una nueva instancia  de la entidad gestionada, Trabajo.
-
-. La etiqueta _viewParam_ es procesada: El campo _idTrabajo_ de la entidad recién creada se actualiza con el valor del parámetro de la request en el caso de que exista, es decir, cuando se trate de una llamada a la página de edición del detalle.
-
-. Se procesa la etiqueta _viewAction_: Se llama al método de la capa de servicio / acceso a datos _actualizaModeloTrabajo()_ comprobamos el valor del Id y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
-
-[source,xhtml,indent=0]
-----
-<f:metadata>
-	<f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}" />
-	<f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}" />
-</f:metadata>
-----
-
-[start=5]
-. Finalmente una vez que el framework ha creado la View con todos los componentes y los valores correspondientes la página es renderizada como HTML y enviada al usuario.
-
-En este punto tenemos ya nuestra página lista para la creación o la edición de un Trabajo. El botón +++<span class="boton">+++Salir+++</span>+++ es simple, se trata de un típico botón de cancelación:
-
-[source,xhtml,indent=0]
-----
-<p:button value="Salir" outcome="/trabajos.xhtml"/>
-----
-
-Ejecuta una navegación GET (Initial Request) a la página de maestro. Esta simplicidad es posible porque la cancelación aquí no requiere de ninguna acción adicional. Si en cambio necesitáramos realizar alguna acción, por ejemplo para liberar recursos de sesión, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, etc, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, ahora usando un componente commandButton o commandLink:
-
-. Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se ve implicado y conseguimos evitar la ejecución de conversiones y validaciones:
-
-[source,xhtml,indent=0]
-----
-<p:commandButton value="Salir" process="@this" action="/trabajos.xhtml?faces-redirect=true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
-----
-
-[start=2]
-. Configurar el botón con el modificador _inmmediate_ a true. De esta manera la acción asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, puenteando como en el caso anterior conversiones y validaciones:
-
-[source,xhtml,indent=0]
-----
-<p:commandButton value="Salir" action="/trabajos.xhtml?faces-redirect=true" immediate="true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
-----
-
-En los dos casos anteriores podemos optar por prescindir del atributo `actionListener` y escribir la llamada al método `miAccionNecesaria` en el atributo `action`. Esto obliga a devolver la cadena `"/trabajos.xhtml?faces-redirect=true"` en el método. De todos modos como ya hemos comentado en el caso de la cancelación de la edición de la entidad Trabajo no es necesario la llamada a un método tras la cancelación.
-
-El botón +++<span class="boton">+++Aceptar+++</span>+++ persiste los cambios en una edición o bien la nueva entidad Trabajo en una creación. En ambos casos se ha usado el mismo código. Esto es posible porque el método _merge_ mete en el contexto de persistencia tanto una entidad _detached_ como una _new_. En el caso de una edición la entidad Trabajo que se lee de la base de datos pasa al estado  _detached_ cuando la transacción del método de lectura finaliza. En el caso de una creación el JavaBean creado pasa al estado _new_. Estos estados se prolongan durante toda la sesión de usuario de edición o creación de un Trabajo. Finalmente, cuando el usuario pulsa el botón Aceptar para persistir los cambios,  lo único que quedará es hacer un merge para que la entidad Trabajo vuelva al contexto de persistencia, es decir, pase al estado _managed_, y dejar que JTA ejecute el correspondiente commit en la sálida del método Java de la capa de Servicio.
-
-Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar.
-
-El código fuente del botón puede ser confuso en principio:
-
-[source,xhtml,indent=0]
-----
-<p:commandButton id="aceptar" value="Aceptar" action="#{trabajoBean.aceptar}" update="@(:input:not(.notsend)) mensajes" process="@(:input:not(.notsend))" oncomplete="ajustaPosicionEtiquetas();" />
-----
-
-Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback a la propia página. De forma resumida estos son los pasos que se seguirán durante el ciclo de vida completo generado: Si no hay errores, se llevarán a cabo las conversiones, las validaciones (tanto las de JSF como las de BV) y la actualización del Modelo para los atributos de la entidad Trabajo. A continuación se ejecutará la llamada al método de servicio para la persistencia y luego se actualizará la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. 
-
-Veamos más detenidamente cada atributo del botón:
-
-* process y update: El primero determina los elementos que enviamos y en segundo lo que actualizamos en la llamada Ajax. Lo interesante aquí es que se ha tenido que usar un selector poco usual para definir el conjunto de elementos. El motivo de esto es que se ha usado un componente para maquetar la página que englobaba a la entidad Trabajo y también a sus PuntosRuta y como no se deben anidar formularios, tanto la entidad padre como las hijas han de estar en el mismo formulario y de ahí que sea necesario filtrar lo que se envía al servidor. Cuando pulse Aceptar sólo deberé enviar al servidor los campos de la entidad Trabajo y excluir los tres campos de introducción de un PuntoRuta. Para esto uso la capacidad de PrimeFaces de usar selectores jQuery:
-
-`@(:input:not(.notsend))`
-
-El selector toma el conjunto de todos los elementos de entrada del formulario con el selector jQuery `:input`, y le aplica luego el selector jQuery `:not` para excluir los que tienen la clase `.notsend.` De modo que si asignamos a los tres campos de entrada de PuntoRuta esta clase evitaremos que intervengan en el submit generado al pulsar el botón Aceptar.
-
-* action: Indica el método de la capa de Servicio que persiste el Trabajo, que como ya se ha indicado será el mismo tanto para la edición como para la creación.
-
-* oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las labels de los campos que ocupan una altura extra en la pantalla: _Descripción_ y _Puntos de Ruta_. El problema aquí es que en la versión actual de CSS no existe una manera de seleccionar un elemento padre conocido su hijo y tenemos por tanto que recurrir a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas más elaboradas.
-
-Bien, hasta aquí los aspectos generales de la pantalla de detalle.
-
-=== La validación por antonomasia en un mantenimiento: Comprobación de clave natural duplicada.
-
-En un mantenimiento algo que tendremos siempre que incluir a la hora de guardar una nueva entidad durante un proceso de creación o alta es la comprobación de que no existe ya otra entidad con la misma clave natural en la base de datos. La clave natural o clave semántica es el conjunto de campos que identifican a una entidad diferenciándola del resto. Esta verificación debe existir independientemente de que la clave natural se use como clave primaria o no. En nuestro caso por ejemplo usamos una clave subrogada como clave principal, generada por la propia base de datos. Esta verificación la implementaremos en una clase Validator donde inyectaremos mediante CDI el componente EJB de acceso a datos y realizaremos la validación dentro del método validate.
-
-Lo anterior es el escenario habitual, donde los requisitos indican que la clave natural no puede ser modificada en una entidad persistida. La prohibición de modificar la clave natural impide problemas de integridad cuando se utiliza como clave primaria en las relaciones con otras entidades y en cualquier caso problemas de localización de entidades cuando la modificación se realice por error o se cometan errores en la misma. Cuando un usuario persista una entidad con errores en su clave natural, deberá borrar dicha entidad y crearla de nuevo con la clave natural correcta. Se puede facilitar esta tarea disponiendo un botón _Copiar desde_ en la pantalla de creación de entidad, que permita copiar los valores ya introducidos en la entidad con la clave natural errónea a la nueva entidad con la clave correcta. Y adicionalmente un cuadro de dialogo que nos dé la posibilidad de borrar la entidad con la clave natural errónea.
-
-Sin embargo en ciertos casos puede tenerse unos requisitos que nos indiquen que la clave natural si pueda ser modificada. Por ejemplo si los datos entran en el sistema desde distintas fuentes mediante procesos de importación y la probabilidad de errores de formato en los mismos es alta. En este caso la lógica del validador será algo más compleja ya que ahora además de la comprobación al crear una entidad existirá una comprobación al modificarla. Tendremos que comprobar que la clave natural modificada no exista ya en la base de datos. Esta comprobación además debe excluir el valor inicial de la clave natural, sería el caso en que el usuario no modifica la clave natural durante la sesión de edición de la entidad.
-
-En la aplicación se implementan los dos casos para la pantalla de creación / modificación del detalle de la entidad Trabajo, incluyéndose el atributo booleano _isPosibleEdicionClaveNatural_en el componente _inputText_ del campo Número de Registro, que constituye la clave natural de la entidad. El valor booleano es escrito directamente en la página _trabajo.xhtml_. En un caso real podríamos tomar este valor de una tabla de configuración en la base de datos. Echadle un vistazo al código en el fichero _trabajo.xhtml_ correspondiente a la página JSF y el fichero _NumeroDeRegistroUnicoValidator.java_ que implementa el validador. 
-
 === Uso de plantillas: Una plantilla adaptativa para jdrone
 
 Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.
@@ -468,5 +293,184 @@ Para estilizar los menús añadid al principio del fichero _plantilla.css_ lo si
 Tras desplegar los cambios en WildFly veremos el aspecto final de la aplicación:
 
 image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig015.png[]
+
+Bien, una vez que tenemos listo el diseño de las páginas podemos empezar con el desarrollo. No se dará una explicación tan paso a paso como en Posts anteriores porque sé que ya tenéis cierta soltura con JSF y puede hacerse un poco pesado. En cambio se verán los puntos claves a la hora de desarrollar un maestro detalle en JSF. Y vosotros ayudándoos del código fuente del proyecto y de las explicaciones podréis intentar implementar las pantallas nombrando los ficheros por ejemplo con vuestras iniciales al final del nombre original. Por ejemplo para la pantalla de maestro cread una página con el nombre trabajoFJH.xhtml, y un backing bean con el nombre TrabajoFJHBean.java.
+
+=== La página de maestro: trabajos.xhtml.
+
+El aspecto final de la pantalla de maestro es este:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig30.png[]
+
+Necesitamos una tabla para mostrar el listado con los datos de sólo lectura, los botones Borrar icon:trash[], Editar icon:pencil[] y Ver icon:search[] asociados a cada entidad del listado y los botones Salir y Crear a nivel de pantalla:
+
+* El listado de entidades: La página de maestro debe mostrar inicialmente, es decir en la Initial Request, todos los Trabajos. Debemos tener por tanto estos datos disponibles antes de la fase Render Response. Esto lo conseguimos con la etiqueta viewAction, ahora sí usada de la manera habitual. Esta etiqueta añade una llamada al Modelo para el ciclo de vida de JSF de una request Initial Request realizada hacia la página que la contiene, que es justo lo que necesitamos. Por defecto la llamada se realiza en la fase de Invoke Application, anterior a la de Render Response.
+
+[source,xhtml,indent=0]
+----
+	<f:metadata>
+		<f:viewAction action="#{trabajosBean.actualizaModeloTrabajos()}" />
+	</f:metadata>
+----
+
+El método `trabajosBean.actualizaModeloTrabajos()` realiza una llamada a la capa de servicio para la lectura de los datos y actualiza el Modelo en el backing bean, y a continuación la página es renderizada en el servidor en la fase Render Response. Durante esta fase entran en juego los bindings establecidos en la tabla dataTable, que tiran del Modelo para renderizar cada campo de datos de cada Trabajo. El siguiente código muestra el binding para la primera columna de la tabla:
+
+[source,xhtml,indent=0]
+----
+		<p:dataTable id="tabla" var="trabajo" value="#{trabajosBean.trabajos}">
+			<!-- datos -->
+		    <p:column headerText="N. Registro">
+		        <h:outputText value="#{trabajo.numeroDeRegistro}" />
+		    </p:column>
+            ...
+----
+
+* Los botones de acción a nivel de entidad: La página ya ha sido renderizada y se muestra correctamente en nuestro navegador. Si el código de la página es correcto cuando pulsemos alguno de los botones Borrar, Editar o Ver se debe obtener la funcionalidad deseada.
+
+El botón +++<span class="boton">+++Ver+++</span>+++ en general se implementa para que se navegue a otra página donde se muestra el detalle de la entidad seleccionada, sin embargo aprovechamos las capacidades de PrimeFaces para mostrar ventanas emergentes. El código para este botón es el siguiente:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton update=":formulario:trabajoDetail" icon="ui-icon-search" oncomplete="PF('trabajoDialog').show()">
+	<f:setPropertyActionListener value="#{trabajo}" target="#{trabajosBean.trabajoSeleccionado}" />
+</p:commandButton>
+----
+
+La secuencia de acciones del Postback Request a la propia página que se genera tras pulsar el botón sería la siguiente: La etiqueta `setPropertyActionListener` actualiza la variable del Modelo `trabajosBean.trabajoSeleccionado` del que tirará el cuadro de diálogo del detalle con el trabajo de la fila pulsada. La llamada Ajax actualiza el panel del cuadro de diálogo `:formulario:trabajoDetail` y finalmente el diálogo es mostrado con la llamada JavaScript `PF('trabajoDialog').show()`.
+
+El botón +++<span class="boton">+++Editar+++</span>+++ navegará a la página edición del detalle. El código para este botón es bien diferente del anterior, veamos:
+
+[source,xhtml,indent=0]
+----
+<p:button outcome="/trabajo" icon="ui-icon-pencil">
+	<f:param name="idTrabajo" value="#{trabajo.idTrabajo}"></f:param>
+</p:button>
+----
+
+Lo único que hace es navegar a la página de creación / edición del detalle. Por eso usamos un componente `button` y no un `commandButton`. Será además necesario enviar un parámetro en la request que indique el trabajo que se desea editar. Lo que tenemos es una Initial Request a la página de edición del detalle `trabajos.xhtml`.
+
+Por último el botón +++<span class="boton">+++Borrar+++</span>+++ al igual que en el caso del botón Ver es un botón de comando porque necesitamos ejecutar una acción de servidor y no solo navegar a otra página. Generará por tanto una Postback Request, que como ya sabemos, iniciará un ciclo completo de JSF. Será un ciclo Ajax, que es el comportamiento por defecto para los botones en PrimeFaces. En la fase Invoke Application de este ciclo se llamará al método de borrado `trabajosBean.eliminar(trabajo)` del backing bean. El código completo es:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton action="#{trabajosBean.eliminar(trabajo)}"
+	update=":formulario:paneltrabajos" icon="ui-icon-trash">
+		<p:confirm header="Borrado de trabajo" message="Pulsa Confirmar para confirmar acción" icon="ui-icon-alert" />
+</p:commandButton>
+----
+
+En general para las acciones de borrado, ya sea físico o lógico, es conveniente presentar un cuadro de diálogo de confirmación al usuario. En PrimeFaces es muy fácil de implementar usando un cuadro de diálogo global.
+
+Bien, ya solo nos queda por analizar los dos botones a nivel de página, Salir y Crear. Como veis en la figura que muestra el diseño de la página, he colocado estos botones encima del listado de Trabajos, creo que así se mejora la experiencia de usuario ya que los botones siempre van a estar en la misma posición independientemente del número de filas del listado y además se muestran en una posición más accesible, más en pantallas de tamaño reducido.
+
+El botón +++<span class="boton">+++Salir+++</span>+++ simplemente navega a la página de inicio:
+
+[source,xhtml,indent=0]
+----
+<p:button value="Salir" outcome="/index" />
+----
+
+Y el botón +++<span class="boton">+++Crear+++</span>+++ es igual de simple. Navega a la misma página a la que nos llevaba el botón Editar pero ahora sin especificar ningún parámetro:
+
+[source,xhtml,indent=0]
+----
+<p:button value="Crear" outcome="/trabajo" />
+----
+
+Viendo la simplicidad y limpieza del código nos damos cuenta de la potencia de JSF y de sus ventajas frente a frameworks MVC centrados en la petición como Struts 2 o Spring MVC. JavaServer Faces nos permitirá centrarnos totalmente en el caso de uso a resolver, realizando por nosotros las tareas ajenas al negocio en las distintas fases del ciclo de vida. Es cierto también que, para aplicaciones que precisen de un mayor control sobre el ciclo HTTP de petición-respuesta, un framework centrado en la petición puede ser una mejor opción.
+
+=== La página de edición / creación del detalle: trabajo.xhtml.
+
+La pantalla de detalle tendrá este aspecto:
+
+image::https://raw.githubusercontent.com/lametaweb/lametaweb.github.io/master/images/009/post009-fig40.png[]
+
+Aquí es donde está como se suele decir "la chicha" de un mantenimiento de entidad. La complejidad del código dependerá como ya sabemos del número y tipo de relaciones de la entidad gestionada.
+
+Usaremos la misma página tanto para la edición como para la creación, siguiendo el principio DRY (Don't Repeat Yourself). Veamos la secuencia de acciones que tienen lugar tras la Initial Request que se inicia cuando navegamos a la página de detalle, tanto en el caso de una edición como en el caso de una creación:
+
+Como ya sabemos en una Initial Request solo se ejecutarán las fases Restore View y Render Response del ciclo de vida. Durante la fase Restore View simplemente se crea una View vacía, el resto ocurrirá en la fase Render Response: 
+
+. Una instancia del backing bean es creada.
+
+. Se ejecuta el método _@PostConstruct_ donde crearemos una nueva instancia  de la entidad gestionada, Trabajo.
+
+. La etiqueta _viewParam_ es procesada: El campo _idTrabajo_ de la entidad recién creada se actualiza con el valor del parámetro de la request en el caso de que exista, es decir, cuando se trate de una llamada a la página de edición del detalle.
+
+. Se procesa la etiqueta _viewAction_: Se llama al método de la capa de servicio / acceso a datos _actualizaModeloTrabajo()_ comprobamos el valor del Id y si no es nulo actualizamos el Modelo para que en la fase Render Response se muestren los datos del trabajo que el usuario desea editar.
+
+[source,xhtml,indent=0]
+----
+<f:metadata>
+	<f:viewParam name="idTrabajo" value="#{trabajoBean.trabajo.idTrabajo}" />
+	<f:viewAction action="#{trabajoBean.actualizaModeloTrabajo()}" />
+</f:metadata>
+----
+
+[start=5]
+. Finalmente una vez que el framework ha creado la View con todos los componentes y los valores correspondientes la página es renderizada como HTML y enviada al usuario.
+
+En este punto tenemos ya nuestra página lista para la creación o la edición de un Trabajo. El botón +++<span class="boton">+++Salir+++</span>+++ es simple, se trata de un típico botón de cancelación:
+
+[source,xhtml,indent=0]
+----
+<p:button value="Salir" outcome="/trabajos.xhtml"/>
+----
+
+Ejecuta una navegación GET (Initial Request) a la página de maestro. Esta simplicidad es posible porque la cancelación aquí no requiere de ninguna acción adicional. Si en cambio necesitáramos realizar alguna acción, por ejemplo para liberar recursos de sesión, o para realizar una escritura en base de datos para grabar la fecha y hora de la cancelación, etc, entonces no nos valdría con lo anterior y tendríamos que elegir entre alguna de las dos soluciones siguientes, ahora usando un componente commandButton o commandLink:
+
+. Configurar el botón para que se procese sólo a sí mismo en la llamada Ajax. De esta manera el resto del formulario no se ve implicado y conseguimos evitar la ejecución de conversiones y validaciones:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton value="Salir" process="@this" action="/trabajos.xhtml?faces-redirect=true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
+----
+
+[start=2]
+. Configurar el botón con el modificador _inmmediate_ a true. De esta manera la acción asociada a la cancelación se realiza en la fase de Apply Request Values y luego se salta a la fase de Render Response, puenteando como en el caso anterior conversiones y validaciones:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton value="Salir" action="/trabajos.xhtml?faces-redirect=true" immediate="true" actionListener="#{trabajoBean.miAccionNecesaria}"/>
+----
+
+En los dos casos anteriores podemos optar por prescindir del atributo `actionListener` y escribir la llamada al método `miAccionNecesaria` en el atributo `action`. Esto obliga a devolver la cadena `"/trabajos.xhtml?faces-redirect=true"` en el método. De todos modos como ya hemos comentado en el caso de la cancelación de la edición de la entidad Trabajo no es necesario la llamada a un método tras la cancelación.
+
+El botón +++<span class="boton">+++Aceptar+++</span>+++ persiste los cambios en una edición o bien la nueva entidad Trabajo en una creación. En ambos casos se ha usado el mismo código. Esto es posible porque el método _merge_ mete en el contexto de persistencia tanto una entidad _detached_ como una _new_. En el caso de una edición la entidad Trabajo que se lee de la base de datos pasa al estado  _detached_ cuando la transacción del método de lectura finaliza. En el caso de una creación el JavaBean creado pasa al estado _new_. Estos estados se prolongan durante toda la sesión de usuario de edición o creación de un Trabajo. Finalmente, cuando el usuario pulsa el botón Aceptar para persistir los cambios,  lo único que quedará es hacer un merge para que la entidad Trabajo vuelva al contexto de persistencia, es decir, pase al estado _managed_, y dejar que JTA ejecute el correspondiente commit en la sálida del método Java de la capa de Servicio.
+
+Es importante tener claro que durante una sesión de edición debemos guardar los cambios realizados por el usuario en la capa de presentación, y sólo persistir los cambios, mediante la correspondiente llamada a la capa de servicio / datos, al final de la sesión, cuando el usuario pulse el botón Aceptar.
+
+El código fuente del botón puede ser confuso en principio:
+
+[source,xhtml,indent=0]
+----
+<p:commandButton id="aceptar" value="Aceptar" action="#{trabajoBean.aceptar}" update="@(:input:not(.notsend)) mensajes" process="@(:input:not(.notsend))" oncomplete="ajustaPosicionEtiquetas();" />
+----
+
+Se trata de un botón de comando, y que por lo tanto genera una petición Ajax de tipo Postback a la propia página. De forma resumida estos son los pasos que se seguirán durante el ciclo de vida completo generado: Si no hay errores, se llevarán a cabo las conversiones, las validaciones (tanto las de JSF como las de BV) y la actualización del Modelo para los atributos de la entidad Trabajo. A continuación se ejecutará la llamada al método de servicio para la persistencia y luego se actualizará la zona adecuada de la página. Finalmente hay un ajuste dinámico de estilo. 
+
+Veamos más detenidamente cada atributo del botón:
+
+* process y update: El primero determina los elementos que enviamos y en segundo lo que actualizamos en la llamada Ajax. Lo interesante aquí es que se ha tenido que usar un selector poco usual para definir el conjunto de elementos. El motivo de esto es que se ha usado un componente para maquetar la página que englobaba a la entidad Trabajo y también a sus PuntosRuta y como no se deben anidar formularios, tanto la entidad padre como las hijas han de estar en el mismo formulario y de ahí que sea necesario filtrar lo que se envía al servidor. Cuando pulse Aceptar sólo deberé enviar al servidor los campos de la entidad Trabajo y excluir los tres campos de introducción de un PuntoRuta. Para esto uso la capacidad de PrimeFaces de usar selectores jQuery:
+
+`@(:input:not(.notsend))`
+
+El selector toma el conjunto de todos los elementos de entrada del formulario con el selector jQuery `:input`, y le aplica luego el selector jQuery `:not` para excluir los que tienen la clase `.notsend.` De modo que si asignamos a los tres campos de entrada de PuntoRuta esta clase evitaremos que intervengan en el submit generado al pulsar el botón Aceptar.
+
+* action: Indica el método de la capa de Servicio que persiste el Trabajo, que como ya se ha indicado será el mismo tanto para la edición como para la creación.
+
+* oncomplete: Llama a una función JS que restablece el estilo del elemento padre de las labels de los campos que ocupan una altura extra en la pantalla: _Descripción_ y _Puntos de Ruta_. El problema aquí es que en la versión actual de CSS no existe una manera de seleccionar un elemento padre conocido su hijo y tenemos por tanto que recurrir a JS, de modo que cada vez que la pantalla se refresca hay que reescribir el estilo. Esto es un ejemplo de cómo a veces para conseguir una buena experiencia de usuario es necesario usar técnicas más elaboradas.
+
+Hasta aquí los aspectos generales de la pantalla de detalle.
+
+=== La validación por antonomasia en un mantenimiento: Comprobación de clave natural duplicada.
+
+En un mantenimiento algo que tendremos siempre que incluir a la hora de guardar una nueva entidad durante un proceso de creación o alta es la comprobación de que no existe ya otra entidad con la misma clave natural en la base de datos. La clave natural o clave semántica es el conjunto de campos que identifican a una entidad diferenciándola del resto. Esta verificación debe existir independientemente de que la clave natural se use como clave primaria o no. En nuestro caso por ejemplo usamos una clave subrogada como clave principal, generada por la propia base de datos. Esta verificación la implementaremos en una clase Validator donde inyectaremos mediante CDI el componente EJB de acceso a datos y realizaremos la validación dentro del método validate.
+
+Lo anterior es el escenario habitual, donde los requisitos indican que la clave natural no puede ser modificada en una entidad persistida. La prohibición de modificar la clave natural impide problemas de integridad cuando se utiliza como clave primaria en las relaciones con otras entidades y en cualquier caso problemas de localización de entidades cuando la modificación se realice por error o se cometan errores en la misma. Cuando un usuario persista una entidad con errores en su clave natural, deberá borrar dicha entidad y crearla de nuevo con la clave natural correcta. Se puede facilitar esta tarea disponiendo un botón _Copiar desde_ en la pantalla de creación de entidad, que permita copiar los valores ya introducidos en la entidad con la clave natural errónea a la nueva entidad con la clave correcta. Y adicionalmente un cuadro de dialogo que nos dé la posibilidad de borrar la entidad con la clave natural errónea.
+
+Sin embargo en ciertos casos puede tenerse unos requisitos que nos indiquen que la clave natural si pueda ser modificada. Por ejemplo si los datos entran en el sistema desde distintas fuentes mediante procesos de importación y la probabilidad de errores de formato en los mismos es alta. En este caso la lógica del validador será algo más compleja ya que ahora además de la comprobación al crear una entidad existirá una comprobación al modificarla. Tendremos que comprobar que la clave natural modificada no exista ya en la base de datos. Esta comprobación además debe excluir el valor inicial de la clave natural, sería el caso en que el usuario no modifica la clave natural durante la sesión de edición de la entidad.
+
+En la aplicación se implementan los dos casos para la pantalla de creación / modificación del detalle de la entidad Trabajo, incluyéndose el atributo booleano _isPosibleEdicionClaveNatural_en el componente _inputText_ del campo Número de Registro, que constituye la clave natural de la entidad. El valor booleano es escrito directamente en la página _trabajo.xhtml_. En un caso real podríamos tomar este valor de una tabla de configuración en la base de datos. Echadle un vistazo al código en el fichero _trabajo.xhtml_ correspondiente a la página JSF y el fichero _NumeroDeRegistroUnicoValidator.java_ que implementa el validador.
 
 Espero que el contenido de este Post os haya aclarado los conceptos generales del desarrollo de pantallas de mantenimiento en una aplicación JSF. Para practicar y coger confianza podéis poneros manos a la obra con la pantalla de mantenimiento de la entidad Drone. El mantenimiento de Drone es bastante más sencillo ya que no hay que incluir ninguna relación en el mismo: El usuario va a asociar un drone a un trabajo pero no es natural asociar trabajos a un drone. Os espero en el próximo Post. Hasta pronto!
