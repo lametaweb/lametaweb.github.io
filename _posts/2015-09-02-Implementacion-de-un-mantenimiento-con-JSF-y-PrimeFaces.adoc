@@ -109,8 +109,6 @@ La etiqueta `viewAction` es nueva en JSF 2.2. Asocia un evento a una página ofr
 
 === Uso de plantillas: Una plantilla adaptativa para jdrone
 
-Para cerrar este Post veremos un tema central en JSF: Las plantillas de Facelets.
-
 Una interfaz adaptativa, en inglés _responsive_, se hace necesaria casi en cualquier proyecto hoy en día dada la variabilidad del tamaño de pantalla de los distintos dispositivos: Laptops, tablets, smartphones... En una aplicación JSF una buena alternativa para esto es usar el componente _Grid CSS_ de PrimeFaces, que permite realizar la maquetación de las páginas del proyecto definiendo las zonas comunes: Cabecera, menú, barra de navegación, sides, zona central principal y pie. Asimismo, aunque no se ha incluido en *+++<span style="color:blue">+++j+++</span>+++drone*, es interesante el uso de la clase CSS _ui-fluid_ que va a darnos una interfaz fluida calculando la posición y tamaño de cada componente en tiempo real dependiendo del tamaño del viewport. Grid CSS no es más que una librería de estilos, similar a Bootstrap, pero compatible con JSF y PrimeFaces. 
 
 Antes de empezar a implementar la plantilla lo mejor es tomar lápiz y papel o una herramienta como Inkscape y dibujar un boceto del layout de la página completa que necesitamos, de esta manera podré averiguar fácilmente los _divs_ que voy a necesitar para crear las distintas áreas en la pantalla.
