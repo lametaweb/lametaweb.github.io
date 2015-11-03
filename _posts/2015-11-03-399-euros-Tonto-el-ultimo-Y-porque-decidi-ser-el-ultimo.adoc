@@ -9,16 +9,39 @@ En portada a todo color veo un portátil de gama media con el atractivo precio d
 
 En este primer Offtopic, no demasiado off porque nos quedamos en el terreno de la Informática, os propongo la opción de la no compra. Os daré una lista de acciones para revitalizar nuestro portátil y permitirle así que siga dándonos un buen servicio algunos añitos más. Todos los puntos de la lista están comprobados ya que yo mismo tomé la decisión de demorar la compra y hasta ahora todo han sido satisfacciones. 
 
-Aclararos antes de empezar que tampoco se puede hacer milagros. Si nuestro portátil es un gama baja del año 
+Aclararos, antes de comenzar con el análisis, que tampoco se pueden hacer milagros. Si nuestro portátil es un gama baja del año catapúm quizá lo más razonable sea jubilarlo y hacerse con una buena oferta. Para que tengáis una referencia mi portátil es un Acer Travelmate 5720 con estas características:
 
-Empezamos.
+** Año de fabricación: 2007.
+** Sistema operativo: Windows 8.1.
+** Procesador: Intel Core 2 Duo T8300 2.4 Ghz.
+** Memoria RAM: 4Gb.
 
-===La fuerza de la costumbre: Mi teclado.
+Desde mi punto de vista estas serían más o menos las características mínimas que permitirían un reciclado exitoso. Empezamos.
+
+===La fuerza de la costumbre: Mi tesoro, mi teclado.
 
 Uno de los grandes puntos a favor de seguir con tu antiguo portátil es el grado de adaptación que se tiene en su uso. Esto se nota especialmente en el teclado. Nada como el teclado de tu portátil cuando estás tirando líneas de código y usando los atajos del teclado. Seguramente lo habrás notado cuando intentas seguir el mismo ritmo en el ordanador de un amigo o familiar, la tasa de errores es mucho mayor, aparte de que la sensación que te ofrece no es la misma.
 
 Esto mismo aunque de forma no tan evidente ocurre con la pantalla, el formato, tamaño, temperatura de color y brillo no es al que estamos acostumbrados.
 
-===Las largas esperas observando el parpadeo del led del disco duro.
+===Esas esperas observando el parpadeo del led del disco duro.
 
-Este es uno de los puntos que pesan más a la hora de cambiar de portátil. Un modelo del año 2008, que es el que 
+Los discos duros mecánicos de hace unos años eran incluso más lentos que los actuales y por eso se convierten en el principal cuello de botella de rendimiento y el principal motivo que nos lleva al cambio del portátil. 
+
+El bajo desempeño de los discos mecánicos y en especial de los de formato de 2,5" para portátil hace en ocasiones impracticable el trabajo con aplicaciones con uso intensivo de memoria RAM, como las usadas en diseño de imágenes, o en entornos de trabajo donde es necesario el uso de varios programas de forma simultanea, como nuestros entornos de desarrollo: IDE, servidor, navegador con bastantes solapas abiertas, lector PDF, etc.
+
+Afortunadamente existe una sencilla solución, cambiar nuestro disco duro mecánico por uno SSD. Este tipo de discos no tienen partes móviles y reducen los tiempos hasta 10 veces, e incluso más si el disco original era antiguo. Así, si antes nos tirabamos esperando 10 segundos ahora en un segundo nuestro ordenador terminará la tarea.
+
+El procedimiento es muy sencillo, quitar unos tornillos, sacar el disco antiguo y conectar el nuevo. Tendremos también que pasar la información de un disco a otro y para esto el disco SSD nos proporciona una carcasa USB para el disco antiguo y un software específico. De modo que como bonus tendremos un disco duro externo de 2,5" gratis.
+
+Realmente se nota la diferencia en el rendimiento, como se suele decir, el ordenador es otro.
+
+¿Y cuánto me cuesta? Pues relativamente poco, los SSD han bajado mucho de precio respecto de hace unos años. Os puedo recomendar este modelo, que es el que yo tengo montado:
+
+** Establecimiento: APP informática.
+** Modelo: 
+
+
+
+
+
